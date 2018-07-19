@@ -1,0 +1,30 @@
+<script>
+$(function(){
+	var $box=navTab.getCurrentPanel();
+	var url = "__URL__/lookupHrDepartmentEmployeesChart";
+	var swf = 'Bar2D';
+	chart("__PUBLIC__/Charts/"+swf+".swf","HrDepartmentEmployeesChart",url,"800", "413");
+	$('#ReportHrDepartmentEmployeesChart').selectButton().change(function(){
+		var swf = $(this).val();
+		chart("__PUBLIC__/Charts/"+swf+".swf","HrDepartmentEmployeesChart",url,"800", "413");
+	});
+});
+</script>
+<div class="pageContent tml-bg-white" layoutH="0">
+	<div class="">
+		<h2 class="contentTitle contentTitle_center">部门人数</h2>
+		<div class="clearfix" style="margin: 10px auto; width: 800px">
+			<select name="select" id="ReportHrDepartmentEmployeesChart" class="">
+				<option value="Bar2D" >2D条形图</option>
+				<option value="Pie2D" >2D饼图</option>
+				<option value="Pie3D">3D饼图</option>
+				<option value="Column2D">2D柱图</option>
+				<option value="Column3D">3D柱图</option>
+			</select>
+			<div class="tml-c-red" style="margin: 10px;">
+				<p>【截止目前部门人数统计图】</p>
+			</div>
+		</div>
+		<div id="HrDepartmentEmployeesChart" style="margin: 0 auto; width: 800px"></div>
+	</div>
+</div>

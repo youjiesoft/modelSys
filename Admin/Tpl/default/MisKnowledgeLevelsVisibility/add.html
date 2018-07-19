@@ -1,0 +1,118 @@
+<script type="text/javascript">
+		var departbox = $("#missystemdepartment_att", $.pdialog.getCurrent());
+		var dutybox = $("#duty_att", $.pdialog.getCurrent());
+		//构造html
+		function appendUserHtml($ulid, $inputName, $id, $name, $chainname){
+			var isTrue = true;
+			$("#"+$ulid).find("input").each(function(){
+				if($(this).val() == $id) {
+					isTrue = false;
+				}
+			});
+			var $str = "";
+			if(isTrue){
+				$str += "<li>";
+				$str += "<input type='hidden' name='"+$inputName+"[]' value='"+$id+"'/>";
+				$str += "<span><input type='hidden' name='"+$chainname+"[]' value='"+$name+"'>"+$name+"</span>";
+				$str += "<a class='delAddressee' title='删除' onclick='this.parentNode.parentNode.removeChild(this.parentNode);' href='javascript:;'>x</a>";
+				$str += "</li>";
+			}
+			return $str;
+		}
+	//清空
+	function clearreleasescope(number,ulId){
+		 var box = $.pdialog.getCurrent()
+	        box.find("#"+ulId).empty();
+	}
+	//department 执行追加节点(html)操作
+	function missystemannouncement_selectdepart(){
+		var id;
+		var name;
+		var box = $.pdialog.getCurrent()
+		box.find(".depttbodylist").find("input[type='checkbox']").each(function(){
+			if($(this).attr("checked")=='checked'){
+				id=$(this).attr("deptid");
+				name=$(this).attr("deptname");
+				missystemannouncement_adddepart(id,name);
+			}
+		});
+		$.pdialog.closeCurrent();
+	}
+	//按照部门发布追加html节点操作函数
+	function missystemannouncement_adddepart(id,name){
+		var $strHtml = appendUserHtml('deptclear','deptid',id,name,'deptname');
+		$("#MisSystemDepartment").before($strHtml);
+	}
+	//职级
+	function missystemannouncement_addduty(id,name){
+		var $strHtml = appendUserHtml('opsition','dutyid',id,name,'dutyname');
+		$("#MisSystemDuty").before($strHtml);
+	}
+	function missystemannouncement_selectduty(){
+		var id;
+		var name;
+		var box = $.pdialog.getCurrent()
+		box.find(".dutybodylist").find("input[type='checkbox']").each(function(){
+			if($(this).attr("checked")=='checked'){
+				id=$(this).attr("deptid");
+				name=$(this).attr("deptname");
+				missystemannouncement_addduty(id,name);
+			}
+		});
+		$.pdialog.closeCurrent();
+	}
+</script>
+<include file="Public:pagerForm" />
+	<div class="page">
+		<div class="pageContent">
+			<form method="post" action="__URL__/insert/rel/misknowledgelevelsvisibility/typeid/{$typeid}" class="pageForm required-validate" onsubmit="return validateCallback(this,dialogAjaxDone);">
+				<input type="hidden" name="navTabId" value="__MODULE__"/>
+				<div class="pageFormContent" layoutH="58">
+                    <div class="tml-row">
+                        <div class="tml-form-col">
+                            <label>编&nbsp;&nbsp;&nbsp;&nbsp;码：</label>
+                            <input  type="text" name="code" class="required" <if condition='$writable eq 0'> readonly="readonly" </if> value="{$code}">
+                        </div>
+                         <div class="tml-form-col">
+                            <label>分&nbsp;&nbsp;&nbsp;&nbsp;值：</label>
+                            <input  type="text" name="score" class="required digits" value="">
+                        </div>
+                        <div class="tml-form-col">
+                            <label>等&nbsp;&nbsp;&nbsp;&nbsp;级：</label>
+                            <input  type="text" name="title" class="required" value="">
+                        </div>
+                    </div>
+					<div class="tml-form-row" id="deptreleasescopeadd">
+						<label>选择部门：</label>
+						<ul id="deptclear" name="departments" class="addressee left checkTo" style="border:1px #ccc solid; background-color:white;width:350px;">
+							<li class="addresseeText" id="MisSystemDepartment">
+                            </li>
+						</ul>
+	                    <a class="input-addon input-addon-addon input-addon-add" href="__URL__/lookupdepartment/par/MisSystemDepartment" rel="missystemdepartment_att" lookupGroup="org1">查找带回</a>
+						<a href="javascript:;" class="input-addon input-addon-recycle" onclick="clearreleasescope('1','deptclear');"></a>
+					</div>
+					<div class="tml-form-row">
+						<div class="tml-help-show"><font color="red">*请选择具有下载附件权限的部门,默认为全体部门</font></div>
+					</div>
+					<div class="tml-form-row" id="deptreleasescopeadd">
+						<label>选择职级：</label>
+						<ul id="opsition" name="duty" class="addressee left checkTo" style="border:1px #ccc solid; background-color:white;width:350px;">
+							<li class="addresseeText" id="MisSystemDuty">
+                            </li>
+						</ul>
+	                    <a class="input-addon input-addon-addon input-addon-add" href="__URL__/lookupdepartment/par/Duty" rel="duty_att" lookupGroup="org2">查找带回</a>
+						<a href="javascript:;" class="input-addon input-addon-recycle" onclick="clearreleasescope('2','opsition');"></a>
+					</div>
+					<div class="tml-form-row">
+						<div class="tml-help-show"><font color="red">*请选择具有下载附件权限的职级,默认为所有职级</font></div>
+					</div>
+                    <div class="tml-form-row">
+                        <label>说&nbsp;&nbsp;&nbsp;&nbsp;明：</label>
+                        <textarea name="remark"></textarea>
+                    </div>
+				</div>
+				{:W('ShowAction')}
+			</form>
+		</div>
+	</div>
+</div>

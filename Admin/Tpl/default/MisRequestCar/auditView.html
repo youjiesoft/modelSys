@@ -1,0 +1,71 @@
+<include file="Public:pagerForm" />
+	<div class="page">
+		<div class="pageContent">
+			<form method="post" action="__URL__/update/navTabId/__MODULE__" class="pageForm -validate" onsubmit="return validateCallback(this,dialogAjaxDone);">
+			<input type="hidden" name="id" value="{$vo['id']}" />
+			<input type="hidden" name="dotype" value="流程启动" />
+			<input type="hidden" name="ostatus" value="{$vo['ostatus']}" />
+			<input  type="hidden" name="applyUser" size="18" class="" value="{$vo['applyUser']}">
+			<div class="pageFormContent applecloth anchorsToolBarParent" layoutH="40" >
+				<div class="keepContentCenter form-affix-content">
+					<div class="contentTitle contentTitle_center form-affix-title">派车申请{:W('ShowAdvices',array('id'=>$vo['id']))}
+				{:W('ShowOrderno',array(0,'mis_request_car',$vo['orderno']))}
+			</div>
+			<div class="tml-row">
+						<div class="tml-form-col">
+						    <label> {$fields["usename"]}： </label>
+						    <input type="text" name="usename" readonly="readonly" size="18" class="" value="{$vo['usename']}" >
+						</div>
+						<div class="tml-form-col">	
+							<label> {$fields["departmentID"]}： </label>
+							<input name="departmentID" readonly="readonly" size="18" value="{$vo['departmentID']|getFieldBy='id','name','MisSystemDepartment'}"  type="text"class="readonly textInput" />
+						</div>
+						<div class="tml-form-col">	
+							<label> {$fields["departurePlace"]}： </label>
+							<input  type="text" readonly="readonly" name="departurePlace" size="18" class="" value="{$vo['departurePlace']}">
+						</div>
+						<div class="tml-form-col">
+							<label> {$fields["arrivePlace"]}： </label>
+							<input  type="text" readonly="readonly" name="arrivePlace" size="18" class=""  value="{$vo['arrivePlace']}">
+						</div>
+						<div class="tml-form-col">
+						    <label> {$fields["occupy"]}： </label>
+							<if condition="$vo.occupy eq '1'"><input type="text"  readonly="readonly" name="occupy"  size="18" value="一天"></if>
+							<if condition="$vo.occupy eq '2'"><input type="text"  readonly="readonly" name="occupy"  size="18" value="上午"></if>
+							<if condition="$vo.occupy eq '3'"><input type="text"  readonly="readonly" name="occupy"  size="18" value="下午"></if>
+							<if condition="$vo.occupy eq '4'"><input type="text"  readonly="readonly" name="occupy"  size="18" value="多天"></if>
+						</div>
+						<div class="tml-form-col">
+							<label> {$fields["cartype"]}： </label>
+							<input name="cartype" readonly="readonly" size="18" value="{$vo['cartype']|getFieldby='id','name','mis_vehicle_type'}"  type="text"class="readonly textInput" />
+						</div>
+						<div class="tml-form-col">
+							<label> {$fields["departureTime"]}： </label>
+							<input type="text"  size="18" readonly="readonly"  name="departureTime" format="yyyy-MM-dd HH:mm" value="{$vo['departureTime']|transTime='Y-m-d H:i'}">
+						</div>
+	                </if>
+		                <div class="tml-form-col">
+							<label> {$fields["carID"]}： </label>
+							<input readonly="readonly" size="18" value="{$vo['carID']|getFieldBy='id','carno','mis_system_car'}"  type="text"class="readonly textInput" />
+						</div>
+							<div class="tml-form-col">
+								<label>{$fields["expectRestitutionTime"]}： </label>
+								<input type="text" readonly="readonly" name="expectRestitutionTime"  format="yyyy-MM-dd HH:mm" value="{$vo['expectRestitutionTime']|transTime='Y-m-d H:i'}">
+							</div>
+	             </div>
+					<div class="tml-form-row">
+						<label> {$fields["passengerpersonname"]}： </label>
+						<textarea name="passengerpersonname" class="" readonly="readonly">{$vo.passengerpersonname}</textarea>
+					</div>
+					<div class="tml-form-row">
+						<label> {$fields["reason"]}： </label>
+						<textarea  name="reason" readonly="readonly" class="">{$vo['reason']}</textarea>
+					</div>
+					<div class="tml-form-row">
+						<label> {$fields["remark"]}： </label>
+						<textarea  name="remark" readonly="readonly">{$vo['remark']}</textarea>
+					</div>
+			</div>
+		</form>
+	</div>
+</div>

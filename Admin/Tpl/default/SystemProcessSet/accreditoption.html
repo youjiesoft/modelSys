@@ -1,0 +1,62 @@
+<style>
+.dutyul{margin-left: 50px;}
+.dutyul >li{float:left;width:100px;}
+.deptul{margin-left: 50px;}
+.deptul >li{float:left;width:120px;}
+</style>
+ 
+<div class="page">
+	<div class="pageContent">
+	<form method="post" action="__APP__/ProcessInfo/accredit/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+        <input type="hidden" class="textInput" name="pid" value="{$vo.pid}"/>
+	<input type="hidden" class="textInput" name="id" value="{$vo.id}"/>
+        <input type="hidden" class="textInput" name="step" value="4"/>
+        <div class="pageFormContent" layoutH="80"> 
+		<div id="processuser" >
+		    <div style="clear:both"></div>
+		    <div class="testDiv">
+			    <div class="unit textInput" style="margin-top:5px;width: 100%;">
+				    <label>职级选择：</label><span class="info">(如果不选则默认所有职级)</span><div class="divider"></div>
+				    <ul class="dutyul">
+					    <volist name="dutylist" id="d">
+					    <li><input type="checkbox" class="parentCls" name="duty[]" value="{$key}" <if condition="in_array($key,$selected_duty_step_four)">checked="checked"</if> />{$d}</li>
+					    </volist>
+				    </ul>
+			    </div>
+		    </div>
+		    <div class="testDiv">
+			    <div class="unit textInput" style="margin-top:5px;width: 100%;">
+				    <label>部门选择：</label><span class="info">(如果不选则默认所有部门)</span><div class="divider"></div>
+				    <ul class="deptul">
+					    <volist name="deptlist" id="dep">
+					    <li>
+						     <input type="checkbox" class="parentCls" name="role[]" value="{$key}" <if condition="in_array($key,$selected_dept_four)">checked="checked"</if> />
+						    {$dep}
+					    </li>
+					    </volist>
+				    </ul>
+			    </div>
+		    </div>
+		</div>
+		<div class="unit">
+			<label>备注：</label>
+			<textarea name="remark" class="textInput"  minlength="2" maxlength="100" rows="2" cols="40">{$vo.remark}</textarea>
+		</div>
+	</div>
+	<div class="formBar">
+		<ul>
+		<if condition="$_SESSION.a eq 1 or $_SESSION.processInfo_accredit">
+			<li><div  style="float: left;margin-top: 5px;height: 25px;"><input type="radio" checked="checked" value="0" name="parallel" /></div><span> 非并行</span></li>
+				<if condition="$pre gt 0">
+				<li><div  style="float: left;margin-top: 5px;height: 25px;"><input type="radio" disabled="disabled"  value="1" name="parallel" /></div><span> 向前并行</span></li>
+				</if>
+				<if condition="$next gt 0">
+				<li><div  style="float: left;margin-top: 5px;height: 25px;"><input type="radio" disabled="disabled" value="2" name="parallel" /></div><span> 向后并行</span></li>
+				</if>
+			<li><button class="tml-btn tml-btn-primary" type="submit">{$Think.lang.save}</button></li>
+		</if>
+		</ul>
+	</div>
+	</form>
+	</div>
+</div>

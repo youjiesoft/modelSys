@@ -1,0 +1,114 @@
+<!-- <script type="text/javascript">
+$(function(){
+	var conf = new Object();
+	var data = '{$list}';
+	conf.data =$.parseJSON(data);
+	conf.ids = '#missalepiadd_yiji,#missalepiadd_erji,#missalepiadd_sanji,#missalepiadd_siji';
+	conf.tag = 'yiji,erji,sanji,siji'; 
+	conf.pid = 'erjiid,sanjiid,sijiid';
+	conf.tex = 'name'; 
+	conf.val = 'id';
+	conf.defaultVal='{$proid}';
+	$.linkage(conf); 
+});
+
+</script>
+		<style>
+		.tml-form-row label.tmp_label{margin-left:0px;width: 120px;float: none;font: 14px/30px "Microsoft Yahei","微软雅黑",sans-serif;}
+		.tml-form-row label.tmp_label:hover{color:#006699;}
+		</style>
+	<div class="page">
+	<div class="pageContent">
+		<form method="post" action="__URL__/update/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return iframeCallback(this, navTabAjaxDone)">
+			<input type="hidden" name="callbackType" value="closeCurrent" />
+			<input type="hidden" name="id" value="{$vo['id']}" />
+			<div class="pageFormContent layoutH="65">
+					<fieldset>
+						<div class="tml-form-row">
+								<label>行业：</label>
+								 <select  name="professionid[]"   class="combox required "  id="missalepiadd_yiji"><option>--请选择--</option></select> 							
+								 <select  name="professionid[]"   class="combox required "  id="missalepiadd_erji"><option>--请选择--</option></select>							
+								 <select  name="professionid[]"   class="combox required "  id="missalepiadd_sanji"><option>--请选择--</option></select>							
+								 <select  name="professionid[]"   class="combox required "  id="missalepiadd_siji"><option>--请选择--</option></select>
+							</div>
+							<div class="tml-form-row">
+								<label>产业链：</label>	
+								 <select  name="industryid"   class="required ">
+								 <option>--请选择--</option>				 
+								<volist name="indu" id="v">
+									<option value='{$v.id}'<if condition="$v.id eq $induid['id']">selected="selected"</if>>{$v.name}</option>
+								</volist>
+								</select>			
+								 <select  name="industryid"   class="required ">
+								 {:getDataBaseByHtml('mis_sale_industry')}
+								</select>	
+							</div>
+							<div class="tml-form-row nbm_add_item">
+								<label>指标：</label>
+								 <select  name="indicatorid"   class="required ">
+								 <option>--请选择--</option>				 
+								<volist name="indicator" id="vos">
+									<option value='{$vos.id}'<if condition="$vos.id eq $indica.id">selected="selected"</if>>{$vos.name}</option>
+								</volist>
+								</select>	
+							</div>	
+							<div class="tml-form-row">
+								<label>状态：</label>
+								<input type="radio" name="status" value='0'<if condition="$indica.status eq 1"> checked='checked' </if>>启用
+								<input type="radio" name="status" value='1'<if condition="$indica.status neq 1"> checked='checked' </if>>禁用
+							</div>		
+							<div class="tml-form-row">
+								<label>备注说明：</label>
+								<textarea  name="remark"  rows="4">{$vo.remark}</textarea>
+								
+							</div>							
+					</fieldset>					
+						
+			</div>
+		
+		</form>
+	</div>
+	</div>
+	
+ -->	
+	
+<div class="page">
+	<div class="pageContent">
+		<form method="post" action="__APP__/MisSaleCommunicateLog/update/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return iframeCallback(this, navTabAjaxDone)" enctype="multipart/form-data">
+			<input type="hidden" name="callbackType" value="closeCurrent"/>
+			<div class="pageFormContent applecloth" layoutH="65">
+                <fieldset >
+                    <table class="data-table" width="100%" cellspacing="0" style="line-height:32px;" >
+                        <tbody>
+                            <tr>
+                                <td class="cell_left" width="12%">行业：</td>
+                                <td class="cell_right" width="21%">{$pro}</td>
+                            </tr>
+                            <tr>
+                                <td class="cell_left">产业链：</td>
+                                <td class="cell_line_right" colspan="4"><span>{$induname}</span></td>
+                            </tr>
+                            <tr>
+                                <td class="cell_left">指标编码：</td>
+                                <td class="cell_line_right" colspan="4"><span>{$ind.orderno}</span></td>
+                            </tr>
+                            <tr>
+                                <td class="cell_left">指标名称：</td>
+                                <td class="cell_line_right" colspan="4"><span>{$ind.name}</span></td>
+                            </tr>
+                            <tr>
+                                	<td class="cell_left" width="12%">备注:</td>
+									<td class="cell_right" width="21%" >{$vo.remark}</td>									
+							</tr>
+                            
+                            
+                        </tbody>
+                    </table>
+                    <br />
+                </fieldset>
+			</div>
+			{:W('ShowAction',array('data'=>$vo))}
+	</form>
+	</div>
+</div>
+	

@@ -1,0 +1,77 @@
+<div class="page">
+	<div class="pageContent">
+		<form method="post" action="__URL__/update/rel/trafical_illegal_model_car/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,dialogAjaxDone);">
+			<input type="hidden" name="orderno" <if condition="$writable eq 0"> readonly="true" </if>  value="{$vo['orderno']}">
+			<input type="hidden" name="id" value="{$vo['id']}" />
+			<div class="pageFormContent" layoutH="56">
+				<div class="tml-row">
+					<if condition='$fields["carid"]'>
+						<div class="tml-form-col">
+						<div class="tml-input-append">
+							<label>{$fields["carid"]}:</label>
+		                    <input type="text" class="org.current_name required" name="carname" value="{$vo['carid']|getFieldBy=\'id\',\'name\',\'MisSystemCar\'}" readonly="readonly"/>
+							<input type="hidden" class="org.mangid" name="carid" value="{$vo['carid']}"/>
+							<a class="input-addon input-addon-add" href="__URL__/lookupmanage" lookupGroup="org">车辆选择</a>
+						</div>
+						</div>
+					</if>
+					<if condition='$fields["user_id"]'>
+						<div class="tml-form-col">
+							<label>{$fields["user_id"]}:</label>
+							<input type="text" class="checkByInput required" value="{$vo.user_id|getFieldBy='id','name','mis_hr_personnel_person_info'}" show='name' insert='id' checkfor='MisHrPersonnelManagement' autocomplete='off'/>
+							<input type="hidden" name="user_id" value="{$vo.user_id}"/>
+						</div>
+					</if>	
+					<if condition='$fields["get_time"]'>
+						<div class="tml-form-col">
+							<div class="tml-input-append">
+								<label>{$fields["get_time"]}:</label>
+								<input type="text" class="Wdate" onfocus="WdatePicker()" name="get_time" value="{$vo['get_time']|date='Y-m-d',###}">
+								<span class="input-addon input-addon-calendar"></span>
+							</div>
+						</div>
+					</if>
+					<if condition='$fields["penalty"]'>
+						<div class="tml-form-col">
+							<label>{$fields["penalty"]}:</label>
+							<input  type="text" name="penalty" class="" value="{$vo['penalty']|getDigits}" onblur="FormatNumber(this);">
+						</div>
+					</if>
+					<if condition='$fields["point"]'>
+						<div class="tml-form-col">
+							<label>{$fields["point"]}:</label>
+							<input  type="text" name="point" class="" value="{$vo['point']}">
+						</div>
+					</if>
+				</div>
+				<if condition='$fields["content"]'>
+					<div class="tml-form-row">
+						<label>{$fields["content"]}:</label>
+						<textarea cols="40" rows="2" name="content">{$vo['content']}</textarea>
+					</div>
+				</if>
+				<if condition='$fields["remark"]'>
+					<div class="tml-form-row">
+						<label>{$fields["remark"]}:</label>
+						<textarea name="remark">{$vo['remark']}</textarea>
+					</div>
+				</if>
+				<div class="tml-row">
+					<if condition='$fields["createid"]'>
+						<div class="tml-form-col">
+							<label>{$fields["createid"]}:</label>
+							<input  type="text" value="{$vo.createid|getFieldBy='id','name','User'}" readonly="readonly" />
+						</div>
+					</if>
+					<if condition='$fields["createtime"]'>
+						<div class="tml-form-col">
+							<label>{$fields["createtime"]}:</label>
+							<input  type="text" value="{$vo.createtime|transtime}" readonly="readonly" />
+						</div>
+					</if>
+				</div>	
+			</div>
+          {:W('ShowAction',array('data'=>$vo))}
+	</form>
+	</div>
+</div>

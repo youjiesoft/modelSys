@@ -1,0 +1,112 @@
+<div class="page">
+	<div class="pageContent">
+		<form method="post" action="__URL__/update/rel/fix_model_car/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,dialogAjaxDone);">
+			<input type="hidden" name="id" value="{$vo['id']}" />
+			<div class="pageFormContent " layoutH="58">
+				<div class="tml-row">
+					<if condition='$fields["carid"]'>
+						<div class="tml-form-col">
+							<div class="tml-input-append">
+								<label>{$fields["carid"]}:</label>
+			                    <input type="text" class="org.current_name required" name="carname" value="{$vo.carid|getFieldBy=\'id\',\'name\',\'MisSystemCar\'}" readonly="readonly" size="17"/>
+								<input type="hidden" class="org.mangid" name="carid" value="{$vo.carid}"/>
+								<a class="input-addon input-addon-add" href="__URL__/lookupmanage" lookupGroup="org">车辆选择</a>
+							</div>
+						</div>
+					</if>
+					<if condition='$fields["employeeid"]'>
+						<div class="tml-form-col">
+							<div class="tml-input-append">
+								<label>{$fields["employeeid"]}:</label>
+			                    <input type="text" class="org1.name required"   value="{$vo.employeeid|getFieldBy='id','name','mis_hr_personnel_person_info'}" readonly="readonly"/>
+								<input type="hidden" class="org1.id" name="employeeid" value="{$vo.employeeid}" />
+								<a class="input-addon input-addon-userplus" param="field=id,name&model=MisHrBasicEmployeeView" href="__URL__/lookupGeneral" lookupGroup="org1">登记人选择</a>
+							</div>
+						</div>		
+					</if>
+				</div>
+				<div class="tml-row">
+					<if condition='$fields["fixbegindate"]'>
+							<div class="tml-form-col">
+							    <label>{$fields["fixbegindate"]}：</label>
+							    <div class="tml-input-append">
+		                        <input type="text"  name="fixbegindate" onfocus="WdatePicker()" class="Wdate required" value="{$vo.fixbegindate|transtime}"/>
+		                        <span class="input-addon input-addon-calendar"></span>
+							    </div>
+							</div>
+						</if>
+					<if condition='$fields["fixenddate"]'>
+						<div class="tml-form-col">
+						    <label>{$fields["fixenddate"]}：</label>
+						    <div class="tml-input-append">
+	                        <input type="text"  name="fixenddate" onfocus="WdatePicker()" class="Wdate required" value="{$vo.fixenddate|transtime}"/>
+	                        <span class="input-addon input-addon-calendar"></span>
+						    </div>
+						</div>
+					</if>
+					<if condition='$fields["accumulatedmileage"]'>
+						<div class="tml-form-col">
+							<label>{$fields["accumulatedmileage"]}:</label>
+							<input  type="text" name="accumulatedmileage" value="{$vo.accumulatedmileage}" class="required">
+						</div>
+					</if>
+				</div>
+				<div class="tml-row">
+					<if condition='$fields["repaircompany"]'>
+						<div class="tml-form-col">
+							<label>{$fields["repaircompany"]}:</label>
+							<input  type="text" name="repaircompany" value="{$vo.repaircompany}" class="required">
+						</div>				
+					</if>
+					<if condition='$fields["fixamount"]'>
+						<div class="tml-form-col">
+							<label>{$fields["fixamount"]}:</label>
+							<input  type="text" name="fixamount" class="required" value="{$vo.fixamount|getDigits}" onblur="FormatNumber(this);">
+						</div>					
+					</if>
+					<if condition='$fields["recordsdate"]'>
+						<div class="tml-form-col">
+							 <label>{$fields["recordsdate"]}：</label>
+							    <div class="tml-input-append">
+		                        <input type="text"  name="recordsdate" onfocus="WdatePicker()" class="Wdate required" value="{$vo.recordsdate|transtime}"/>
+		                        <span class="input-addon input-addon-calendar"></span>
+							    </div>
+						</div>	
+					</if>
+					<if condition='$fields["recordssigned"]'>
+						<div class="tml-form-col">
+							<label>{$fields["recordssigned"]}:</label>
+							<input type="text" class="org2.name required"   value="{$vo.recordssigned|getFieldBy='id','name','mis_hr_personnel_person_info'}" readonly="readonly"/>
+							<input type="hidden" class="org2.id" name="recordssigned" value="{$vo.recordssigned}" />
+							<a class="input-addon input-addon-addon input-addon-add" param="field=id,name&model=MisHrBasicEmployeeView" href="__URL__/lookupGeneral" lookupGroup="org2">备案签章人员选择</a> <span class="info"></span>
+						</div>				
+					</if>
+				</div>
+				
+				<if condition='$fields["content"]'>
+					<div class="tml-form-row">
+						<label>{$fields["content"]}:</label>
+						<textarea  name="content">{$vo.content} </textarea>
+					</div>
+				</if>
+				<if condition='$fields["remark"]'>
+					<div class="tml-form-row">
+						<label>{$fields["remark"]}:</label>
+						<textarea name="remark">{$vo.remark} </textarea>
+					</div>
+				</if>
+				<div class="tml-row">
+					<div class="tml-form-col">
+						<label>制单人:</label>
+						<input  type="text" value="{$vo.createid|getFieldBy='id','name','User'}" readonly="readonly" />
+					</div>
+					<div class="tml-form-col">
+						<label>制单时间:</label>
+						<input  type="text" value="{$vo.createtime|transtime}" readonly="readonly" />
+					</div>
+				</div>
+			</div>
+           {:W('ShowAction',array('data'=>$vo))}
+	</form>
+	</div>
+</div>

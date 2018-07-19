@@ -1,0 +1,160 @@
+<script>
+var grossamount='{$vo.grossamount}';
+$(document).ready(function() {
+	var ret = $.numberRecover({number:grossamount,dw:['分','角','元','拾','佰','仟','万','十','百','千','亿'],dwC : '<span style="color:red;padding:0px 10px;font-size:14px;"></span>',zfC : '<span style="color:black;font-size:14px;"></span>'});
+	$("#amountDXEdit").html(ret);
+})
+	function edit_append_mispurchaseapplymas(){
+		var $box= $.pdialog.getCurrent();
+		var html='<tr>\
+			<td><input type="text" class="gangwei_d xytdinput" name="arr_nd[]"  value="1" readonly /></td>
+			<td><input type="text" class="gangwei_d xytdinput required" name="arr_name[]"/></td>
+			<td><input type="text" class="gangwei_d xytdinput" name="arr_psize[]"/></td>
+			<td><input type="text" class="gangwei_d xytdinput" name="arr_unit[]" /></td>
+            <td><input type="text" class="gangwei_d xytdinput" name="arr_qty[]" value="0" onblur="edit_getApamount(this);"/> </td>
+            <td><input type="text" class="gangwei_d xytdinput" name="arr_price[]" value="{:getDigits(0)}" onblur="edit_getApamount(this);"/></td>
+            <td><input type="text" class="gangwei_d xytdinput" name="arr_apamount[]" value="{:getDigits(0)}" readonly="readonly"/></td>
+            <td><a href="javascript:;" onclick="edit_delete_mispurchaseapplymas(this);"><strong style="color:red;">移除</strong></a></td>
+		</tr>';
+		var $ht = $(html).initUI();
+		$("#misfinanceexpensesmas_tr_edit").before($ht);
+		//重新计算ND
+		$box.find("input[name='arr_nd[]']").each(function(i){
+			 $(this).val(i+1);
+			 $(this).parents("tr").attr("id","arr_tr"+(i+1));
+		 });
+	}
+	//移除明细焦点，自动计算金额
+	function edit_getApamount(obj){
+		var $box = $.pdialog.getCurrent();
+		var trid=$(obj).parents("tr").attr("id");
+		var price=$("#"+trid).find("input[name='arr_price[]']").val();
+		var qty=$("#"+trid).find("input[name='arr_qty[]']").val();
+		var apamount=price * qty ;
+		apamount = comboxMathematicalOperation(apamount, 3, ',');
+		$("#"+trid).find("input[name='arr_apamount[]']").val(apamount);
+		var val = 0;
+		var valstr = "0";
+		$box.find("input[name='arr_apamount[]']").each(function() {
+			var valtmp = $(this).val();
+			if (valtmp != '') {
+				valtmp = Number(valtmp.replace(/,/g, ""));
+				$(this).val(FormatN(valtmp));
+				valstr += "+" + valtmp;
+			}
+		});
+		val = comboxMathematicalOperation(valstr, 3, ',');
+		var ret = $.numberRecover({number:val,dw:['分','角','元','拾','佰','仟','万','十','百','千','亿'],dwC : '<span style="color:red;padding:0px 10px;font-size:14px;"></span>',zfC : '<span style="color:black;font-size:14px;"></span>'});
+		$("#amountDXEdit").html(ret);
+		$("#amountEdit").val(val);
+	}
+	function edit_delete_mispurchaseapplymas(obj) {
+		var $box = $.pdialog.getCurrent();
+		$(obj).parent().parent().remove();
+		//重新计算ND
+		$box.find("input[name='arr_nd[]']").each(function(i) {
+			$(this).val(i + 1);
+			$(this).parents("tr").attr("id","arr_tr"+(i+1));
+		})
+		//重新计算金额
+		edit_getApamount();
+	}
+</script>
+<div class="page">
+	<div class="pageContent dialog-default">
+		<form method="post" action="__URL__/update/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,dialogAjaxDone);">
+		<input type="hidden" name="id" id="id" value="{$vo['id']}" />
+		<input type="hidden" name="dotype" value="流程启动" />
+		<input type="hidden" name="ostatus" value="{$vo.ostatus}" />
+		<input type="hidden" value="dialog" name="refreshtabs[type]">
+		<input type="hidden" name="refreshtabs[closeall]" value="1" />
+		<input type="hidden" name="apdate" value="{$time|transtime}"/>
+        <input type="hidden" name="userid" value="{$uid}"/>
+		<div class="pageFormContent applecloth anchorsToolBarParent" layoutH="40" >
+				<div class="keepContentCenter form-affix-content">
+					<div class="contentTitle contentTitle_center form-affix-title">采购{:W('ShowFlow')}
+			
+		</div>
+		<div class="pageFormContent applecloth " layoutH="101">
+			<div class="tml-row">
+			{:W('ShowOrderno',array(1,'mis_purchase_applymas',$vo['orderno']))}
+						<div class="tml-form-col">
+							<label>采购类型：</label>
+							<select name="typeid" class="combox">
+								<volist id="vot" name="typeidlist">
+									<option <eq name="vo.typeid" value="$vot['id']">selected</eq> value="{$vot['id']}">{$vot['name']}</option>
+								</volist>
+							</select>
+						</div>
+					<div class="tml-form-col">
+						<label>申请部门：</label>
+						<input type="text" value="{$_SESSION['user_dep_id']|getFieldBy='id','name','mis_system_department'}" readonly="readonly" />
+						<input type="hidden" name="deptid" value="{$_SESSION['user_dep_id']}"/>
+					</div>
+					<div class="tml-form-col">
+						<label>开始日期：</label>
+						<span class="tml-input-append">
+							<input type="text"  name="dmsdate" value="{$vo.dmsdate|transTime}" id="dmsdateMisPurchaseApplymasAdd" format={maxDate:"#F{$dp.$D('dmedateMisPurchaseApplymasAdd')}"} class="Wdate js-wdate tml-find-num"/>
+							<a href="javascript:;" class="xyInputWithUnitButton inputDateButton js-inputCheckDate">选择</a>
+						</span>
+					</div>
+					<div class="tml-form-col">
+						<label>截止日期：</label>
+						<div class="tml-input-append">
+							<input type="text" name="dmedate" value="{$vo.dmedate|transTime}" id="dmedateMisPurchaseApplymasAdd" format={minDate:"#F{$dp.$D('dmsdateMisPurchaseApplymasAdd')}"} class="Wdate js-wdate tml-find-num"/>
+							<a href="javascript:;" class="xyInputWithUnitButton inputDateButton js-inputCheckDate">选择</a>
+						</div>
+					</div>
+				</div>
+						<div class="tml-form-row">
+							<label>{$fields["apreason"]}：</label>
+							<input name="apreason" type="text" value="{$vo.apreason}"/>
+						</div>
+			<div class="dialog-box">
+			<table class="data-table" cellspacing="0" width="100%">
+				<thead>
+					<tr>
+                        <td style="width:30px;"><strong>序号</strong></td>
+                        <td><strong>物资名称</strong></td>
+                        <td style="width:100px;"><strong>物资规格</strong></td>
+                        <td style="width:65px;"><strong>单位</strong></td>
+                        <td style="width:65px;"><strong>数量</strong></td>
+                        <td style="width:65px;"><strong>单价</strong></td>
+                        <td style="width:65px;"><strong>总价</strong></td>
+                        <td style="width:30px;"><a href="javascript:;"  onclick="edit_append_mispurchaseapplymas();"><strong style="color:green;">添加</strong></a></td>
+                    </tr>
+				</thead>
+				<tbody>
+					<volist id="subvo" name="sublist">
+						<tr id="arr_tr{$key+1}">
+                        	<td><input type="text" class="gangwei_d xytdinput" name="arr_nd[]"  value="{$key+1}" readonly /></td>
+							<td><input type="text" class="gangwei_d xytdinput required" name="arr_name[]" value="{$subvo['name']}"/></td>
+							<td><input type="text" class="gangwei_d xytdinput" name="arr_psize[]" value="{$subvo['psize']}"/></td>
+							<td><input type="text" class="gangwei_d xytdinput" name="arr_unit[]" value="{$subvo['unit']}"/></td>
+                        	<td><input type="text" class="gangwei_d xytdinput" name="arr_qty[]" value="{$subvo['qty']}" onblur="edit_getApamount(this);"/> </td>
+                        	<td><input type="text" class="gangwei_d xytdinput" name="arr_price[]" value="{$subvo['price']|getDigits}" onblur="edit_getApamount(this);"/></td>
+                        	<td><input type="text" class="gangwei_d xytdinput" name="arr_apamount[]" readonly="readonly" value="{$subvo['apamount']|getDigits}"/></td>                                
+							<td><a href="javascript:;" onclick="edit_delete_mispurchaseapplymas(this);"><strong style="color:red;">移除</strong></a></td>
+                       </tr>
+					</volist>
+					<tr style="height:30px;" id="misfinanceexpensesmas_tr_edit">
+						<td>
+                       		<input type="text" class="gangwei_d xytdinput" readonly="readonly" value="合计"/>
+                       	</td>
+                       	<td colspan="5" style="text-align: center;color:red;">
+                       		<span id="amountDXEdit"></span>
+                       	</td>
+                       	<td>
+                       		<input type="text" name="grossamount" readonly="readonly" class="gangwei_d xytdinput" value="{$vo.grossamount|getDigits}" id="amountEdit" />
+                       	</td>
+                       	<td><span></span></td>
+					</tr>
+				</tbody>
+			</table>
+			{:W('ShowAction',array('data'=>$vo))}
+			</div>
+			</div>
+		</div>
+		</form>
+	</div>
+</div>

@@ -1,0 +1,92 @@
+<script>
+function changesid(obj){
+	 var $box=navTab.getCurrentPanel();
+	 var appid=$(obj).attr("appid");
+	 if(appid){
+		var apphref=$box.find(".js-addinvoice").attr("apphref");
+		 $box.find(".js-addinvoice").attr("href",apphref+appid);
+	 }
+}
+</script>
+<form id="pagerForm" action="__URL__/index/frame/1" method="post">
+	<input type="hidden" name="pageNum" value="1"/> 
+	<input type="hidden" name="orderField" value="{$order}" />
+	<input type="hidden" name="orderDirection" value="{$sort}" />
+	<input type="hidden" name="pid" value="{$pid}" />
+	<input type="hidden" name="makestatus" value="{$makestatus}" />
+	<input type="hidden" name="objmodelname" value="{$objmodelname}"/>
+	<input type="hidden" name="objpmodelname" value="{$objpmodelname}"/>
+</form>
+<form rel="pagerForm" onsubmit="return divSearch(this, 'jbsxmisfinaneinvoiceBox');" action="__URL__/index/frame/1" method="post">
+	<input type="hidden" name="frame" value="1">
+	<input type="hidden" name="pid" value="{$pid}" />
+</form>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<volist name="toolbarextension" id="toolb"> 
+				<if condition="$_SESSION.a eq 1 or $toolb['ifcheck'] eq 0 or ($toolb['ifcheck'] eq 1 and !empty($toolb['permisname']) and $_SESSION[$toolb['permisname']])">
+					<li>{$toolb['html']}</li>
+				</if> 
+			</volist>
+		</ul>
+		<form rel="pagerForm" onsubmit="return  divSearch(this, 'jbsxmisfinaneinvoiceBox');" action="__URL__/index/frame/1" method="post">
+			<input  type="hidden" name="makestatus" value="{$makestatus}" />
+			 <input type="hidden" name="objmodelname" value="{$objmodelname}"/>
+			<input type="hidden" name="objpmodelname" value="{$objpmodelname}"/>
+			<div class="searchBar">
+				<table class="searchContent">
+					<tr>
+						<include file="Public:quickSearchCondition" />
+					</tr>
+				</table>
+			</div>
+		</form>
+	</div>
+	<table class="table" width="100%" layoutH="84" ajaxurl="__URL__/index/frame/1" dwztotalPages="{$dwztotalpage}">
+		<thead ename="{$ename}">
+			<tr>
+				<th width="24">序号</th>
+				<volist id="vo" name="detailList"> <if
+					condition="$vo[shows] eq 1">
+				<th
+					<if condition="$vo[widths]">width="{$vo[widths]}"</if>
+					<if condition="$vo[sorts]">orderField="{$vo[sortname]}"
+					class="{$sort}"</if>
+					>{$vo[showname]}
+				</th>
+				</if> <!--类型--> </volist>
+			</tr>
+		</thead>
+		<tbody>
+			<volist id="vo" name="list" key="key2"><!-- yuansl -->
+			<tr target="sid_node" appid="{$vo.appid}" rel="{$vo['id']}" data-tool={$vo['classarr']} onclick="onTrClickCheckbox(this,'id'),changesid(this)"<if condition="$vo[curNodeUser] && in_array($_SESSION[C('USER_AUTH_KEY')],explode(',',$vo[curNodeUser]))"> class="auditformeselected" </if> <if condition="$vo['auditState'] gt 0"> title="开票申请单" <else /> title="开票查看" </if>
+			dheight="400" dwidth="600" mask="true"
+			<if condition="$_SESSION.a eq 1 or $_SESSION.misfinancebusinessinvoice_invoiceview">
+				ondblclick="ondblclick_dialog(this,'__MODULE__invoiceView','__URL__/invoiceView/id/{$vo['id']}',$(this).attr('title'));"
+			</if>>
+				<td class="tml-first-td">{$numPerPage*($currentPage-1)+$key+1}</td>
+				<volist id="vo1" name="detailList"> <if
+					condition="$vo1[shows] eq 1">
+				<td
+					<php>if($vo1['issearch'] == 1) echo 'field="'.$vo1[name].'"';</php>
+					width="{$vo1[widths]}" field="{$vo1[name]}">
+					<if condition="count($vo1['func']) gt 0"> <volist
+						name="vo1.func" id="nam"> <if
+						condition="!empty($vo1['extention_html_start'][$key])">{$vo1['extention_html_start'][$key]}</if>
+					{:getConfigFunction($vo[$vo1['name']],$nam,$vo1['funcdata'][$key],$list[$key2-1])}
+					<if condition="!empty($vo1['extention_html_end'][$key])">{$vo1['extention_html_end'][$key]}</if>
+					</volist> <else /> {$vo[$vo1['name']]} </if>
+				</td>
+				</if> </volist>
+			</tr>
+			</volist>
+		</tbody>
+	</table>
+	<div class="panelBar panelPageBar">
+		<div class="pages">
+			<span>共{$totalCount}条</span>
+		</div>
+		<div class="pagination" rel="jbsxmisfinaneinvoiceBox" totalCount="{$totalCount}" numPerPage="{$numPerPage}" pageNumShown="10" currentPage="{$currentPage}"></div>
+	</div>
+</div>

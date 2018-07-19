@@ -1,0 +1,25 @@
+<script>
+function ReportHrAgeEmployee_timeStatistics(obj){
+	var $box=navTab.getCurrentPanel();
+	var $type=$(obj).val();
+	$box.find("#ReportHrAgeEmployee_chart").loadUrl("__URL__/lookupHrAgeEmployee/type/"+$type,{},function(){
+		$box.find("[layoutH]").layoutH();});
+}
+</script>
+<div class="pageContent tml-bg-white" layoutH="0">
+	<div class="">
+		<h2 class="contentTitle contentTitle_center">综合报表</h2>
+		<div style="margin: 0 auto; width: 300px;">
+			<fieldset>
+				<div class="left tml-mr5">
+					<label>请选择分类：</label>
+					 <input type="radio" name="type" checked="checked" onclick="ReportHrAgeEmployee_timeStatistics(this)" value="age">年龄段统计
+					 <input type="radio" name="type" <if condition="$type eq 'edu'">checked="checked"</if> onclick="ReportHrAgeEmployee_timeStatistics(this)" value="edu">文化程度统计
+				</div>
+			</fieldset>
+		</div>
+		<div id="ReportHrAgeEmployee_chart">
+			<include file="lookupHrAgeEmployee" />
+		</div>
+	</div>
+</div>

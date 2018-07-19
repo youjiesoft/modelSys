@@ -1,0 +1,108 @@
+<form id="pagerForm" action="__URL__/{$mf}/rel/{$rel}" method="post">
+    <input type="hidden" name="pageNum" value="1"/>
+    <input type="hidden" name="orderField" value="{$order}" />
+    <input type="hidden" name="orderDirection" value="{$sort}" />
+    <input type="hidden" name="numPerPage" value="{$numPerPage}" />
+</form>
+<div class="pageContent">
+    <div class="panelBar" style="border-top:0px;">
+        <ul class="toolBar">
+        	<!-- 执行按钮 -->
+        	<if condition="$stepType eq 1 || $stepType eq 5 ">
+        		<if condition="$_SESSION.a eq 1 or $add eq 1">
+					<li>
+						<a class="add" href="__APP__/{$modelname}/add/projectid/{$projectid}" 
+						  <if condition="$modelname eq 'MisProjectMeasureReport'">
+					  			target="dialog" width="720" height="580" mask="true"
+					  			<else/>
+					  			target="navTab"
+				  		  </if>
+					  rel="{$modelname}add" title="{$modelname|getConfigTypeList}_新增"><span>{$Think.lang.add}</span></a></li>
+				</if>
+				<if condition="$_SESSION.a eq 1 or $delete eq 1">
+					<li><a title="确实要删除这些记录吗?" target="ajaxTodo"  rel="id" postType="string" href="__APP__/{$modelname}/delete/id/{sid}/rel/{$rel}" class="delete"><span>{$Think.lang.del}</span></a></li>
+				</if>
+        	</if>
+        	<!-- 审核按钮 -->
+        	<if condition="$stepType eq 2">
+				<if condition="$_SESSION.a eq 1">
+					<li><a class="redo tml-btn tml_look_btn tml_mp" href="__APP__/{$modelname}/auditEdit/id/{sid}" target="navTab" title="{$modelname|getConfigTypeList}_审核" rel="{$modelname}auditEdit" mask="true" warn="请选择节点"><span><span class="icon icon-camera-retro icon_lrp"></span>{$Think.lang.auditprocess}</span></a></li>
+				</if>
+        	</if>
+        	<!-- 查看按钮 -->
+        </ul>
+        <form rel="pagerForm" onsubmit="return divSearch(this,'{$rel}')" action="__URL__/{$mf}/rel/{$rel}" method="post">
+        <input type="hidden" name="id" value="{$projectid}">
+        <input type="hidden" name="md" value="{$md}">
+        <input type="hidden" name="stepType" value="{$stepType}">
+            <div class="searchBar">
+                <table class="searchContent">
+                    <tr>
+                        <include file="Public:quickSearchCondition" />
+                        <if condition="$_SESSION.a eq 1 or $_SESSION.misproductcode_exportbysearchhtml">
+							<td><button class="xyOutput" type="button" onclick="exportBysearch(this.form,'__APP__/{$modelname}/index','__APP__/{$modelname}/exportBysearchHtml');">导出</button></td>
+					    </if>
+                    </tr>
+                </table>
+            </div>
+        </form>
+    </div>
+    <table class="table" width="100%" layoutH="103">
+        <thead ename="{$ename}">
+            <tr>
+                <th width="24">序号</th>
+                <volist id="vo" name="detailList">
+                    <if condition="$vo[shows] eq 1"><th <if condition="$vo[widths]">width="{$vo[widths]}"</if><if condition="$vo[sorts]">rel="misprojectweekreportindexview" orderField="{$vo[sortname]}" class="{$sort}"</if>>{$vo[showname]}</th></if> <!--类型-->
+                </volist>
+            </tr>
+        </thead>
+        <tbody>
+            <volist id="vo" name="list" key="key2">
+                <tr target="sid" rel="{$vo['id']}" 
+                <if condition="$stepType eq 1 || $stepType eq 5 || $stepType eq 4 || $stepType eq 6">
+                	title="{$modelname|getConfigTypeList}_编辑"
+                	<if condition="$modelname eq 'MisProjectMeasureReport'">
+			  			dwidth="720" dheight="580" mask="true"
+			  			ondblclick="ondblclick_dialog(this,'navTab.getCurrentPanel()','__APP__/{$modelname}/edit/id/{$vo['id']}',$(this).attr('title'));"
+			  			<else/>
+                		ondblclick="ondblclick_navTab(this,'{$modelname}edit','__APP__/{$modelname}/edit/id/{$vo['id']}',$(this).attr('title'));"
+			  		</if>
+                </if>
+                <if condition="$stepType eq 2">
+                    title="{$modelname|getConfigTypeList}_审核" ondblclick="ondblclick_navTab(this,'{$modelname}auditEdit','__APP__/{$modelname}/auditEdit/id/{$vo['id']}',$(this).attr('title'));"
+                </if>
+                <if condition="$stepType eq 3">
+                    title="{$modelname|getConfigTypeList}_查看" ondblclick="ondblclick_navTab(this,'{$modelname}auditView','__APP__/{$modelname}/auditView/id/{$vo['id']}',$(this).attr('title'));"
+                </if>
+                >
+                    <td class="tml-first-td">{$numPerPage*($currentPage-1)+$key+1}</td>
+                    <volist id="vo1" name="detailList">
+                        <if condition="$vo1[shows] eq 1">
+                            <td width="{$vo1[widths]}" field="{$vo1[name]}" <if condition="$vo[$vo1['name']] eq 0 && $vo1['name'] eq 'warnlvl'" > class="levelGreen" </if><if condition="$vo[$vo1['name']] eq 1 && $vo1['name'] eq 'warnlvl'" > class="levelYellow" </if><if condition="$vo[$vo1['name']] eq 2 && $vo1['name'] eq 'warnlvl'" >  class="levelOrange" </if><if condition="$vo[$vo1['name']] eq 3 && $vo1['name'] eq 'warnlvl'" > class="levelRed" </if>>
+                                <if condition="count($vo1['func']) gt 0">
+                                    <volist name="vo1.func" id="nam">
+                                        <if condition="!empty($vo1['extention_html_start'][$key])">{$vo1['extention_html_start'][$key]}</if>
+                                            {:getConfigFunction($vo[$vo1['name']],$nam,$vo1['funcdata'][$key],$list[$key2-1])}
+                                        <if condition="!empty($vo1['extention_html_end'][$key])">{$vo1['extention_html_end'][$key]}
+                                        	<if condition="$vo['auditState'] eq 3">
+												<a href="__APP__/{$modelname}/warnlvl/id/{$vo['id']}" title="改变预警级别" target="dialog" mask="true" width="400" height="300">预警级别</a>
+											</if>
+                                        </if>
+                                    </volist>
+                                <else />
+                                    {$vo[$vo1['name']]}
+                                </if>
+                            </td>
+                        </if>
+                    </volist>
+                </tr>
+            </volist>
+        </tbody>
+    </table>
+    <div class="panelBar" style="border-bottom:0px;">
+         <div class="pages">
+             <span>共{$totalCount}条</span>
+         </div>
+         <div class="pagination" rel="{$rel}" targetType="navTab" totalCount="{$totalCount}" numPerPage="{$numPerPage}" pageNumShown="10" currentPage="{$currentPage}"></div>
+     </div>
+</div>

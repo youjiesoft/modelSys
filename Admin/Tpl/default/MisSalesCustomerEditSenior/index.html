@@ -1,0 +1,173 @@
+<div class="page">
+	<div class="pageContent">
+	<form method="post" action="__URL__/update/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,navTabAjaxDone)">
+		<input type="hidden" name="id" value="{$vo.id}" />
+		<div class="pageFormContent applecloth" layoutH="80">
+		<div class="keepContentCenter">
+			<H2 class="contentTitle contentTitle_center">高级信息</H2>
+		
+	          <table width="100%" border="0" cellspacing="0">
+			    <tr>
+			        <td>
+			            <div class="unit">
+			                <label>
+			                    {$fields["jperson"]}：
+			                </label>
+			                <input type="text" name="jperson" maxlength="20" value="{$vo['jperson']}">
+			                <input type="checkbox" name="isonce" <eq name="vo.isonce" value="1">
+			                checked
+			                </eq>
+			                value="1"/>一次性客户
+			            </div>
+			        </td>
+			        <td>
+			            <div class="unit">
+			                <label>
+			                    {$fields["orgcode"]}：
+			                </label>
+			                <input type="text" name="orgcode" class="alphanumeric" maxlength="30"
+			                value="{$vo['orgcode']}" />
+			            </div>
+			        </td>
+			    </tr>
+			    <tr>
+			        <td>
+			            <div class="unit">
+			                <label>
+			                    {$fields["intype"]}：
+			                </label>
+			                <input type="text" name="intype" maxlength="20" value="{$vo['intype']}"
+			                />
+			            </div>
+			        </td>
+			        <td>
+			            <div class="unit">
+			                <label>
+			                    {$fields["siteid"]}：
+			                </label>
+			                <select name="siteid" class="combox">
+			                    <option selected value="">
+			                        &mdash;&mdash;选择&mdash;&mdash;
+			                    </option>
+			                    <volist id="sitelist" name="sitelist">
+			                        <if condition="$vo.siteid eq $sitelist['id']">
+			                            <option value="{$sitelist['id']}" selected>
+			                                {$sitelist['name']}
+			                            </option>
+			                            <else />
+			                            <option value="{$sitelist['id']}">
+			                                {$sitelist['name']}
+			                            </option>
+			                        </if>
+			                    </volist>
+			                </select>
+			            </div>
+			        </td>
+			    </tr>
+			    <tr>
+			        <td>
+			            <div class="unit">
+			                <label>
+			                    {$fields["vitalityid"]}：
+			                </label>
+			                <select name="vitalityid" class="combox">
+			                    <option value="">
+			                        &mdash;&mdash;选择&mdash;&mdash;
+			                    </option>
+			                    <option <if condition="$vo['vitalityid'] eq 1">
+			                        selected="selected"
+			                        </if>
+			                        value="1">活跃
+			                    </option>
+			                    <option <if condition="$vo['vitalityid'] eq 2">
+			                        selected="selected"
+			                        </if>
+			                        value="2">适中
+			                    </option>
+			                    <option <if condition="$vo['vitalityid'] eq 3">
+			                        selected="selected"
+			                        </if>
+			                        value="3">不活跃
+			                    </option>
+			                </select>
+			            </div>
+			        </td>
+			        <td>
+			            <div class="unit">
+			                <label>
+			                    {$fields["tportid"]}：
+			                </label>
+			                <select name="tportid" class="combox">
+			                    <option selected value="">
+			                        &mdash;&mdash;选择&mdash;&mdash;
+			                    </option>
+			                    <volist id="jh" name="jhtype">
+			                        <option value="{$jh['id']}" <if condition="$vo.tportid eq $jh['id']">
+			                            selected="selected"
+			                            </if>
+			                            >{$jh['name']}
+			                        </option>
+			                    </volist>
+			                </select>
+			            </div>
+			        </td>
+			    </tr>
+			    <tr>
+			        <td>
+			            <div class="unit">
+			                <label>
+			                    {$fields["percent"]}：
+			                </label>
+			                <input type="text" name="percent" min="0" max="100" value="{$vo['percent']}"
+			                />
+			            </div>
+			        </td>
+			        <td>
+			            <div class="unit">
+			                <label>
+			                    {$fields["userid"]}：
+			                </label>
+			                <select name="userid" class="combox">
+			                    <option selected value="">
+			                        &mdash;&mdash;选择&mdash;&mdash;
+			                    </option>
+			                    <volist id="ulist" name="ulist">
+			                        <if condition="$vo.userid eq $ulist['id']">
+			                            <option value="{$ulist['id']}" selected="selected">
+			                                {$ulist['name']}
+			                            </option>
+			                            <else />
+			                            <option value="{$ulist['id']}">
+			                                {$ulist['name']}
+			                            </option>
+			                        </if>
+			                    </volist>
+			                </select>
+			            </div>
+			        </td>
+			    </tr>
+			    <tr>
+			        <td colspan="2">
+			            <label>
+			                高级备注：
+			            </label>
+			            <textarea name="seniorremark" maxlength="200" cols="40" rows="2">
+			                {$vo['seniorremark']}
+			            </textarea>
+			        </td>
+			    </tr>
+			</table>
+	         </div>
+        </div>
+		<div class="formBar">
+			<ul>
+			<if condition="$_SESSION.a eq 1 or $_SESSION.missalescustomereditsenior_update">
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">{$Think.lang.save}</button></div></div></li>
+			</if>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">{$Think.lang.close}</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+
+	</div>
+</div>

@@ -1,0 +1,37 @@
+<include file="Public:pagerForm" />
+	<div class="page">
+		<div class="pageContent">
+			<form method="post" action="__URL__/update/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,dialogAjaxDone);">
+				<input type="hidden" name="id" value="{$vo['id']}" />
+				<div class="pageFormContent" layoutH="58">
+					<div class="tml-row">
+						<div class="tml-form-col"><label>分类编码：</label><input type="text" name="code" readonly="readonly" class="required"  <if condition='$writable eq 0'> readonly="readonly" </if> value="{$vo['code']}"></div>
+						<div class="tml-form-col"><label>分类名称：</label><input type="text" name="name" class="required" readonly="readonly" value="{$vo['name']}"></div>
+					</div>
+					<div class="tml-row">
+					  <if condition="!$top">
+	                        <div class="tml-form-col" id="sel">
+	                            <label>所属父类：</label>
+	                            <select  name="parentid" class="combox" disabled="disabled">
+	                            		<volist name="toptypelist" id="topl">
+	                                   	 	<option value="{$topl['id']}" <if condition="$topl['id'] eq $vo['parentid']">selected="selected"</if> >{$topl['name']}</option>
+	                                    </volist>
+	                            </select>
+	                        </div>
+	                  </if>
+                     <if condition="$top">
+	                        <div class="tml-form-col" id="sel">
+	                           <label>分类等级：</label><input type="text" class="required readonly" value="父级">
+	                        </div>
+                      </if>
+                    </div>
+                   <!--  <div class="tml-form-row">
+                        <label>说&nbsp;&nbsp;&nbsp;&nbsp;明：</label>
+                        <textarea name="remark">{$vo["remark"]}</textarea>
+                    </div> -->
+				</div>
+				{:W('ShowAction',array('data'=>$vo))}
+			</form>
+		</div>
+	</div>
+</div>

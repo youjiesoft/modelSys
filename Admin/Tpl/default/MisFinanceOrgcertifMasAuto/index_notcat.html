@@ -1,0 +1,54 @@
+<form id="pagerForm" action="__URL__/index">
+    <input type="hidden" name="pageNum" value="{$pageNum}"/>
+    <input type="hidden" name="dwzpageNum" value="1"/>
+    <input type="hidden" name="orderField" value="{$order}" />
+    <input type="hidden" name="orderDirection" value="{$sort}" />
+    <input type="hidden" name="numPerPage" value="{$numPerPage}" />
+</form>
+ <div class="panelBar">
+    <ul class="toolBar">
+       <if condition="$_SESSION.a eq 1 or $_SESSION.misproductcode_add">
+            <li><a class="edit tml-btn tml_look_btn tml_mp" href="__URL__/automatic/rel/orgcertifmasauto/typeid/{$typeid}" posttype="string" target="selectedTodo" rel="id" title="确认要自动生成支出证明" warn="请选择节点"><span><span class="icon icon-retweet icon_lrp"></span>自动生成支出证明</span></a></li>
+       </if>
+   </ul>
+   <form rel="pagerForm" onsubmit="return divSearch(this,'orgcertifmasauto');" action="__URL__/index" method="post">
+    <input type="hidden" name="categoryid" value="{$categoryid}">
+    <input type="hidden" name="frame" value="1">
+    <input type="hidden" name="typeid" value="{$typeid}">
+    <div class="searchBar">
+        <table class="searchContent">
+            <tr>
+               <include file="Public:quickSearchCondition" />
+           </tr>
+        </table>
+    </div>
+    </form>
+</div>
+<div class="pageContent" style="border-left:1px #B8D0D6 solid;border-right:1px #B8D0D6 solid">
+    <table class="table" width="100%" layoutH="84" ajaxurl="__URL__/index" rel="knowleagelistBox" dwztotalPages="{$dwztotalpage}">
+        <thead ename="productcode"><!-- ename="productcode" -->
+        <tr>
+            <th><input type="checkbox" class="checkboxCtrl" group="id" /></th>
+            <volist id="vo" name="detailList">
+                <if condition="$vo[shows] eq 1"><th <if condition="$vo[widths]">width="{$vo[widths]}"</if><if condition="$vo[sorts]"> orderField="{$vo[sortname]}" class="{$sort}"</if>>{$vo[showname]}</th></if>
+            </volist>
+        </tr>
+        </thead>
+        <tbody>
+            <include file="dwzloadindex" />
+        </tbody>
+    </table>
+    <div class="panelBar panelPageBar">
+        <div class="pages">
+            <span>显示</span>
+            <select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.value},'knowleagelistBox')">
+                <option value="20" <if condition="$numPerPage eq 20"> selected </if> >20</option>
+                <option value="50" <if condition="$numPerPage eq 50 "> selected </if> >50</option>
+                <option value="100" <if condition="$numPerPage eq 100"> selected </if>>100</option>
+                <option value="250" <if condition="$numPerPage eq 250"> selected </if>>250</option>
+            </select>
+            <span>条，共{$totalCount}条</span>
+        </div>
+        <div class="pagination" targetType="navTab" rel="__MODULE__automatic" totalCount="{$totalCount}" numPerPage="{$dwznumPerPage}" pageNumShown="10" currentPage="{$currentPage}"></div>
+    </div>
+</div>

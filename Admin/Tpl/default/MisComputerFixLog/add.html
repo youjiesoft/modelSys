@@ -1,0 +1,62 @@
+<div class="page">
+	<div class="pageContent applecloth" layoutH="0">
+		<form method="post" action="__URL__/insert/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,navTabAjaxDone);">
+			<input type="hidden" name="beforeInsert" value="1" />
+			<input type="hidden" value="1" name="ajax">
+			<input type="hidden" name="report_name" value="{$userid|getfieldby='id','employeid','user'}"/>
+			<input type="hidden" name="department_id" value="{$userid|getfieldby='id','dept_id','user'}"/>
+			<input type="hidden" name="callbackType" value="closeCurrent">
+			<input type="hidden" name="dotype" value="流程启动" />
+			<div class="pageFormContent applecloth" layoutH="56">
+				<div class="keepContentCenter form-affix-content">
+					<div class="contentTitle contentTitle_center form-affix-title">
+						电脑维修申请{:W('ShowFlow')}
+					</div>
+					<fieldset>
+					<legend class="fieldset_legend_toggle side-catalog-text">
+						<b>报修信息</b>
+					</legend>
+					<div class="tml-row">
+						{:W('ShowOrderno',array(1,'mis_computer_fix_log'))}
+						<div class="tml-form-col">
+							<label>{$fields["falut_type"]}:</label>
+							<select name="falut_type" class="combox required">
+								{:getSelectByHtml('computerfault')}
+							</select>
+						</div>
+						<div class="clear"></div>
+						<div class="tml-form-col">
+							<label>紧急程度</label>
+							<select name="level" class="combox">
+								<option value='1'>不急</option>
+								<option value='2'>急</option>
+								<option value='3'>非常急</option>
+							</select>
+						</div>
+					</div>
+					<div class="tml-form-row">
+						<label>{$fields["fault_cause"]}:</label>
+						<textarea rows="3" class=" required" name="fault_cause"></textarea>
+					</div>
+					</fieldset>
+					<fieldset>
+						<legend class="fieldset_legend_toggle side-catalog-text">
+						<b>制单信息</b>
+					</legend>
+					<div class="tml-row">
+						<div class="tml-form-col">
+							<label>制单人：</label>
+							<input type="text" readonly="readonly" value="{$Think.session.loginUserName}" />
+						</div>
+						<div class="tml-form-col">
+							<label>制单时间：</label>
+							<input type="text" readonly="readonly" value="{$time|transTime}" />
+						</div>
+					</div>
+					</fieldset>
+				</div>
+			</div>
+			{:W('ShowAction')}
+		</form>
+	</div>
+</div>

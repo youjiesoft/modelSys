@@ -1,0 +1,337 @@
+<script>
+	var url="__URL__/comboxgetexpert/id/{$vo['id']}";
+	choose_userbydeptid(url,"dialog");
+	//添加工作经验
+	function addExperience(obj){
+		var $box=navTab.getCurrentPanel();
+		var html="<div class='clearfix' style='border-bottom:1px dashed #CCCCCC;margin:0 0 10px;padding:0 0 10px;'>	"+
+			"<h3>经历(<span class='_itemIndex'>*</span>)</h3>" +
+			"<div class='tml-row'>" +
+				"<div class='tml-form-col'>" +
+					"<label>开始时间：</label>" +
+					"<span class='xyInputWithUnit'>" +
+						"<input type='text'class='Wdate js-wdate' name='starttime[]'/>"+
+						"<a href='javascript:;' class='input-addon input-addon-calendar js-inputCheckDate'>选择</a>"+
+					"</span>" +
+				"</div>"+
+				"<div class='tml-form-col'>"+
+					"<label>结束时间：</label>"+
+					"<span class='xyInputWithUnit'>"+
+						"<input type='text'class='Wdate js-wdate' name='endtime[]'/>"+
+						"<a href='javascript:;' class='input-addon input-addon-calendar js-inputCheckDate'>选择</a>"+
+					"</span>"+
+				"</div>"+
+				/* "<div class='tml-form-col'>"+
+					"<label>公司名称：</label>"+
+					"<input name='companyname[]' type='text' class='textInput required' />"+
+				"</div>"+ */
+				"<div class='tml-form-col'>"+
+					"<label>项目名称：</label>"+
+					"<input name='projectname[]' type='text' class='textInput required' />"+
+				"</div>"+
+				"<div class='tml-form-col'>"+
+					"<label>职&nbsp;&nbsp;务：</label>"+
+					"<input name='position[]' type='text' class='textInput' />"+
+				"</div>"+
+				"<div class='tml-form-col'>"+
+					"<label>备&nbsp;&nbsp;注：</label>"+
+					"<input name='remark[]' type='text' class='textInput' />"+
+				"</div>"+
+			"</div>"+
+			"<div class='clear'></div>"+
+				"<div class='buttonActive right'>"+
+					"<div class='buttonContent'>"+
+					"<button type='button' onclick='deletexp(this)'>取消</button>"+
+					"</div>"+
+				"</div>"+
+			"</div>";
+		$box.find("#Addexp_div").append(html).initUI();
+		$box.find("._itemIndex").each(function(i){
+			 $(this).text(i+1);
+		 });
+	}
+	//alertMsg.confirm('确定要删除该数据？',{
+		//okCall:function(){
+	//删除经历节点
+	function deletexp(obj){
+		var $box=navTab.getCurrentPanel();
+		alertMsg.confirm('确定要删除该数据？',{
+			okCall:function(){
+				$(obj).parent().parent().parent().remove();
+				//重新计算ND
+				$box.find("._itemIndex").each(function(i){
+					 $(this).text(i+1);
+				 });
+				var vax = $(obj).parent().find("input").val();
+				$.ajax({
+		  		  type:'POST',
+		            url:"__URL__/lookupdelexp",
+		            data:{id:vax},
+		  		  /* success:function(re){
+		  			 if(re){
+		  				 alert("删除成功!");
+		  			 }
+		  		} */
+		  	});
+			}
+		})
+	}
+	//上传图片JS
+	function misexpertlist_picture_add(file, data, response) {
+			var $box = navTab.getCurrentPanel();
+			var s = data.split(TP_PUBLIC + "/Uploadstemp/");
+			$("#swf_upload_misexpertlist_add_save_name").val(s[1]);
+			var upload_name = $("#swf_upload_misexpertlist_add_save_name").val();
+			$.ajax({
+				type : "POST",
+				url : "__URL__/lookuploadimg",
+				data : {
+					'upload_name' : upload_name
+				},
+				success : function(re) {
+					 $("#misexpertlist_picture_add").attr("src","__PUBLIC__/Uploads/"+re);
+					 $("input[name='picture']").val(re);
+				}
+			});
+	}
+	//追加select
+	function selecta(obj) {
+		var bepart = $(obj).val();
+		//找到子级
+		var $ref = $("#esonselect");
+		$.ajax({
+			type : 'POST',
+			dataType : "json",
+			url : "__URL__/lookupsontype",
+			cache : false,
+			data : {
+				bepart : bepart
+			},
+			success : function(json) {
+				var html = '';
+				$.each(json, function(i) {
+					if (json[i] && json[i].length > 1) {
+						html += '<option value="'+json[i]['0']+'">' + json[i]['1'];
+					}
+				});
+				//alert(html);
+				var $refCombox = $ref.parents("div.combox:first");
+				$ref.html(html).insertAfter($refCombox);
+				$refCombox.remove();
+				$ref.trigger("change").combox();
+			},
+			error : DWZ.ajaxError
+		})
+	};
+</script>
+<include file="Public:pagerForm" />
+	<div class="page">
+		<div class="pageContent">
+			<form method="post" action="__URL__/update/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,navTabAjaxDone);">
+				<input type="hidden" name="id" value="{$vo['id']}" />
+				<input type="hidden" name="callbackType" value="closeCurrent">
+				<div class="pageFormContent applecloth anchorsToolBarParent" layoutH="56">
+				<div class="keepContentCenter">
+							<div class="contentTitle contentTitle_center">修改专家资料</div>
+							<fieldset class="side-catalog-anchor">
+							<legend class="fieldset_legend_toggle side-catalog-firstanchor side-catalog-text">
+								<b>基本信息</b>
+								<div class="tml_style_line tml_sl4 tml_slb_blue"></div>
+							</legend>
+                        	<div class="tml-row">
+                        			<div class="tml-form-col">
+										<label>专家姓名：</label>
+										<input name="name" type="text" class="required" value="{$vo['name']}"/>
+									</div>
+									
+									<p class="employeePhoto right">
+										<img id="misexpertlist_picture_add" width="100" height="100"
+											<if condition="!$vo['picpath']">src="__PUBLIC__/Images/xyimages/xyheader_image.jpg"
+												<else/>src="__PUBLIC__/Uploads/{$vo['picpath']}"
+											</if>
+											>  
+											<input name="ypicpath" value="{$vo['picpath']}" type="hidden" />
+										<input name="swf_upload_misexpertlist_add_name" id="swf_upload_misexpertlist_add_save_name" value="{$vo['picpath']}" type="hidden" />
+										<br />
+										 <input id="swfupload_misexpertlist_add" onUploadSuccess="misexpertlist_picture_add" type="file" auto="true" multi="false" type="file" uploader="true" fileSizeLimit="2000KB" fileTypeExts="*.jpg;*.jpeg;*.gif;*.png;"
+										fileTypeDesc="*.jpg;*.jpeg;*.gif;*.png;" name="misexpertlist_add_file" formData="{ uploadpath:'MisExpertList' }" />
+										<!--<span style="color:red">*请上传1寸相片</span>-->
+									</p>
+									
+									<div class="tml-form-col">
+										<label>专家编号：</label>
+										<input type="text" name="orderno" class="required readonly"   value="{$vo['orderno']}">
+									</div>
+									<div class="tml-form-col">
+										<label >评审行业：</label>
+										<input type="text" name="protitle"  value="{$vo['protitle']}">
+									</div>
+                                <div class="tml-form-col">
+                                    <label>所属机构：</label>
+                                    <select name="typeid" class="combox required" ><!-- onchange="selecta(this)" toptypeid -->
+                                        <volist name="typelist" id="type">
+                                            <option value="{$type['id']}" <if condition="$type['id'] eq $vo['typeid']">selected="selected"</if>>{$type['name']}</option>
+                                        </volist>
+                                    </select>
+                                </div>
+									<!-- <div class="tml-form-col">
+										<label>部&nbsp;&nbsp;&nbsp;&nbsp;门：</label>
+										<select class="combox dep_obj" name="deptid" >								
+											<volist id="vod" name="deplist">
+												<option value="{$key}" <if condition="$vo['deptid'] eq $key">selected="selected"</if>>{$vod}</option>
+											</volist>
+										</select>
+									</div> -->
+								</div>
+								<!--<div class="tml-row">-->
+									<!--&lt;!&ndash; <div class="tml-form-col">-->
+										<!--<label>子&nbsp;&nbsp;&nbsp;&nbsp;级：</label>-->
+										<!--<select name="typeid" class="combox required" id="esonselect">-->
+											<!--<volist name="sontypelist" id="vozw">-->
+												<!--<option value="{$vozw['id']}" <if condition="$sonid eq $vozw['id']">selected="selected"</if>>{$vozw['name']}</option>-->
+											<!--</volist>-->
+										<!--</select>-->
+									<!--</div> &ndash;&gt;-->
+								<!--</div>-->
+								<div class="tml-row">
+                               		 <div class="tml-form-col">
+										<label>动态帐号：</label>
+										<input name="account" type="text" class="textInput " value="{$vo['account']}"/>
+									</div>
+                               		 <div class="tml-form-col">
+										<label>新密码：</label>
+										<input name="password" type="password" class="textInput " value="" />
+										<input name="ypassword" type="hidden" class="textInput " value="{$vo['password']}" />
+									</div>
+							  </div>
+							</fieldset>
+							<fieldset class="side-catalog-anchor">
+								<legend class="fieldset_legend_toggle side-catalog-text">
+									<b>联系方式</b>
+									<div class="tml_style_line tml_sl4 tml_slb_blue"></div>
+								</legend>
+								<div class="tml-row">
+									<!-- <div class="tml-form-col">
+										<label>QQ：</label>
+										<input type="text" class="textInput qq" name="qq" value="{$vo['qq']}">
+									</div> -->
+										<div class="tml-form-col">
+										<label>联系电话：</label>
+										<input name="tel" type="text" class="textInput required phone" value="{$vo['tel']}" />
+									</div>
+									<div class="tml-form-col">
+										<label>邮箱：</label>
+										<input name="email" type="text" class="textInput required  email" value="{$vo['email']}"/>
+									</div>
+								</div>
+							</fieldset>
+							<!--<fieldset class="side-catalog-anchor">-->
+								<!--<legend class="fieldset_legend_toggle side-catalog-text">-->
+									<!--<b>主要经历</b>-->
+									<!--<div class="tml_style_line tml_sl4 tml_slb_blue"></div>-->
+								<!--</legend>-->
+								<!--<if condition="$experlist">-->
+									<!--<volist name="experlist" id="exp" key = "key">-->
+										<!--<div class='clearfix' style='border-bottom:1px dashed #CCCCCC;margin:0 0 10px;padding:0 0 10px;'>	-->
+											<!--<h3>经历(<span class='_itemIndex'>{$key}</span>)</h3>-->
+											<!--<input type="hidden"  value="{$exp['id']}" name="experienceorderid[]"/>-->
+											<!--<div class='tml-row'>-->
+												<!--<div class='tml-form-col'>-->
+													<!--<label>开始时间：</label>-->
+													<!--<span class='xyInputWithUnit'>-->
+													<!--<input type="hidden" name="expid[]" value="{$exp['id']}" />-->
+														<!--<input type='text'class='Wdate js-wdate' name='starttime[]' value="{$exp['starttime']|transTime}"/>-->
+														<!--<a href='javascript:;' class='input-addon input-addon-calendar js-inputCheckDate'>选择</a>-->
+													<!--</span>-->
+												<!--</div>-->
+												<!--<div class='tml-form-col'>-->
+													<!--<label>结束时间：</label>-->
+													<!--<span class='xyInputWithUnit'>-->
+														<!--<input type='text'class='Wdate js-wdate' name='endtime[]' value="{$exp['endtime']|transTime}"/>-->
+														<!--<a href='javascript:;' class='input-addon input-addon-calendar js-inputCheckDate'>选择</a>-->
+													<!--</span>-->
+												<!--</div>-->
+												<!--&lt;!&ndash; <div class='tml-form-col'>-->
+													<!--<label>公司名称：</label>-->
+													<!--<input name='companyname[]' type='text' class='textInput required' value="{$exp['companyname']}"/>-->
+												<!--</div> &ndash;&gt;-->
+												<!--<div class='tml-form-col'>-->
+													<!--<label>项目名称：</label>-->
+													<!--<input name='projectname[]' type='text' class='textInput required' value="{$exp['projectname']}" />-->
+												<!--</div>-->
+												<!--<div class='tml-form-col'>-->
+													<!--<label>职务：</label>-->
+													<!--<input name='position[]' type='text' class='textInput' value="{$exp['position']}"/>-->
+												<!--</div>-->
+												<!--<div class='tml-form-col'>-->
+													<!--<label>备注：</label>-->
+													<!--<input name='remark[]' type='text' class='textInput' value="{$exp['remark']}"/>-->
+												<!--</div>-->
+											<!--</div>-->
+											<!--<div class='clear'></div>-->
+												<!--<div class='buttonActive right'>-->
+													<!--<div class='buttonContent'>-->
+													<!--<input type="hidden"  value="{$exp['id']}" />-->
+													<!--<button type='button' onclick='deletexp(this)' warn="你确定删除此经历?">删除</button>-->
+													<!--</div>-->
+												<!--</div>-->
+											<!--</div>-->
+									<!--</volist>-->
+								<!--</if>-->
+								<!--<div id="Addexp_div" class="clearfix"></div>&lt;!&ndash; 这是相对html参照点 &ndash;&gt;-->
+								<!--<div class="buttonActive">-->
+									<!--<div class="buttonContent">-->
+										<!--<button type="button" onclick="addExperience(this)">+添加经历</button>-->
+									<!--</div>-->
+								<!--</div>-->
+							<!--</fieldset>-->
+							<!--<fieldset class="side-catalog-anchor">-->
+								<!--<legend class="fieldset_legend_toggle side-catalog-text">-->
+									<!--<b>技术专长</b>-->
+									<!--<div class="tml_style_line tml_sl4 tml_slb_blue"></div>-->
+								<!--</legend>-->
+								<!--<div class="tml-form-row">-->
+								 	<!--<label>技术专长：</label>-->
+								 	<!--<textarea name="expertise" style="height:100px;">{$vo.expertise}</textarea>-->
+								 <!--</div>-->
+							<!--</fieldset>-->
+							<!--<fieldset class="side-catalog-anchor">-->
+								<!--<legend class="fieldset_legend_toggle side-catalog-text">-->
+									<!--<b>备注</b>-->
+									<!--<div class="tml_style_line tml_sl4 tml_slb_blue"></div>-->
+								<!--</legend>-->
+								 <!--<div class="tml-form-row">-->
+									<!--<label>备注：</label>-->
+									<!--<textarea name="tremark"  class="textInput" style="height:100px;">{$vo['remark']}</textarea>-->
+                                <!--</div>-->
+							<!--</fieldset>-->
+							 <!--<fieldset class="side-catalog-anchor"> -->
+								<!--<legend class="fieldset_legend_toggle side-catalog-text">-->
+									<!--<b>制单信息</b>-->
+									<!--<div class="tml_style_line tml_sl4 tml_slb_blue"></div>-->
+								<!--</legend>-->
+								<!--<div class="tml-row">-->
+									<!--<div class="tml-form-col">-->
+										<!--<label>修改人：</label>-->
+										<!--<input type="text" class="textInput required readonly"  value="{$currper}">-->
+										<!--<input type="hidden" class="textInput required readonly" name="updateid" value="{$currperid}">-->
+									<!--</div>-->
+										<!--<div class="tml-form-col">-->
+										<!--<label>修改时间：</label>-->
+										<!--<input type="text" class="textInput required readonly" value="{$currtime}"/>-->
+										<!--<input type="hidden" class="textInput required readonly" name="updatetime" value="{$currtimesotr}">-->
+									<!--</div>-->
+								<!--</div>-->
+							<!--</fieldset>-->
+                            {:W('ShowAction',array('data'=>$vo))}
+                	 </div>	
+			</div>
+			<!-- <div class="formBar tml-text-c">
+				<if condition="$_SESSION.a eq 1 or $_SESSION.misexpertlist_update">
+					 <button class="tml-btn tml-btn-blue tml-mr10" type="submit">{$Think.lang.save}</button>
+				</if>
+					<button type="button" class="tml-btn tml-btn-white close">{$Think.lang.close}</button>
+			</div> -->
+		</form>
+	</div>
+</div>

@@ -1,0 +1,305 @@
+<script src="__PUBLIC__/Js/highcharts.js"></script>
+<script>
+    $(function(){
+    	var url1 = "__URL__/lookupgetCharts/type/cost/projectid/{$project['id']}";
+        chart("__PUBLIC__/Charts/MSLine.swf","chart_data_1",url1,"940", "250");
+        var url = "__URL__/lookupgetCharts/type/quality/projectid/{$project['id']}";
+        chart("__PUBLIC__/Charts/MSColumn3D.swf","chart_data_2",url,"300", "200");
+    });
+</script>
+<script>
+$(function () {
+	var chart0=$('#dashboard_costing').highcharts({
+	       chart: {
+	           height:350
+	        },
+	        title: {
+	            text: '{$costingtitle}'
+	        },
+	        subtitle: {
+	            text: '{$subtitle}'
+	        },
+	        xAxis:{$xAxiscosting},
+	        yAxis: {
+	        	min: 0,
+	            title: {
+	                text: '(元)'
+	            },
+	            plotLines: [{
+	                color: '#808080'
+	            }]
+	        },
+	        legend: {
+	            layout: 'vertical',
+	            align: 'right',
+	            verticalAlign: 'middle',
+	            borderWidth: 0
+	        },
+	        credits: {
+	            enabled: false
+	        },
+	        tooltip: {
+	             headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+	             pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+	                 '<td style="padding:0"><b>{point.y}元</b></td></tr>',
+	             footerFormat: '</table>',
+	             shared: true,
+	             useHTML: true
+	         },
+	         plotOptions: {
+	        	 column: {
+	        		         pointPadding: 0.01,
+	        		         borderWidth: 2,
+	        		         pointWidth: 15,
+	        		         groupPadding : 0.01
+	        		     }
+
+	         },
+	        series:{$series}
+	     });
+	////////////////////////////
+	var chart0=$('#dashboard_quality').highcharts({
+       chart: {
+    	   type: 'column',
+           height:200
+        },
+        title: {
+            text: '{$qualitytitle}'
+        },
+        subtitle: {
+            text: '{$subtitle}'
+        },
+        xAxis:{$xAxis0},
+        yAxis: {
+        	min: 0,
+            title: {
+                text: '(%)'
+            },
+            plotLines: [{
+                color: '#808080'
+            }]
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        credits: {
+            enabled: false
+        },
+        tooltip: {
+             headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+             pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                 '<td style="padding:0"><b>{point.y}%</b></td></tr>',
+             footerFormat: '</table>',
+             shared: true,
+             useHTML: true
+         },
+         plotOptions: {
+        	 column: {
+        		         pointPadding: 0.3,
+        		         borderWidth: 2,
+        		         pointWidth: 20,
+        		         groupPadding : 0.3
+        		     }
+
+         },
+        series: {$series0}
+     });
+	////////////////////////////	
+	var chart1=$('#dashboard_total').highcharts({
+        title: {
+            text: '{$totaltitle}'
+        },
+        subtitle: {
+            text: '{$subtitle}'
+        },
+        xAxis: {$xAxis},
+        yAxis: {
+        	min: 0,
+            title: {
+                text: '(元)'
+            },
+            plotLines: [{
+                color: '#808080'
+            }]
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        credits: {
+            enabled: false
+        },
+        tooltip: {
+             headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+             pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                 '<td style="padding:0"><b>{point.y}元</b></td></tr>',
+             footerFormat: '</table>',
+             shared: true,
+             useHTML: true
+         },
+         plotOptions: {
+             column: {
+                 pointPadding: 0.2,
+                 borderWidth: 0
+             }
+         },
+        series: {$series1},
+     });
+	////////////////////////////	
+    var chart2=$('#dashboard_group').highcharts({
+        title: {
+            text: '{$grouptitle}'
+        },
+        subtitle: {
+            text: '{$subtitle}'
+        },
+        xAxis: {$xAxis},
+        yAxis: {
+        	min: 0,
+            title: {
+                text: '(元)'
+            },
+            plotLines: [{
+                color: '#808080'
+            }]
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        credits: {
+            enabled: false
+        },
+        tooltip: {
+             headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+             pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                 '<td style="padding:0"><b>{point.y}元</b></td></tr>',
+             footerFormat: '</table>',
+             shared: true,
+             useHTML: true
+         },
+         plotOptions: {
+             column: {
+                 pointPadding: 0.2,
+                 borderWidth: 0
+             }
+         },
+        series: {$series2},
+    });
+});
+</script>
+<div class="page">
+    <div class="pageContent dashboard applecloth" layoutH="8">
+        <div class="pageFormContent dashboard_con">
+			<div class="clearfix dashboard_part1">
+				<div class="" style="width:480px;float:left;margin:0 10px 0 0;padding:10px 0 0;">
+					<div><h3 class="tml-h3">项目基本信息</h3></div>
+					<div class="clearfix dashboard_detail" style="height:260px;">
+						<p style="width:420px;">
+							<label style="width: 60px;">项目名称：</label>
+							{$project['name']}
+						</p>
+						<p style="width:420px;">
+							<label style="width: 60px;">项目地址：</label>
+							{$project['address']}
+						</p>						
+						<p style="width:220px;">
+							<label style="width: 60px;">项目经理：</label>
+							{$leadProjectName}
+						</p>
+						<p style="width:220px;">
+							<label style="width: 60px;">分管领导：</label>
+							{$leadPersonName}
+						</p>
+						<p style="width:220px;">
+							<label style="width: 60px;">合同造价：</label>
+							{$project['principalcost']|getDigits}  元 
+						</p>
+						<p style="width:220px;">
+							<label style="width: 60px;">承包方式：</label>
+							{$project['contracttype']}
+						</p>
+						<p style="width:220px;">
+							<label style="width: 60px;">项目面积：</label>
+							{$project['area']}
+						</p>
+						<p style="width:220px;">
+							<label style="width: 60px;">合同工期：</label>
+							{$project['limittime']}天
+						</p>
+						<p style="width:220px;">
+							<label style="width: 60px;">开工日期：</label>
+							<if condition="$project['startdate']">{$project['startdate']|date='Y-m-d',###}</if>
+						</p>
+						<p style="width:220px;">
+							<label style="width: 60px;">竣工日期：</label>
+							<if condition="$project['enddate']">{$project['enddate']|date='Y-m-d',###}</if>
+						</p>
+					</div>
+				</div>
+				<div class="" style="width:480px;float:left;padding:10px 0 0;">
+					<div><h3 class="tml-h3">项目质量监控</h3></div>
+					<div class="clearfix dashboard_detail" style="height:260px;">
+						<div style="float:left;margin:6px 0 0;">
+							<div id="dashboard_quality" style="float:left;width:450px;"></div>
+							<div style="float:right;margin:6px 0 0;width:auto;">
+								<p style="width:150px">累计补苗费用:{$qualitydata['addcostmm']|getDigits} 元</p>
+								<p style="width:150px">累计返工费用:{$qualitydata['addcostfg']|getDigits} 元</p>
+								<if condition="$qualitydata['redcard']">
+								<p style="width:150px">质量红单:{$qualitydata['redcard']} 个</p>
+								<else/>
+								<p style="width:150px">质量红单:0 个</p>
+								</if>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="clearfix dashboard_part2">
+			<div class="" style="width:970px;float:left;overflow:hidden;margin:0 0px 0 0;padding:10px 0 0;">
+			<div><h3 class="tml-h3">项目成本监控</h3></div>
+			<div class="clearfix dashboard_detail" >
+		    <div id="dashboard_total"></div>
+   			<div style="float:left;margin:6px 0 0;width:auto;">
+				<p style="width:130px">已完成产值:{$weekreportdata['addupwccz']|getDigits}</p>
+				<p style="width:130px">目利润率:{$project['tprofrate']|getDigits}%</p>
+				<p style="width:130px">已回收进度款:{$weekreportdata['ljjdk']|getDigits}</p>
+				<p style="width:130px">回款率:{$rateofreturn|getDigits}%</p>
+				<p style="width:130px">完工百分比:{$completionratio|getDigits}%</p>
+				<p style="width:180px">直接费占完成产值比例:{$zjfczbl|getDigits}%</p>
+			</div>
+		    </div>
+			</div>			
+			<div class="clearfix dashboard_part2">
+				<div class="" style="width:970px;float:left;overflow:hidden;margin:0 0px 0 0;padding:10px 0 0;">
+					<div><h3 class="tml-h3">阶段性成本分析</h3></div>
+					<div class="clearfix dashboard_detail" style="height:390px;">
+						<div id="dashboard_costing" style="float:left;margin:10px 10px 0 0;width:940px;"></div>
+						<div style="float:right;margin:6px 0 0;width:auto;">
+							<p style="width:150px">已完成产值:{$costdata['quantities']|getDigits}</p>
+							<p style="width:150px">目利润率:{$costdata['tprofrate']|getDigits}%</p>
+							<p style="width:150px">已回收进度款:{$costdata['collected']|getDigits}</p>
+							<p style="width:150px">回款率:{$costdata['arrate']|getDigits}%</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="clearfix dashboard_part3">
+					<div class="" style="width:970px;float:left;overflow:hidden;margin:0 0px 0 0;padding:10px 0 0;">
+						<div><h3 class="tml-h3">周报告：分项成本分析</h3></div>
+						<div class="clearfix dashboard_detail" >
+	                    <div id="dashboard_group"></div>
+	                    </div>
+	                </div>
+	        </div>
+
+
+    </div>
+</div>

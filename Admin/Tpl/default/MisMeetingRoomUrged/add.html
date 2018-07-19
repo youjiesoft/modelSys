@@ -1,0 +1,22 @@
+<script type="text/javascript">
+</script>
+<include file="Public:pagerForm" />
+	<div class="page">
+		<div class="pageContent">
+			<form method="post" action="__URL__/insert/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,dialogAjaxDone);">
+				<div class="pageFormContent" layoutH="58">
+                    <div class="tml-row">
+                        <div class="tml-form-col">
+                            <label>名&nbsp;&nbsp;&nbsp;&nbsp;称：</label>
+                            <input type="text" name="name" class="required" value=""/>
+                        </div>
+                    </div>
+                    <div class="tml-form-row">
+						<label>备注：</label>
+						<textarea name="remark"  class="textInput" >{$vo['remark']}</textarea>
+	                 </div>
+				</div>
+				{:W('ShowAction')}
+			</form>
+		</div>
+	</div>

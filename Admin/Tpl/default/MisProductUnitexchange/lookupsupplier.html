@@ -1,0 +1,63 @@
+
+<form id="pagerForm" action="__URL__/lookupsupplier/prodid/{$prodid}" method="post">
+	<input type="hidden" name="pageNum" value="1"/>
+	<input type="hidden" name="orderField" value="{$order}" />
+	<input type="hidden" name="orderDirection" value="{$sort}" />
+	<input type="hidden" name="name" value="{$name}"/>
+	<input type="hidden" name="code" value="{$code}" />
+	
+</form>
+
+<div class="pageHeader">
+	<form rel="pagerForm" method="post" action="__URL__/lookupsupplier/prodid/{$prodid}" onsubmit="return dwzSearch(this, 'dialog');">
+	
+	<div class="searchBar">
+		<ul class="searchContent">
+			<li>
+				<label>供应商名称:</label>
+				<input class="textInput" name="name" value="{$name}" type="text">
+			</li>	  
+			<li>
+				<label>供应商编码:</label>
+				<input class="textInput" name="code" value="{$code}" type="text">
+			</li>
+		</ul>
+		<div class="subBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">查询</button></div></div></li>
+			</ul>
+		</div>
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+
+	<table class="table" layoutH="118" targetType="dialog" width="100%">
+		<thead>
+			<tr>
+				<th orderfield="name">供应商名称</th>
+				<th orderfield="code">供应商编码</th>
+				<th>查找带回</th>
+			</tr>
+		</thead>
+		<tbody>
+			<volist name="list" id="volist">
+				<tr>
+					<td>{$volist['name']}</td>
+					<td>{$volist['code']}</td>
+					<td>
+					<a class="btnSelect" href="javascript:<literal>$.bringBack({</literal>id:'{$volist['id']}',sid:'{$volist['id']}', name:'{$volist['name']}', code:'{$volist['code']}'<literal>})</literal>" title="查找带回">选择</a>
+				</td>
+				</tr>
+			</volist>
+		</tbody>
+	</table>
+
+	<div class="panelBar panelPageBar">
+		<div class="pages">
+		
+			<span>共{$totalCount}条</span>
+		</div>
+		<div class="pagination" targetType="dialog" totalCount="{$totalCount}" numPerPage="{$numPerPage}" pageNumShown="10" currentPage="{$currentPage}"></div>
+	</div>
+</div>

@@ -1,0 +1,75 @@
+<link href="__PUBLIC__/Css/tmlstyle/tml.css" rel="stylesheet" type="text/css" media="screen"/>
+<div class="pageContent">
+	<div class="pageFormContent new_basis_archives_page">
+		<div class="new_version_page_content" style="width: calc(100% - 4px);padding:0;">
+					<div class="into_table_lay">
+				<div class="into_table_title">项目详细信息</div>
+				<table class="into_table_new nbm_data_table"   table_type="view">
+					<thead>
+						<tr>
+							<th>序号</th>
+							<th>项目编码</th>
+							<th>客户名称</th>
+							<th>项目名称</th>
+							<th>主调</th>
+							<th>行业名称</th>
+							<th>产业链名称</th>
+							<th>项目阶段</th>
+							<th>项目金额</th>
+							<th>已放款金额</th>
+							<th>在保金额</th>
+							<th>申请金额</th>
+							<th>申请业务期限</th>
+						</tr>
+						</thead>
+						<tbody>
+						<volist name="list" id="vo" key="j">
+						<tr <if condition="$vo['count']">style="background:yellow"</if>>
+						<!--$vo['isline']---判断是否第一行  rowspan="{$list['list'][$deptvo]['sumcount']['count']+2}" -->
+						<td>
+						{$j}
+						</td>
+						<td>
+						{$vo.xiangmubianma}
+						</td>
+						<td>
+						{$vo.kehumingchen}
+						 </td>
+						<td>
+						{$vo.xiangmumingchen}
+						</if>
+						<td>
+						{$vo.zhudiao|getFieldBy='id','name','user'}
+						</td>
+						<td>
+						{$vo.hangye}
+						</td>
+						<td >
+						{$vo.chanyelian}
+						 </td>
+						<td>
+						{$vo.jieduan}
+						</td>
+						<td>
+						{$vo['amount']|getDigits}
+						</td>
+						<td>
+						{$vo['yiamount']|getDigits}
+						</td>
+						<td>
+						{$vo['zaiamout']|getDigits}
+						</td>
+						<td>
+						{$vo['shenamount']|getDigits}
+						</td>
+						<td>
+						{$vo['shenqixian']}
+						</td>
+						</tr>
+						</volist>
+					</tbody>
+					</table>
+					</div>
+			</div>
+		</div>
+	</div>														

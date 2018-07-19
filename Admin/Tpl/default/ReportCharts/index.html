@@ -1,0 +1,95 @@
+<style>
+.clear{ clear:both;}
+.all_new{ float:left; width:220px;}
+.all_new_1{ padding-left:200px; padding-top:20px; width:635px; float:left;}
+.subBar{ float:right; padding-top:5px;}
+#chart_data_1{ padding-left:50px; padding-top:10px;}
+.xz_new{ float:right;}
+.zb_new{ padding-left:10px;}
+.zb_new p{ padding-top:10px; padding-bottom:5px;}
+.x_zb{ width:200px; height:100px; border:1px solid #b8d0d6; padding:5px; overflow-y:auto; overflow-x:hidden;}
+.x_zb_1{ width:200px; height:20px;}
+.x_zb_1 span{ padding-left:5px;}
+
+</style>
+<script language="javascript">
+$(function(){
+	var reporttype = {$reporttype};
+	var url = "__URL__/lookupgetCharts/reporttype/"+reporttype;
+	var x = $(":input[name=x]").val();
+	var y = $(":input[name=y]").val();
+	var series = $(":input[name=series]").val();
+	url = url+'/x/'+x+'/y/'+y+'/series/'+series;
+	var swf = '{$selected}';
+	chart("__PUBLIC__/Charts/"+swf+".swf","chart_data_1",url,"600", "250");
+	$('#select_chart').change(function(){
+		var reporttype = {$reporttype};
+		var url = "__URL__/lookupgetCharts/reporttype/"+reporttype;
+		var x = $(":input[name=x]").val();
+		var y = $(":input[name=y]").val();
+		var series = $(":input[name=series]").val();
+		var swf = $(this).val();
+		url = url+'/x/'+x+'/y/'+y+'/series/'+series;
+		chart("__PUBLIC__/Charts/"+swf+".swf","chart_data_1",url,"600", "250");
+	});
+});
+</script>
+<div class="pageContent" layoutH="0">
+
+<form onsubmit="return navTabSearch(this);"
+	action="__URL__/index/reporttype/{$reporttype}" method="post">
+	<input type="hidden" name="x" value="{$x}">
+	<input type="hidden" name="y" value="{$y}">
+	<input type="hidden" name="series" value="{$series}">
+<div class="all_new">
+	<div class="zb_new">
+		<p>X坐标选择：</p>
+        <div class="x_zb">
+            <volist id="vo" name="xarr"> 
+                <div class="x_zb_1"><input type="radio" <eq name='x' value="$vo['code']"> checked </eq> name="xarr" value="{$vo['code']}"><span>{$vo['name']}</span></div>
+            </volist>
+        </div>
+		<p>Y坐标选择：</p>
+        <div class="x_zb">
+            <volist id="vo" name="yarr">
+                <div class="x_zb_1"><input type="radio" <eq name='y' value="$vo['code']"> checked </eq> name="yarr" value="{$vo['code']}"><span>{$vo['name']}</span></div> 
+            </volist>
+        </div>
+		<p>系列选择：</p>
+        <div class="x_zb">
+            <div class="x_zb_1"><input type="radio" name="seriesarr" <eq name='series' value=""> checked </eq> value=""><span>不选择</span></div>
+            <volist id="vo" name="seriesarr">
+                <div class="x_zb_1"><input type="radio" name="seriesarr" <eq name='series' value="$vo['code']"> checked </eq> value="{$vo['code']}"><span>{$vo['name']}</span></div> 
+            </volist>
+        </div>
+	</div>
+	<div class="subBar">
+		<ul>
+			<li>
+				<div class="buttonActive">
+					<div class="buttonContent">
+						<button type="submit">{$Think.lang.subsearch}</button>
+					</div>
+				</div>
+			</li>
+		</ul>
+	</div>
+</div>
+</form>
+<div class="all_new_1">
+    <table class="xz_new">
+        <tr>
+            <td align="left">
+                <div>
+                    <select name="select" id="select_chart">
+                        <volist id="vo" name="selectlist">
+                            <option <eq name="selected" value="$vo['swf']"> selected </eq> value="{$vo['swf']}">{$vo['name']}</option>
+                        </volist>
+                    </select>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <div id="chart_data_1"></div>
+</div>
+</div>

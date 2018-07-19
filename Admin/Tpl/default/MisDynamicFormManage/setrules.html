@@ -1,0 +1,273 @@
+<style type="text/css">
+    .rules-l-btn{
+        display: inline-block;
+        margin: 0 auto;
+        border: 1px solid #d8d8d8;
+        height: 30px;
+        line-height: 30px;
+        border-radius: 4px;
+        outline: none;
+        margin-bottom: 10px;
+        padding:0 10px;
+        cursor: pointer;
+    }
+    #par_ul{border:1px solid #d8d8d8;margin: 10px 10px;float:left;}
+    #par_ul li{ line-height:30px;border-top: 1px solid #d8d8d8;padding:0 20px;}
+    #par_ul li div{ display: inline-block;width:80%;}
+    #par_ul li .check_par{
+        border-radius: 4px;
+        text-align: center;
+        color: #fff;
+        background: #03a9f4;
+        padding: 3px 6px;
+        margin-right: 5px;
+        cursor: pointer;
+    }
+    #par_ul li .edit_par{
+        border-radius: 4px;
+        text-align: center;
+        color: #fff;
+        background: #03a9f4;
+        padding: 3px 6px;
+        margin-right: 5px;
+        cursor: pointer;
+    }
+    #par_ul li .del_par{
+        border-radius: 4px;
+        text-align: center;
+        color: #fff;
+        background: #e1455e;
+        padding: 3px 6px;
+        cursor: pointer;
+    }
+    .add_result_ul li{display: inline-block;}
+    .add_result_ul li span{display: inline-block;width:100%;height:100%;}
+</style>
+<script type="text/javascript">
+    (function ($) {
+        $.fn.extend({
+            insertAtCaret: function (myValue) {
+                var $t = $(this)[0];
+                if (document.selection) {
+                    this.focus();
+                    sel = document.selection.createRange();
+                    sel.text = myValue;
+                    this.focus();
+                } else
+                if ($t.selectionStart || $t.selectionStart == '0')
+                {
+                    var startPos = $t.selectionStart;
+                    var endPos = $t.selectionEnd;
+                    var scrollTop = $t.scrollTop;
+                    $t.value = $t.value.substring(0, startPos) + myValue + $t.value.substring(endPos,$t.value.length);
+                    this.focus();
+                    $t.selectionStart = startPos + myValue.length;
+                    $t.selectionEnd = startPos + myValue.length;
+                    $t.scrollTop = scrollTop;
+                } else {
+                    this.value += myValue;
+                    this.focus();
+                }
+            }
+        })
+    })(jQuery) ;
+    $(function(){
+        $(".add_result_ul li span",$("#setrules_form")).on('click',function(){
+            var sym=$(this).data('sym');
+            if(sym){
+                $("#ve_rules",$("#setrules_form")).insertAtCaret(sym);
+            }
+        });
+        $(".rules-l-btn",$("#setrules_form")).on('click',function(){
+            var dtype=$(this).data("type");
+            if(dtype){
+                if(dtype=='control'){
+                    var title = "字段值选择";
+                    var rel = "controlval";
+                    options = {width:360,height:260,mask:true};
+                    options.param={myform:'controlval',parentform:'setrules_form',parentctr:'par_ul'};
+                    var url="__URL__/controlval";
+                    DWZ.debug(url);
+                    $.pdialog.open(url,rel,title,options);
+                }
+                if(dtype=='api'){
+                    var title = "接口设置";
+                    var rel = "apival";
+                    options = {width:900,height:500,max:true,mask:true};
+                    options.param={myform:'apival',parentform:'setrules_form',parentctr:'par_ul'};
+                    var url="__URL__/apival";
+                    DWZ.debug(url);
+                    $.pdialog.open(url,rel,title,options);
+                }
+                if(dtype=='sp'){
+                    var title = "存储过程设置";
+                    var rel = "spval";
+                    options = {width:900,height:500,max:true,mask:true};
+                    options.param={myform:'spval',parentform:'setrules_form',parentctr:'par_ul'};
+                    var url="__URL__/spval";
+                    DWZ.debug(url);
+                    $.pdialog.open(url,rel,title,options);
+                }
+                if(dtype=='att'){
+                    var title = "跨表取数";
+                    var rel = "attval";
+                    options = {width:900,height:500,max:true,mask:true};
+                    options.param={myform:'attval',parentform:'setrules_form',parentctr:'par_ul'};
+                    var url="__URL__/attval";
+                    DWZ.debug(url);
+                    $.pdialog.open(url,rel,title,options);
+                }
+            }
+        });
+        $("#save_ve_rules",$("#setrules_form")).on('click',function(){
+            var contr={$contr};
+            var sort=$("#ve_sort",$("#setrules_form")).val();
+            var rules=$("#ve_rules",$("#setrules_form")).val();
+            var pars=$("input[name='pars[]']");
+            var parstr="";
+            $.each(pars, function(index, value, array) {
+                if(index+1<pars.length) {
+                    parstr += value.value + ",";
+                }else{
+                    parstr += value.value ;
+                }
+            });
+            if(!rules){
+                alertMsg.error('你未设置规则');
+                return false;
+            }
+            //逻辑规则
+            if(contr==1){
+                $("input[name='ve_rules[" + sort + "]']", $("#valedit_form")).val(rules);
+                $("input[name='ve_par[" + sort + "]']", $("#valedit_form")).val(parstr);
+                $.pdialog.close('setrules_form');
+            }
+            //结果规则
+            if(contr==2){
+                $("input[name='ve_res_rules["+sort+"]']",$("#valedit_form")).val(rules);
+                $("input[name='ve_res_par["+sort+"]']",$("#valedit_form")).val(parstr);
+                $.pdialog.close('setrules_form');
+            }
+        });
+    });
+    //选择参数
+    function check_par(obj){
+        var par_name=$(obj).data('key');
+        $("#ve_rules",$("#setrules_form")).insertAtCaret(par_name);
+    }
+    //移除参数
+    function remove_par(obj,parname){
+        if(parname){
+            $.ajax({
+                url: '__URL__/removepar',
+                type: 'post',
+                data: {parname:parname},
+                success: function(data){
+                    var res=eval("("+data+")");
+                    if(res.status==1){
+                        $("#"+res.data,$("#setrules_form")).remove();
+                    }else {
+                        alertMsg.error(res.message);
+                    }
+                }
+            });
+        }
+
+    }
+    //修改参数
+    function edit_par(name,type){
+        if(name&&type){
+            if(type=='control'){
+                var title = "字段值选择";
+                var rel = "controlval";
+                options = {width:360,height:260,mask:true};
+                options.param={myform:'controlval',parentform:'setrules_form',parentctr:'par_ul',par_name:name};
+                var url="__URL__/controlval";
+                DWZ.debug(url);
+                $.pdialog.open(url,rel,title,options);
+            }
+            if(type=='api'){
+                var title = "接口设置";
+                var rel = "apival";
+                options = {width:900,height:500,max:true,mask:true};
+                options.param={myform:'apival',parentform:'setrules_form',parentctr:'par_ul',par_name:name};
+                var url="__URL__/apival";
+                DWZ.debug(url);
+                $.pdialog.open(url,rel,title,options);
+            }
+            if(type=='sp'){
+                var title = "存储过程设置";
+                var rel = "spval";
+                options = {width:900,height:500,max:true,mask:true};
+                options.param={myform:'spval',parentform:'setrules_form',parentctr:'par_ul',par_name:name};
+                var url="__URL__/spval";
+                DWZ.debug(url);
+                $.pdialog.open(url,rel,title,options);
+            }
+            if(type=='tables'){
+                var title = "跨表取数";
+                var rel = "attval";
+                options = {width:900,height:500,max:true,mask:true};
+                options.param={myform:'attval',parentform:'setrules_form',parentctr:'par_ul',par_name:name};
+                var url="__URL__/attval";
+                DWZ.debug(url);
+                $.pdialog.open(url,rel,title,options);
+            }
+        }
+    }
+</script>
+<div class="page">
+    <div class="pageContent">
+        <form method="post" id="setrules_form" action="__URL__/setrules" class="pageForm required-validate">
+            <div class="pageFormContent" layoutH="40" style="width:90%;">
+                <div class="" style="width:100%;float:left;margin: 0 10px;">
+                    <a class="rules-l-btn" data-type="control"><span>控件值</span></a>
+                    <a class="rules-l-btn" data-type="api"><span>接口值</span></a>
+                    <a class="rules-l-btn" data-type="sp"><span>存储过程</span></a>
+                    <a class="rules-l-btn" data-type="att"><span>跨表取数</span></a>
+                </div>
+                <ul id="par_ul" style="display: block;width:90%">
+                    <li><div style="font-size:16px;font-weight: bold;">参数设置 </div></li>
+                    <if condition="$pars">
+                        <foreach name="pars" item="par">
+                            <li id="{$par['name']}">
+                                <div>
+                                    {$par['content']}
+                                    <input type="hidden" name="pars[]" value="{$par['name']}"/>
+                                </div>
+                                <a class="check_par" data-key="{$par['name']}" onclick="check_par(this)">选择</a>
+                                <a class="edit_par" onclick="edit_par('{$par['name']}','{$par['type']}')">修改</a>
+                                <a class="del_par" onclick="remove_par(this,'{$par['name']}')">移除</a>
+                            </li>
+                        </foreach>
+                    </if>
+                </ul>
+                <ul class="add_result_ul" style="float:left;width:100%;text-align: center;">
+                    <li><span data-sym="+"> + </span></li>
+                    <li><span data-sym="-"> - </span></li>
+                    <li><span data-sym="*"> * </span></li>
+                    <li><span data-sym="/"> / </span></li>
+                    <li><span data-sym="()"> ()</span></li>
+                    <li><span data-sym="=="> = </span></li>
+                    <li><span data-sym="&&"> && </span></li>
+                    <li><span data-sym="||">||</span></li>
+                    <li><span data-sym=">"> > </span></li>
+                    <li><span data-sym=">="> >= </span></li>
+                    <li><span data-sym="<"> < </span></li>
+                    <li><span data-sym="<="> <= </span></li>
+                    <li><span data-sym="!="> != </span></li>
+                </ul>
+            <div class="add_result_right" style="width:90%;">
+                <input type="hidden" id="ve_sort" value="{$ve_sort}"/>
+                <textarea class="" name="ve_rules" id="ve_rules" style="max-height:200px;margin:10px;">{$rcon}</textarea>
+            </div>
+            <div class="formBar">
+                <ul>
+                    <li><button type="button" id="save_ve_rules" class="tml_formBar_btn tml_formBar_btn_blue enterIndex">保存</button></li>
+                    <li><button onclick="javascript:$.pdialog.close('setrules_form');" class="tml_formBar_btn tml_formBar_btn_red enterIndex" type="button">关闭</button></li>
+                </ul>
+            </div>
+            </div>
+        </form>
+    </div>
+</div>

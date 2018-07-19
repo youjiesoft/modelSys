@@ -1,0 +1,134 @@
+<script>
+	//定位当前容器
+	function addmfem_append_htmlapplication() {
+		var $box = $.pdialog.getCurrent();
+		var html = '<tr>\
+			<td><input name="arr_nd[]" class="gangwei_d xytdinput textInput" type="text"  style="float:none; border:0px;" readonly/></td>\
+			<td><select name="arr_typeid[]" class="combox"><option selected value="">&mdash;&mdash;选择&mdash;&mdash;</option>
+				<volist id="vot" name="TypesList"><option  value="{$vot['id']}">{$vot.name}</option></volist></select></td>\
+			<td><input name="arr_content[]" class="gangwei_d xytdinput textInput" type="text" style="float:none; border:0px;"/></td>\
+			<td><input name="arr_apamount[]" onblur="addmfem_getApamount();" class="gangwei_d xytdinput textInput" type="text" style="float:none; border:0px;"/></td>\
+			<td><a href="javascript:;" onclick="addmfem_delete_htmlapplication(this);"><strong>移除</strong></a></td>\
+		</tr>';
+		var $ht = $(html).initUI();
+		$("#misfinanceexpensesmas_tr_add").before($ht);
+		//重新计算ND
+		$box.find("input[name='arr_nd[]']").each(function(i) {
+			$(this).val(i + 1);
+		});
+	}
+	//移除明细焦点，自动计算金额
+	function addmfem_getApamount() {
+		$box = $.pdialog.getCurrent();
+		var val = 0;
+		var valstr = "0";
+		$box.find("input[name='arr_apamount[]']").each(function() {
+			var valtmp = $(this).val();
+			if (valtmp != '') {
+				valtmp = Number(valtmp.replace(/,/g, ""));
+				$(this).val(FormatN(valtmp));
+				valstr += "+" + valtmp;
+				//val = comboxMathematicalOperation(val, valtmp,0,6,',');
+			}
+		});
+		val = comboxMathematicalOperation(valstr, 3, ',');
+		var ret = $.numberRecover({number:val,dw:['分','角','元','拾','佰','仟','万','十','百','千','亿'],dwC : '<span style="color:red;padding:0px 10px;font-size:14px;"></span>',zfC : '<span style="color:black;font-size:14px;"></span>'});
+		$("#amountDX").html(ret);
+		$("#amount").val(val);
+	}
+	function addmfem_delete_htmlapplication(obj) {
+		var $box = $.pdialog.getCurrent();
+		$(obj).parent().parent().remove();
+		//重新计算ND
+		$box.find("input[name='arr_nd[]']").each(function(i) {
+			$(this).val(i + 1);
+		})
+		//重新计算金额
+		addmfem_getApamount();
+	}
+</script>
+<div class="page">
+    <div class="pageContent dialog-default">
+       <form method="post" action="__URL__/insert/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,dialogAjaxDone);">
+			<input type="hidden" name="dotype" value="流程新建" />
+			<input type="hidden" name="beforeInsert" value="1" />
+			<input type="hidden" name="refreshtabs[closeall]" value="1" />
+			<input type="hidden" value="dialog" name="refreshtabs[type]">
+            <h2 class="contentTitle contentTitle_center">费用报销{:W('ShowFlow')}
+				
+			</h2>
+            <div class="pageFormContent applecloth" layoutH="101">
+            	<div class="tml-row">
+            	{:W('ShowOrderno',array(1,'mis_finance_expenses_mas'))}
+            		<div class="tml-form-col">
+            			<label>报销时间：</label>
+            			<div class="tml-input-append">
+							<input type="text" readonly="readonly" value="{$time|transTime}">
+							<a href="javascript:;" class="input-addon input-addon-calendar">选择</a>
+						</div>
+            		</div>
+            		<div class="tml-form-col">
+            			<label>报销人：</label>
+            			<input type="text" readonly="readonly" value="{$uid|getfieldby='id','name','user'}"/>
+            		</div>
+            		<div class="tml-form-col">
+						<label>付款方式：</label>
+						<select name="paymethodid" class="combox" >
+							{:getSelectByHtml('expensespaymethod')}
+						</select>
+					</div>
+					<div class="tml-form-col">
+						<label>费用归属：</label>
+						<select name="deptid" class="combox">
+							<volist name="deptlist" id="vo">
+								<option <if condition="$vo.id eq $deptid">selected</if> value="{$vo.id}">{$vo.name}</option>
+							</volist>
+						</select>
+					</div>
+            	</div>
+            	<div class="dialog-box">
+	                <table class="data-table" cellspacing="0" id="misfinanceexpensesmas_ex_add" width="100%">
+	                    <thead>
+	                        <tr>
+	                            <td style="width:30px;"><strong>序号</strong></td>
+	                            <td style="width:100px;"><strong>费用类</strong></td>
+	                            <td><strong>内容</strong></td>
+	                            <td style="width:65px;"><strong>金额</strong></td>
+	                            <td style="width:30px;"><a href="javascript:;"  onclick="addmfem_append_htmlapplication();"><strong>添加</strong></a></td>
+	                        </tr>
+	                    </thead>
+	                    <tbody>
+	                        <tr>
+	                            <td> <input type="text" class="gangwei_d xytdinput" name="arr_nd[]"  value="1" readonly /></td>
+	                            <td>
+									<select name="arr_typeid[]" class="combox">
+										<option selected value="">&mdash;&mdash;选择&mdash;&mdash;</option>
+										<volist id="vot" name="TypesList">
+											<option  value="{$vot['id']}">{$vot.name}</option>
+										</volist>
+									</select>
+								</td>
+								<td><input type="text" class="gangwei_d xytdinput"  name="arr_content[]" value="" /></td>		
+	                            <td><input type="text" class="gangwei_d xytdinput" name="arr_apamount[]"  onblur="addmfem_getApamount();" value="" /> </td>                                
+	                            <td><a href="javascript:;" onclick="addmfem_delete_htmlapplication(this);"><strong>移除</strong></a></td>
+	                        </tr>
+	                        <tr id="misfinanceexpensesmas_tr_add">
+	                        	<td>
+	                        		<input type="text" class="gangwei_d xytdinput" readonly="readonly" value="合计"/>
+	                        	</td>
+	                        	<td colspan="2" style="text-align: center;color:red;font-size:14px;">
+	                        		<span id="amountDX">零<span style="color:black;padding:0px 10px;">元</span>零<span style="color:black;padding:0px 10px;">角</span>零<span style="color:black;padding:0px 10px;">分</span></span>
+	                        	</td>
+	                        	<td>
+	                        		<input type="text" name="grossamount" class="gangwei_d xytdinput" readonly="readonly" id="amount"/>
+	                        	</td>
+	                        	<td><span></span></td>
+	                        </tr>
+	                    </tbody>
+	                </table>
+	            </div>
+            </div>
+            {:W('ShowAction')}
+        </form>
+    </div>
+</div>

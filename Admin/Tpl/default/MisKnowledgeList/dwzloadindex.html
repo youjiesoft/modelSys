@@ -1,0 +1,66 @@
+<script>
+//链接    文章浏览
+function knowledgelistlook(ids,title){
+	navTab.openTab("__MODULE__view","__URL__/view/id/"+ids,{title:title, fresh:true});
+	return false;
+}
+</script>
+<volist id="vo" name="list">
+<div class="xyqa-main-item">
+	<h2><span class="xyqa-favoriting" style="color:skyblue;">
+			<if condition="$vo['levels'] eq 1">A级</if>
+			<if condition="$vo['levels'] eq 2">B级</if>
+			<if condition="$vo['levels'] eq 3">C级</if>
+			<if condition="$vo['levels'] eq 4">D级</if>
+		</span>
+		<input type="hidden" name="ids" value="{$vo['id']}">
+		<span class="xyqa-title"><a class="" href="javascript:;" onclick="return parent.knowledgelistlook('{$vo['id']}','{$vo['title']}');">{$vo['title']}</a></span>
+	</h2>
+	<div class="xyqa-view clearfix">
+		<div class="xyqa-voting">
+			<div>
+				<if condition="$vo.picture">
+					<img src="__PUBLIC__/Uploads/{$vo.picture}" style="width: 59px;height:59px;"/>
+				<else/>
+					<img src="__PUBLIC__/Images/xyimages/xyheader_image.jpg" alt="暂无图片" style="width: 59px;height:59px;"/>
+				</if>
+			</div>
+		</div>
+		
+		<div class="xyqa-view-main" >
+			<div class="xyqa-view-content" style="text-indent: 2em;Line-height:20px">{$vo['content']}</div>
+			<div class="clearfix">
+				<div class="xyqa-q-view-buttons" >
+					<input type="submit" onmouseout="this.className='xyqa-form-light-button xyqa-form-light-button-flag';" onmouseover="this.className='xyqa-form-light-hover xyqa-form-light-hover-flag';" class="xyqa-form-light-button xyqa-form-light-button-flag" title="推广操作" value="推广操作" onclick="return parent.openknowleddo({$vo['id']});">&nbsp;
+					<a class="" href="javascript:;" onclick="return parent.knowledgelistlook('{$vo['id']}','{$vo['title']}');">
+						<input type="button" class="xyqa-form-light-button" title="评论此文章" value="评论({$countlist[$key]})">
+					</a>
+					<input type="hidden" value="" name="qa_click">&nbsp;&nbsp;
+				</div>
+				<span class="xyqa-q-view-avatar-meta">
+					<span class="xyqa-q-view-meta">
+						<span class="xyqa-q-view-what">发布时间:</span>
+						<span class="xyqa-q-view-when">
+							<span class="xyqa-q-view-when-data">
+								<span class="xypublished">{$vo['createtime']|timeDiff=###}</span>
+							</span>
+						</span>&nbsp;&nbsp;
+						<span class="xyqa-q-view-where">
+							<span class="xyqa-q-view-where-pad">分类:</span>
+							<span class="xyqa-q-view-where-data">
+								<a class="xyqa-category-link proRel qa-nav-cat-link" rel="knowleagelistBox" target="ajax" href="__URL__/index/frame/1/categoryid/{$vo['categoryid']}">{$vo['typename']}</a>
+							</span>
+						</span>&nbsp;&nbsp;
+						<span class="xyqa-q-view-who">
+							<span class="xyqa-q-view-who-pad">作者:</span>
+							<span class="xyqa-q-view-who-data">
+								<a class="xyqa-user-link" rel="knowleagelistBox" target="ajax"  href="__URL__/index/frame/1/createid/{$vo['createid']}">{$vo['name']}{$count}</a>
+							</span>
+						</span>
+					</span>
+				</span>
+			</div>
+		</div>
+	</div>
+</div>
+</volist>

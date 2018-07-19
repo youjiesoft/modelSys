@@ -1,0 +1,40 @@
+    <div class="pageContent">
+	    <div class="panelBar">
+		    <ul class="toolBar">
+		    <li><a class="add tml-btn tml_look_btn tml_mp" href="__APP__/MisSalePIIndicator/add/catalogid/0/linkid/{$vo.id}" target="navTab" title="新增"><span><span class="icon icon-plus icon_lrp"></span>新增</span></a></li></if>
+		    <li><a class="edit tml-btn tml_look_btn tml_mp" href="__APP__/MisSalePIIndicator/edit/id/{sid}" target="navTab" title="编辑"  warn="请选择属性"><span><span class="icon icon-edit icon_lrp"></span>编辑</span></a></li></if>		    
+		    <a title="确实要删除这些记录吗?" posttype="string" target="selectedTodo" callback="button_refresh" callbackdata="{ type:'dialog',tabid:'MisProductType',data:'{ id:{$vo.id} }',title:'产品分类',url:'__URL__/index' }" rel="id" href="__APP__/MisTypeformField/delete" class="delete"><span><span class="icon icon-trash icon_lrp"></span>批量删除</span></a>
+		    </li>
+		</ul>
+	    </div>
+	     <table class="table" width="100%"  >
+		<thead>
+			<tr>
+				<th width="25"><input type="checkbox" class="checkboxCtrl" group="id" /></th>
+				<th>排序</th>
+				<th>行业名</th>
+				<th>产业链名</th>
+				<th>指标编码</th>
+				<th>指标名称</th>
+				<th>备注</th>
+				<th>状态</th>
+				<th width="150">{$Think.lang.action}</th>
+			</tr>
+		</thead>
+		<tbody>
+		    <volist id="vos" name="list">
+			<tr target="sid" rel="{$vos['id']}" onclick="onTrClickCheckbox(this,'id'	)">
+				<td><input type="checkbox" name="id" value="{$vos['id']}" /></td>
+				<td>{$vos.sort}</td>
+				<td>{$vos.pname}</td>
+				<td>{$vos.iuname}</td>
+				<td>{$vos.orderno}</td>
+				<td>{$vos.name}</td>
+				<td>{$vos.remark}</td>
+				<td>{$vos.status}</td>
+				<td>{$vos['status']|showRelStatus=$vos['id'],'misproductypeBox'}</td>
+			</tr>
+		</volist>
+		</tbody>
+	</table>
+    </div>

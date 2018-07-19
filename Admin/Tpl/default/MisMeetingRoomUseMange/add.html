@@ -1,0 +1,237 @@
+<script>
+var box = navTab. getCurrentPanel();
+ function showam(obj){
+	 var tmldivs ;
+	 tmldivs = $(obj).find("#out").attr("checked");
+	if(tmldivs == "checked"){
+		 $(obj).parent().find("#fuc").show();
+	 }else{
+		 $(obj).parent().find("#fuc").hide();
+	 }
+ }
+ function turnaround(obj){
+	 var va = $(obj).val();
+	 //内部使用
+	 if(va == 1){
+		 $("#customertype", navTab.getCurrentPanel()).hide();
+		 $("#isfree",navTab.getCurrentPanel()).hide();
+		 $("#payamount",navTab.getCurrentPanel()).hide();
+	 }
+	 //外部免费
+	 if(va == 2){
+		 $("#customertype",navTab.getCurrentPanel()).show();
+		 $("#isfree",navTab.getCurrentPanel()).hide();
+		 $("#payamount",navTab.getCurrentPanel()).hide();
+	 }
+	 //外部收费
+	 if(va == 3){
+		 $("#customertype",navTab.getCurrentPanel()).show();
+		 $("#isfree",navTab.getCurrentPanel()).show();
+		 $("#payamount",navTab.getCurrentPanel()).show();
+	 }
+ }
+/*  $('#star_s').focus(function (){
+	    WdatePicker({maxDate:"#F{$dp.$D('star_o')}"});
+	}); */
+</script>
+<include file="Public:pagerForm" />
+	<div class="page">
+		<div class="pageContent">
+			<form method="post" action="__URL__/insert/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,navTabAjaxDone);">
+			<input type="hidden" name="id" value="{$vo.id}">
+			<input type="hidden" name="dotype" value="流程新建" />
+			<input type="hidden" name="beforeInsert" value="1" />
+			<input type="hidden" name="ostatus" value="{$vo['ostatus']}" />
+			<input type="hidden" name="refreshtabs[data]" value="1">
+			<input type="hidden" name="refreshtabs[url]" value="__MODULE__add">
+			<input type="hidden" name="objmodelname" value="MisMeetingRoom">
+			<input type="hidden" name="callbackType" value="closeCurrent">
+				<div class="pageFormContent applecloth anchorsToolBarParent" layoutH="56">
+						<div class="keepContentCenter">
+							<div class="contentTitle contentTitle_center">会议室申请信息
+								{:W('ShowAdvices',array('id'=>$vo['id']))}
+								
+							</div>
+							<fieldset class="side-catalog-anchor ">
+								<legend class="fieldset_legend_toggle side-catalog-firstanchor side-catalog-text"><b>基本信息</b></legend>
+                        	<div class="tml-row">
+                        	{:W('ShowOrderno',array(1,'mis_meeting_user_mange'))}
+									<div class="tml-form-col" >
+										<label>会&nbsp;议&nbsp;室：</label>
+										<div class="tml-input-append">
+											<input type="hidden" class="org.id" name="objid" value="" />
+											<input type="text" class="org.name" value=""  readonly="readonly"/>
+											<a class="input-addon input-addon-add " param="field=id,orderno,name,galleryful&model=MisMeetingRoom&conditions=status,1" href="__URL__/lookupGeneral" lookupGroup="org">会议室选择</a>
+										</div>
+									</div>
+									<div class="tml-form-col">
+										<label>容纳人数：</label>
+										<input type="text" name="" class="org.galleryful digits"  readonly="readonly" value="">
+									</div>
+									<div class="tml-form-col">
+										<label>申请单位：</label>
+										<input type="text" class="textInput required" name="organization" />
+									</div>
+									<div class="tml-form-col">
+										<label>联&nbsp;系&nbsp;人：</label>
+										<input type="text" class="textInput qq " name="linkman">
+									</div>
+									<div class="tml-form-col">
+										<label>联系电话：</label>
+										<input name="linktel" type="text" class="textInput" />
+									</div>
+									<div class="tml-form-col">
+										<label>负&nbsp;责&nbsp;人：</label>
+										<input type="text" class="textInput required" name="principal">
+									</div>
+								</div>
+							</fieldset>
+							<fieldset class="side-catalog-anchor">
+								<legend class="fieldset_legend_toggle side-catalog-text"><b>会议相关</b></legend>
+									<div class="tml-row">	
+										<!-- <div class="tml-form-col">
+											<label>会议室使用日期：</label>
+											<div class="tml-input-append">
+												<input class="Wdate js-wdate textInput valid" type="text" value="" name="meetingtime" format="{dateFmt:'yyyy-MM-dd'}" style="width:150px;">
+												<a class="input-addon input-addon-calendar" href="javascript:;">选择</a>
+											</div>
+										</div> -->
+										<!-- <div class="tml-form-col">
+											<label>申请日期：</label>
+											<div class="tml-input-append">
+												<input class="Wdate js-wdate textInput valid" type="text" value="" name="applicationdate" format="{dateFmt:'yyyy-MM-dd'}" style="width:150px;">
+												<a class="input-addon input-addon-calendar" href="javascript:;">选择</a>
+											</div>
+										</div> -->
+										<div class="tml-form-col">
+											<label>预计开始时间：</label>
+											<div class="tml-input-append">
+												<input class="Wdate js-wdate textInput valid required" id="star_s"  format="{dateFmt:'yyyy-MM-dd HH:mm'}"  type="text" value="" name="estimatedStrtime" />
+												<a class="input-addon input-addon-calendar" href="javascript:;">选择</a>
+											</div>
+										</div>
+										<div class="tml-form-col">
+											<label>预计结束时间：</label>
+											<div class="tml-input-append">
+												<input class="Wdate js-wdate textInput valid required" id="star_o"  format="{dateFmt:'yyyy-MM-dd HH:mm'}" onchange="checktime(this)" type="text" value="" name="estimatedEndtime"/>
+												<a class="input-addon input-addon-calendar" href="javascript:;">选择</a>
+											</div>
+										</div>
+										<if condition="$notice">
+											 <div class="tml-form-row">
+													<div class="tml-help-show"><font color="red">*&nbsp;{$notice}</font></div>
+											 </div>
+										</if>
+										<div class="tml-form-col">
+											<label>预计会议人数：</label>
+											<input name="estimatedcount" type="text" class="textInput required digits" />
+										</div>
+									</div>	
+	                               	<div class="tml-form-row">
+										<label>出席对象：</label>
+										<textarea name="attend"  class="textInput" ></textarea>
+	                                </div>
+	                                <div class="tml-form-row">
+										<label>使用情况：</label>
+										<textarea name="usage"  class="textInput" ></textarea>
+	                                </div>
+	                                <div class="tml-form-row">
+										<label>会议名称及内容：</label>
+										<textarea name="meetingrelated"  class="textInput" ></textarea>
+	                                </div>
+							</fieldset>
+							<fieldset class="side-catalog-anchor">
+								<legend class="fieldset_legend_toggle side-catalog-text"><b>费用情况</b></legend>
+									<div class="tml-form-col">
+											<label>内/外部使用：</label>
+											<select class="combox" name="scope" onchange="turnaround(this)">
+												<option value="1" selected="selected">内部使用</option>
+												<option value="2">外部免费</option>
+												<option value="3">外部收费</option>
+											</select>
+									</div>
+									<div class="tml-row" style="display:none;" id="customertype">
+										<div class="tml-form-col" >
+											<label>客户类型：</label>
+											<input name="customertype" type="radio" value="1" checked="checked"/>协议客户 &nbsp; &nbsp; &nbsp;
+											<input name="customertype" type="radio" value="2"/>临时客户
+										</div>
+									</div>
+									<div class="tml-row" style="display:none;" id="isfree">	
+										<div class="tml-form-col" id="fuc">
+											<label>收费金额：</label>
+											<span class="xyInputWithUnit">
+												<input class="required textInput valid" type="text" value="0.00" onblur="FormatNumber(this);countfixationaddamount();" name="amount">
+												<span class="input-addon-unit" title="元">元</span>
+											</span>
+										</div>
+									</div>	
+									<div class="tml-row" style="display:none;" id="payamount">	
+										<div class="tml-form-col">
+											<label>已付金额：</label>
+											<span class="xyInputWithUnit">
+												<input class="required textInput valid" type="text" value="0.00" onblur="FormatNumber(this);countfixationaddamount();" name="prepaid">
+												<span class="input-addon-unit" title="元">元</span>
+											</span>
+										</div>
+										<div class="tml-form-col">
+											<label>未付金额：</label>
+											<span class="xyInputWithUnit">
+												<input class="required textInput valid" type="text" value="0.00" onblur="FormatNumber(this);countfixationaddamount();" name="unpaid">
+												<span class="input-addon-unit" title="元">元</span>
+											</span>
+										</div>
+									</div>	
+							</fieldset>
+							<fieldset class="side-catalog-anchor">
+								<legend class="fieldset_legend_toggle side-catalog-text">
+									<b>会场要求</b>
+								</legend><table cellspacing="0" class="data-table">
+								<thead>
+									<tr>
+										<td><strong>物品名称</strong></td>
+										<td><strong>数量</strong></td>
+										<td style="width:300px;"><strong>备注</strong></td>
+										</tr>
+								</thead>
+								<tbody>
+									<volist name="MisMeetingRoomUrgedList" id="MisMeetingRoomUrgedVo">
+										<tr>
+											<td>{$MisMeetingRoomUrgedVo} <input type="hidden" name="useid[]" value="{$key}"></td>
+											<td><input type="text"  name ="useqty[]" value="" class="xytdinput textInput digits"></td>
+											<td><input type="text"  name="useremark[]"  class="xytdinput textInput"></td>
+										</tr>
+									</volist>
+								</tbody>
+							</table>
+						</fieldset>
+						<fieldset class="side-catalog-anchor">
+								<legend class="fieldset_legend_toggle side-catalog-text">
+									<b>备注</b>
+								</legend>
+								 <div class="tml-form-row">
+										<label>备注：</label>
+										<textarea name="remark"  class="textInput" ></textarea>
+	                            </div>
+						</fieldset>
+						 <fieldset class="side-catalog-anchor"> 
+							<legend class="fieldset_legend_toggle side-catalog-text"><b>制单信息</b></legend>
+							<div class="tml-row">
+								<div class="tml-form-col">
+									<label>制单人：</label>
+									<input type="hidden" style="color:black;" name="createid" value="{$Think.SESSION.loginUserId}"/>
+							   		<input type="text" class="textInput" readonly="readonly" value="{$Think.SESSION.loginUserName}"/>
+								</div>
+								<div class="tml-form-col">
+									<label>制单时间：</label>
+							   		 <input type="text" class="textInput" value="{$time|transtime}" readonly="readonly" />
+							   		 <input type="hidden" value="{$time}" name="createtime"/>
+								</div>
+							</div>
+						</fieldset>
+                	 </div>
+                	 </div>
+                	 {:W('ShowAction')}
+            		</form>
+			</div>
+		</div>	

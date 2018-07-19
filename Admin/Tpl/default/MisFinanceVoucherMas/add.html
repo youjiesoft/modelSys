@@ -1,0 +1,242 @@
+<script>
+	var $box= navTab.getCurrentPanel();
+	var $firsttr=$box.find("#vouchermas_add tr.defaulttr:first");
+	var counttr=$box.find("#vouchermas_add tbody tr td a.btnDel").length-1;
+	var cur_tr=0;
+	$box.find("#vouchermas_add a.btnDel").bind('click',function(){
+		//counttr--;
+		var fnum=$(this).parents("tr").find("input.fnum").val();
+		$box.find("#voucher_add_t input.fsubnum").each(function(){
+			var v=$(this).val();
+			if(v==fnum){
+				$(this).parents("tr").remove();
+			}	
+		});
+		
+		$(this).parents("tr").remove();
+		return false;
+	});
+	$box.find("#vouchermas_add a.btnAdd").bind('click',function(){
+		var b=$box.find("#vouchermas_add tbody tr:last");
+		var a=$firsttr.clone(true);
+		a.find(":input").each(function(index){
+			var n=$(this).attr("name");
+			if(n=="fnum"){
+				$(this).val(counttr+1);
+			}
+			n=n+"arr["+counttr+"]";
+			$(this).attr("name",n);
+		});
+		counttr++;
+		cur_tr=counttr;
+		a.insertAfter(b);
+		$box.find("#vouchermas_add tr.defaulttr").css("display","");
+		$box.find("#vouchermas_add tr.defaulttr:first").css("display","none");
+		
+		$box.find("#voucher_add_t a.btnAdd").click();
+		$box.find("#voucher_add_t a.btnAdd").click();
+		$box.find("#voucher_add_t a.btnAdd").click();
+		
+		$box.find("#vouchermas_add tr").not(":first").each(function(){
+			var cur_tr2=$(this).find("input.fnum").val();
+			if(cur_tr2==counttr){
+				$(this).find("select").each(function(){
+					var $refCombox=$(this).parents("div.combox:first");
+					var s=$(this).clone();
+					s.insertAfter($refCombox);
+					$refCombox.remove();
+					$(s).trigger("change").combox();
+				});
+				
+			}
+			$box.find("#voucher_add_t input.fsubnum").each(function(){
+				var v=$(this).val();
+				if(v!=cur_tr2){
+					$(this).parents("tr").css("display","none");
+				}else{
+					$(this).parents("tr").css("display","");
+				}	
+			});
+		});
+		$("#vouchermas_add").cssTable();
+	});
+	
+	
+	$box.find("#vouchermas_add tr").not(":first").bind('click',function(){
+		var cur_tr=$(this).find("input.fnum").val();
+		$box.find("#voucher_add_t input.fsubnum").each(function(){
+			var v=$(this).val();
+			if(v!=cur_tr){
+				$(this).parents("tr").css("display","none");
+			}else{
+				$(this).parents("tr").css("display","");
+			}	
+		});
+	});
+	
+	
+	var $barfirsttr=$box.find("#voucher_add_t tr.defaulttr:first");
+	var countbartr=$box.find("#voucher_add_t tbody tr td a.btnDel").length-1;
+	$box.find("#voucher_add_t a.btnDel").bind('click',function(){
+		$(this).parents("tr").remove();
+		return false;
+	});
+	$box.find("#voucher_add_t a.btnAdd").bind('click',function(){
+		if(cur_tr==0){
+			alert("请先添加分录");
+			return false;
+		}
+		var b=$box.find("#voucher_add_t tbody tr:last");
+		var a=$barfirsttr.clone(true);
+		a.find(":input").each(function(index){
+			var n=$(this).attr("name");
+			if(n=="fsubnum"){
+				$(this).val(counttr);
+			}
+			n=n+"arr["+countbartr+"]";
+			$(this).attr("name",n);
+			
+		});
+		countbartr++;
+		a.insertAfter(b);
+		
+		$box.find("#voucher_add_t input.fsubnum").each(function(){
+			var v=$(this).val();
+			if(v!=cur_tr){
+				$(this).parents("tr").css("display","none");
+			}else{
+				$(this).parents("tr").css("display","");
+			}
+		});
+		
+		//$box.find("#voucher_add_t tr.defaulttr").css("display","");
+		//$box.find("#voucher_add_t tr.defaulttr:first").css("display","none");
+	});
+</script>
+<include file="Public:pagerForm" />
+<div class="page">
+	<div class="pageContent">
+		<form method="post" action="__URL__/insert/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,navTabAjaxDone);">
+			<input type="hidden" name="callbackType" value="closeCurrent">
+			<div class="pageFormContent applecloth" layoutH="56">
+				<div class="keepContentCenter">
+					<H2 class="contentTitle contentTitle_center">新增凭证</H2>
+					<fieldset>
+						<legend class="fieldset_legend_toggle">
+							<b>基本信息</b>
+						</legend>
+						<p>
+							<label>{$fields["fdate"]}:</label>
+							<input type="text"  class="tml-border-r0 Wdate required" onfocus="WdatePicker()" size="17"  name="fdate" value="">
+							<span class="input-addon input-addon-calendar"></span>
+						</p>
+						<p>
+							<label>{$fields["fyear"]}:</label><input  type="text"  format="yyyy"  name="fyear" class="date required" value="{$vo['fyear']}">
+						</p>
+						<p>
+							<label>{$fields["fperiod"]}:</label><input  type="text"  format="M"  name="fperiod" class="date required" value="{$vo['fperiod']}">
+						</p>
+						<p>
+							<label>{$fields["ftype"]}:</label>
+							<select name="ftype"  class="combox required">
+								<volist name="ftypelist" id="voftype">
+									<option value="{$voftype['name']}" >&mdash;&mdash;{$voftype['name']}&mdash;&mdash;</option>
+								</volist>
+							</select>
+						</p>
+					</fieldset>
+					<fieldset>
+						<legend class="fieldset_legend_toggle">
+							<b>分录</b>
+						</legend>
+						<table cellspacing="0" id="vouchermas_add"  width="100%" border="1"  bordercolor="#B8D0D6" style="border-collapse:collapse;margin:0 auto; text-align: center">				
+							<thead>
+								<tr>
+									<th><strong class="auto_w_h_text">{$fields["fnum"]}</strong></th>
+									<th><strong class="auto_w_h_text">{$fields["fsummary"]}</strong></th>
+									<th><strong class="auto_w_h_text">{$fields["faccountnum"]}</strong></th>
+									<th><strong class="auto_w_h_text">{$fields["fdebit"]}</strong></th>
+									<th><strong class="auto_w_h_text">{$fields["fcredit"]}</strong></th>
+									<th><strong class="auto_w_h_text">{$fields["currencycode"]}</strong></th>
+									<th><strong class="auto_w_h_text">{$fields["famount"]}</strong></th>
+									
+									<th width="28"><a href="javascript:;" class="btnAdd" title="添加"><strong>添加</strong></a></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr class="defaulttr" style="display:none;">
+									<td class="auto_w_h"><input type="text" readonly="readonly" class="fnum" name="fnum"/></td>
+									<td class="auto_w_h"><input type="text" name="fsummary"/></td>
+									<td class="auto_w_h">
+										<input name="faccountnum" class="checkByInput" type="text" checkfor="MisFinanceAmountTitle" insert="name" show="code" />
+										
+										 
+										<input name="faccountname" type="hidden" />
+										
+									</td>
+									<td class="auto_w_h">
+										<input check_key="fdebit"  name="fdebit" type="text" />
+									</td>
+									<td class="auto_w_h">
+										<input check_key="fcredit"  name="fcredit" type="text" />
+									</td>
+									<td class="auto_w_h">
+										<select name="currencycode"  class="combox required">
+											<volist name="currencycodelist" id="curr">
+												<option value="{:$curr['code'].'----'.$curr['name']}" >{$curr['code']}-{$curr['name']}</option>
+											</volist>
+										</select>
+										
+									</td>
+									<td class="auto_w_h"><input type="text" name="famount"/></td>
+									
+									<td><a href="javascript:;" class="btnDel"><strong>移除</strong></a></td>
+								</tr>
+							</tbody>
+						</table>
+						
+					</fieldset>
+					
+					<fieldset>
+						<legend class="fieldset_legend_toggle">
+							<b>辅助账</b>
+						</legend>
+						 <table cellspacing="0" id="voucher_add_t"  width="100%" border="1"  bordercolor="#B8D0D6" style="border-collapse:collapse;margin:0 auto; text-align: center">
+							<thead>
+								<tr>
+									<th><strong class="auto_w_h_text">{$fields["fnum"]}</strong></th>
+									<th><strong class="auto_w_h_text">摘要</strong></th>
+									<th><strong class="auto_w_h_text">成本中心</strong></th>
+									<th><strong class="auto_w_h_text">金额</strong></th>
+									<th width="28"><a href="javascript:;" class="btnAdd" title="添加辅助账"><strong>添加辅助账</strong></a></th>
+								</tr>
+	
+							</thead>
+							<tbody>
+								<tr class="defaulttr" style="display:none;">
+									<td class="auto_w_h"><input type="text" readonly="readonly"  class="fsubnum" name="fsubnum"/></td>
+									<td class="auto_w_h"><input type="text" name="fsummarysub"/></td>
+									<td class="auto_w_h">
+										<input name="costcentername" class="checkByInput" type="text" checkfor="MisFinanceCostCenter" insert="code" show="name" />
+										<input name="costcentercode" type="hidden" />
+										
+									</td>
+									<td class="auto_w_h"><input type="text" name="fsubamount"/></td>
+									<td><a href="javascript:;" class="btnDel"><strong>移除</strong></a></td>
+								</tr>
+							</tbody>
+						</table>
+					</fieldset> 
+				</div>
+			</div>
+			<div class="formBar">
+				<ul>
+				<if condition="$_SESSION.a eq 1 or $_SESSION.misfinancevouchermas_insert">
+					<li><div class="buttonActive"><div class="buttonContent"><button type="submit">{$Think.lang.save}</button></div></div></li>
+				</if>
+					<li><div class="button"><div class="buttonContent"><button type="button" class="close">{$Think.lang.close}</button></div></div></li>
+				</ul>
+			</div>
+	</form>
+	</div>
+</div>

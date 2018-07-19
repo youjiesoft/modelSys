@@ -1,0 +1,30 @@
+<div class="pageContent" style="background: #fff;">
+    <div class="pageContent applecloth">
+        <form method="post" action="__APP__/MisSalesMyProject/lookupApproveAdd/rel/lookupapprove" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+        <div class="work_shortcut_top lookup_top_header">审批文档节点</div>
+        <div class="set_configure" layoutH="79">
+           <volist name='flowformList' id="voList" key="key1">
+	            <div class="examine_approve_lay">
+	                <div class="ea_takes_name">{$voList['name']}：</div>
+	                <ul class="nodes_print_ul">
+	                	<volist name="voList['relation']" id="reVo" key="key2">
+	                    <li>
+	                    	<input type="hidden"  name="name[{$reVo['id']}]" value="{$reVo['id']}"/>
+	                        <input id="temp{$key1}{$key2}" type="checkbox"  value="1" name="document[{$reVo['id']}]"  <if condition="$reVo['document'] eq 1">checked="checked"</if>/>
+	                        <label for="temp{$key1}{$key2}">{$reVo['name']}</label>
+	                    </li>
+	                    </volist>
+	                </ul>
+	                <div class="clear"></div>
+	            </div>
+	           </volist>
+	          <div class="formBar">
+		        	<ul>
+		        		<li><button class="tml_formBar_btn tml_formBar_btn_blue enterIndex" type="submit">保存</button></li>
+		        	</ul>
+		        </div>
+        </div>
+        
+				      </form>
+    </div>
+</div>

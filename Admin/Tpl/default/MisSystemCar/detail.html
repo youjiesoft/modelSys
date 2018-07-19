@@ -1,0 +1,152 @@
+<script type="text/javascript">
+$(document).ready(function() {
+	$(".proimage").colorbox({rel:'proimage', slideshow:true,maxWidth:700,maxHeight:700 });
+	
+});
+</script>
+<style type="text/css">
+.proimage img{
+	border:2px solid white;
+	padding:2px;
+}
+.list1 .bTdEagle {
+	font-weight: bold;
+	width:100px;
+	height:28px;
+	padding-left:10px;
+	color:#535353;
+
+}
+.list1 .bTdEagle + td {
+	width:100px;
+	height:28px;
+	padding-left:10px;
+	color:#717171;
+}
+</style>
+<form id="pagerForm" action="__URL__/detail/carid/{$carid}" method="post">
+	<input type="hidden" name="carid" value="{$carid}" />
+</form>
+<form rel="pagerForm" onsubmit="return divSearch(this,'missystemcardetail_model_car');" action="__URL__/detail/carid/{$carid}" method="post">
+	<input type="hidden" name="departmentID" value="{$departmentID}">
+	<input type="hidden" name="parentid" value="{$parentid}">
+	<input type="hidden" name="jump" value="1">
+	<input type="hidden" name="carid" value="{$carid}" />
+</form>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<if condition="$_SESSION.a eq 1 or $_SESSION.missystemcar_edit">
+				<li>
+					<a class="edit" href="__URL__/edit/id/{$vo.id}" rel="__MODULE__edit" title="车辆信息_编辑" target="navTab" mask="true" warn="请选择记录"  >
+						<span>编辑</span>
+					</a>
+				</li>
+			</if>
+			<volist name="toolbarextension" id="toolb">
+				<if condition="$_SESSION.a eq 1 or $toolb['ifcheck'] eq 0 or ($toolb['ifcheck'] eq 1 and !empty($toolb['permisname']) and $_SESSION[$toolb['permisname']])">
+					<li>{$toolb['html']}</li>
+				</if>
+			</volist>
+		</ul>
+	</div>
+		<div class="pageFormContent applecloth anchorsToolBarParent" layoutH="10">
+			<div class="keepContentCenter">
+				<H2 class="contentTitle contentTitle_center">车辆信息</H2>
+				<fieldset class="side-catalog-anchor ">
+					<legend class="fieldset_legend_toggle side-catalog-firstanchor side-catalog-text"><b>基本信息</b></legend>
+                     <div class="tml-row">
+                     <div class="tml-form-col">
+							<label>车&nbsp;&nbsp;&nbsp;&nbsp;名：</label>
+							<input type="text" class="textInput readonly" value="{$vo.name}">
+						</div>
+						<div class="tml-form-col">
+							<label>车&nbsp;&nbsp;牌&nbsp;&nbsp;号：</label>
+							<input type="text" class="textInput readonly" value="{$vo.carno}">
+						</div>
+						<div class="tml-form-col">
+							<label>核定载客：</label>
+							<input name="major" type="text" class="textInput readonly" value="{$vo.bearno}" />
+						</div>
+                      <!--  <div class="tml-form-col">
+							<label>总&nbsp;&nbsp;里&nbsp;&nbsp;程：</label>
+							<input  type="text"  class="textInput readonly" value="{$vo.totalKM}"  />
+						</div> -->
+						<div class="tml-form-col">
+							<label>车辆责任人：</label>
+							<input  type="text"  class="textInput readonly" value="{$vo.employeeID|getFieldBy='id','name','mis_hr_personnel_person_info'}"  />
+						</div>
+						<div class="tml-form-col">
+							<label>责任人电话：</label>
+							<input  type="text"  class="textInput readonly" value="{$vo.telephone}"/>
+						</div>
+						<div class="tml-form-col">
+							<label>所属部门：</label>
+							<input  type="text"  class="textInput readonly" value="{$vo.departmentID|getFieldBy=###,'id','name','mis_system_department'}"/>
+						</div>
+						<div class="tml-form-col">
+							<label>行驶证注册登记日期:</label>
+							<div class="tml-input-append">
+								<input class="Wdate textInput enterIndex readonl" type="text" name="drivingregistrationdate" value="{$vo['drivingregistrationdate']|transTime}">
+								<span class="input-addon input-addon-calendar"></span>
+							</div>
+						</div>
+						<div class="tml-form-col">
+							<label>车辆出厂日期:</label>
+							<div class="tml-input-append">
+								<input class="Wdate textInput enterIndex readonly" type="text" name="madedate" value="{$vo['madedate']|transTime}">
+								<span class="input-addon input-addon-calendar"></span>
+							</div>
+						</div>
+						<div class="tml-form-col">
+							<label>车身颜色：</label>
+							 <select class="combox readonly" name="cartype" >
+								{:getSelectByHtml('carcolour','select',$vo['carcolour'])}
+							</select>
+						</div>
+						<div class="tml-form-col">
+							<label>车身种类：</label>
+							<input  type="text"  class="textInput readonly" value="{$vo.cartype|getFieldBy=###,'id','name','mis_vehicle_type'}"/>
+						</div>
+						<div class="tml-form-col">
+		                        <label>燃料类型:</label>
+		                        <select class="combox" name="fueltype">
+		                            {:getSelectByHtml('fueltype','select',$vo['fueltype'])}
+		                        </select>
+		                 </div>
+						<div class="tml-form-col">
+							<label>排量/功率:</label>
+							<input class="textInput enterIndex valid" type="text" name="displacement" value="{$vo['displacement']}">
+						</div>
+						<!-- <div class="tml-form-col">
+							<label>油卡ID：</label>
+							<input  type="text"  class="textInput readonly" value="{$vo.oilID}"/>
+						</div> -->
+						<!-- <div class="tml-form-col">
+							<label>油卡总金额：</label>
+							<input  type="text"  class="textInput readonly" value="{$vo.oilAmount}"/>
+						</div> -->
+						<!-- <div class="tml-form-col">
+							<label>油卡剩余金额：</label>
+							<input  type="text"  class="textInput readonly" value="{$vo.oilBalance}"/>
+						</div> -->
+					</div>
+					 <div class="tml-form-row">
+						<label>备&nbsp;&nbsp;&nbsp;&nbsp;注：</label>
+						<textarea name="tremark" style="height:60px;" class="textInput readonly" >{$vo.remark}</textarea>
+                      </div>
+                     <div class="tml-row">
+						<div style="text-align:center;border:2px solid black;" class="center">
+							<if condition="$attarry">
+								<volist id="vop" name="attarry">
+									<a style="background:none;" class="proimage" title="{$vop['upname']}" href="__PUBLIC__/Uploads/{$vop['attached']}"><img  src="__PUBLIC__/Uploads/{$vop[attached]}" style="width:200px;height:200px;" /></a>
+								</volist>
+							<else />
+								<a style="background:none;" class="proimage" title="image{$key}" target="_blank" href="__PUBLIC__/Uploads/carpic/404.jpg"><img src="__PUBLIC__/Uploads/carpic/404.jpg" style="width:200px;height:200px;" /></a>
+							</if>
+						</div>
+					</div>
+				</fieldset>
+           </div>
+      </div>
+</div>

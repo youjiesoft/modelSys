@@ -1,0 +1,69 @@
+<div class="page">
+	<div class="pageContent">
+	<form method="post" action="__URL__/insert/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,dialogAjaxDone)">
+		<div class="pageFormContent" layoutH="48">
+			<div class="tml-row">
+				<div class="tml-form-col">
+					<label>{$fields["orderno"]}：</label>
+					<input type="text" name="orderno" class="required alphanumeric" maxlength="40" value="" />
+				</div>
+				<div class="tml-form-col">
+					<label>{$fields["name"]}：</label>
+					<input type="text" name="name" class="required"  value="" />
+				</div>
+			</div>
+			<div class="tml-form-row">
+				<label>{$fields["remark"]}</label>
+				<textarea name="remark" rows="2" maxlength="200"></textarea>
+			</div>
+			{:W('MisSystemOrderno',array(1))}
+		</div>
+		{:W('ShowAction')}
+		
+	</form>
+	</div>
+</div>
+
+
+
+
+
+
+
+
+<!-- <style>
+.tml-form-row label.tmp_label {
+	margin-left: 0px;
+	width: 120px;
+	float: none;
+	font: 14px/30px "Microsoft Yahei", "微软雅黑", sans-serif;
+}
+
+.tml-form-row label.tmp_label:hover {
+	color: #006699;
+}
+</style>
+<div class="page">
+	<div class="pageContent">
+		<form method="post"
+			action="__URL__/insert/navTabId/__MODULE__"
+			class="pageForm required-validate"
+			onsubmit="return iframeCallback(this, navTabAjaxDone)">
+			<input type="hidden" name="callbackType" value="closeCurrent" />
+			<div class="pageFormContent applecloth anchorsToolBarParent"
+				layoutH="56">
+				<div class="keepContentCenter form-affix-content">
+					<H2 class="contentTitle contentTitle_center form-affix-title">指标{:W('ShowOrderno',array(0,'mis_sale_basic_indicator'))}
+					</H2>
+					<div class="tml-row">
+						<div class="tml-form-col ">
+							<label>{$fields["name"]}:</label>
+							<input type="text" name="name" class="required  " value="">
+						</div>
+					</div>
+					{:W('ShowAction')}
+				</div>
+			</div>
+		</form>
+	</div>
+</div> -->

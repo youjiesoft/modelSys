@@ -1,0 +1,207 @@
+<script>
+$(function(){
+	navTab.getCurrentPanel().find('.additem').additem();
+});
+function navAjaxCustomer(json){
+	DWZ.ajaxDone(json);
+		if (json.statusCode == DWZ.statusCode.ok) {
+			$("#misSalesCustomerTreeBox").find("input[name='selectid']").val(0);
+			if (json.navTabId) {
+				navTab.reloadFlag(json.navTabId);
+			} else {
+				if (json.refreshtabs && json.refreshtabs.data != null) {
+					var t = json.refreshtabs.data;
+					var d = t;
+				} else {
+					var d = "";
+				}
+				navTabPageBreak({realnavTab : true,refreshtabs : d}, json.rel);
+			}
+			if ("closeCurrent" == json.callbackType) {
+				setTimeout(function() {navTab.closeCurrentTab(json.navTabId);}, 100);
+			} else if ("forward" == json.callbackType) {
+				navTab.reload(json.forwardUrl);
+			} else if ("forwardConfirm" == json.callbackType) {
+				alertMsg.confirm(json.confirmMsg || DWZ.msg("forwardConfirmMsg"), {
+					okCall : function() {
+						navTab.reload(json.forwardUrl);
+					}
+				});
+			} else {
+				navTab.getCurrentPanel().find(":input[defaultValue]").each(
+						function() {
+							var defaultVal = $(this).attr("defaultValue");
+							$(this).val(defaultVal);
+						});
+			}
+		}
+	}
+</script>
+<div class="pageContent">
+		<form method="post" action="__URL__/insert/rel/misSalesCustomerTreeBox" class="pageForm required-validate" onsubmit="return validateCallback(this,navAjaxCustomer);">
+			<input type="hidden" name="callbackType" value="closeCurrent"/>
+			<input type="hidden" name="refreshtabs[data]" value="1">
+			<div class="pageFormContent applecloth" layoutH="58">
+				<div class="keepContentCenter form-affix-content">
+					<H2 class="contentTitle contentTitle_center form-affix-title">客户信息
+						<span class="auto_code">
+							<b>No. </b>
+							<input type="text" name="code" value="{$code}" <if condition='$writable eq 0'> readonly="readonly" class="xycodedata_read" <else/> class="xycodedata_write required alphanumeric" </if> />
+						</span>
+					</H2>
+					<fieldset>
+						<legend class="fieldset_legend_toggle"><b>基本信息</b></legend>
+						<div class="tml-row">
+							<div class="tml-form-col">
+								<label>企业名称：</label>
+								<input type="text" name="enterprisename" />
+							</div>
+							<div class="tml-form-col">
+								<label>注册时间：</label>
+								<div class="tml-input-append">
+									<input type="text" name="registertime" class="Wdate js-wdate" />
+									<a href="javascript:;" class="input-addon input-addon-calendar js-inputCheckDate">选择</a>
+								</div>
+							</div>
+							<div class="tml-form-col">
+								<label>注册金额：</label>
+								<div class="tml-input-append">
+									<input class="number TextMagnifier-money textInput valid" type="text" onblur="FormatNumber(this);" name="registermoney">
+									<span class="input-addon-unit" title="元">元</span>
+								</div>
+							</div>
+							<div class="tml-form-col">
+								<label>企业职工数：</label>
+								<input type="text" name="staffnum" />
+							</div>
+							<if condition='$fields["intype"]'>
+							<div class="tml-form-col">
+								<label>所属行业： </label>
+								<div class="tml-input-append">
+									<select name="intype" class="combox additem" aurls="__URL__/lookupAddSelectValue/model/MisSalesCustomerIndustry" atitle="行业新增" laywidth="700" layheight="200">
+									{:getDataBaseByHtml('mis_sales_customer_industry')}
+									</select>
+								</div>
+							</div>
+							</if>
+							<if condition='$fields["typeid"]'>
+							<div class="tml-form-col">
+								<label>客户类型： </label>
+								<select name="typeid" class="combox required"  onchange="onChangeCode(this);">
+									<option value="" selected="selected">请选择</option>
+									<volist name="typeList" id="list">
+										<option <if condition="$selecttypeid eq $list.id">selected</if> value="{$list.id}">{$list.name}</option>
+									</volist>
+								</select>
+							</div>
+							</if>
+							<div class="tml-form-col">
+								<label>所属区县：</label>
+								<input type="text" name="county" />
+							</div>
+							<div class="tml-form-col">
+								<label>客户来源：</label>
+								<input type="text" name="clientsource" />
+							</div>
+							<!-- <div class="tml-form-col">
+								<label>法定代表人：</label>
+								<input type="text" name="jperson" />
+							</div>
+							<div class="tml-form-col">
+								<label>联系方式：</label>
+								<input type="text" name="phone" />
+							</div>
+							<div class="tml-form-col">
+								<label>指定联系人：</label>
+								<input type="text" name="linkman" />
+							</div>
+							<div class="tml-form-col">
+								<label>联系方式：</label>
+								<input type="text" name="linktel" />
+							</div>
+							<div class="tml-form-col">
+								<label>其他联系方式：</label>
+								<input type="text" name="otherphone" />
+							</div> -->
+						</div>
+						<div class="tml-form-row">
+							<label title="企业产品/企业服务">企业产品/企业服务：</label>
+							<input type="text"  name="enterprisemessage" />
+						</div>
+						<div class="tml-form-row">
+							<label>企业地址：</label>
+							<input type="text" name="enterpriseaddress" />
+						</div>
+					</fieldset>
+					<fieldset>
+						<legend class="fieldset_legend_toggle"><b>客户资料</b></legend>
+						<div class="tml-form-row">
+							<label>资料上传：</label>
+							<input id="swfupload_customer_add" type="file" uploader="true" auto="true" name="MisSalesCustomerfile" formData="{ uploadpath:'MisSalesCustomer' }" />
+						</div>	
+						<div class="tml-form-row"><!--此处为上传列表-->
+	                        <label>&nbsp;</label>
+							<span id="swfupload_customer_add-queue" class="info uploadify-queue"></span>
+						</div>
+					</fieldset>
+					<!-- <fieldset>
+						<legend class="fieldset_legend_toggle"><b>融资信息</b></legend>
+						<div class="tml-row">
+							<div class="tml-form-col">
+								<label>企业上游：</label>
+								<input type="text" name="downstream" />
+							</div>
+							<div class="tml-form-col">
+								<label>企业下游：</label>
+								<input type="text" name="upstream" />
+							</div>
+						</div>
+							<div class="tml-form-row">
+								<label>企业需求服务：</label>
+								<div class="left tml-checkbox tml-w100">
+								<label>
+									<input name="enterpriseserve[]" type="checkbox" value="1" /> 债权融资
+								</label>
+								</div>
+								<div class="left tml-checkbox tml-w100">
+									<label>
+										<input name="enterpriseserve[]" type="checkbox" value="2" /> 股权融资
+									</label>
+								</div>
+								<div class="left tml-checkbox tml-w100">
+									<label>
+										<input name="enterpriseserve[]" type="checkbox" value="3" /> 设备租赁
+									</label>
+								</div>
+								<div class="left tml-checkbox tml-w100">
+									<label>
+										<input name="enterpriseserve[]" type="checkbox" value="4" /> 其他
+									</label>
+								</div>
+							</div>
+						<div class="tml-row">
+							<div class="tml-form-col">
+								<label>需求金额：</label>
+								<div class="tml-input-append">
+									<input class="number TextMagnifier-money textInput valid" type="text" onblur="FormatNumber(this);" name="needmoney">
+									<span class="input-addon-unit" title="元">元</span>
+								</div>
+							</div>
+							<div class="tml-form-col">
+								<label>首次接触日期：</label>
+								<div class="tml-input-append">
+									<input type="text" name="firstcontacttime" class="Wdate js-wdate" />
+									<a href="javascript:;" class="input-addon input-addon-calendar js-inputCheckDate">选择</a>
+								</div>
+							</div>
+						</div>
+							<div class="tml-form-row">
+								<label>企业基本情况：</label>
+								<textarea type="text" style="height:50px;" name="enterprisemessage"></textarea>
+							</div>
+					</fieldset> -->
+				</div>
+			</div>
+			{:W('ShowAction')}
+		</form>
+	</div>

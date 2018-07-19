@@ -1,0 +1,154 @@
+<script>
+	function add_append_mispurchaseapplymas() {
+		var $box = $.pdialog.getCurrent();
+		var html = '<tr>\
+			<td><input type="text" class="gangwei_d xytdinput" name="arr_nd[]"  value="1" readonly /></td>
+			<td><input type="text" class="gangwei_d xytdinput required" name="arr_name[]"/></td>
+			<td><input type="text" class="gangwei_d xytdinput" name="arr_psize[]"/></td>
+			<td><input type="text" class="gangwei_d xytdinput" name="arr_unit[]" /></td>
+            <td><input type="text" class="gangwei_d xytdinput" name="arr_qty[]" value="0" onblur="addmfem_getApamount(this);"/> </td>
+            <td><input type="text" class="gangwei_d xytdinput" name="arr_price[]" value="{:getDigits(0)}" onblur="addmfem_getApamount(this);"/></td>
+            <td><input type="text" class="gangwei_d xytdinput" name="arr_apamount[]" value="{:getDigits(0)}" readonly="readonly"/></td>
+            <td><a href="javascript:;" onclick="add_delete_mispurchaseapplymas(this);"><strong style="color:red;">移除</strong></a></td>
+		</tr>';
+		var $ht = $(html).initUI();
+		$("#mispurchaseapplymas_tr_add").before($ht);
+		//重新计算ND
+		$box.find("input[name='arr_nd[]']").each(function(i) {
+			$(this).val(i + 1);
+			$(this).parents("tr").attr("id","arr_tr"+(i+1));
+		});
+	}
+	//算总价
+	function addmfem_getApamount(obj){
+		var $box = $.pdialog.getCurrent();
+		var trid=$(obj).parents("tr").attr("id");
+		var price=$("#"+trid).find("input[name='arr_price[]']").val();
+		var qty=$("#"+trid).find("input[name='arr_qty[]']").val();
+		var apamount=price * qty ;
+		apamount = comboxMathematicalOperation(apamount, 3, ',');
+		$("#"+trid).find("input[name='arr_apamount[]']").val(apamount);
+		var val = 0;
+		var valstr = "0";
+		$box.find("input[name='arr_apamount[]']").each(function() {
+			var valtmp = $(this).val();
+			if (valtmp != '') {
+				valtmp = Number(valtmp.replace(/,/g, ""));
+				$(this).val(FormatN(valtmp));
+				valstr += "+" + valtmp;
+			}
+		});
+		val = comboxMathematicalOperation(valstr, 3, ',');
+		var ret = $.numberRecover({number:val,dw:['分','角','元','拾','佰','仟','万','十','百','千','亿'],dwC : '<span style="color:red;padding:0px 10px;font-size:14px;"></span>',zfC : '<span style="color:black;font-size:14px;"></span>'});
+		$("#amountDX").html(ret);
+		$("#amount").val(val);
+	}
+	function add_delete_mispurchaseapplymas(obj) {
+		var $box = $.pdialog.getCurrent();
+		$(obj).parent().parent().remove();
+		//重新计算ND
+		$box.find("input[name='arr_nd[]']").each(function(i) {
+			$(this).val(i + 1);
+			$(this).parents("tr").attr("id","arr_tr"+(i+1));
+		})
+		//重新计算金额
+		addmfem_getApamount();
+	}
+</script>
+<div class="page">
+    <div class="pageContent dialog-default">
+       <form method="post" action="__URL__/insert/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,dialogAjaxDone);">
+			<input type="hidden" name="dotype" value="流程新建" />
+			<input type="hidden" name="beforeInsert" value="1" />
+			<input type="hidden" name="refreshtabs[closeall]" value="1" />
+			<input type="hidden" value="dialog" name="refreshtabs[type]">
+            <input type="hidden" name="apdate" value="{$time|transtime}"/>
+            <input type="hidden" name="userid" value="{$uid}"/>
+            <div class="pageFormContent applecloth anchorsToolBarParent" layoutH="40" >
+				<div class="keepContentCenter form-affix-content">
+            <div class="contentTitle contentTitle_center form-affix-title">采购{:W('ShowFlow')}
+				
+			</div>
+            	<div class="tml-row">
+            	{:W('ShowOrderno',array(1,'mis_purchase_applymas'))}
+            		<if condition='$fields["typeid"]'>
+						<div class="tml-form-col">
+							<label>采购类型：</label>
+							<select name="typeid" class="combox">
+								<volist id="vot" name="typeidlist">
+									<option value="{$vot['id']}">{$vot['name']}</option>
+								</volist>
+							</select>
+						</div>
+					</if>
+					<div class="tml-form-col">
+						<label>申请部门：</label>
+						<input type="text" value="{$_SESSION['user_dep_id']|getFieldBy='id','name','mis_system_department'}" readonly="readonly" />
+						<input type="hidden" name="deptid" value="{$_SESSION['user_dep_id']}"/>
+					</div>
+					<div class="tml-form-col">
+						<label>开始日期：</label>
+						<div class="tml-input-append">
+							<input type="text"  name="dmsdate" value="{$time|transTime}" id="dmsdateMisPurchaseApplymasAdd" format={maxDate:"#F{$dp.$D('dmedateMisPurchaseApplymasAdd')}"} class="Wdate js-wdate tml-find-num"/>
+							<a href="javascript:;" class="xyInputWithUnitButton inputDateButton js-inputCheckDate">选择</a>
+						</div>
+					</div>
+					<div class="tml-form-col">
+						<label>截止日期：</label>
+						<div class="tml-input-append">
+							<input type="text" name="dmedate" id="dmedateMisPurchaseApplymasAdd" format={minDate:"#F{$dp.$D('dmsdateMisPurchaseApplymasAdd')}"} class="Wdate js-wdate tml-find-num"/>
+							<a href="javascript:;" class="xyInputWithUnitButton inputDateButton js-inputCheckDate">选择</a>
+						</div>
+					</div>
+				</div>
+					<if condition='$fields["apreason"]'>
+						<div class="tml-form-row">
+							<label>{$fields["apreason"]}：</label>
+							<input name="apreason" type="text" />
+						</div>
+					</if>
+            	<div class="dialog-box">
+	                <table class="data-table" cellspacing="0" width="100%">
+	                    <thead>
+	                        <tr>
+	                            <td style="width:30px;"><strong>序号</strong></td>
+	                            <td><strong>物资名称</strong></td>
+	                            <td style="width:100px;"><strong>物资规格</strong></td>
+	                            <td style="width:65px;"><strong>单位</strong></td>
+	                            <td style="width:65px;"><strong>数量</strong></td>
+	                            <td style="width:65px;"><strong>单价</strong></td>
+	                            <td style="width:65px;"><strong>总价</strong></td>
+	                            <td style="width:30px;"><a href="javascript:;"  onclick="add_append_mispurchaseapplymas();"><strong style="color:green;">添加</strong></a></td>
+	                        </tr>
+	                    </thead>
+	                    <tbody>
+	                        <tr id="arr_tr1">
+	                            <td><input type="text" class="gangwei_d xytdinput" name="arr_nd[]"  value="1" readonly /></td>
+								<td><input type="text" class="gangwei_d xytdinput required" name="arr_name[]" /></td>
+								<td><input type="text" class="gangwei_d xytdinput" name="arr_psize[]"/></td>
+								<td><input type="text" class="gangwei_d xytdinput" name="arr_unit[]" /></td>
+	                            <td><input type="text" class="gangwei_d xytdinput" name="arr_qty[]" value="0" onblur="addmfem_getApamount(this);"/> </td>
+	                            <td><input type="text" class="gangwei_d xytdinput" name="arr_price[]" value="{:getDigits(0)}" onblur="addmfem_getApamount(this);"/></td>
+	                            <td><input type="text" class="gangwei_d xytdinput" name="arr_apamount[]" readonly="readonly" value="{:getDigits(0)}"/></td>                                
+	                            <td><a href="javascript:;" onclick="add_delete_mispurchaseapplymas(this);"><strong style="color:red;">移除</strong></a></td>
+	                        </tr>
+	                        <tr id="mispurchaseapplymas_tr_add">
+	                        	<td>
+	                        		<input type="text" class="gangwei_d xytdinput" readonly="readonly" value="合计"/>
+	                        	</td>
+	                        	<td colspan="5" style="text-align: center;color:red;font-size:14px;">
+	                        		<span id="amountDX">零<span style="color:black;padding:0px 10px;">元</span>零<span style="color:black;padding:0px 10px;">角</span>零<span style="color:black;padding:0px 10px;">分</span></span>
+	                        	</td>
+	                        	<td>
+	                        		<input type="text" name="grossamount" class="gangwei_d xytdinput" readonly="readonly" id="amount" value="{:getDigits(0)}"/>
+	                        	</td>
+	                        	<td><span></span></td>
+	                        </tr>
+	                    </tbody>
+	                </table>
+	                {:W('ShowAction')}
+	            </div>
+            </div>
+        </form>
+    </div>
+</div>

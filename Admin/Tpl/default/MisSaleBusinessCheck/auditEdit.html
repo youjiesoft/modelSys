@@ -1,0 +1,43 @@
+<div class="page">
+	<div class="pageContent">
+		<form method="post" action="__URL__/auditProcess/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+			<input type="hidden" name="id" value="{$vo['id']}" />
+			<input type="hidden" name="callbackType" value="closeCurrent" />
+			
+			<div class="pageFormContent applecloth" layoutH="40">
+				<div class="keepContentCenter form-affix-content">
+	            	<div class="contentTitle contentTitle_center form-affix-title">
+	               	    转储备申请单
+                        
+					</div>
+		            <fieldset class="side-catalog-anchor">
+						<legend class="fieldset_legend_toggle side-catalog-text side-catalog-firstanchor">
+		                    <b>基础信息</b>
+		                    <div class="tml_style_line tml_sl4 tml_slb_blue"></div>
+	                    </legend>
+						<div class="tml-row">
+						{:W('ShowOrderno',array(1,'mis_sale_business_check',$vo['orderno']))}
+						    <div class="tml-form-col">
+							<label>商机：</label>
+							<div class="tml-input-append2">
+								<input type="text" class="ORG1.clientname required  temp_css" autocomplete="off" readonly="readonly" value="{$vo['bid']|getFieldBy='id','clientname','mis_sale_business'}" />
+								<input type="hidden" class="ORG1.id" name="bid" value="{$vo['bid']}"  />
+								<a class="input-addon input-addon-addon input-addon-add"  >{$fields["bid"]}</a>
+								<a title="清空信息" class="input-addon input-addon-recycle"  href="javascript:void(0);" onclick=""></a>
+							</div>
+						</div>
+                        </div>
+                        <div class="tml-form-row">
+                            <label>转储备说明：</label>
+                            <textarea readonly="readonly" name="useexplain">{$vo.useexplain}</textarea>
+                        </div>
+					</fieldset>
+					{:W('ShowUploadView',$attarry)}<!-- 审核页面和查看页面的附件查看 -->
+					
+					{:W('ShowFormFlowView',$vo)}<!-- 流程审核人走向 -->
+					{:W('ShowAction')}<!-- 页面按钮 -->
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

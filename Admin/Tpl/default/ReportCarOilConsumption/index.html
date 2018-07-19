@@ -1,0 +1,26 @@
+<script>
+function ReportCarOilConsumption_timeStatistics(){
+	var $box=navTab.getCurrentPanel();
+	var $time=$box.find("input[name='year']").val();
+	$box.find("#ReportCarOilConsumption_chart").loadUrl("__URL__/lookupCarOilConsumption/year/"+$time,{},function(){
+		$box.find("[layoutH]").layoutH();});
+}
+</script>
+<div class="pageContent tml-bg-white" layoutH="0">
+	<div class="">
+		<h2 class="contentTitle contentTitle_center">车辆百公里油耗统计</h2>
+		<div class="tml-text-c">
+			<fieldset>
+					<label>请选择汇总年份：</label>
+						<input type="text" name="year"
+							onfocus="WdatePicker({skin:'whyGreen',dateFmt:'yyyy年 ',maxDate:'%y',minDate:'1970'})"
+							value="{$time}" class="Wdate required" />
+						<span class="tml-icon tml-icon-calendar ml5 mr5"></span>
+				<button class="tml-btn tml-btn-primary" onclick="ReportCarOilConsumption_timeStatistics()" type="button">统计</button>
+			</fieldset>
+		</div>
+		<div id="ReportCarOilConsumption_chart">
+			<include file="lookupCarOilConsumption" />
+		</div>
+	</div>
+</div>

@@ -1,0 +1,150 @@
+<style>
+.tml-table-bordered th, .tml-table-bordered td{border:1px solid #e5e5e5;}
+.tml-table-red th, .tml-table-red td{border-color:red;font-weight:700;font-family:"楷体_GB2312";}
+.tml-table-red .textInput{background:none;border:none;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box;width:100%;*width:95%;}
+.tml-table-red textarea{resize:none;}
+</style>
+<div class="page">
+	<div class="pageContent">
+	<form method="post" action="__URL__/insert" md="__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,navTabAjaxDone);" enctype="multipart/form-data">
+    <input type="hidden" name="rel" value="MisOfficialdocumentOutindex">
+    <input type="hidden" name="callbackType" value="closeCurrent">
+    <input type="hidden" name="refreshtabs[data]" value="1">
+    <input type="hidden" name="beforeInsert" value="1" />	<!-- 判断是否在新增就直接启动流程 -->
+    <input type="hidden" name="typeid" value="{$typeid}" /> <!-- 公文类型 -->
+    <input type="hidden" name="useridArr" value=""/><!-- 加签审核用户 -->
+    
+    <!-- <input type="hidden" name="refreshtabs[url]" value="__URL__/insert/navTabId/__MODULE__"> -->
+    <!-- <input type="hidden" name="multi_lookup_reset"> -->
+    
+    	<div class="pageFormContent applecloth" layoutH="56">
+			<div class="keepContentCenter" style="color:red;font-size:14px;">
+				<h2 class="contentTitle contentTitle_center"  style="border:none;font-size:26px;font-family:方正大标宋简体">
+					{$company_infor['name']}发文拟稿笺
+					<!-- 重庆市长寿区保安服务有限责任公司 -->
+				</h2>
+				 <table class="tml-table tml-table-bordered grid-100 tml-table-w tml-table-red">
+					<tr>
+						<td class="tml-text-c">文（期）号</td>
+						<td colspan="3">
+							<input type="text" name="orderno" value="{$orderno}" />
+						</td>
+						<td>密级</td>
+						<td>
+							<select name="secrecylevel" class="combox">
+								<option value="绝密">绝密</option>
+								<optionvalue="机密">机密</option>
+								<option value="秘密">秘密</option>
+							</select>
+						</td>
+						<td>缓急</td>
+						<td>
+							<select name="priorities" class="combox">
+								<option  value="特急">特急</option>
+								<option  value="急件">急件</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>拟稿单位</td>
+						<td>
+							<input class="" type="text" name="draftunit" />
+						</td>
+						<td>拟稿</td>
+						<td>
+							<input class="checkByInput" checkfor="MisHrPersonnelManagement" iswrite="true" type="text" show="name"  />
+							<input type="hidden" name="draftemployeeId"  />
+						</td>
+						<td>核稿</td>
+						<td>
+							<input class="checkByInput" checkfor="MisHrPersonnelManagement" iswrite="true" type="text" show="name"  />
+							<input type="hidden" name="nuclearemployeeId" value="{$vo.nuclearemployeeId}"/>
+						</td>
+						<td>份数</td>
+						<td>
+							<input class="" type="text" name="copynum"  />
+						</td>
+					</tr>
+					<tr>
+						<td>标题：</td>
+						<td colspan="7">
+							<input class="" type="text" name="title"  />
+						</td>
+					</tr>
+					<tr>
+						<td>附件</td>
+						<td colspan="7">
+							<input id="swfupload_misofficialdocumentout_add" type="file" auto="true" uploader="true" name="misofficialdocumentout_add_file" formData="{ uploadpath:'MisOfficialdocumentOut' }" />
+							<dl class="nowrap">
+								<!--此处为上传列表 swfupload_misofficialdocumentout_add-queue-->
+								<dt>
+									<label>&nbsp;</label>
+								</dt>
+								<dd>
+									<span id="swfupload_misofficialdocumentout_add-queue" class="info uploadify_queue">
+										<if condition="$attarry"> 
+										<volist name="attarry" id="att">
+										<div class="uploadify-queue-item">
+											<div class="cancel">
+												<a class="dellink" href="__URL__/lookupdelatt/id/{$att['id']}" rel="{$att['id']}" target="ajaxTodo" callback="mis_swf_upload_del" callbackdata="swfupload_misbusinesscontractcityalarm_edit-queue">X</a>
+											</div>
+											<span class="fileName">
+												<a href="__PUBLIC__/{$att.attached}" target="_blank">{$att['upname']}</a>
+											</span>
+											<span class="data"> - 已经传</span>
+											<div class="uploadify-progress">
+												<div class="uploadify-progress-bar" style="width: 100%;"></div>
+											</div>
+										</div>
+										</volist> 
+										</if>
+									</span>
+								</dd>
+							</dl>
+						</td>
+					</tr>
+					<tr>
+						<td>报送：</td>
+						<td colspan="7">
+							<input class="" type="text" name="reportsend"  />
+						</td>
+					</tr>
+					<tr>
+						<td>抄送：</td>
+						<td colspan="7">
+							<input class="" type="text" name="copysend"  />
+						</td>
+					</tr>
+				</table>
+				<table class="tml-table-w tml-table-red">
+					<tr>
+						<td>承办人：</td>
+						<td>
+							<input class="checkByInput" name="employename" checkfor="MisHrPersonnelManagement" iswrite="true" type="text" show="name"  />
+							<input type="hidden" name="undertakeempId" value="{$employee}"/>
+						</td>
+						<td>电话：</td>
+						<td>
+							<input type="text" class="" check_key="othermobilephone" name="phone"  />
+						</td>
+						<td>邮箱：</td>
+						<td>
+							<input type="text" class="" check_key="otheremail" name="eamil" />
+						</td>
+				</table>
+	            </div>
+	        </div>
+			<div class="formBar">
+				<ul>
+					<li>
+						<button class="tml-btn tml-btn-primary" type="submit">{$Think.lang.save}</button>
+					</li>
+					<li>
+									<!-- <button type="button" onclick="StartProcess(this.form,'__MODULE__');">转核稿</button> -->
+						<button class="tml-btn tml-btn-primary" type="button" onclick="openStartProcessDialog();">转核稿</button>
+					</li>
+				</ul>
+			</div>
+		</form>
+	</div>
+</div>

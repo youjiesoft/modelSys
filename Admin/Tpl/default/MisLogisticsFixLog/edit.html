@@ -1,0 +1,85 @@
+<script>
+$(function(){
+	navTab.getCurrentPanel().find('.additem').additem();
+});
+</script>
+<div class="page">
+	<div class="pageContent applecloth" layoutH="0">
+		<form method="post" action="__URL__/update/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,navTabAjaxDone);">	
+			<input type="hidden" name="id" value="{$vo['id']}" />
+				<input type="hidden" name="callbackType" value="closeCurrent">
+				<input type="hidden" name="refreshtabs[url]" value="__MODULE__edit">
+				<input type="hidden" name="refreshtabs[data]" value="1">
+				<input type="hidden" name="dotype" value="流程启动" />
+				<input type="hidden" name="ostatus" value="{$vo.ostatus}" />
+			<div class="pageFormContent applecloth" layoutH="56">
+				<div class="keepContentCenter form-affix-content">
+					<div class="contentTitle contentTitle_center form-affix-title">日常维护申请{:W('ShowFlow')}
+						
+					</div>
+					<fieldset>
+					<legend class="fieldset_legend_toggle side-catalog-text">
+						<b>报修信息</b>
+					</legend>
+					<div class="tml-row">
+					{:W('ShowOrderno',array(1,'mis_logistics_fix_log',$vo['orderno']))}
+						<div class="tml-form-col" style="display:none;">
+							<label>报告人员:</label>
+							<input type="text" readonly="readonly" name="report_name" value="{$vo.report_name}"/>
+							<input type="hidden" name="report_name_id" value="{$vo.report_name_id}"/>
+						</div>
+						<div class="tml-form-col" style="display:none;">
+							<label>部 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 门:</label>
+							<input  type="text" readonly="readonly" name="department_name" class="org.deptname" value="{$vo['department_name']}" size="15">
+							<input  type="hidden" name="department_id" class="org.deptid" value="{$vo['department_id']}">
+						</div>
+						<div class="tml-form-col">
+							<label> {$fields["falut_type"]}： </label>
+							<div class="tml-input-append">
+								<select name="falut_type" class="combox additem" aurls="__URL__/lookupAddSelectValue/model/MisLogisticsFixLogtype" atitle="{$fields['falut_type']}" laywidth="700" layheight="200">
+									{:getDataBaseByHtml('mis_logistics_fix_logtype',array('selected'=>$vo['falut_type']))}
+								</select>
+							</div>
+						</div>
+						</div>
+						</fieldset>
+						 <fieldset>
+                    <legend>
+                        <b>设备明细</b>
+                    </legend>
+                       <div id="mislogisticsfixlog_add"  >
+						<include file="lookuptypedetails" />
+					</div>
+                </fieldset>
+					 <fieldset>
+					  <legend>
+                        <b>故障描述</b>
+                    </legend>
+					<div class="tml-form-row">
+						<label>{$fields["fault_cause"]}:</label>
+						<textarea style="height:100px;" rows="2"  name="fault_cause">{$vo['fault_cause']}</textarea>
+					</div>
+					<!-- 附件信息 -->
+					{:W('ShowUpload',$attarry)}
+					</fieldset>
+					<fieldset>
+					<legend class="fieldset_legend_toggle side-catalog-text">
+						<b>制单信息</b>
+					</legend>
+					<div class="tml-row">
+						<div class="tml-form-col">
+							<label>制单人：</label>
+							<input type="text" readonly="readonly" value="{$vo.createid|getfieldby='id','name','user'}" />
+						</div>
+						<div class="tml-form-col">
+							<label>制单时间：</label>
+							<input type="text" readonly="readonly" value="{$vo.createtime|transTime}" />
+						</div>
+					</div>
+				</fieldset>
+				</div>
+			</div>
+			{:W('ShowAction',array('data'=>$vo))}
+	</form>
+	</div>
+</div>

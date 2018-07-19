@@ -1,0 +1,68 @@
+<style>
+#report_car_oil FIELDSET{	background-color: #ffffff;height:205px;}
+
+#report_car_oil FIELDSET legend{margin:5px;}
+
+#report_car_oil .xyformunit{float:left; display:block; width:378px; margin:0;min-height:24px;overflow:hidden;padding:5px 0;position:relative;_height:24px; border:1px solid gray;margin:2px;background-color:#f7fbff ;}
+
+#report_car_oil .xyformunit label{display:block;float:left;width:80px;text-align: right;padding-top:5px;}
+
+.panel .buttonActive{float:right;}
+.cotentUnit {
+	padding-top:15px;
+	padding-left:5px;
+	color:#555555;
+	text-align: left;
+}
+</style>
+<div class="pageContent" selector="h1" layoutH="42" style="width:800px;margin:0 auto;text-align:center;">
+	<div class="panel " defH="250" >
+		<h1>车辆油费报表</h1>
+		<div>
+			<div id="report_car_oil">
+				<FIELDSET>
+					<div class="xyformunit">
+						<label>开始时间：</label>							
+						<span class="xyInputWithUnit">
+							<input name="startTime" type="text" class="date readonly require"/>
+							<span class="input-addon input-addon-calendar"></span>
+						</span>
+					</div>
+					<div class="xyformunit">
+						<label>结止时间：</label>
+						<span class="xyInputWithUnit">
+							<input name="stopTime" type="text" class="date readonly require"/>
+							<span class="input-addon input-addon-calendar"></span>
+						</span>						
+					</div>
+					<div class="xyformunit ">
+						<label>油卡编号：</label>
+						<input type="text" name="oilID" class="checkByInput"  fields="array('id'=>'0','oilID'=>'油卡ID','carno'=>'车牌');" checkfor="MisSystemCar" show="oilID" iswrite="true"/>
+					</div>
+					<div class="xyformunit">
+						<label>所属部门：</label>
+						<input type="text" name="departmentname" class="checkByInput"  fields="array('id'=>'0','name'=>'部门');" insert="id" checkfor="MisSystemDepartment" show="name" iswrite="true"/>
+					</div>
+					<div class="xyformunit">
+						<label>车牌号码：</label>
+						<input type="text" name="carno" class="checkByInput" fields="array('id'=>'0','carno'=>'车牌号');" insert="id" checkfor="MisSystemCar" show="carno" iswrite="true"/>
+					</div>
+					<div class="xyformunit">
+						<label>负责人：</label>
+						<input type="text" name="useName" class="checkByInput" map="array('status'=>'1');" fields="array('id'=>'0','orderno'=>'员工编号','name'=>'员工姓名');" insert="id" checkfor="mis_hr_personnel_person_info" show="name"/>
+						<input type="hidden" name="useNameID" />
+					</div>
+					<div class="clear"></div>
+					<div class="cotentUnit"><b>注:</b>本报表生成，一个时间段内的所有车辆或一个部门或个人的油费总计与油卡余额，油费总计并与上月的进行环比；</div>
+				</FIELDSET>
+				<div class="export_new">
+					<div class="buttonActive">
+						<div class="buttonContent">
+							<button name="showgrid" onclick="show_doSearch('getCarOilReport_doSearch','__URL__/lookupGetCarOilReport','{$result}')">检索</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

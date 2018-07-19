@@ -1,0 +1,53 @@
+<div class="page">
+	<div class="pageContent">
+		<form method="post" action="__URL__/update/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,dialogAjaxDone);">
+			<input type="hidden" name="id" value="{$vo.id}"/>
+			<h2 class="contentTitle contentTitle_center">公文类型</h2>
+			<div class="pageFormContent" layoutH="105">
+				<div class="tml-row">
+				<if condition='$fields["name"]'>
+					<div class="tml-form-col">
+						<label>{$fields["name"]}:</label>
+						<input type="text"  name="name" value="{$vo.name}"  class="required"/>
+	                </div>
+                </if>
+                <if condition='$fields["typeid"]'>
+					<div class="tml-form-col">
+						<label>{$fields["typeid"]}:</label>
+						<select name="typeid"  class="combox required">
+							<option <if condition="$vo.typeid eq 1">selected</if> value="1">行政</option>
+							<option <if condition="$vo.typeid eq 2">selected</if> value="2">其他</option>
+						</select>
+	                </div>
+                </if>
+                <if condition='$fields["prefix"]'>
+					<div class="tml-form-col">
+						<label>{$fields["prefix"]}:</label>
+						<input type="text"  name="prefix" value="{$vo.prefix}"/>
+	                </div>
+                </if>
+                <if condition='$fields["suffix"]'>
+					<div class="tml-form-col">
+						<label>{$fields["suffix"]}:</label>
+						<input type="text"  name="suffix" value="{$vo.suffix}" />
+	                </div>
+                </if>
+                </div>
+				<div class="tml-form-row">
+					<label>{$fields["remark"]}:</label>
+					<textarea name="remark" cols="65" rows="5">{$vo['remark']}</textarea>
+				</div>
+			</div>
+			<div class="formBar">
+				<ul>
+					<li>
+						<button class="tml-btn tml-btn-primary" type="submit">{$Think.lang.save}</button>
+					</li>
+					<li>
+						<button type="button" class="close tml-btn tml-btn-default">{$Think.lang.close}</button>
+					</li>
+				</ul>
+			</div>
+		</form>
+	</div>
+</div>

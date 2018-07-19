@@ -1,0 +1,89 @@
+<div class="pageContent">
+		<form method="post" action="__APP__/MisSaleBusiness/lookupreallotadd/rel/MisSaleBusiness_jbsx" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+			<input type="hidden" name="callbackType" value="closeCurrent" />
+			<input type="hidden" name="id" value="{$vo['id']}" />
+			<input type="hidden" name="bid" value="{$vo['id']}" />
+		<div class="pageFormContent new_version_page_content" layoutH="58">
+							<!-- select组件 start -->
+							<div class="col_1_3 form_group_lay field_jianyirenyuan " >
+									<label class="label_new">业务员:</label>
+								<div class="tml-input-lookup">
+									<div class="tml-input-lookup">
+										<input type="text" readonly="readonly" class="selectuser1.username required input_new half_angle_input" value="{$vo['userid']|getFieldBy='id','name','user'}"/>
+										<input type="hidden" class="selectuser1.userid" value="{$vo['userid']}" name="userid"/>
+										<a class="icon_elm mid_icon_elm icon-plus checkUser" href="javascript:;" data="selectuser1;username,username;userid,userid;deptid,deptid;deptname,deptname"></a>
+										<a title="清空信息" class="icon_elm icon-trash"  href="javascript:void(0);" onclick="clearOrg('selectuser1');"></a>
+									</div>
+								</div>
+							</div>
+							<div class="col_1_3 form_group_lay field_name " >
+								<label class="label_new">截止日期:</label>
+								<div  class="tml-input-calendar">
+									<input type="text" name="endtime" class="Wdate js-wdate required input_new half_angle_input" format="{dateFmt:'yyyy-MM-dd HH:mm'}"
+								data="{maxDate:'#F{$dp.$D(endtime,{d:-0})}'}"	 value="{$vo['endtime']|transtime='Y-m-d H:i'}"/>
+									<a href="javascript:;" class="icon_elm icon-calendar"></a>
+								</div>
+						</div>
+						<div class="col_1_3 form_group_lay field_name " >
+								<label class="label_new">有效日期:</label>
+								<input type="text" readonly="readonly" id="endtime" class="input_new "  value="{$vo['endtime']|transtime='Y-m-d H:i'}"/>
+							</div>
+							<!-- text组件 end -->
+						
+		<div class="clear"></div>
+			</div>
+				<div class="formBar">
+					<ul>
+						<li>
+							<button type="submit" class="tml_formBar_btn tml_formBar_btn_blue enterIndex">保存</button>
+						</li>
+					</ul>
+				</div>
+		</form>
+	</div>
+	
+
+<!-- <style>
+.dialog .tml-form-col .tml-input-append2 .temp_css{
+width: 130px;
+}
+</style>
+<div class="page">
+	<div class="pageContent">
+	<form method="post" action="__APP__/MisSaleBusiness/lookupreallotadd/rel/MisSaleBusiness_jbsx" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+			<input type="hidden" name="callbackType" value="closeCurrent" />
+			<input type="hidden" name="id" value="{$vo['id']}" />
+			<input type="hidden" name="bid" value="{$vo['id']}" />
+			<div class="pageFormContent" layoutH="48">
+				<div class="tml-row">
+					<div class="tml-form-col ">
+						<label>业务员:</label>
+						<div class="tml-input-append2">
+							<input type="text" class="ORG3.name temp_css" autocomplete="off" readonly="readonly"   value="{$userid|getFieldBy='id','name','user'}"  />
+							<input type="hidden" class="ORG3.id" name="userid" value="{$userid}"  />
+							<a class="input-addon input-addon-addon input-addon-add" param="field=id,name&model=User&conditions=status,1&filterfield=work_date,login_count,last_login_time,account" href="__URL__/lookupGeneral" lookupGroup="ORG3" >{$fields["userid"]}</a>
+							<a title="清空信息" class="input-addon input-addon-recycle"  href="javascript:void(0);" onclick="clearOrg('ORG3');"></a>
+						</div>
+					</div>
+					<div class="tml-form-col ">
+						<label>效期截止日:</label>
+						<div  class="tml-input-append">
+						<input type="text" name="endtime" class="Wdate js-wdate required " format="{dateFmt:'yyyy-MM-dd'}" value="{$vo['endtime']|transtime='Y-m-d'}"/>
+						<a href="javascript:;" class="input-addon input-addon-calendar js-inputCheckDate">选择</a>
+						</div>
+					</div>
+					
+				</div>	
+			</div>			
+		<div class="formBar">
+			<ul>
+				<li>
+					<button type="submit" class="tml_formBar_btn tml_formBar_btn_blue enterIndex">保存</button>
+				</li>
+			</ul>
+		</div>
+		</form>
+	</div>
+</div> -->
+	
+	

@@ -1,0 +1,70 @@
+<script type="text/javascript">
+	//检查用户的选择分类层级
+ function comfirqtype(obj){
+		var va = $(obj).val();
+		//选择的子级
+		if(va == 2){
+			$("#hidd").show();
+		}
+		if(va == 0){
+			$("#hidd").hide();
+		}
+	} 
+</script>
+<include file="Public:pagerForm" />
+	<div class="page">
+		<div class="pageContent">
+			<form method="post" <if condition="!$top">action="__URL__/insert/rel/misknowledgetype"<else/>action="__URL__/insert/navTabId/__MODULE__"</if> class="pageForm required-validate" onsubmit="return validateCallback(this,dialogAjaxDone);">
+				<div class="pageFormContent" layoutH="58">
+                    <div class="tml-row">
+						<div class="tml-form-col">
+                        	<label>分类编码：</label>
+                        	<input type="text" name="code" class="required" <if condition='$writable eq 0'> readonly="readonly" </if> value="{$code}"></div>
+						<div class="tml-form-col"><label>分类名称：</label><input type="text" name="name" class="required" value=""></div>
+						
+                    </div>
+                     <div class="tml-row">
+                        <div class="tml-form-col" id="sel">
+                            <label title="选择父节点或是子节点">确认级类：</label>
+                            <select  name="pid" class="combox" onchange="comfirqtype(this)">
+                                 <option value="0">父级分类</option>
+                                 <option <if condition="$typeid">selected</if> value="2">子级分类</option>
+                            </select>
+                        </div>
+                        <div class="tml-form-col" id="hidd" <if condition="!$typeid">style="display:none;"</if>>
+                            <label>选择父级：</label>
+                            <select  name="pids" class="combox">
+                                <volist name="knowleagetypelist" id="vax">
+                            		<option <if condition="$typeid eq $vax.id">selected</if> value="{$vax['id']}">{$vax['name']}</option>
+                      			</volist>
+                            </select>
+                        </div>
+                    </div>
+                     
+                    <!-- 
+                    <div class="tml-form-col"><label>父级节点：</label>
+							<select name="parentid" class="combox">
+								<option value="0">顶级分类</option>
+								<volist name="knowleagetype" id="t">
+									<option value="{$key}">{$t}</option>
+								</volist>
+							</select>
+						</div>
+                    <div class="tml-form-row">
+                        <label>说&nbsp;&nbsp;&nbsp;&nbsp;明：</label>
+                        <textarea name="remark"></textarea>
+                    </div> -->
+				</div>
+				{:W('ShowAction')}
+				<!-- <div class="formBar">
+					<ul>
+					<if condition="$_SESSION.a eq 1 or $_SESSION.misknowledgetype_insert">
+						<li><div class="buttonActive"><div class="buttonContent"><button type="submit">{$Think.lang.save}</button></div></div></li>
+					</if>
+						<li><div class="button"><div class="buttonContent"><button type="button" class="close">{$Think.lang.close}</button></div></div></li>
+					</ul>
+				</div> -->
+			</form>
+		</div>
+	</div>
+</div>

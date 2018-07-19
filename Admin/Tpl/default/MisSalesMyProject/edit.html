@@ -1,0 +1,264 @@
+<div class="page">
+	<div class="pageContent">
+		<form method="post" action="__APP__/MisAutoEbm/update/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+			<input type="hidden" name="callbackType" value="closeCurrent" />
+			{:W('HiddenInput',$vo)}
+			<input type="hidden" name="id" value="{$vo['id']}" />
+			<input type="hidden" name="masid" value="{$vo['id']}" />
+			<div class="pageFormContent applecloth anchorsToolBarParent" layoutH="40">
+				<div class="keepContentCenter form-affix-content">
+					<div class="contentTitle contentTitle_center form-affix-title">项目基本信息
+					</div>
+					<fieldset>
+						<legend class="fieldset_legend_toggle">
+							<b>项目基本信息</b>
+							<div class="tml_style_line tml_sl4 tml_slb_blue"></div>
+						</legend>
+						<div class="tml-row">
+						{:W('ShowOrderno',array(1,'mis_auto_kimpu',$vo['orderno']))}
+							<!-- text组件 start -->
+							<div class="tml-form-col readonly">
+								<label>{$fields["name"]}:</label>
+								<input type="text"  name="name" class=" required " value="{$vo['name']}">
+							</div>
+							<!-- text组件 end -->
+							<!-- select组件 start -->
+							<div class="tml-form-col readonly">
+								<label>{$fields["typeid"]}:</label>
+								<select  name="typeid"  class=" required  combox" style="width:302px;">{:getControllbyHtml('table',array('type'=>'select','table'=>'mis_system_flow_type','id'=>'id','conditions'=>'outlinelevel = 1','name'=>'name','selected'=>$vo['typeid']))}
+								</select>
+							</div>
+							<!-- select组件 end -->
+							<!-- select组件 start -->
+							<div class="tml-form-col readonly">
+								<label>{$fields["zt"]}:</label>
+								<select  name="zt"  class="   combox" style="width:302px;">{:getControllbyHtml('table',array('type'=>'select','table'=>'mis_sale_client_type','id'=>'id','name'=>'name','selected'=>$vo['zt']))}
+								</select>
+							</div>
+							<!-- select组件 end -->
+							<!-- select组件 start -->
+							<div class="tml-form-col readonly">
+								<label>{$fields["hy"]}:</label>
+								<select  name="hy"  class=" required  combox" style="width:302px;">{:getControllbyHtml('table',array('type'=>'select','table'=>'mis_sale_profession','id'=>'id','name'=>'name','selected'=>$vo['hy']))}
+								</select>
+							</div>
+							<!-- select组件 end -->
+							<!-- select组件 start -->
+							<div class="tml-form-col readonly">
+								<label>{$fields["cyl"]}:</label>
+								<select  name="cyl"  class=" required  combox" style="width:302px;">{:getControllbyHtml('table',array('type'=>'select','table'=>'mis_sale_industry','id'=>'id','name'=>'name','selected'=>$vo['cyl']))}
+								</select>
+							</div>
+							<!-- select组件 end -->
+							<div class="tml-form-col ">
+								<label>{$fields["customerid"]}:</label>
+								<div class="tml-input-append2">
+								 <input type="text"
+									class=" checkByInput required  ORG11.kehumingchen" 
+									checkfor="MisAutoNyg" name="customername" value="{$vo['customername']}"
+									insert="orderno" show="kehumingchen" 
+									newconditions="(status=('1'))"
+									fields="array('orderno'=>'编码','kehumingchen'=>'客户名称','id'=>0);"  
+									autocomplete="on">
+									<input type="hidden" class="ORG11.orderno" name="customerid"  value="{$vo['customerid']}"/>
+									<a class="input-addon input-addon-addon input-addon-add" param="field=id,orderno,kehumingchen&model=MisAutoNyg&newconditions=(status=('1'))" href="__URL__/lookupGeneral" lookupGroup="ORG11" >{$fields["customerid"]}</a>
+									<a title="清空信息" class="input-addon input-addon-recycle"  href="javascript:void(0);" onclick="clearOrg('ORG11');"></a>
+								</div>
+							</div>
+							<!-- text组件 start -->
+							<div class="tml-form-col readonly">
+								<label>{$fields["sjid"]}:</label>
+								<input type="text"  name="sjid" class="  " value="{$vo['sjid']}">
+							</div>
+							<!-- text组件 end -->
+							<!-- text组件 start -->
+							<div class="tml-form-col readonly">
+								<label>{$fields["sjuserid"]}:</label>
+								<input type="text"  name="sjuserid" class="  " value="{$vo['sjuserid']}">
+							</div>
+							<!-- text组件 end -->
+							<!-- text组件 start -->
+							<div class="tml-form-col readonly">
+								<label>{$fields["projectcode"]}:</label>
+								<input type="text"  name="projectcode" class="  " value="{$vo['projectcode']}">
+							</div>
+							<!-- text组件 end -->
+							<!-- text组件 start -->
+							<div class="tml-form-col readonly">
+								<label>{$fields["projectname"]}:</label>
+								<input type="text"  name="projectname" class="  " value="{$vo['projectname']}">
+							</div>
+							<!-- text组件 end -->
+							<!-- select组件 start -->
+							<div class="tml-form-col readonly">
+								<label>{$fields["projectstatus"]}:</label>
+								<select  name="projectstatus"  class="   combox" style="width:302px;">{:getControllbyHtml('selectlist',array('type'=>'select','key'=>'debit','selected'=>$vo['projectstatus']))}
+								</select>
+							</div>
+							<!-- select组件 end -->
+							<!-- select组件 start -->
+							<div class="tml-form-col readonly">
+								<label>{$fields["zd"]}:</label>
+								<select  name="zd"  class="   combox" style="width:302px;">{:getControllbyHtml('table',array('type'=>'select','table'=>'user','id'=>'id','name'=>'name','selected'=>$vo['zd']))}
+								</select>
+							</div>
+							<!-- select组件 end -->
+							<!-- select组件 start -->
+							<div class="tml-form-col readonly">
+								<label>{$fields["fd"]}:</label>
+								<select  name="fd"  class="   combox" style="width:302px;">{:getControllbyHtml('table',array('type'=>'select','table'=>'user','id'=>'id','name'=>'name','selected'=>$vo['fd']))}
+								</select>
+							</div>
+							<!-- select组件 end --></div></fieldset>
+			<fieldset>
+				<legend class="fieldset_legend_toggle">
+					<b>项目详细信息</b>
+					<div class="tml_style_line tml_sl4 tml_slb_blue"></div>
+				</legend>
+							<!-- textarea组件 start -->
+							<div class="tml-form-row readonly">
+								<label>{$fields["dkyt"]}:</label>
+								<textarea  cols="100" rows="2" class=" " name="dkyt">{$vo['dkyt']}</textarea>
+							</div>
+							<!-- textarea组件 end -->
+							<!-- textarea组件 start -->
+							<div class="tml-form-row readonly">
+								<label>{$fields["utms"]}:</label>
+								<textarea  cols="100" rows="2" class=" " name="utms">{$vo['utms']}</textarea>
+							</div>
+							<!-- textarea组件 end --><div class="tml-row">
+							<!-- text组件 start -->
+							<div class="tml-form-col readonly">
+								<label>{$fields["bank"]}:</label>
+								<input type="text"  name="bank" class="  " value="{$vo['bank']}">
+							</div>
+							<!-- text组件 end --></div>
+							<!-- textarea组件 start -->
+							<div class="tml-form-row readonly">
+								<label>{$fields["xz"]}:</label>
+								<textarea  cols="100" rows="2" class=" " name="xz">{$vo['xz']}</textarea>
+							</div>
+							<!-- textarea组件 end --><div class="tml-row">
+							<!-- text组件 start -->
+							<div class="tml-form-col readonly">
+								<label>{$fields["dbfl"]}:</label>
+								<input type="text"  name="dbfl" class="  " value="{$vo['dbfl']|getDigits}">
+							</div>
+							<!-- text组件 end -->
+							<!-- text组件 start -->
+							<div class="tml-form-col readonly">
+								<label>{$fields["zsdbl"]}:</label>
+								<input type="text"  name="zsdbl" class="  " value="{$vo['zsdbl']|getDigits}">
+							</div>
+							<!-- text组件 end -->
+							<!-- text组件 start -->
+							<div class="tml-form-col readonly">
+								<label>{$fields["yhlv"]}:</label>
+								<input type="text"  name="yhlv" class="  " value="{$vo['yhlv']|getDigits}">
+							</div>
+							<!-- text组件 end --></div>
+							<!-- textarea组件 start -->
+							<div class="tml-form-row readonly">
+								<label>{$fields["yj"]}:</label>
+								<textarea  cols="100" rows="2" class=" " name="yj">{$vo['yj']}</textarea>
+							</div>
+							<!-- textarea组件 end -->
+							<!-- radio组件 start -->
+							<div class="tml-form-row readonly" >
+								<label>{$fields["sfjq"]}:</label>
+								{:getControllbyHtml('selectlist',array('type'=>'radio','names'=>'sfjq','key'=>'debit','selected'=>$vo['sfjq']))}
+							</div>
+							<!-- radio组件 end -->
+							<!-- textarea组件 start -->
+							<div class="tml-form-row readonly">
+								<label>{$fields["qtsm"]}:</label>
+								<textarea  cols="100" rows="2" class=" " name="qtsm">{$vo['qtsm']}</textarea>
+							</div>
+							<!-- textarea组件 end --><div class="tml-row">
+							<!-- text组件 start -->
+							<div class="tml-form-col readonly">
+								<label>{$fields["zbje"]}:</label>
+								<input type="text"  name="zbje" class="  " value="{$vo['zbje']|getDigits}">
+							</div>
+							<!-- text组件 end -->
+							<!-- text组件 start -->
+							<div class="tml-form-col readonly">
+								<label>{$fields["sqje"]}:</label>
+								<input type="text"  name="sqje" class="  " value="{$vo['sqje']|getDigits}">
+							</div>
+							<!-- text组件 end -->
+							<!-- text组件 start -->
+							<div class="tml-form-col readonly">
+								<label>{$fields["psje"]}:</label>
+								<input type="text"  name="psje" class="  " value="{$vo['psje']|getDigits}">
+							</div>
+							<!-- text组件 end -->
+							<!-- text组件 start -->
+							<div class="tml-form-col readonly">
+								<label>{$fields["sqywqx"]}:</label>
+								<input type="text"  name="sqywqx" class="  " value="{$vo['sqywqx']}">
+							</div>
+							<!-- text组件 end -->
+							<!-- text组件 start -->
+							<div class="tml-form-col readonly">
+								<label>{$fields["psqx"]}:</label>
+								<input type="text"  name="psqx" class="  " value="{$vo['psqx']}">
+							</div>
+							<!-- text组件 end -->
+							<!-- date组件 start -->
+							<div class="tml-form-col readonly">
+								<label>{$fields["fkrq"]}:</label>
+								<div  class="tml-input-append">
+					<input type="text" name="fkrq" class="Wdate js-wdate  " format="{dateFmt:'yyyy-MM-dd HH:mm'}" value="{$vo['fkrq']|transtime='Y-m-d H:i'}"/>
+					<a href="javascript:;" class="input-addon input-addon-calendar js-inputCheckDate">选择</a>
+				</div>
+							</div>
+							<!-- date组件 end -->
+							<!-- date组件 start -->
+							<div class="tml-form-col readonly">
+								<label>{$fields["jhrq"]}:</label>
+								<div  class="tml-input-append">
+					<input type="text" name="jhrq" class="Wdate js-wdate  " format="{dateFmt:'yyyy-MM-dd HH:mm'}" value="{$vo['jhrq']|transtime='Y-m-d H:i'}"/>
+					<a href="javascript:;" class="input-addon input-addon-calendar js-inputCheckDate">选择</a>
+				</div>
+							</div>
+							<!-- date组件 end --></div>
+							<!-- radio组件 start -->
+							<div class="tml-form-row readonly" >
+								<label>{$fields["sfdc"]}:</label>
+								{:getControllbyHtml('selectlist',array('type'=>'radio','names'=>'sfdc','key'=>'debit','selected'=>$vo['sfdc']))}
+							</div>
+							<!-- radio组件 end --><div class="tml-row">
+							<!-- text组件 start -->
+							<div class="tml-form-col readonly">
+								<label>{$fields["dcje"]}:</label>
+								<input type="text"  name="dcje" class="  " value="{$vo['dcje']|getDigits}">
+							</div>
+							<!-- text组件 end -->
+							<!-- text组件 start -->
+							<div class="tml-form-col readonly">
+								<label>{$fields["hkfs"]}:</label>
+								<input type="text"  name="hkfs" class="  " value="{$vo['hkfs']}">
+							</div>
+							<!-- text组件 end -->
+							<!-- text组件 start -->
+							<div class="tml-form-col readonly">
+								<label>{$fields["bzjzh"]}:</label>
+								<input type="text"  name="bzjzh" class="  " value="{$vo['bzjzh']}">
+							</div>
+							<!-- text组件 end -->
+							<!-- date组件 start -->
+							<div class="tml-form-col readonly">
+								<label>{$fields["jqrq"]}:</label>
+								<div  class="tml-input-append">
+					<input type="text" name="jqrq" class="Wdate js-wdate  " format="{dateFmt:'yyyy-MM-dd'}" value="{$vo['jqrq']|transtime='Y-m-d'}"/>
+					<a href="javascript:;" class="input-addon input-addon-calendar js-inputCheckDate">选择</a>
+				</div>
+							</div>
+							<!-- date组件 end --></div></fieldset><!-- 组件遍历完成 -->
+		{:W('ShowAction',array('data'=>$vo))}
+				</div>
+			</div>
+		</form>
+	</div>
+	</div>

@@ -1,0 +1,35 @@
+<div class="page">
+	<div class="pageContent">
+ 	<form method="post" action="__URL__/update/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,dialogAjaxDone);">
+		<input type="hidden" name="callbackType" value="closeCurrent" />
+		<input type="hidden" name="id" value="{$vo.id}" >
+		<input type="hidden" name="utype" value="{$utype}" />
+		<div class="pageFormContent" layoutH="58">
+			<div class="tml-row">
+				<div class="tml-form-col">
+					<label>{$fields["code"]}：</label>
+					<input type="text"   maxlength="10" name="code" value="{$vo.code}" />
+				</div>
+				<div class="tml-form-col">
+					<label>{$fields["name"]}：</label>
+					<input type="text" class="required" maxlength="25" name="name" value="{$vo.name}" />
+				</div>
+				<div class="tml-form-col">
+					<label>{$fields["typeid"]}：</label>
+					 <select name="typeid" class="combox">
+						<option  <if condition="$vo.typeid eq '1'">selected="selected"</if>  value="1">设备单位</option>
+						<option   <if condition="$vo.typeid eq '2'">selected="selected"</if>   value="2">装备单位</option>
+					</select>
+				</div>
+			</div>
+			<div class="tml-form-row">
+				<label>{$fields["remark"]}：</label>
+				<textarea name="remark" maxlength="200">{$vo['remark']}</textarea>
+			</div>
+		</div>
+		<div class="formBar">
+		  {:W('ShowAction')}
+		</div>
+	</form>
+	</div>
+</div>

@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>车辆使用情况月报表</title>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/jqGrid/themes/redmond/jquery-ui-1.8.2.custom.css" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/jqGrid/css/ui.jqgrid.css" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/jqGrid/css/redmond/jquery-ui-1.8.2.custom.css" />
+<script src="__PUBLIC__/Js/jquery-1.7.1.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Js/jquery.textSearch-1.0.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Js/jqGrid/js/i18n/grid.locale-en.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Js/jqGrid/js/jquery.jqGrid.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Js/report_forms.js" type="text/javascript"></script>
+<script>
+$(function(){
+	var h = $(window).height()-200;
+	$("#jsonmaplookupCarUsage").jqGrid({
+		url:"__URL__/lookupCarUsage{$suburl}",
+		mtype: "POST",
+		postData:{listtype:1},
+		datatype: "json",
+		colNames:{$colNames},
+		colModel: [
+			{ name: 'collmasid', index: 'collmasid', width: 60, align: 'center',hidden:true,
+                cellattr: function(rowId, tv, rawObject, cm, rdata) {
+                    return 'id=\'collmasid' + rowId + "\'";
+                }
+			},
+			{ name: 'collprojectname', index: 'collprojectname', align: 'center',
+				cellattr: function(rowId, tv, rawObject, cm, rdata) {
+					return 'id=\'collprojectname' + rowId + "\'";
+				}
+			},
+			{ name: 'collproductcode', index: 'collproductcode', align: 'center'},
+			{ name: 'collproductname', index: 'collproductname', align: 'center'},
+			{ name: 'collproductprodsize', index: 'collproductprodsize', align: 'center'},
+			{ name: 'collunit', index: 'collunit', align: 'center'},
+			{ name: 'collqty', index: 'collqty', align: 'center'},
+			{ name: 'colltaxunitprice', index: 'colltaxunitprice', width: 60, align: 'center'},
+            { name: 'colltaxamount', index: 'colltaxamount', width: 60, align: 'center'},
+            { name: 'collorderno', index: 'collorderno', width: 60, align: 'center'},
+            { name: 'collhandledate', index: 'collhandledate', width: 60, align: 'center'},
+            { name: 'collremark', index: 'collremark', width: 60, align: 'center'},
+            { name: 'collremark', index: 'collremark', width: 60, align: 'center'},
+            { name: 'collremark', index: 'collremark', width: 60, align: 'center'}
+		],
+		rowNum:50,
+		pager: '#pjmaplookupmonthoutcollect',
+		sortname: 'id',
+		//autowidth: true,
+		viewrecords: true,
+		scroll:true,
+		sortorder: "asc",
+		altRows : true,
+		rownumbers: true,
+		height: h,
+		gridComplete: function() {
+			var gridName = "jsonmaplookupCarUsage";
+			cellColor(gridName, 'collmasid');
+			//Merger(gridName, 'collmasid','collmasid');
+			//Merger(gridName, 'collprojectname','collmasid');
+		}
+	});
+});
+</script>
+</head>
+<body style="font-size:12px;">
+<div class="pageContent" layoutH="0">
+    <div style=" width:95%; margin:0 auto; overflow:hidden;">
+		<button type="button" onclick="lookupfunc_exportExcel('__APP__','jsonmaplookupCarUsage','{$reporttype}',1,'{$suburl}')">导出EXCEL</button>
+        <button type="button" onclick="lookupfunc_exportExcel('__APP__','jsonmaplookupCarUsage','{$reporttype}',2,'{$suburl}')">导出PDF</button>
+	</div>
+	<div class="clear"></div>
+	<br/>
+    <div style=" width:95%; margin:0 auto;">
+        <table id="jsonmaplookupCarUsage"></table>
+        <div id="pjmaplookupmonthoutcollect"></div>
+    </div>
+</div>
+</body>
+</html>

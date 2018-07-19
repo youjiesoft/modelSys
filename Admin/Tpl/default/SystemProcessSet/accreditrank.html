@@ -1,0 +1,95 @@
+<style>
+.dutyul{margin-left: 50px;}
+.dutyul >li{float:left;width:100px;}
+.deptul{margin-left: 50px;}
+.deptul >li{float:left;width:120px;}
+</style>
+<script>
+	function onCheckedDeptsTypes(obj){
+		var v = $(obj).val();
+		if( v == 1){
+			$('.deptul').find('input').removeAttr("disabled");
+			$('div.deptupleves').css("display","none");
+		} else{
+			$('.deptul').find('input').attr("disabled","disabled");
+			if(v==2){
+				$('div.deptupleves').css("display","block");
+			}else{
+				$('div.deptupleves').css("display","none");
+			}
+		}
+	}
+</script>
+<div class="page">
+	<div class="pageContent">
+	<form method="post" action="__APP__/ProcessInfo/accredit/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+        <input type="hidden" class="textInput" name="pid" value="{$vo.pid}"/>
+	<input type="hidden" class="textInput" name="id" value="{$vo.id}"/>
+        <input type="hidden" class="textInput" name="step" value="1"/>
+        <div class="pageFormContent" layoutH="80">
+        	<div class="unit">
+            	<label>类型选择：</label>
+			<input type="radio" name="types"  value="0" onclick="onCheckedDeptsTypes(this);" <eq name="vo.types" value="0"> checked="checked" </eq> >当前部门
+			<input type="radio" name="types"  value="1" onclick="onCheckedDeptsTypes(this);" <eq name="vo.types" value="1"> checked="checked" </eq> >所有部门
+			<input type="radio" name="types"  value="2" onclick="onCheckedDeptsTypes(this);" <eq name="vo.types" value="2"> checked="checked" </eq> >上级部门
+			 
+		</div>
+		<div class="unit deptupleves" <neq name="vo.types" value="2"> style="display:none;" </neq> >
+            	<label>&nbsp;</label>
+			<input type="radio" name="deptupleves"  value="1" <eq name="vo.deptupleves" value="1"> checked="checked" </eq> >向上一级部门
+			<input type="radio" name="deptupleves"  value="2" <eq name="vo.deptupleves" value="2"> checked="checked" </eq> >向上两级部门
+			<input type="radio" name="deptupleves"  value="3" <eq name="vo.deptupleves" value="3"> checked="checked" </eq> >向上三级部门
+			<input type="radio" name="deptupleves"  value="100" <eq name="vo.deptupleves" value="100"> checked="checked" </eq> >顶级部门
+		</div>
+		<div id="processuser" >
+		    <div style="clear:both"></div>
+		    <div class="testDiv">
+			    <div class="unit textInput" style="margin-top:5px;width: 100%;">
+				    <label>职级选择：</label><div class="divider"></div>
+				    <ul class="dutyul">
+					    <volist name="dutylist" id="d">
+					    <li><input type="checkbox" class="parentCls" name="duty[]" value="{$key}" <if condition="in_array($key,$selected_duty)">checked="checked"</if> />{$d}</li>
+					    </volist>
+				    </ul>
+			    </div>
+		    </div>
+		    <div class="testDiv">
+			    <div class="unit textInput" style="margin-top:5px;width: 100%;">
+				    <label>部门选择：</label><div class="divider"></div>
+				    <ul class="deptul">
+					    <volist name="deptlist" id="dep">
+					    <li>
+						     <if condition="$vo['types'] eq 1">
+							    <input type="checkbox" class="parentCls" name="role[]" value="{$key}" <if condition="in_array($key,$selected_dept)">checked="checked"</if> />
+						    <else />
+						    <input type="checkbox" class="parentCls" name="role[]" value="{$key}" disabled="disabled"  />
+						    </if>
+						    {$dep}
+					    </li>
+					    </volist>
+				    </ul>
+			    </div>
+		    </div>
+		</div>
+		<div class="unit">
+			<label>备注：</label>
+			<textarea name="remark" class="textInput"  minlength="2" maxlength="100" rows="2" cols="40">{$vo.remark}</textarea>
+		</div>
+	</div>
+	<div class="formBar">
+		<ul>
+		<if condition="$_SESSION.a eq 1 or $_SESSION.processInfo_accredit">
+			<li><div  style="float: left;margin-top: 5px;height: 25px;"><input type="radio" checked="checked" value="0" name="parallel" /></div><span> 非并行</span></li>
+				<if condition="$pre gt 0">
+				<li><div  style="float: left;margin-top: 5px;height: 25px;"><input type="radio" value="1" name="parallel" /></div><span> 向前并行</span></li>
+				</if>
+				<if condition="$next gt 0">
+				<li><div  style="float: left;margin-top: 5px;height: 25px;"><input type="radio" value="2" name="parallel" /></div><span> 向后并行</span></li>
+				</if>
+			<li><button class="tml-btn tml-btn-primary" type="submit">{$Think.lang.save}</button></li>
+		</if>
+		</ul>
+	</div>
+	</form>
+	</div>
+</div>

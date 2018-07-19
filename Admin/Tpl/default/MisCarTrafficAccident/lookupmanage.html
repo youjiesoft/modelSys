@@ -1,0 +1,23 @@
+<script>
+$(document).ready(function(){
+	var zNodes = {$tree};
+	var setting = {
+			data: {
+				simpleData: {
+					enable: true
+				}
+			}
+		};
+	$.fn.zTree.init($("#misfinanceprojectratpay"), setting, zNodes);
+});
+</script>
+<div class="pageContent">
+	<div class="treeleft">  
+		<div class="close">
+			<ul id="misfinanceprojectratpay" class="ztree" layoutH="10"></ul>
+		</div>
+	</div>
+	<div id="positiveBoxMisCarAddOilInfoBox" class="MisCarAddOilInfoBox treeright">
+		<include file="lookupmanagelist" />
+	</div>
+</div>

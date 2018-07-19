@@ -1,0 +1,63 @@
+<div class="page">
+	<div class="pageContent">
+	<form method="post" action="__URL__/auditProcess/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,refreshtabsAudit);" enctype="multipart/form-data">
+		<input type="hidden" name="id" value="{$vo['id']}" />
+		<input type="hidden" name="pid" value="{$vo['ptmptid']}">
+		<input type="hidden" name="ostatus" value="{$vo['ostatus']}">
+		<input type="hidden" name="refreshtabs[type]" value="navtab">
+		<input type="hidden" name="backprocess" value="流程回退">
+		<input type="hidden" name="auditprocess" value="流程审核">
+		<input type="hidden" name="endprocess" value="流程结束">
+		<input type="hidden" name="alreadyAuditUser" value="{$vo['alreadyAuditUser']}">
+		<input type="hidden" name="auditUser" value="{$vo['auditUser']}">
+        <input type="hidden" name="doinfo" />
+		<input type="hidden" name="multi_lookup_reset">
+        <div class="pageFormContent applecloth" layoutH="56">
+				<div class="keepContentCenter form-affix-content">
+						<H2 class="contentTitle contentTitle_center form-affix-title">电脑维修记录
+							{:W('ShowOrderno',array(1,'mis_computer_fix_log',$vo['orderno']))}
+						</H2>
+						<fieldset>
+						<legend class="fieldset_legend_toggle side-catalog-text">
+						<b>报修信息</b>
+						</legend>
+							<div class="tml-row">
+								<div class="tml-form-col">
+									<label>{$fields["falut_type"]}:</label>
+									<input type="text" readonly="readonly" value="{$vo.falut_type|getSelectByName='computerfault',###}" />
+				                 </div>
+				                 <div class="tml-form-col">
+									<label>紧急程度</label>
+									<input type="text" readonly="readonly"
+										<if condition="$vo.level eq 1">value="不急"</if>
+										<if condition="$vo.level eq 2">value="急"</if>
+										<if condition="$vo.level eq 3">value="非常急"</if>
+									/>
+								</div>
+							</div>
+							<div class="tml-form-row">
+								<label>{$fields["fault_cause"]}:</label>
+								<textarea rows="2" readonly="readonly" name="fault_cause">{$vo['fault_cause']}</textarea>
+							</div>
+						</fieldset>
+						<fieldset>
+						<legend class="fieldset_legend_toggle side-catalog-text">
+						<b>制单信息</b>
+						</legend>
+							<div class="tml-row">
+								<div class="tml-form-col">
+									<label>制单人：</label>
+									<input type="text" readonly="readonly" value="{$vo.createid|getfieldby='id','name','user'}" />
+								</div>
+								<div class="tml-form-col">
+									<label>制单时间：</label>
+									<input type="text" readonly="readonly" value="{$vo.createtime|transTime}" />
+								</div>
+							</div>
+						</fieldset>
+				</div>
+			</div>
+			{:W('ShowAction')}
+		</form>
+	</div>
+</div>

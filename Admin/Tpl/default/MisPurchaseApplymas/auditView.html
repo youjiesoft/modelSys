@@ -1,0 +1,101 @@
+<script>
+var grossamount='{$vo.grossamount}';
+$(document).ready(function() {
+	var ret = $.numberRecover({number:grossamount,dw:['分','角','元','拾','佰','仟','万','十','百','千','亿'],dwC : '<span style="color:red;padding:0px 10px;font-size:14px;"></span>',zfC : '<span style="color:black;font-size:14px;"></span>'});
+	$("#amountDXauditView").html(ret);
+})
+</script>
+<div class="page">
+	    <div class="pageContent dialog-default">
+	    <form method="post" action="__URL__/auditProcess/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this, refreshtabsAudit)">
+			<h2 class="contentTitle contentTitle_center">采购{:W('ShowAdvices',array('id'=>$vo['id']))}
+                {:W('ShowOrderno',array(0,'mis_purchase_applymas',$vo['orderno']))}
+            </h2>
+			<div class="pageFormContent applecloth" layoutH="101">
+				<div class="tml-row">
+            		<if condition='$fields["typeid"]'>
+						<div class="tml-form-col">
+							<label>采购类型：</label>
+							<input type="text" readonly="readonly" value="{$vo.typeid|getfieldby='id','name','mis_order_types'}" />
+						</div>
+					</if>
+					<div class="tml-form-col">
+						<label>申请部门：</label>
+						<input type="text" value="{$vo['deptid']|getFieldBy='id','name','mis_system_department'}" readonly="readonly" />
+					</div>
+					<div class="tml-form-col">
+						<label>申请人：</label>
+						<input type="text" value="{$vo['userid']|getFieldBy='id','name','user'}" readonly="readonly" />
+					</div>
+					<div class="tml-form-col">
+						<label>申请时间：</label>
+						<div class="tml-input-append">
+							<input type="text" value="{$vo['apdate']|transTime}" readonly="readonly" />
+							<a href="javascript:;" class="xyInputWithUnitButton inputDateButton">选择</a>
+						</div>
+					</div>
+					<div class="tml-form-col">
+						<label>开始日期：</label>
+						<div class="tml-input-append">
+							<input type="text" value="{$vo.dmsdate|transTime}" readonly="readonly" class="tml-find-num"/>
+							<a href="javascript:;" class="xyInputWithUnitButton inputDateButton">选择</a>
+						</div>
+					</div>
+					<div class="tml-form-col">
+						<label>截止日期：</label>
+						<div class="tml-input-append">
+							<input type="text" value="{$vo.dmedate|transTime}" readonly="readonly" class="tml-find-num"/>
+							<a href="javascript:;" class="xyInputWithUnitButton inputDateButton">选择</a>
+						</div>
+					</div>
+				</div>
+					<if condition='$fields["apreason"]'>
+						<div class="tml-form-row">
+							<label>{$fields["apreason"]}：</label>
+							<input type="text" readonly="readonly" value="{$vo.apreason}"/>
+						</div>
+					</if>
+			<div class="dialog-box">
+			<table class="data-table" cellspacing="0" width="100%">
+				<thead>
+					<tr>
+                        <td style="width:30px;"><strong>序号</strong></td>
+                        <td><strong>物资名称</strong></td>
+                        <td style="width:100px;"><strong>物资规格</strong></td>
+                        <td style="width:65px;"><strong>单位</strong></td>
+                        <td style="width:65px;"><strong>数量</strong></td>
+                        <td style="width:65px;"><strong>单价</strong></td>
+                        <td style="width:65px;"><strong>总价</strong></td>
+                    </tr>
+				</thead>
+				<tbody>
+					<volist id="subvo" name="sublist">
+						<tr id="arr_tr1">
+                        	<td><input type="text" class="gangwei_d xytdinput" value="{$key+1}" readonly="readonly"/></td>
+							<td><input type="text" class="gangwei_d xytdinput" value="{$subvo['name']}" readonly="readonly"/></td>
+							<td><input type="text" class="gangwei_d xytdinput" value="{$subvo['psize']}" readonly="readonly"/></td>
+							<td><input type="text" class="gangwei_d xytdinput" value="{$subvo['unit']}" readonly="readonly"/></td>
+                        	<td><input type="text" class="gangwei_d xytdinput" value="{$subvo['qty']}" readonly="readonly"/> </td>
+                        	<td><input type="text" class="gangwei_d xytdinput" value="{$subvo['price']|getDigits}" readonly="readonly"/></td>
+                        	<td><input type="text" class="gangwei_d xytdinput" value="{$subvo['apamount']|getDigits}" readonly="readonly"/></td>                                
+                       </tr>
+					</volist>
+					<tr style="height:30px;" id="misfinanceexpensesmas_tr_edit">
+						<td>
+                       		<input type="text" class="gangwei_d xytdinput" readonly="readonly" value="合计"/>
+                       	</td>
+                       	<td colspan="5" style="text-align: center;color:red;">
+                       		<span id="amountDXauditView"></span>
+                       	</td>
+                       	<td>
+                       		<input type="text" name="grossamount" readonly="readonly" class="gangwei_d xytdinput" value="{$vo.grossamount|getDigits}" id="amountEdit" />
+                       	</td>
+					</tr>
+				</tbody>
+			</table>
+			</div>
+		</div>
+			{:W('ShowAction')}
+	    </form>
+	</div>
+</div>

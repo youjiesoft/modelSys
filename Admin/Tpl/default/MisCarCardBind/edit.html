@@ -1,0 +1,49 @@
+<div class="page">
+	<div class="pageContent">
+		<form method="post" action="__URL__/update/rel/card_model_car/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,dialogAjaxDone);">
+			<input type="hidden" name="id" value="{$vo['id']}" />
+			<div class="pageFormContent" layoutH="58">
+			<div class="tml-row">
+	 			<div class="tml-form-col">
+					<label>{$fields["oil_id"]}:</label>
+					<input  type="text" name="oil_id" class="required" value="{$vo['oil_id']}" size="25">
+				</div>
+				<div class="tml-form-col">
+					<label>{$fields["carid"]}:</label>
+					<div class="tml-input-append">
+	                    <input type="text" class="org.current_name" name="carname" value="{$vo['carid']|getFieldBy=\'id\',\'name\',\'MisSystemCar\'}" readonly="readonly"/>
+						<input type="hidden" class="org.mangid" name="carid" value="{$vo['carid']}"/>
+						<a class="input-addon input-addon-add" href="__URL__/lookupmanage" lookupGroup="org">车辆选择</a>
+					</div>
+				</div>
+				<div class="tml-form-col">
+					<label>{$fields["oil_balance"]}:</label>
+					<input type="text" name="oil_balance" class="" value="{$vo['oil_balance']|getDigits}" onblur="FormatNumber(this);" size="25" />
+				</div>
+				<div class="tml-form-col">
+					<label>{$fields["bind_time"]}:</label>
+					<div class="tml-input-append">
+						<input type="text" class="Wdate" onfocus="WdatePicker()" size="25" name="bind_time" value="{$vo['bind_time']|date='Y-m-d',###}" />
+						<span class="input-addon input-addon-calendar"></span>
+					</div>
+				</div>
+				<div class="tml-form-col">
+					<label>{$fields["type"]}:</label>
+					<select name="type"  class="combox ">
+						<option <if condition="$vo['type'] eq 2">selected</if> value="2">新卡绑定</option>
+						<option <if condition="$vo['type'] eq 1">selected</if> value="1">备用卡</option>
+					</select>
+				</div>
+			</div>
+				<div class="tml-form-row">
+							<div class="tml-help-show"><font color="red">*&nbsp;备用卡可以不用填写车辆名.</font></div>
+				</div>
+				<div class="tml-form-row">
+					<label>{$fields["remark"]}:</label>
+					<textarea  name="remark">{$vo['remark']}</textarea>
+				</div>
+			</div>
+            {:W('ShowAction',array('data'=>$vo))}
+	</form>
+	</div>
+</div>

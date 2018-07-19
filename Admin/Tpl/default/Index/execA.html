@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">  
+<html>  
+<head>  
+<meta http-equiv="content-type" content="text/html; charset=utf-8">  
+<title>针对BI报表的一个跨域解决方案页面，请勿删除</title>  
+</head>  
+<body>  
+    <script type="text/javascript"> 
+    
+	    function isNullorEmpty(str) {
+	    	return str == false || str == '' || str == undefined || typeof (str) == 'undefined' || str == null ? false : true;
+	    }
+    	//得到href传递过来的参数
+    	var url = document.location.href;
+    	//对参数进行分割
+		var arrStr = url.substring(url.indexOf("?")+1).split("&");
+		//定义一个obj对象用来存储数组
+		var obj= new Object;
+
+		for(var i in arrStr){
+			var arraplit = arrStr[i].split("=");
+			obj[arraplit[0]] = arraplit[1];
+		}
+		
+		if(isNullorEmpty(obj.title) && isNullorEmpty(obj.id) && isNullorEmpty(obj.name)){
+			var url = "__APP__/"+obj.name+"/view/id/"+obj.id+"/eid/"+obj.id
+	        parent.parent.openNavTab(obj.name,url,obj.title);
+		}else{
+			if(!isNullorEmpty(obj.title)){
+				throw '缺少title参数';
+			}
+			if(!isNullorEmpty(obj.id)){
+				throw '缺少id参数';
+			}
+			if(!isNullorEmpty(obj.name)){
+				throw '缺少name参数';
+			}
+		}
+    </script>  
+</body>  
+</html> 

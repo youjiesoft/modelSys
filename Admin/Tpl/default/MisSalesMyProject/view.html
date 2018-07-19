@@ -1,0 +1,210 @@
+<form method="post" action="__URL__/update/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+    <input type="hidden" name="id" value="{$vo.id}" >               
+    <div class="pageFormContent applecloth anchorsToolBarParent" layoutH="67">
+        <div class="keepContentCenter">
+            <H2 class="contentTitle contentTitle_center">项目基本信息<span class="auto_code"><b>No. </b> {$vo.code}</span></H2>
+            <fieldset class="side-catalog-anchor">
+                <legend class="fieldset_legend_toggle side-catalog-firstanchor side-catalog-text">
+                <b>标书信息</b>
+                </legend>
+                <div class="tml-form-row">
+                    <label>{$fields["name"]}：</label>
+                    <input type="text" class="readonly" readonly="readonly" value="{$vo.name}" />
+                </div>
+                <div class="tml-form-row">
+                    <label>合同名称：</label>
+                    <input type="text" class="readonly" readonly="readonly" value="{$vo.prcnoid|getFieldBy='id','name','mis_pact_check'}" />
+                </div>
+                <div class="tml-row">
+                    <div class="tml-form-col">
+                        <label>{$fields["typeid"]}：</label>
+                        <input type="text" value="{$vo.typeid|getFieldBy=###,'id','name','mis_order_types'}" readonly="readonly" class="readonly" />
+                    </div>
+                    <div class="tml-form-col">
+                        <label>{$fields["contracttype"]}：</label>
+                        <input type="text" class="readonly" readonly="readonly" value="{$vo.contracttype}" />
+                    </div>
+                    <div class="tml-form-col">
+                        <label>{$fields["businesstype"]}：</label>
+                        <input type="text" class="readonly" readonly="readonly" value="{$vo.businesstype}" />
+                    </div>
+                    <div class="tml-form-col">
+                        <label>{$fields["bail"]}：</label>
+                        <div class="tml-input-append">
+                            <input type="text" class="readonly" readonly="readonly" name="bail" value="{$vo.bail|getDigits}" />
+                            <span class="input-addon-unit" title="元">元</span>
+                        </div>
+                    </div>
+                    <div class="tml-form-col">
+                        <label>{$fields["area"]}：</label>
+                        <input type="text" class="readonly" readonly="readonly" name="area" value="{$vo.area}" />
+                    </div>
+                    <div class="tml-form-col">
+                        <label>{$fields["offertype"]}：</label>
+                        <input type="text" class="readonly" readonly="readonly" value="{$vo.offertype|getFieldBy='id','name','MisOrderTypes'}" />
+                    </div>
+                    <div class="tml-form-col">
+                        <label>{$fields["address"]}：</label>
+                        <input type="text" class="readonly" readonly="readonly" value="{$vo.address}" />
+                    </div>
+                    <div class="tml-form-col">
+                        <label>{$fields["businessditch"]}：</label>
+                        <input type="text" class="readonly" readonly="readonly" value="{$vo.businessditch}" />
+                    </div>
+                    <div class="tml-form-col">
+                        <label>{$fields["prinunit"]}：</label>
+                        <input type="text" class="readonly" readonly="readonly" value="{$vo.prinunit}" />
+                    </div>
+                    <div class="tml-form-col">
+                        <label>{$fields["selectway"]}：</label>
+                        <input type="text" class="readonly" readonly="readonly" value="{$vo.selectway}" />
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="side-catalog-anchor">
+                <legend class="fieldset_legend_toggle side-catalog-text">
+                <b>合同信息</b>
+                </legend>
+                <div class="tml-row">
+                    <div class="tml-form-col">
+                        <label>{$fields["principalcost"]}：</label>
+                        <div class="tml-input-append">
+                            <input type="text" readonly="readonly" value="{$vo.principalcost|getDigits}" />
+                            <span class="input-addon-unit" title="元">元</span>
+                        </div>
+                    </div>
+                    <div class="tml-form-col">
+                        <label>{$fields["limittime"]}：</label>
+                        <div class="tml-input-append">
+                            <input type="text" readonly="readonly" value="{$vo.limittime}" />
+                            <span class="input-addon-unit" title="天">天</span>
+                        </div>
+                    </div>
+                    <div class="tml-form-col">
+                        <label>{$fields["startdate"]}：</label>
+                        <div class="tml-input-append">
+                            <input type="text" readonly="readonly" value="{$vo.startdate|transTime}">
+                            <a class="xyInputWithUnitButton inputDateButton" href="javascript:;">选择</a>
+                        </div>
+                    </div>
+                    <div class="tml-form-col">
+                        <label>{$fields["enddate"]}：</label>
+                        <div class="tml-input-append">
+                            <input type="text" readonly="readonly" value="{$vo.enddate|transTime}">
+                            <a class="xyInputWithUnitButton inputDateButton" href="javascript:;">选择</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="tml-form-row">
+                    <label>{$fields["paycondition"]}：</label>
+                    <textarea name="paycondition" rows="3">{$vo.paycondition}</textarea>
+                </div>
+                <div class="tml-row">
+                    <div class="tml-form-col">
+                        <label>{$fields["code"]}：</label>
+                        <input type="text" name="code" value="{$vo.code}" />
+                    </div>
+                    <div class="tml-form-col">
+                        <label>{$fields["helpcode"]}：</label>
+                        <input type="text" name="helpcode" value="{$vo.helpcode}" />
+                    </div>
+                </div>                          
+            </fieldset>
+            <fieldset class="side-catalog-anchor">
+                <legend class="fieldset_legend_toggle side-catalog-text">
+                <b>项目信息</b>
+                </legend>
+                <div class="tml-row">
+                    <div class="tml-form-col">
+                        <label>{$fields["createid"]}：</label>
+                       <!--  <textarea rows="2"  readonly="readonly">{$leadProjectName}</textarea> -->
+                        <input type="text" class="readonly" readonly="readonly" value="{$leadProjectName}" />
+                    </div>                                                              
+                    <div class="tml-form-col">
+                        <label>{$fields["leaderid"]}：</label>
+                       <!--  <textarea rows="2"  readonly="readonly">{$leadPersonName}</textarea> -->
+                        <input type="text" class="readonly" readonly="readonly" value="{$leadPersonName}" />
+                    </div>
+                    <div class="tml-form-col">
+                        <label>{$fields["siteid"]}:</label>
+                        <input type="text" class="checkByInput" checkfor="misSalesSite" value="{$vo.siteid|getFieldBy='id','name','MisSalesSite'}" />
+                        <input type="hidden" name="siteid" value="{$vo.siteid}" />
+                    </div>                                                              
+                    <div class="tml-form-col">
+                        <label>{$fields["companyid"]}:</label>
+                        <input type="text" class="checkByInput" checkfor="misSystemCompany" value="{$vo.companyid|getFieldBy='id','name','mis_system_company'}" />
+                        <input type="hidden" name="companyid" value="{$vo.companyid}" />                                
+                    </div>
+                    <div class="tml-form-col">
+                        <label>{$fields["jsdw"]}：</label>
+                        <input type="text" name="jsdw" value="{$vo.jsdw}" />
+                    </div>
+                    <div class="tml-form-col">
+                        <label>{$fields["zbdw"]}：</label>
+                        <input type="text" name="zbdw" value="{$vo.zbdw}" />
+                    </div>
+                    <div class="tml-form-col">
+                        <label>{$fields["sjdw"]}：</label>
+                        <input type="text" name="sjdw" value="{$vo.sjdw}" />
+                    </div>
+                    <div class="tml-form-col">
+                        <label>{$fields["jldw"]}：</label>
+                        <input type="text" name="jldw" value="{$vo.jldw}" />
+                    </div>
+                    <div class="tml-form-col">
+                        <div class="tml-input-append">
+                        <label>{$fields["tprofrate"]}：</label>
+                        <input type="text" name="tprofrate" value="{$vo.tprofrate|getDigits}" />
+                        <span class="input-addon-unit ">%</span>
+                        </div>
+                    </div>                                    
+                </div>
+                <div class="tml-form-row">
+                    <label>{$fields["lhgc"]}：</label>
+                    <textarea name="lhgc" rows="3">{$vo.lhgc}</textarea>
+                </div>
+                <div class="tml-form-row">
+                    <label>{$fields["yjgc"]}：</label>
+                    <textarea name="yjgc" rows="3">{$vo.yjgc}</textarea>
+                </div>
+                <div class="tml-form-row">
+                    <label>{$fields["sdgc"]}：</label>
+                    <textarea name="sdgc" rows="3">{$vo.sdgc}</textarea>
+                </div>
+                <div class="tml-form-row">
+                    <label>{$fields["tdnd"]}：</label>
+                    <textarea name="tdnd" rows="3">{$vo.tdnd}</textarea>
+                </div>
+            </fieldset>
+            <fieldset class="side-catalog-anchor">
+                <legend class="fieldset_legend_toggle side-catalog-text">
+                <b>制表信息</b>
+                </legend>
+                <div class="tml-row">
+                    <div class="tml-form-col">
+                        <label>制单人：</label><!-- {$fields["createid"]} -->
+                        <input type="text" class="readonly" value="<empty name='vo.createid'>{$userid|getFieldBy=###,'id','name','user'}<else/>{$vo.createid|getFieldBy=###,'id','name','user'}</empty>" />
+                        <input type="hidden" name="createid" value="<empty name='vo.createid'>{$userid}<else/>{$vo.createid}</empty>" />
+                    </div>
+                    <div class="tml-form-col">
+                        <label>{$fields["makedate"]}：</label>
+                        <input type="text" <empty name='vo.makedate'>name="makedate"</empty> class=" readonly" value="<empty name='vo.makedate'>{$makedate||transTime='Y-m-d'}<else/>{$vo.makedate||transTime='Y-m-d'}</empty>" />
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="formBar">
+        <ul>
+            <if condition="$_SESSION.a eq 1 or $_SESSION.missalesproject_update">
+            <li>
+                <div class="buttonActive">
+                    <div class="buttonContent">
+                        <button type="submit">{$Think.lang.save}</button>
+                    </div>
+                </div>
+            </li>
+            </if>
+        </ul>
+    </div>
+</form>

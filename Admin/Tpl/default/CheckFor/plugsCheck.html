@@ -1,0 +1,52 @@
+<div id="checkfor">
+<style>
+#checkfor{
+	border: 1px solid #95B8E7;
+	position: absolute;
+	background: #fff;
+	text-align: center;
+	z-index: 9999 !important;
+}
+#checkfor .current{
+	background: #fbec88;
+}
+#checkfor td{
+	border-right: 1px dotted #ccc;
+	border-bottom: 1px dotted #ccc;
+	cursor: pointer;
+	min-width:70px;
+	padding:4px 2px;
+}
+#checkfor thead{
+	background: #efefef;
+}
+</style>
+<empty name="notfound">
+	<div>
+		<table border="0" cellspacing="0" id="checkForTable" other='{$other}'>
+			<thead>
+				<tr>
+				<volist name="fields" id="n" key="k">
+					<td <eq name="n" value="0">style="display:none;"</eq>>{$n}</td>
+				</volist>
+				</tr>
+			</thead>
+			<tbody other='{$other}'>
+				<volist name="checklist" id="l" key="k">
+					<tr <eq name="k" value="1">class="current"</eq>>
+						<volist name="fields" id="f" key="k2">
+							<td class="{$key}" <eq name="f" value="0">style="display:none;"</eq>>{$l[$key]}</td>
+						</volist>
+					</tr>
+				</volist>
+			</tbody>
+		</table>
+	</div>
+<else/>
+{$notfound}
+</empty>
+</div>
+<script>
+var other = '{$other}';
+other = $.parseJSON(other);
+</script>

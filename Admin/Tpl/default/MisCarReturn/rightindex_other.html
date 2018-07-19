@@ -1,0 +1,55 @@
+<form id="pagerForm" action="__URL__/index"> 
+	<input type="hidden" name="pageNum" value="1" />
+	<input type="hidden" name="orderField" value="{$order}" />
+	<input type="hidden" name="orderDirection" value="{$sort}" />
+	<input type="hidden" name="findKeyValue" value="1" />
+	<input type="hidden" name="jump" value="1" />
+</form>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li>
+				<a class="edit" href="__URL__/edit/findKeyValue/1/id/{sid}" title="还车记录_新增" rel="__MODULE__edit" target="dialog" mask="true" warn="请选择记录" width="700" height="350">
+					<span>还车</span>
+				</a>
+			</li>
+			<volist name="toolbarextension" id="toolb">
+					<li>{$toolb['html']}</li>
+			</volist>
+		</ul>
+	</div>
+	<table class="table" layoutH="85" targetType="dialog" width="100%">
+		<thead>
+			<tr>
+				<th width="22">序号</th>
+				<th>用车人</th>
+				<th>申请部门</th>
+				<th>车牌号</th>
+				<th>车型</th>
+				<th>目的地</th>
+				<th>用车时间</th>
+                <!-- <th>司机	</th> -->
+			</tr>
+		</thead>
+		<tbody>
+           <volist id="vo" name="list">
+	           <tr target="sid" rel="{$vo['id']}" onclick="onTrClickCheckbox(this,'id')" dwidth="700" dheight="350" title="编辑" ondblclick='ondblclick_dialog(this,"__URL__edit{$vo[id]}","__URL__/edit/id/{$vo[id]}/findKeyValue/1");'>
+		            <td class="tml-first-td">{$numPerPage*($currentPage-1)+$key+1}</td>
+					<td>{$vo['usename']}</td>
+					<td>{$vo['departmentID']|getFieldBy=###,'id','name','MisSystemDepartment'}</td>
+					<td>{$vo.carID|getFieldBy=###,'id','carno','MisSystemCar'}</td>
+					<td>{$vo.carID|getFieldBy=###,'id','name','MisSystemCar'}</td>
+					<td>{$vo['arrivePlace']}</td>
+	                <td>{$vo['departureTime']|transTime}</td>
+	                <!-- <td>{$vo['driverMark']}</td> -->
+                </tr>
+			</volist>
+		</tbody>
+	</table>
+	<div class="panelBar panelPageBar">
+		<div class="pages">
+			<span>共{$totalCount}条</span>
+		</div>
+		<div class="pagination" rel="miscarreturn" totalCount="{$totalCount}" numPerPage="{$numPerPage}" pageNumShown="10" currentPage="{$currentPage}"></div>
+	</div>
+</div>

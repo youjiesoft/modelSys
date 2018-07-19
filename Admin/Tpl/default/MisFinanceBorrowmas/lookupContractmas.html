@@ -1,0 +1,94 @@
+<div class="page">
+	<div class="pageContent">
+			<div class="pageFormContent applecloth" layoutH="56">
+			<div class="keepContentCenter {$auditImgClass}">
+				<H2 class="contentTitle contentTitle_center">采购合同详情
+					<span class="auto_code">
+                        <b>No. </b>
+						<!--可以输入的就去掉两个readonly 同时改xycodedata_read为xycodedata_write-->
+						<input type="text" name="orderno" value="{$vo.orderno}" <if condition='$writable eq 0'> readonly="readonly" class="xycodedata_read" <else/> class="xycodedata_write required alphanumeric" </if> />
+                    </span>
+				</H2>
+				<fieldset>
+					<legend class="fieldset_legend_toggle">
+						<b>合同基本信息</b>
+					</legend>
+					<p>
+						<label>合同名称：</label>
+						<input type="text"  readonly="readonly"  value="{$vo.name}" />
+					</p>
+					<p>
+						<label>合同类型：</label>
+						<input type="text" readonly="readonly" value="{$vo.typeid|getfieldby='id','name','mis_order_types'}" />
+					</p>
+					<p>
+						<label>执行状态：</label>
+						<input type="text" value="{$vo.extypeid|getfieldby='id','name','mis_execution_type'}" readonly="readonly"/>
+					</p>
+					<p>
+						<label>供应商：</label>
+						<input type="text" value="{$vo.supplierid|getfieldby='id','name','mis_purchase_supplier'}" readonly="readonly"/>
+					</p>
+					<p>
+						<label>项目名称：</label>
+						<input type="text" value="{$vo.projectid|getfieldby='id','name','mis_sales_project'}" readonly="readonly"/>
+					</p>
+					<p>
+						<label>签订日期：</label>
+						<input type="text" value="{$vo.signdate|transTime}" readonly="readonly"/>
+					</p>
+				    <p>
+						<label>生效日期：</label>
+						<input type="text" value="{$vo.effectdate}" readonly="readonly"/>
+					</p>
+					<p>
+						<label>失效日期：</label>
+						<input type="text" value="{$vo.expirydate}" readonly="readonly"/>
+					</p>
+				</fieldset>
+				<fieldset>
+					<legend class="fieldset_legend_toggle">
+						<b>合同金额</b>
+					</legend>
+					<p>
+						<label>合同金额：</label>
+						<input type="text"  readonly="readonly"  value="{$vo.ctamount}" />
+					</p>
+					<p>
+						<label>折扣：</label>
+						<input type="text" readonly="readonly" value="{$vo.percent}" />
+					</p>
+					<p>
+						<label>折后金额：</label>
+						<input type="text" value="{$vo.dctamount}" readonly="readonly"/>
+					</p>
+					<p>
+						<label>阶段支付比例：</label>
+						<input type="text" value="{$vo.phasepayratio}" readonly="readonly"/>
+					</p>
+					<p>
+						<label>质保金：</label>
+						<input type="text" value="{$vo.warrantymoney'}" readonly="readonly"/>
+					</p>
+					<p>
+						<label>质保金到期时间：</label>
+						<input type="text" value="{$vo.warrantyendtime|transTime}" readonly="readonly"/>
+					</p>
+				    <p>
+						<label>币种代码：</label>
+						<input type="text" value="{$vo.currencyid|getFieldBy='id','name','MisFinanceCurrency'}" readonly="readonly"/>
+					</p>
+					<p>
+						<label>开票税率：</label>
+						<input type="text" value="{$vo.taxid|getFieldBy='id','name','MisTaxGroup'}" readonly="readonly"/>
+					</p>
+				</fieldset>
+				</div>
+			</div>
+			<div class="formBar">
+				<ul>
+					<li><div class="button"><div class="buttonContent"><button type="button" class="close">{$Think.lang.close}</button></div></div></li>
+				</ul>
+			</div>
+	</div>
+</div>

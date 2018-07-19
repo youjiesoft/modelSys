@@ -1,0 +1,46 @@
+<include file="Public:pagerForm" />
+	<div class="page">
+		<div class="pageContent">
+			<form method="post" action="__URL__/update/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,dialogAjaxDone);">
+			<input type="hidden" name="id" value="{$vo['id']}" />
+			<input type="hidden" value="1" name="iseditor">
+			<input type="hidden" name="callbackType" value="closeCurrent">
+				<div class="pageFormContent" layoutH="45">
+					<table width="100%" border="0" cellspacing="0">
+						<tr>
+							<td>
+								<div class="unit">
+								<label>标题：</label><input  type="text" name="code" class="required" value="{$vo['code']}"></div>
+							</td>
+							<td>
+								<div class="unit">
+									<label>分类：</label>
+									<select name="categoryid"  class="combox ">
+										<volist name="categoryidlist" id="vocategoryid">
+											<option value="{$vocategoryid['id']}" <if condition="$vo['categoryid'] eq $vocategoryid['id']">selected</if> >{$vocategoryid['name']}</option>
+										</volist>
+									</select>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div class="unit">
+								<label>详细：</label><textarea  name="content">{$vo['content']}</textarea></div>
+							</td>
+							<td></td>
+						</tr>
+				</table>
+			</div>
+			{:W('ShowAction',array('data'=>$vo))}
+			<!-- <div class="formBar">
+				<ul>
+				<if condition="$_SESSION.a eq 1 or $_SESSION.misknowledgelist_update">
+					<li><div class="buttonActive"><div class="buttonContent"><button type="submit">{$Think.lang.save}</button></div></div></li>
+				</if>
+					<li><div class="button"><div class="buttonContent"><button type="button" class="close">{$Think.lang.close}</button></div></div></li>
+				</ul>
+			</div> -->
+		</form>
+	</div>
+</div>

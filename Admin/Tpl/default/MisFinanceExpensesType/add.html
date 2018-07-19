@@ -1,0 +1,57 @@
+<div class="page">
+	<div class="pageContent">
+	<form method="post" action="__URL__/insert/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+		<div class="pageFormContent" layoutH="58">
+		<div class="tml-row">
+		    <div class="tml-form-col">
+				<label>{$fields["code"]}：</label>
+				<input type="text" name="code" class="required alphanumeric" maxlength="10" value="" />
+			</div>
+			<div class="tml-form-col">
+				<label>{$fields["name"]}：</label>
+				<input type="text" name="name" class="required" maxlength="25" value="" />
+			</div>
+		</div>
+		<div class="tml-row">
+			<div class="tml-form-col">
+				<label>上级类型</label>
+				<div class="tml-input-append">
+					<input class="checkByInput textInput" show="name" insert="id" checkfor="MisFinanceExpensesType" />
+					<input type="hidden" name="parentid" value="0">
+					<span class="xyInputWithUnitButton inputCheckForButton"></span>
+				</div>
+			</div>
+			<span class="tml-form-text" style="color:red">*不选择代表顶级类型</span>
+		</div>
+		<div class="tml-row">
+			<div class="tml-form-col">
+				<label>{$fields["accountcode"]}：</label>
+				<div class="tml-input-append">
+					<input class="checkByInput textInput" checkfor="MisFinanceAmountTitle" insert="id" show="code" />
+					<input name="accountid" type="hidden" />
+					<span class="xyInputWithUnitButton inputCheckForButton"></span>
+				</div>
+			</div>
+			<div class="tml-form-col">
+				<label>{$fields["accountname"]}：</label>
+	            <input  type="text"  check_key="accountname"  class="readonly" value="" />
+			</div>
+		</div>
+			<div class="tml-form-row">
+				<label>{$fields["remark"]}：</label>
+				<textarea name="remark" rows="3" maxlength="200"></textarea>
+			</div>
+		</div>
+		<div class="formBar">
+			<ul>
+			<if condition="$_SESSION.a eq 1 or $_SESSION.misfinanceexpensestype_insert">
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">{$Think.lang.save}</button></div></div></li>
+			</if>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">{$Think.lang.close}</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+
+	</div>
+</div>
+

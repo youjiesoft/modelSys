@@ -1,0 +1,104 @@
+<div class="new_version_page_content">
+
+
+<table class="data-table" width="100%" cellspacing="0" style="line-height:32px;" >
+	<tbody>
+		<tr>
+			<td class="cell_left" width="12%">{$fields["orderno"]}:</td>
+			<td class="cell_right" width="21%" >{$vo['orderno']}<div class="display_none {$classNodeSettingArr['orderno']}"></div></td>
+			<td class="cell_left" width="12%">{$fields["huoyuandanhao"]}:</td>
+			<td class="cell_right" width="21%" >
+								{:W('Lookup',array('1',$vo,'7943','1','1'))}
+								<div class="display_none {$classNodeSettingArr['huoyuandanhao']}">{$vo['huoyuandanhao']|getFieldBy='orderno','orderno','MisAutoTie'}</div></td>
+			<td class="cell_left" width="12%">{$fields["ordertype"]}:</td>
+			<td class="cell_right" width="21%" >{$vo['ordertype']|getSelectlistValue='YDZT'}<div class="display_none {$classNodeSettingArr['ordertype']}">{$vo['ordertype']|getSelectlistValue='YDZT'}</div></td>
+		</tr>
+		<tr>
+			<td class="cell_left" width="12%">{$fields["userid"]}:</td>
+			<td class="cell_right" width="21%" >
+								{:W('Lookup',array('1',$vo,'8013','1','1'))}
+								<div class="display_none {$classNodeSettingArr['userid']}">{$vo['userid']|getFieldBy='id','account','MisAutoCsb'}</div></td>
+			<td class="cell_left" width="12%">{$fields["yunshugongsi"]}:</td>
+			<td class="cell_right" width="21%" >
+								{:W('Lookup',array('1',$vo,'7940','1','1'))}
+								<div class="display_none {$classNodeSettingArr['yunshugongsi']}">{$vo['yunshugongsi']|getFieldBy='orderno','name','MisAutoBab'}</div></td>
+			<td class="cell_left" width="12%">{$fields["jiashiyuan"]}:</td>
+			<td class="cell_right" width="21%" >
+								{:W('Lookup',array('1',$vo,'7941','1','1'))}
+								<div class="display_none {$classNodeSettingArr['jiashiyuan']}">{$vo['jiashiyuan']|getFieldBy='id','name',''}</div></td>
+		</tr>
+		<tr>
+			<td class="cell_left" width="12%">{$fields["cheliangbianhao"]}:</td>
+			<td class="cell_right" width="21%" >
+								{:W('Lookup',array('1',$vo,'7942','1','1'))}
+								<div class="display_none {$classNodeSettingArr['cheliangbianhao']}">{$vo['cheliangbianhao']|getFieldBy='id','name',''}</div></td>
+			<td class="cell_left" width="12%">{$fields["shouhuoren"]}:</td>
+			<td class="cell_right" width="21%" >{$vo['shouhuoren']}<div class="display_none {$classNodeSettingArr['shouhuoren']}"></div></td>
+			<td class="cell_left" width="12%">{$fields["lianxidianhua"]}:</td>
+			<td class="cell_right" width="21%" >{$vo['lianxidianhua']}<div class="display_none {$classNodeSettingArr['lianxidianhua']}"></div></td>
+		</tr>
+		<tr>
+			<td class="cell_left" width="12%">{$fields["chufashijian"]}:</td>
+			<td class="cell_right" width="21%" >{$vo['chufashijian']|transtime='Y-m-d'}<div class="display_none {$classNodeSettingArr['chufashijian']}">{$vo['chufashijian']|transtime='Y-m-d'}</div></td>
+			<td class="cell_left" width="12%">{$fields["daodashijian"]}:</td>
+			<td class="cell_right" width="21%" >{$vo['daodashijian']|transtime='Y-m-d'}<div class="display_none {$classNodeSettingArr['daodashijian']}">{$vo['daodashijian']|transtime='Y-m-d'}</div></td>
+			<td class="cell_left" width="12%">{$fields["appshifadian"]}:</td>
+			<td class="cell_right" width="21%" >{$vo['appshifadian']}<div class="display_none {$classNodeSettingArr['appshifadian']}"></div></td>
+		</tr>
+		<tr>
+			<td class="cell_left" width="12%">{$fields["appmudedi"]}:</td>
+			<td class="cell_right" width="21%" >{$vo['appmudedi']}<div class="display_none {$classNodeSettingArr['appmudedi']}"></div></td>
+			<td class="cell_left" width="12%">{$fields["shifadian"]}:</td>
+			<td class="cell_right" width="21%" >{$vo['shifadian']}<div class="display_none {$classNodeSettingArr['shifadian']}"></div></td>
+			<td class="cell_left" width="12%">{$fields["mudedi"]}:</td>
+			<td class="cell_right" width="21%" >{$vo['mudedi']}<div class="display_none {$classNodeSettingArr['mudedi']}"></div></td>
+		</tr>
+		<tr>
+			<td class="cell_left" width="12%">{$fields["yunshuluxian"]}:</td>
+			<td class="cell_right" width="21%" >{$vo['yunshuluxian']}<div class="display_none {$classNodeSettingArr['yunshuluxian']}"></div></td>
+			<td class="cell_left" width="12%">{$fields["huowumingcheng"]}:</td>
+			<td class="cell_right" width="21%" >{$vo['huowumingcheng']}<div class="display_none {$classNodeSettingArr['huowumingcheng']}"></div></td>
+			<td class="cell_left" width="12%">{$fields["huowushuliang"]}:</td>
+			<td class="cell_right" width="21%" >{$vo['huowushuliang']|unitExchange=###,shu,shu,3}<div class="display_none {$classNodeSettingArr['huowushuliang']}"></div></td>
+		</tr>
+		<tr>
+			<td class="cell_left" width="12%">{$fields["huowudanwei"]}:</td>
+			<td class="cell_right" width="21%" >{$vo['huowudanwei']|getFieldBy='danweidaima','danweimingchen','mis_system_unit'}<div class="display_none {$classNodeSettingArr['huowudanwei']}">{$vo['huowudanwei']|getFieldBy='danweidaima','danweimingchen','mis_system_unit'}</div></td>
+			<td class="cell_left" width="12%">{$fields["yunshudanjia"]}:</td>
+			<td class="cell_right" width="21%" >{$vo['yunshudanjia']|unitExchange=###,yuan,yuan,3}<div class="display_none {$classNodeSettingArr['yunshudanjia']}"></div></td>
+			<td class="cell_left" width="12%">{$fields["yunshuzongjia"]}:</td>
+			<td class="cell_right" width="21%" >{$vo['yunshuzongjia']|unitExchange=###,yuan,yuan,3}<div class="display_none {$classNodeSettingArr['yunshuzongjia']}"></div></td>
+		</tr>
+		<tr>
+			<td class="cell_left" width="12%">{$fields["baoxiandanhao"]}:</td>
+			<td class="cell_right" width="21%" >
+								{:W('Lookup',array('1',$vo,'7952','1','1'))}
+								<div class="display_none {$classNodeSettingArr['baoxiandanhao']}">{$vo['baoxiandanhao']|getFieldBy='id','name',''}</div></td>
+			<td class="cell_left" width="12%"></td>
+			<td class="cell_right" width="21%" ></td>
+			<td class="cell_left" width="12%"></td>
+			<td class="cell_right" width="21%" ></td>
+		</tr>
+		<tr>
+			<td class="cell_left" width="12%">{$fields["beizhu"]}:</td>
+			<td class="cell_right" width="21%" colspan="5">{$vo['beizhu']}<div class="display_none {$classNodeSettingArr['beizhu']}">{$vo['beizhu']}</div></td>
+		</tr>
+		<tr>
+			<td class="cell_left" width="12%">{$fields["chechang"]}:</td>
+			<td class="cell_right" width="21%" >{$vo['chechang']}<div class="display_none {$classNodeSettingArr['chechang']}"></div></td>
+			<td class="cell_left" width="12%">{$fields["zaizhong"]}:</td>
+			<td class="cell_right" width="21%" >{$vo['zaizhong']}<div class="display_none {$classNodeSettingArr['zaizhong']}"></div></td>
+			<td class="cell_left" width="12%">{$fields["chexing"]}:</td>
+			<td class="cell_right" width="21%" >{$vo['chexing']}<div class="display_none {$classNodeSettingArr['chexing']}"></div></td>
+		</tr>
+		<tr>
+			<td class="cell_left" width="12%">货物详情:</td>
+			<td class="cell_right" width="21%" colspan="5">{$vo['thuowuxiangqing']}<div class="display_none {$classNodeSettingArr['beizhu']}">{$vo['thuowuxiangqing']}</div></td>
+		</tr>
+	</tbody>
+</table>
+	{~$appendPageContentArr = getBindTabsContent('MisAutoQec',$vo,'view')}
+	{$appendPageContentArr[2]}
+	{$appendPageContentArr[3]}
+		{:W('ShowAction')}
+</div>

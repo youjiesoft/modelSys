@@ -1,0 +1,109 @@
+<script>
+function SaveAllData($key,$id,$fileid,$formtype){
+	//console.log($key+'--'+$id+'--'+$fileid+'--'+$formtype);
+	var orderno=$('input[name="bianhao['+$key+']"]').val();
+	var remark=$('input[name="beizhu['+$key+']"]').val();
+	var position=$('input[name="position['+$key+']"]').val();
+	var page=$('input[name="page['+$key+']"]').val();
+	
+	if(orderno && remark && position  && page){
+		$.ajax({
+			type: "POST",
+			url: TP_APP + "/MisSalesMyProject/lookupAlldataSave/orderno/"+orderno+"/remark/"+remark+"/position/"+position+"/page/"+page+"/id/"+$id+"/fileid/"+$fileid+"/formtype/"+$formtype,
+			data:"",
+			dataType: "json",
+			async:false,
+			global: false,
+			success: function (data){
+				console.log(data);
+			},
+		});
+	}
+}
+</script>
+
+<div class="pageContent">
+	<form id="pagerForm" action="__URL__/lookupisfile" method="post">
+		<input type="hidden" name="pageNum" value="1"/>
+		<input type="hidden" name="orderField" value="{$order}" />
+		<input type="hidden" name="orderDirection" value="{$sort}"/>
+	</form>
+	<div class="panelBar">
+		<ul class="toolBar">
+			<volist name="toolbarextension" id="toolb">
+				<if condition="$_SESSION.a eq 1 or $toolb['ifcheck'] eq 0 or ($toolb['ifcheck'] eq 1 and !empty($toolb['permisname']) and $_SESSION[$toolb['permisname']])">
+					<li>{$toolb['html']}</li>
+				</if>
+			</volist>
+		</ul>
+		<form rel="pagerForm" onsubmit="return  divSearch(this,'lookupisfile')" action="__URL__/lookupisfile" method="post">
+			<input type="hidden" name="jump" value="jump"/>
+			<input type="hidden" name="supcategory" value="{$supcategory}"/>
+			<input type="hidden" name="category" value="{$category}"/>
+			<input type="hidden" name="pid" value="{$pid}"/>
+			<input type="hidden" name="id" value="{$id}"/>
+			<input type="hidden" name="projectworkid" value="{$projectworkid}"/>
+			<div class="searchBar">
+				<table class="searchContent">
+					<tr>
+						<include file="Public:quickSearchCondition" />
+					</tr>
+				</table>
+			</div>
+		</form>
+	</div>
+	<table class="table" width="100%" layoutH="146">
+		<thead ename="{$ename}">
+			<tr>
+				<th width="22"><input type="checkbox" class="checkboxCtrl" group="id" /></th>
+				<th width="26">序号</th>
+				
+				<volist id="vo" name="detailList">
+					<if condition="$vo[shows] eq 1"><th <if condition="$vo[widths]">width="{$vo[widths]}"</if><if condition="$vo[sorts]"> rel="lookupisfile" orderField="{$vo[sortname]}" class="{$sort}"</if>>{$vo[showname]}</th></if>	<!--类型-->
+				</volist>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<volist id="vo" name="list" key="key2">
+			<tr target="sid_node" rel="{$vo['id']}" onclick="onTrClickCheckbox(this,'id')" title="文档管理" <if condition="$vo.type eq 1">ondblclick="onDbClickFile( '{$vo.id}','{$cid}','{$share}','{$uid}' );"</if>   <if condition="($share eq 0 && $cid eq 5)">ondblclick="onDbClickFile( '{$vo.id}','1','0','{$vo.shareeduserid}' );"</if>  >
+				<td><input type="checkbox" name="id" value="{$vo['id']}" /></td>
+				<td class="tml-first-td">{$numPerPage*($currentPage-1)+$key+1}</td>
+				<volist id="vo1" name="detailList">
+					<if condition="$vo1[shows] eq 1">
+					<td field="{$vo1[name]}" width="{$vo1[widths]}">
+						<if condition="count($vo1['func']) gt 0">
+							<volist name="vo1.func" id="nam">
+								<if condition="!empty($vo1['extention_html_start'][$key])">{$vo1['extention_html_start'][$key]}</if>
+								{:getConfigFunction($vo[$vo1['name']],$nam,$vo1['funcdata'][$key],$list[$key2-1])}
+								<if condition="!empty($vo1['extention_html_end'][$key])">{$vo1['extention_html_end'][$key]}</if>
+							</volist>
+						<else />
+							<if condition="$vo1['name'] eq bianhao or $vo1['name'] eq position or $vo1['name'] eq page  or $vo1['name'] eq beizhu ">
+								<input width="30" type="text" name="{$vo1['name']}[{$key2}]" <if condition="!empty($vo['fileid'])">   onblur="SaveAllData({$key2},{$vo['id']},{$vo['fileid']},{$vo['formtype']})"<else/> onblur="SaveAllData({$key2},{$vo['id']},0,{$vo['formtype']})" </if> value="{$vo[$vo1['name']]}"/>							
+							<else/>
+							{$vo[$vo1['name']]}
+							</if>
+						</if>
+					</td>
+					</if>
+				</volist>
+				<td title="">
+					 <a href="__URL__/lookupProjectAtta/t/0/id/{$vo['id']}/formtype/{$vo['formtype']}"  mask="true" title="文件归档" target="dialog" width="650" height="550">[归档]</a>
+					&nbsp;{$vo['filepath']}
+					&nbsp; 
+					<a style="cursor:pointer;" width="720" height="500"  target="dialog" mask="true" rel="lookupattched" <if condition="$vo['formtype'] eq 2">href="__URL__/lookupattched/id/{$vo['id']}/formtype/{$vo['formtype']}" <else/>href="__URL__/lookupattched/id/{$vo['id']}/masid/{$vo['masid']}/formtype/{$vo['formtype']}" </if> >查看附件</a>
+					<!-- &nbsp;
+					<a title="{$vo.name}" title="" href="__URL__/misFileManageDownload/path/{$vo.name}/rename/{$vo.filename}" target="_blank">下载</a>
+				 --></td>
+			</tr>
+		</volist>
+		</tbody>
+	</table>
+	<div class="panelBar panelPageBar">
+		<div class="pages">
+			<span>共{$totalCount}条</span>
+		</div>
+		<div class="pagination" rel="lookupisfile" targetType="navTab" totalCount="{$totalCount}" numPerPage="{$numPerPage}" pageNumShown="10" currentPage="{$currentPage}"></div>
+	</div>
+</div>

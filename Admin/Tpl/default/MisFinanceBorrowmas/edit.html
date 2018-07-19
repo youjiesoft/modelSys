@@ -1,0 +1,131 @@
+<script>
+function getselectquotaEdit(ob){
+	var $this=$(ob);
+	var $box=navTab.getCurrentPanel();//找到当前窗体
+	var quotaid=$this.val();
+	$.ajax({
+		type : 'post',
+		url : '__URL__/lookupborrowquota',
+		cache : false,
+		dataType : "json",
+		data : {
+			quotaid : quotaid
+		},
+		global:false,
+		success : function(re){
+			$("#borrowquota").val(re);
+		},
+		error : DWZ.ajaxError
+	}); 
+}
+function examinequotaEdit(){
+  var $box=navTab.getCurrentPanel();//找到当前窗体
+  if($('select[name="typeid"]').length>0){	
+	var quota=$("#borrowquota").val();
+	var borrowmoney=$box.find("input[name='borrowmoney']").val().replaceAll(",",'');
+	borrowmoney=borrowmoney.substr(0, borrowmoney.length-3);
+	if(borrowmoney - quota > 0){
+		alertMsg.error('申请借款金额大于类型最大限额：'+quota);
+		$box.find("input[name='borrowmoney']").val("");
+		return false;
+	}
+  }
+}
+function getborrowpaymethodidEdit(ob){
+	var $this=$(ob);
+	var val=$this.val();
+	if(val != 1){
+		$("#borrowpaymethodidEdit").show();
+	}else{
+		$("#borrowpaymethodidEdit").hide();
+	}
+}
+</script>
+<div class="page">
+	<div class="pageContent">
+		<form method="post" action="__URL__/update/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,navTabAjaxDone);">
+			<input type="hidden" name="id" value="{$vo['id']}" />
+			<input type="hidden" name="callbackType" value="closeCurrent">
+			
+			<div class="pageFormContent applecloth" layoutH="40">
+				<div class="keepContentCenter form-affix-content">
+                    <div class="contentTitle contentTitle_center form-affix-title">借款申请单
+                    </div>
+                    {:W("ShowRightToolBar")}
+                    <fieldset class="side-catalog-anchor">
+                        <legend class="fieldset_legend_toggle side-catalog-text side-catalog-firstanchor">
+                            <b>基础信息</b>
+                            <div class="tml_style_line tml_sl4 tml_slb_blue"></div>
+                        </legend>
+                        <div class="tml-row">
+                        {:W('ShowOrderno',array(1,'mis_finance_borrowmas',$vo['orderno']))}
+                            <if condition='$fields["typeid"]'>
+                                <div class="tml-form-col">
+                                	<input type="hidden" id="borrowquota" value="{$vo.typeid|getfieldby='id','quota','mis_finance_borrowmas_type'}"/>
+                                    <label>{$fields["typeid"]}：</label>
+                                    <select name="typeid" class="combox" onchange="getselectquotaEdit(this);">
+                                    	<option value="">请选择</option>
+                                        {:getDataBaseByHtml('MisFinanceBorrowmasType',array('selected'=>$vo['typeid']))}
+                                    </select>
+                                </div>
+                            </if>
+                            <div class="tml-form-col">
+                                <label>借款金额：</label>
+                                <div class="tml-input-append">
+                                    <input type="text" name="borrowmoney" class="required number TextMagnifier-money required tml_total_money" onblur="FormatNumber(this);examinequotaEdit();" value="{$vo.borrowmoney|getDigits}" />
+                                    <span class="input-addon-unit" title="元">元</span>
+                                </div>
+                            </div>
+                            <div class="tml-form-col">
+                                <label>需求时间：</label>
+                                <span class="xyInputWithUnit">
+                                    <input type="text" class="Wdate js-wdate textInput" name="needtime" value="{$vo.needtime|transTime}">
+                                    <a href="javascript:;" class="xyInputWithUnitButton inputDateButton">选择</a>
+                                </span>
+                            </div>
+                            <div class="tml-form-col">
+                                <label>申请时间：</label>
+                                <span class="xyInputWithUnit">
+                                    <input type="text" readonly="readonly" value="{$vo.createtime|transTime}">
+                                    <a href="javascript:;" class="xyInputWithUnitButton inputDateButton">选择</a>
+                                </span>
+                            </div>
+                            <div class="tml-form-col">
+                                <label>付款方式：</label>
+                                <select name="paymethodid" class="combox" onchange="getborrowpaymethodidEdit(this);">
+                                    <option value="">请选择</option>
+                                    {:getDataBaseByHtml('mis_payment_method',array('selected'=>$vo['paymethodid']))}
+                                </select>
+                            </div>
+                            <div class="tml-form-col">
+                                <label>收款人：</label>
+                                <input type="text" name="receiver"  value="{$vo.receiver}" />
+                            </div>
+                            <div id="borrowpaymethodidEdit" <if condition="$vo.paymethodid eq 1">style="display:none;"</if>>
+                                <div class="tml-form-col">
+                                    <label>开户银行：</label>
+                                    <input type="text" name="bankname" value="{$vo.bankname}" maxlength="50"/>
+                                </div>
+                                <div class="tml-form-col">
+                                    <label>银行账号：</label>
+                                    <input type="text" name="bankaccount" value="{$vo.bankaccount}" maxlength="20"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tml-form-row">
+                            <label>用途说明：</label>
+                            <textarea name="useexplain">{$vo.useexplain}</textarea>
+                        </div>
+                    </fieldset>
+                    {:W('ShowUpload',$attarry)}<!-- 上传附件 -->
+                    <div class="showFormFlow">
+                    {:W('ShowFormFlow',$vo)}
+                    </div>
+                    {:W('ShowNotify',$vo)}
+                    
+                {:W('ShowAction',array('data'=>$vo))}
+			</div>
+		</div>
+		</form>
+	</div>
+</div>

@@ -1,0 +1,48 @@
+<link href="__PUBLIC__/Css/tmlstyle/tml.css" rel="stylesheet"
+	type="text/css" media="screen" />
+<div class="pageContent">
+	<div class="pageFormContent new_basis_archives_page">
+		<div class="new_version_page_content"
+			style="width: calc(100% -   4px); padding: 0;">
+			<div class="into_table_lay">
+				<div class="into_table_title">项目经营情况分析</div>
+				<table class="into_table_new nbm_data_table" table_type="view" width="100%">
+					<thead>
+						<tr>
+							<th style="min-width: 150px; max-width: 150px;"></th>
+							<th style="min-width: 120px; max-width: 120px;">立项</th>
+							<th style="min-width: 120px; max-width: 120px;">移交风险</th>
+							<th>转储备</th>
+							<th style="min-width: 120px; max-width: 120px;">出具批复</th>
+							<th style="min-width: 120px; max-width: 120px;">放款</th>
+							<th>新增</th>
+							<th>续贷</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>项目笔数</td>
+							<td>{$projectNumber["lx"]}</td>
+							<td>{$projectNumber["fx"]}</td>
+							<td>{$projectNumber["zcb"]}</td>
+							<td>{$projectNumber["cjpf"]}</td>
+							<td>{$projectNumber["fk"]}</td>
+							<td>{$projectNumber["xz"]}</td>
+							<td>{$projectNumber["xd"]}</td>
+						</tr>
+						<tr>
+							<td>项目金额</td>
+							<td>{$itemAmount["lx"]|unitExchange="yuan","wan",3}</td>
+							<td>{$itemAmount["fx"]|unitExchange="yuan","wan",3}</td>
+							<td>{$itemAmount["zcb"]|unitExchange="yuan","wan",3}</td>
+							<td>{$itemAmount["cjpf"]|unitExchange="yuan","wan",3}</td>
+							<td>{$itemAmount["fk"]|unitExchange="yuan","wan",3}</td>
+							<td>{$itemAmount["xz"]|unitExchange="yuan","wan",3}</td>
+							<td>{$itemAmount["xd"]|unitExchange="yuan","wan",3}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

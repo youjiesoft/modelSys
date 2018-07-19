@@ -1,0 +1,147 @@
+	<div class="page">
+	<div class="pageContent">
+		<form method="post" action="__URL__/lookupallot/navTabId/__MODULE__projectallot" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+			<div class="pageFormContent applecloth anchorsToolBarParent" layoutH="40">
+				<div class="keepContentCenter form-affix-content">
+					<div class="contentTitle contentTitle_center form-affix-title">项目分配</div>
+                    <fieldset>
+                        <legend class="fieldset_legend_toggle">
+                            <b>基本信息</b>
+                            <div class="tml_style_line tml_sl4 tml_slb_blue"></div>
+                        </legend>
+                        <table class="data-table" width="100%" cellspacing="0" style="line-height:32px;">
+                            <tbody>
+                            <tr>
+                                <td class="cell_left">项目名称:</td>
+                                <td class="cell_right" colspan="5"> {$projectInfo['id']|getFieldBy='id','name','mis_auto_kimpu'}</td>
+                            </tr>
+                            <tr>
+                                <td class="cell_left" width="12%">项目类型:</td>
+                                <td class="cell_right" width="21%">{$projectInfo['typeid']|getFieldBy='orderno','name','mis_project_flow_type','projectid',$projectInfo['id']}</td>
+                                <td class="cell_left" width="12%">项目编码:</td>
+                                <td class="cell_right" width="21%">{$projectInfo['orderno']}</td>
+                                <td class="cell_left" width="12%">主体:</td>
+                                <td class="cell_right" width="21%">{$projectInfo['zt']|getFieldBy='orderno','name','mis_sale_client_type'}</td>
+                            </tr>
+                            <tr>
+                                <td class="cell_left" width="12%">行业:</td>
+                                <td class="cell_right" width="21%">{$projectInfo['hy']|getFieldBy='orderno','name','mis_sale_profession'}</td>
+                                <td class="cell_left" width="12%">产业链:</td>
+                                <td class="cell_right" width="21%">{$projectInfo['cyl']|getFieldBy='orderno','name','mis_sale_industry'}</td>
+                                <td class="cell_left" width="12%">客户</td>
+                                <td class="cell_right" width="21%">{$projectInfo['customerid']|getFieldBy='orderno','kehumingchen','MisAutoCbj'}</td>
+                            </tr>
+                            <tr>
+                            	<td class="cell_left" width="12%">主调</td>
+                                <td class="cell_right" width="21%">{$projectInfo['zd']|getFieldBy='id','name','user'}</td>
+                                <td class="cell_left" width="12%">主调部门</td>
+                                <td class="cell_right" width="21%">{$projectInfo['zddeptname']}</td>
+                           		<td class="cell_left" width="12%">辅调:</td>
+                                <td class="cell_right" width="21%">{$projectInfo['fd']|getFieldBy='id','name','user'}</td>
+                            </tr>
+                            <tr>
+                            	<td class="cell_left" width="12%">申请期限:</td>
+								<td class="cell_right" width="21%" >{$projectInfo['shenqingqixian']|unitExchange=###,month,month,3}</td>
+								<td class="cell_left" width="12%">申请金额:</td>
+								<td class="cell_right" width="21%" >{$projectInfo['shenqingjine']|unitExchange=###,yuan,wan,3}</td>
+								<td class="cell_left" width="12%">贷款用途:</td>
+								<td class="cell_right" width="21%" >{$projectInfo['daikuanyongtu']|getFieldBy='orderno','name','mis_auto_hgwtp'}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </fieldset>
+                    <fieldset>
+                        <legend class="fieldset_legend_toggle">
+                            <b>任务列表</b>
+                            <div class="tml_style_line tml_sl4 tml_slb_blue"></div>
+                        </legend>
+                        <table class="tml_set_table tml_task_list" style="margin:0px; width: 99%" width="100%">
+                            <thead>
+                           <tr>
+                                 <th width="4%"><input type="checkbox" class="checkboxCtrl" group="id[]" /></th>
+                                 <th width="5%">序号</th>
+                                 <!-- <th width="10%">任务性质</th> -->
+                                 <th width="25%">任务名称</th>
+                                 <th width="15%">所属阶段</th>
+                                 <th width="15%">项目角色</th>
+                                 <th width="15%">开始时间</th>
+                                 <th width="15%">结束时间</th>
+                                 <th width="15%">执行人</th>
+                             </tr>
+                            </thead>
+                            <tbody>
+                            <volist name="rwlist" id="rwvo" key="key2">
+                                <tr>
+                                    <td><input type="checkbox" name="id[]" value="{$rwvo['form_id']}" /></td>
+                                    <td>{$key2}</td>
+                                    <!-- <td><if condition="$rwvo['critical'] eq 1"><span style="color:red">关键任务</span></if></td> -->
+                                    <td <if condition="$rwvo['critical'] eq 1">style="color:red"</if>>{$rwvo.form_name}</td>
+                                    <td>{$rwvo.uid|getFieldBy='uid','name','mis_project_flow_type'}</td>
+                                    <td>{$rwvo.xiangmujuese|getFieldBy='orderno','name','mis_auto_wqzrv'}</td>
+                                    <td>{$rwvo.begintime|transTime}</td>
+                    				<td>{$rwvo.endtime|transTime}</td>
+                                    <td>{:implode(",",$rwvo['executorname'])}</td>
+                                </tr>
+                               </volist>
+                            </tbody>
+                        </table>
+                        <style>
+							.depict_warp{
+								border-radius: 4px;
+								background: #fcfcfc;
+								padding: 20px 0px 10px;
+								margin: 10px auto 10px;
+								border-top: 1px solid #e8e8e8;
+								width: 95%;
+								box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.2);
+							}
+						</style>
+                    </fieldset>
+                    <div class="tml-row depict_warp">
+						<!-- select组件 start -->
+						<div class="tml-form-col ">
+							<label>执行人：</label>
+							<div class="tml-input-append2">
+								<input type="text" readonly="readonly" class="selectuser1.username"/>
+								<input type="hidden" class="selectuser1.userid"  name="executorid"/>
+								<a class="input-addon input-addon-addon input-addon-userplus checkUser" href="javascript:void(0);" data="selectuser1;username,username;userid,userid;deptid,deptid;deptname,deptname">查找带回</a>
+								<a title="清空信息" class="input-addon input-addon-recycle"  href="javascript:void(0);" onclick="clearOrg('selectuser1');"></a>
+							</div>
+						</div>
+						<!-- select组件 end -->
+						<div class="tml-form-col ">
+							<label>执行人部门:</label>
+							<input type="hidden" name="zddeptid" class="selectuser1.deptid" value="">
+							<input type="text" name="zddeptname" class="selectuser1.deptname" readonly="readonly" value="">
+							<input type="hidden" name="projectid" class="" value="{$projectid}">
+						</div>
+						<div class="tml-row ">
+							<label>临时人员:</label>
+							<ul class="addressee left checkTo" id="project_fenpai_add" style="width:70%;">
+								<if condition="$useridArr">
+									<volist name="useridArr" id="uvo">
+										<li>
+											<span>{$uvo|getFieldBy="id",'name','user'}</span>
+											<input type="hidden" value="{$uvo}" name="recipient[]">
+											<a class="delAddressee" href="javascript:;" onclick="this.parentNode.parentNode.removeChild(this.parentNode);" title="删除">x</a>
+										</li>
+									</volist>
+								</if>
+		                    </ul>
+		                    <!-- checkFor带回来的值 -->
+							<a class="input-addon input-addon-addon input-addon-userplus checkUser" href="javascript:;" ulid="project_fenpai_add" data="recipientname,username,text;recipient,userid,hidden,1" width="800" height="800">查找带回</a>&nbsp;
+							<a class="input-addon input-addon-recycle" href="javascript:;" onclick="clearreceverMismessage('1','project_fenpai_add');" title="清空用户"></a>
+						</div>
+					</div>
+		            <div class="formBar">
+						<ul>
+							<li>
+								<button type="submit" class="tml_formBar_btn tml_formBar_btn_blue enterIndex">保存</button>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

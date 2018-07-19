@@ -1,0 +1,69 @@
+<script>
+//查找带会。格式化金额
+function miscarprepaid_callback_update(json,textInpout){
+	var $box =$.pdialog.getCurrent();
+	$box.find("input[name='oil_balance']").val(FormatN(json.oil_balance));
+}
+</script>
+<div class="page">
+	<div class="pageContent">
+		<form method="post" action="__URL__/update/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,dialogAjaxDone);">
+			<div class="pageFormContent " layoutH="58">
+				<input type="hidden" name="id" value="{$vo.id}"/>
+				<div class="tml-row">
+					<if condition='$fields["oil_id"]'>
+						<div class="tml-form-col ">
+							<label >{$fields["oil_id"]}:</label>
+							<input type="text" value="{$vo.oil_id}" readonly="readonly" name="oil_id" autocomplete='off'>
+						</div>
+					</if>
+					<if condition='$fields["oil_balance"]'>
+						<div class="tml-form-col ">
+							<label >{$fields["oil_balance"]}:</label>
+							<input  type="text" name="oil_balance" readonly="readonly" value="{$vo.oil_balance|getDigits}">
+						</div>
+					</if>
+					<if condition='$fields["amount"]'>
+						<div class="tml-form-col ">
+							<label >{$fields["amount"]}:</label>
+							<input type="hidden" value="{$vo.amount|getDigits}" name="oldamount" />
+							<input type="text" name="amount" class="required" value="{$vo.amount|getDigits}" onblur="FormatNumber(this);" />
+						</div>
+					</if>
+					<if condition='$fields["add_time"]'>
+						<div class="tml-form-col ">
+							<div class="tml-input-append">
+								<label >{$fields["add_time"]}:</label>
+								<input type="text" value="{$vo.add_time|transTime='Y-m-d H:i'}" class="tml-border-r0 Wdate required" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" name="add_time" format="yyyy-MM-dd HH:mm" size="17" />
+								<span class="input-addon input-addon-calendar"></span>
+							</div>
+						</div>
+					</if>
+				</div>
+				<if condition='$fields["address"]'>
+					<div class="tml-form-row">
+						<label >{$fields["address"]}:</label>
+						<textarea name="address">{$vo['address']}</textarea>
+					</div>
+				</if>
+				<if condition='$fields["remark"]'>
+					<div class="tml-form-row">
+						<label >{$fields["remark"]}:</label>
+						<textarea name="remark">{$vo['remark']}</textarea>
+					</div>
+				</if>
+				<div class="tml-row">	
+					<div class="tml-form-col ">
+						<label >制单时间:</label>
+						<input type="text" readonly="readonly" value="{$vo.createtime|transTime}" />
+					</div>
+					<div class="tml-form-col ">
+						<label >制单人:</label>
+						<input type="text" readonly="readonly" value="{$vo.createid|getFieldBy='id','name','user'}" />
+					</div>
+				</div>
+			</div>
+           {:W('ShowAction',array('data'=>$vo))}
+		</form>
+	</div>
+</div>

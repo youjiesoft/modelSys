@@ -1,0 +1,667 @@
+
+{~$classNodeSettingArr =getModelClassByNodeSetting('MisSaleBusiness','edit')}
+{~$appendPageContentArr =getBindTabsContent('MisSaleBusiness',$vo,'edit','',$main)}
+{~$formautosetting = setFormControllAutoCreteAppend('MisSaleBusiness' ,'edit' ,$main , 'update',$vo,A('MisSaleBusiness')->rebuildSetting())}
+{$appendPageContentArr[1]}
+<div class="page">
+	<div class="pageContent">
+		<div class="pageFormContent applecloth anchorsToolBarParen"
+			<if condition="!$_REQUEST['main'] or $_REQUEST['main'] eq MODULE_NAME">
+			<if condition="!$_REQUEST['bindaname']"> layoutH="40"</if> </if>
+			>
+			<div class="new_version_page ">
+				<form id="MisSaleBusiness_edit"
+					{$appendPageContentArr[5]} {$formautosetting[3]}  method="post" action="__APP__/MisSaleBusiness/{$formautosetting[2]}/navTabId/__MODULE__{$formautosetting[4]}" class="pageForm required-validate"	 
+					onsubmit="<if condition="$formautosetting[5]">{$formautosetting[5]}<else/>{$appendPageContentArr[0]}</if>">
+					<a class='xyz_anchornavi_top' name='MisSaleBusiness_edit_top'></a> 
+					<input type="hidden" name="callbackType" value="closeCurrent" />
+					{:W('HiddenInput',$vo)} 
+					<input type="hidden" name="id" value="{$vo['id']}" />
+					<input type="hidden" name="masid" value="{$vo['id']}" /> 
+					{$formautosetting[1]}
+					<if condition="$_GET['viewtype'] neq 'view'&& !$_GET['main'] ">
+					<div class="new_version_page_header pageFormContent ">
+						<span class="left tml-ml20 ">商机</span>
+						{:W('ShowRightToolBar',array('edit','MisSaleBusiness',$vo))}
+						{:W('ShowAnchorNavi',array('MisSaleBusiness', 'edit',$main))}
+						{$formautosetting[0]}
+					</div>
+					</if>
+					<div class="new_version_page_content">
+							
+						
+						{:W('ShowOrderno',array(4,'mis_sale_business',$vo['orderno'],array('contentcls'=>'col_1_3 form_group_lay field_orderno',	'inputcls'=>'class="input_new "','title'=>$fields["orderno"],'isshow'=>1)))}
+													
+						<!-- 文本框组件 -->
+						<div class="col_1_3 form_group_lay field_clientname" original="{$vo['clientname']}" category="text" style="">
+							<label class="label_new">{$fields["clientname"]}:</label>
+							<input  dropback="#dropback#"  type="text"  name="clientname"  class=" input_new  " <if condition="$vo['clientname'] neq ''">value="{$vo['clientname']}"<else/>value=""</if>  >
+							<div class="display_none {$classNodeSettingArr['clientname']}">{$vo['clientname']}</div>
+						</div>							
+						<!-- 文本框组件 -->
+						<div class="col_1_3 form_group_lay field_controller" original="{$vo['controller']}" category="text" style="">
+							<label class="label_new">{$fields["controller"]}:</label>
+							<input  dropback="#dropback#"  type="text"  name="controller"  class=" input_new  " <if condition="$vo['controller'] neq ''">value="{$vo['controller']}"<else/>value=""</if>  >
+							<div class="display_none {$classNodeSettingArr['controller']}">{$vo['controller']}</div>
+						</div>					
+						<!-- 下拉框组件 -->
+						<div class="col_1_3 form_group_lay field_sourceid" original="{$vo['sourceid']}" category="select" style="">
+							<label class="label_new">{$fields["sourceid"]}:</label>
+							{:W('ShowSelect',
+							array(
+								$vo['sourceid'],
+								array(
+									'',
+									array(
+										'type'=>(''==''?'table':'selectlist'),
+										array(
+											'key'=>'',
+											'readonly'=>'1',
+											'targevent'=>'',
+											'actionName'=>'MisSaleBusiness',
+											'names'=>'sourceid',
+											'defaultcheckitem'=>'',
+											'defaultval'=>'',
+											'defaulttext'=>'',
+											'table'=>'mis_sale_source', 
+											'id'=>'id',
+											'name'=>'name' ,
+											'conditions'=>'',
+											'parentid'=>'',
+											'mulit'=>'',
+											'isnextend'=>'',
+											'treeheight'=>'',
+											'treewidth'=>'',
+											'isedit'=>'1',
+											'showtype'=>'',
+											'defaultcheckitem'=>''
+											)
+										)
+									)
+								)
+							)
+							}
+						</div>
+											
+						<!-- 下拉框组件 -->
+						<div class="col_1_3 form_group_lay field_intentiontypesid" original="{$vo['intentiontypesid']}" category="select" style="">
+							<label class="label_new">{$fields["intentiontypesid"]}:</label>
+							{:W('ShowSelect',
+							array(
+								$vo['intentiontypesid'],
+								array(
+									'',
+									array(
+										'type'=>(''==''?'table':'selectlist'),
+										array(
+											'key'=>'',
+											'readonly'=>'1',
+											'targevent'=>'',
+											'actionName'=>'MisSaleBusiness',
+											'names'=>'intentiontypesid',
+											'defaultcheckitem'=>'',
+											'defaultval'=>'',
+											'defaulttext'=>'',
+											'table'=>'mis_system_flow_type', 
+											'id'=>'orderno',
+											'name'=>'name' ,
+											'conditions'=>'',
+											'parentid'=>'',
+											'mulit'=>'',
+											'isnextend'=>'',
+											'treeheight'=>'',
+											'treewidth'=>'',
+											'isedit'=>'1',
+											'showtype'=>'',
+											'defaultcheckitem'=>''
+											)
+										)
+									)
+								)
+							)
+							}
+						</div>
+											
+						<!-- 下拉树组件 -->
+						<div class="col_1_3 form_group_lay field_areaid" original="{$vo['areaid']}" category="select" style="">
+							<label class="label_new">{$fields["areaid"]}:</label>
+							{:W('ShowSelect',
+							array(
+								$vo['areaid'],
+								array(
+									'',
+									array(
+										'type'=>'table',
+										array(
+											'key'=>'',
+											'readonly'=>'0',
+											'targevent'=>'',
+											'actionName'=>'MisSaleBusiness',
+											'names'=>'areaid',
+											'defaultcheckitem'=>'',
+											'defaultval'=>'',
+											'defaulttext'=>'',
+											'table'=>'mis_auto_jcztc', 
+											'id'=>'orderno',
+											'name'=>'name',
+											'conditions'=>'',
+											'parentid'=>'parentid',
+											'mulit'=>'0',
+											'isnextend'=>'0',
+											'treeheight'=>'0',
+											'treewidth'=>'0',
+											'isedit'=>'1',
+											'showtype'=>'',
+											'treedialog'=>'',
+											'defaultcheckitem'=>''
+											)
+										)
+									)
+								)
+							)
+							}
+							<div class="display_none {$classNodeSettingArr['areaid']}">{$vo['areaid']}</div>
+						</div>					
+						<!-- 下拉框组件 -->
+						<div class="col_1_3 form_group_lay field_customertypeid" original="{$vo['customertypeid']}" category="select" style="">
+							<label class="label_new">{$fields["customertypeid"]}:</label>
+							{:W('ShowSelect',
+							array(
+								$vo['customertypeid'],
+								array(
+									'',
+									array(
+										'type'=>(''==''?'table':'selectlist'),
+										array(
+											'key'=>'',
+											'readonly'=>'1',
+											'targevent'=>'',
+											'actionName'=>'MisSaleBusiness',
+											'names'=>'customertypeid',
+											'defaultcheckitem'=>'',
+											'defaultval'=>'',
+											'defaulttext'=>'',
+											'table'=>'mis_sale_client_type', 
+											'id'=>'orderno',
+											'name'=>'name' ,
+											'conditions'=>'',
+											'parentid'=>'',
+											'mulit'=>'',
+											'isnextend'=>'',
+											'treeheight'=>'',
+											'treewidth'=>'',
+											'isedit'=>'1',
+											'showtype'=>'',
+											'defaultcheckitem'=>''
+											)
+										)
+									)
+								)
+							)
+							}
+						</div>
+											
+						<!-- 下拉框组件 -->
+						<div class="col_1_3 form_group_lay field_professionid" original="{$vo['professionid']}" category="select" style="">
+							<label class="label_new">{$fields["professionid"]}:</label>
+							{:W('ShowSelect',
+							array(
+								$vo['professionid'],
+								array(
+									'',
+									array(
+										'type'=>(''==''?'table':'selectlist'),
+										array(
+											'key'=>'',
+											'readonly'=>'1',
+											'targevent'=>'',
+											'actionName'=>'MisSaleBusiness',
+											'names'=>'professionid',
+											'defaultcheckitem'=>'',
+											'defaultval'=>'',
+											'defaulttext'=>'',
+											'table'=>'mis_auto_qcotj', 
+											'id'=>'orderno',
+											'name'=>'name' ,
+											'conditions'=>'',
+											'parentid'=>'',
+											'mulit'=>'',
+											'isnextend'=>'',
+											'treeheight'=>'',
+											'treewidth'=>'',
+											'isedit'=>'1',
+											'showtype'=>'',
+											'defaultcheckitem'=>''
+											)
+										)
+									)
+								)
+							)
+							}
+						</div>
+											
+						<!-- 下拉框组件 -->
+						<div class="col_1_3 form_group_lay field_industryid" original="{$vo['industryid']}" category="select" style="">
+							<label class="label_new">{$fields["industryid"]}:</label>
+							{:W('ShowSelect',
+							array(
+								$vo['industryid'],
+								array(
+									'',
+									array(
+										'type'=>(''==''?'table':'selectlist'),
+										array(
+											'key'=>'',
+											'readonly'=>'1',
+											'targevent'=>'',
+											'actionName'=>'MisSaleBusiness',
+											'names'=>'industryid',
+											'defaultcheckitem'=>'',
+											'defaultval'=>'',
+											'defaulttext'=>'',
+											'table'=>'mis_sale_industry', 
+											'id'=>'orderno',
+											'name'=>'name' ,
+											'conditions'=>'',
+											'parentid'=>'',
+											'mulit'=>'',
+											'isnextend'=>'',
+											'treeheight'=>'',
+											'treewidth'=>'',
+											'isedit'=>'1',
+											'showtype'=>'',
+											'defaultcheckitem'=>''
+											)
+										)
+									)
+								)
+							)
+							}
+						</div>
+											
+						<!-- 下拉框组件 -->
+						<div class="col_1_3 form_group_lay field_xuqiushijian" original="{$vo['xuqiushijian']}" category="select" style="">
+							<label class="label_new">{$fields["xuqiushijian"]}:</label>
+							{:W('ShowSelect',
+							array(
+								$vo['xuqiushijian'],
+								array(
+									'',
+									array(
+										'type'=>('FundsNeedTime'==''?'table':'selectlist'),
+										array(
+											'key'=>'FundsNeedTime',
+											'readonly'=>'1',
+											'targevent'=>'',
+											'actionName'=>'MisSaleBusiness',
+											'names'=>'xuqiushijian',
+											'defaultcheckitem'=>'',
+											'defaultval'=>'',
+											'defaulttext'=>'',
+											'table'=>'', 
+											'id'=>'',
+											'name'=>'' ,
+											'conditions'=>'',
+											'parentid'=>'',
+											'mulit'=>'',
+											'isnextend'=>'',
+											'treeheight'=>'',
+											'treewidth'=>'',
+											'isedit'=>'1',
+											'showtype'=>'',
+											'defaultcheckitem'=>''
+											)
+										)
+									)
+								)
+							)
+							}
+						</div>
+							
+						<!-- 地址组件 -->
+						<div class="col_1_7 form_group_lay field_zhucedizhi" original="{$vo['zhucedizhi']}" category="areainfo" style="">
+							<label class="label_new">{$fields["zhucedizhi"]}:</label>
+							{:W('ShowArea',
+								array("0"=>$areainfoarry["zhucedizhi"],
+								"1"=>zhucedizhi,
+								"2"=>$fields[zhucedizhi],
+								"3"=>"",
+								"5"=>"")
+							)}
+							<div class="display_none {$classNodeSettingArr['zhucedizhi']}">{$vo['zhucedizhi']}</div>
+						</div>	
+						<!-- 地址组件 -->
+						<div class="col_1_7 form_group_lay field_address" original="{$vo['address']}" category="areainfo" style="">
+							<label class="label_new">{$fields["address"]}:</label>
+							{:W('ShowArea',
+								array("0"=>$areainfoarry["address"],
+								"1"=>address,
+								"2"=>$fields[address],
+								"3"=>"",
+								"5"=>"")
+							)}
+							<div class="display_none {$classNodeSettingArr['address']}">{$vo['address']}</div>
+						</div>							
+						<!-- 文本框组件 -->
+						<div class="col_1_3 form_group_lay field_linkman" original="{$vo['linkman']}" category="text" style="">
+							<label class="label_new">{$fields["linkman"]}:</label>
+							<input  dropback="#dropback#"  type="text"  name="linkman"  class=" input_new  " <if condition="$vo['linkman'] neq ''">value="{$vo['linkman']}"<else/>value=""</if>  >
+							<div class="display_none {$classNodeSettingArr['linkman']}">{$vo['linkman']}</div>
+						</div>							
+						<!-- 文本框组件 -->
+						<div class="col_1_3 form_group_lay field_acquiretime" original="{$vo['acquiretime']}" category="text" style="">
+							<label class="label_new">{$fields["acquiretime"]}:</label>
+							<input  dropback="#dropback#"  type="text"  name="acquiretime"  class=" input_new  " <if condition="$vo['acquiretime'] neq ''">value="{$vo['acquiretime']}"<else/>value=""</if>  >
+							<div class="display_none {$classNodeSettingArr['acquiretime']}">{$vo['acquiretime']}</div>
+						</div>						
+						<!-- 日期组件 -->
+						<div class="col_1_3 form_group_lay field_endtime" original="{$vo['endtime']}" category="date" style="">
+							<label class="label_new">
+								{$fields["endtime"]}:
+							</label>
+							<div  class="tml-input-calendar">
+								<input type="text" name="endtime"  class="input_new half_angle_input Wdate {:'1'?'js-wdate':''}  input_left " format='{"dateFmt":"yyyy-MM-dd"}'   value="{$vo['endtime']|transtime='Y-m-d'}"/>
+								<a href="javascript:;" class="icon_elm icon-calendar {:'1'?'js-inputCheckDate':''} "></a>
+							</div>
+							<div class="display_none {$classNodeSettingArr['endtime']}">
+								{$vo['endtime']|transtime='Y-m-d'}
+							</div>
+						</div>
+						
+						<!-- 查找带回组件 -->
+						<div class="col_1_3 form_group_lay field_userid" original="{$vo['userid']}" category="lookup" style="">
+							<label class="label_new">
+								{$fields["userid"]}:
+							</label>
+							{:W('Lookup',array('1',$vo,'10237','1','','1'))}
+							<div class="display_none {$classNodeSettingArr['userid']}">{:W('Lookup',array('1',$vo,'10237','1',1))}</div>
+						</div>
+											
+						<!-- 查找带回组件 -->
+						<div class="col_1_3 form_group_lay field_provider" original="{$vo['provider']}" category="lookup" style="">
+							<label class="label_new">
+								{$fields["provider"]}:
+							</label>
+							{:W('Lookup',array('1',$vo,'10238','1','','1'))}
+							<div class="display_none {$classNodeSettingArr['provider']}">{:W('Lookup',array('1',$vo,'10238','1',1))}</div>
+						</div>
+													
+						<!-- 文本框组件 -->
+						<div class="col_1_3 form_group_lay field_days" original="{$vo['days']}" category="text" style="">
+							<label class="label_new">{$fields["days"]}:</label>
+							<input  dropback="#dropback#"  type="text"  name="days"  class=" input_new  " <if condition="$vo['days'] neq ''">value="{$vo['days']}"<else/>value=""</if>  >
+							<div class="display_none {$classNodeSettingArr['days']}">{$vo['days']}</div>
+						</div>					
+						<!-- 下拉框组件 -->
+						<div class="col_1_3 form_group_lay field_toolid" original="{$vo['toolid']}" category="select" style="">
+							<label class="label_new">{$fields["toolid"]}:</label>
+							{:W('ShowSelect',
+							array(
+								$vo['toolid'],
+								array(
+									'',
+									array(
+										'type'=>('tool'==''?'table':'selectlist'),
+										array(
+											'key'=>'tool',
+											'readonly'=>'1',
+											'targevent'=>'',
+											'actionName'=>'MisSaleBusiness',
+											'names'=>'toolid',
+											'defaultcheckitem'=>'',
+											'defaultval'=>'',
+											'defaulttext'=>'',
+											'table'=>'', 
+											'id'=>'',
+											'name'=>'' ,
+											'conditions'=>'',
+											'parentid'=>'',
+											'mulit'=>'',
+											'isnextend'=>'',
+											'treeheight'=>'',
+											'treewidth'=>'',
+											'isedit'=>'1',
+											'showtype'=>'',
+											'defaultcheckitem'=>''
+											)
+										)
+									)
+								)
+							)
+							}
+						</div>
+													
+						<!-- 文本框组件 -->
+						<div class="col_1_3 form_group_lay field_name" original="{$vo['name']}" category="text" style="">
+							<label class="label_new">{$fields["name"]}:</label>
+							<input  dropback="#dropback#"  type="text"  name="name"  class=" input_new  " <if condition="$vo['name'] neq ''">value="{$vo['name']}"<else/>value=""</if>  >
+							<div class="display_none {$classNodeSettingArr['name']}">{$vo['name']}</div>
+						</div>							
+						<!-- 文本框组件 -->
+						<div class="col_1_3 form_group_lay field_remark" original="{$vo['remark']}" category="text" style="">
+							<label class="label_new">{$fields["remark"]}:</label>
+							<input  dropback="#dropback#"  type="text"  name="remark"  class=" input_new  " <if condition="$vo['remark'] neq ''">value="{$vo['remark']}"<else/>value=""</if>  >
+							<div class="display_none {$classNodeSettingArr['remark']}">{$vo['remark']}</div>
+						</div>							
+						<!-- 文本框组件 -->
+						<div class="col_1_3 form_group_lay field_detailaddress" original="{$vo['detailaddress']}" category="text" style="">
+							<label class="label_new">{$fields["detailaddress"]}:</label>
+							<input  dropback="#dropback#"  type="text"  name="detailaddress"  class=" input_new  " <if condition="$vo['detailaddress'] neq ''">value="{$vo['detailaddress']}"<else/>value=""</if>  >
+							<div class="display_none {$classNodeSettingArr['detailaddress']}">{$vo['detailaddress']}</div>
+						</div>					
+						<!-- 下拉框组件 -->
+						<div class="col_1_3 form_group_lay field_turncustomer" original="{$vo['turncustomer']}" category="select" style="">
+							<label class="label_new">{$fields["turncustomer"]}:</label>
+							{:W('ShowSelect',
+							array(
+								$vo['turncustomer'],
+								array(
+									'',
+									array(
+										'type'=>('YesOrNo'==''?'table':'selectlist'),
+										array(
+											'key'=>'YesOrNo',
+											'readonly'=>'1',
+											'targevent'=>'',
+											'actionName'=>'MisSaleBusiness',
+											'names'=>'turncustomer',
+											'defaultcheckitem'=>'',
+											'defaultval'=>'',
+											'defaulttext'=>'',
+											'table'=>'', 
+											'id'=>'',
+											'name'=>'' ,
+											'conditions'=>'',
+											'parentid'=>'',
+											'mulit'=>'',
+											'isnextend'=>'',
+											'treeheight'=>'',
+											'treewidth'=>'',
+											'isedit'=>'1',
+											'showtype'=>'',
+											'defaultcheckitem'=>''
+											)
+										)
+									)
+								)
+							)
+							}
+						</div>
+													
+						<!-- 文本框组件 -->
+						<div class="col_1_3 form_group_lay field_bangongdianhua" original="{$vo['bangongdianhua']}" category="text" style="">
+							<label class="label_new">{$fields["bangongdianhua"]}:</label>
+							<input  dropback="#dropback#"  type="text"  name="bangongdianhua"  class=" input_new  " <if condition="$vo['bangongdianhua'] neq ''">value="{$vo['bangongdianhua']}"<else/>value=""</if>  >
+							<div class="display_none {$classNodeSettingArr['bangongdianhua']}">{$vo['bangongdianhua']}</div>
+						</div>							
+						<!-- 文本框组件 -->
+						<div class="col_1_3 form_group_lay field_chuanzhen" original="{$vo['chuanzhen']}" category="text" style="">
+							<label class="label_new">{$fields["chuanzhen"]}:</label>
+							<input  dropback="#dropback#"  type="text"  name="chuanzhen"  class=" input_new  " <if condition="$vo['chuanzhen'] neq ''">value="{$vo['chuanzhen']}"<else/>value=""</if>  >
+							<div class="display_none {$classNodeSettingArr['chuanzhen']}">{$vo['chuanzhen']}</div>
+						</div>					
+						<!-- 下拉框组件 -->
+						<div class="col_1_3 form_group_lay field_businessstatus" original="{$vo['businessstatus']}" category="select" style="">
+							<label class="label_new">{$fields["businessstatus"]}:</label>
+							{:W('ShowSelect',
+							array(
+								$vo['businessstatus'],
+								array(
+									'',
+									array(
+										'type'=>('businessstatus'==''?'table':'selectlist'),
+										array(
+											'key'=>'businessstatus',
+											'readonly'=>'1',
+											'targevent'=>'',
+											'actionName'=>'MisSaleBusiness',
+											'names'=>'businessstatus',
+											'defaultcheckitem'=>'',
+											'defaultval'=>'',
+											'defaulttext'=>'',
+											'table'=>'', 
+											'id'=>'',
+											'name'=>'' ,
+											'conditions'=>'',
+											'parentid'=>'',
+											'mulit'=>'',
+											'isnextend'=>'',
+											'treeheight'=>'',
+											'treewidth'=>'',
+											'isedit'=>'1',
+											'showtype'=>'',
+											'defaultcheckitem'=>''
+											)
+										)
+									)
+								)
+							)
+							}
+						</div>
+											
+						<!-- 下拉框组件 -->
+						<div class="col_1_3 form_group_lay field_shixiao" original="{$vo['shixiao']}" category="select" style="">
+							<label class="label_new">{$fields["shixiao"]}:</label>
+							{:W('ShowSelect',
+							array(
+								$vo['shixiao'],
+								array(
+									'',
+									array(
+										'type'=>('YesOrNo'==''?'table':'selectlist'),
+										array(
+											'key'=>'YesOrNo',
+											'readonly'=>'1',
+											'targevent'=>'',
+											'actionName'=>'MisSaleBusiness',
+											'names'=>'shixiao',
+											'defaultcheckitem'=>'',
+											'defaultval'=>'',
+											'defaulttext'=>'',
+											'table'=>'', 
+											'id'=>'',
+											'name'=>'' ,
+											'conditions'=>'',
+											'parentid'=>'',
+											'mulit'=>'',
+											'isnextend'=>'',
+											'treeheight'=>'',
+											'treewidth'=>'',
+											'isedit'=>'1',
+											'showtype'=>'',
+											'defaultcheckitem'=>''
+											)
+										)
+									)
+								)
+							)
+							}
+						</div>
+											
+						<!-- 下拉框组件 -->
+						<div class="col_1_3 form_group_lay field_yanqizhuangtai" original="{$vo['yanqizhuangtai']}" category="select" style="">
+							<label class="label_new">{$fields["yanqizhuangtai"]}:</label>
+							{:W('ShowSelect',
+							array(
+								$vo['yanqizhuangtai'],
+								array(
+									'',
+									array(
+										'type'=>('YesOrNo'==''?'table':'selectlist'),
+										array(
+											'key'=>'YesOrNo',
+											'readonly'=>'1',
+											'targevent'=>'',
+											'actionName'=>'MisSaleBusiness',
+											'names'=>'yanqizhuangtai',
+											'defaultcheckitem'=>'',
+											'defaultval'=>'',
+											'defaulttext'=>'',
+											'table'=>'', 
+											'id'=>'',
+											'name'=>'' ,
+											'conditions'=>'',
+											'parentid'=>'',
+											'mulit'=>'',
+											'isnextend'=>'',
+											'treeheight'=>'',
+											'treewidth'=>'',
+											'isedit'=>'1',
+											'showtype'=>'',
+											'defaultcheckitem'=>''
+											)
+										)
+									)
+								)
+							)
+							}
+						</div>
+											
+						<!-- 下拉框组件 -->
+						<div class="col_1_3 form_group_lay field_xuanzeleixing" original="{$vo['xuanzeleixing']}" category="select" style="">
+							<label class="label_new">{$fields["xuanzeleixing"]}:</label>
+							{:W('ShowSelect',
+							array(
+								$vo['xuanzeleixing'],
+								array(
+									'',
+									array(
+										'type'=>('UserOrInterfaceLocation'==''?'table':'selectlist'),
+										array(
+											'key'=>'UserOrInterfaceLocation',
+											'readonly'=>'1',
+											'targevent'=>'',
+											'actionName'=>'MisSaleBusiness',
+											'names'=>'xuanzeleixing',
+											'defaultcheckitem'=>'',
+											'defaultval'=>'',
+											'defaulttext'=>'',
+											'table'=>'', 
+											'id'=>'',
+											'name'=>'' ,
+											'conditions'=>'',
+											'parentid'=>'',
+											'mulit'=>'',
+											'isnextend'=>'',
+											'treeheight'=>'',
+											'treewidth'=>'',
+											'isedit'=>'1',
+											'showtype'=>'',
+											'defaultcheckitem'=>''
+											)
+										)
+									)
+								)
+							)
+							}
+						</div>
+						
+						<if condition="!$appendPageContentArr[4]">{:W('ShowAction',array('data'=>$vo))}</if>
+					</div>
+				</form>
+				{$appendPageContentArr[2]}
+				{$appendPageContentArr[3]}
+			</div>
+		</div>
+	</div>
+</div>

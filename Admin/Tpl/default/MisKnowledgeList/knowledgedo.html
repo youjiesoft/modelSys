@@ -1,0 +1,43 @@
+<link rel="stylesheet" href="__PUBLIC__/Js/colorpicker/css/colorpicker.css" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/Js/colorpicker/colorpicker.js"></script>
+<include file="Public:pagerForm" />
+	<div class="page">
+		<div class="pageContent">
+			<form method="post" action="__URL__/knowledgedo/navTabId/__MODULE__view" class="pageForm required-validate" onsubmit="return validateCallback(this,dialogAjaxDone);">
+				<input type="hidden" value="1" name="iseditor">
+				<input type="hidden" value="1" name="save">
+				<input type="hidden" name="id" value="{$vo['id']}">
+				<div class="pageFormContent" layoutH="58">
+					<p>
+						<label>是否置顶：</label>
+						<input type="checkbox"  <if condition="$vo['totop']">checked="checked"</if> name="totop" value="1">
+					</p>
+					<p>
+						<label>高&nbsp;&nbsp;&nbsp;&nbsp;亮：</label>
+						<input id="knowledgecolorpickerField1" type="text"  style="width:60px" name="highlight" value="{$vo['highlight']}" r><span class="info" style="color: green;">&nbsp;点击修改颜色</span>
+					</p>
+					<script>
+					$('#knowledgecolorpickerField1').ColorPicker({
+						onSubmit: function(hsb, hex, rgb, el) {
+							$(el).val(hex);
+							$(el).ColorPickerHide();
+						},
+						onBeforeShow: function () {
+							$(this).ColorPickerSetColor(this.value);
+						}
+					}).bind('keyup', function(){
+						$(this).ColorPickerSetColor(this.value);
+					});
+					</script>
+				</div>
+				<div class="formBar">
+					<ul>
+					<if condition="$_SESSION.a eq 1 or $_SESSION.misknowledgelist_knowledgedo">
+						<li><div class="buttonActive"><div class="buttonContent"><button type="submit">{$Think.lang.save}</button></div></div></li>
+					</if>
+						<li><div class="button"><div class="buttonContent"><button type="button" class="close">{$Think.lang.close}</button></div></div></li>
+					</ul>
+				</div>
+		</form>
+	</div>
+</div>

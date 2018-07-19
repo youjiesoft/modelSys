@@ -1,0 +1,72 @@
+<script>
+$(document).ready(function(){
+	var zNodes = {$ztreeJson};    //控制器中，分配数据
+	var setting = {
+			view: {
+               selectedMulti: false,
+               fontCss: getFontCss
+			},
+			data: {
+				simpleData: {
+					enable: true
+				}
+			},
+			callback: {
+				onRightClick: zTreeOnRightClick
+	        }
+		};
+	$.fn.zTree.init($("#MisSalesProjectid"), setting, zNodes);
+	//默认选中第一个
+	var zTree = $.fn.zTree.getZTreeObj("MisSalesProjectid");
+	
+	function zTreeOnRightClick(event, treeId, treeNode) {
+        if (treeNode && !treeNode.noR) {
+            zTree.selectNode(treeNode);
+			var nodes = zTree.getSelectedNodes();
+			$(this).log(treeNode.id);
+			$.nbmMenu({'addonly':treeNode.id,'havechild':false,'left':event.clientX, 'top':event.clientY,
+				addNode:function(obj){
+					$(obj).attr('url','__APP__/MisPerformanceType/add/type/2/');
+					addNodes(obj,'MisSalesProjectid');
+				},
+				modifyNode:function(t){
+					$(t).attr('url','__APP__/MisPerformanceType/edit/id/');
+					editNodes(t,'MisSalesProjectid');
+				},
+				deleteNode:function(t){
+					delNodes('MisSalesProjectid','/MisPerformanceType/delete/id/','misperformancelevel_rightcontent');
+				}
+			});
+        }
+    }
+});
+$(function(){
+    //为左侧栏目导航点击后修改选中状态@nbmxkj 20141009 1629
+    nbm_getfouce();
+});
+</script>
+<div class="pageContent">
+{:W("ShowToLevelMenu")}
+    <div class="treeleft">
+        <div class="collapse">
+            <div class="toggleCollapse"><div></div></div>
+        </div>
+        <div class="close" layoutH="40">
+            <div class="work_statement">项目库</div>
+            <div class="edit_work_lay"><a class="edit_work_btn" href="#">项目初始化 <span class="icon-pencil"></span></a></div>
+            <div class="tml_divider"></div>
+            <div class="tml_bar_nav">
+                <ul class="bar_nav">
+                    <li class="active"><a href="#" target="ajax" rel="">全部项目</a></li>
+                    <li><a href="#" target="ajax" rel="">进行中</a></li>
+                    <li><a href="#" target="ajax" rel="">已完成</a></li>
+                    <li><a href="#" target="ajax" rel="">已中止</a></li>
+                </ul>
+            </div>
+			<!--<ul id="MisSalesProjectid" class="ztree" ></ul>-->
+		</div>
+    </div>
+    <div id="MisSalesProjectRel" class="unitBox treeright">
+		<include file="indexList"  />
+	</div>
+</div>

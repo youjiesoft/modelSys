@@ -1,0 +1,40 @@
+<div class="pageFormContent applecloth" layoutH="0">
+	<div class="keepContentCenter clearfix">
+		<h2 class="contentTitle contentTitle_center">入库流水账</h2>
+		<div id="generalreportintoaccount">
+			<FIELDSET>
+				<div class="xyformunit">
+					<label>单据编号：</label>
+					<input type="text" name="inreceiptsno" class="checkByInput"  checkfor="MisInventoryIntoMas" show="orderno"/>
+				</div>
+				<div class="xyformunit">
+					<label>仓库：</label>
+					<input type="text" name="inwarehouse" class="checkByInput"  checkfor="misInventoryWarehouse" show="name"/>
+				</div>
+				<div class="xyformunit">
+					<label>部门：</label>
+					<input type="text" name="indepname" class="checkByInput"  checkfor="HrDeptidSearch" show="name"/>
+				</div>
+				<div class="xyformunit">
+					<label>供货单位：</label>
+					<input type="text" name="insuppname" class="checkByInput"  checkfor="PurchaseCusnameSearch" show="name"/>
+				</div>
+				<div class="xyformunit">
+					<label>存货名称：</label>
+					<input class="checkByInput textInput" type="text" show="name" checkfor="PurchaseSalecodeSearch" name="inprodname">
+				</div>
+				<div class="xyformunit">
+					<label>存货名称：</label>
+					<input class="checkByInput textInput" type="text" show="name" checkfor="PurchaseSalecodeSearch" name="inprodname">
+				</div>
+			</FIELDSET>
+			<div class="export_new">
+				<div class="buttonActive">
+					<div class="buttonContent">
+						<button name="showgrid" onclick="show_doSearch('generalreportintoaccount','__URL__/lookupReportIntoAccount','{$result}')">检索</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

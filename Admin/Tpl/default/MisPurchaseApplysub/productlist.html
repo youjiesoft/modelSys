@@ -1,0 +1,90 @@
+<form id="pagerForm" action="__URL__/add" method="post">
+    <input type="hidden" name="pageNum" value="{$pageNum}"/>
+    <input type="hidden" name="orderField" value="{$order}" />
+    <input type="hidden" name="orderDirection" value="{$sort}" />
+</form>
+<form rel="pagerForm" action="__URL__/add" method="post" onsubmit="return divSearch(this,'MisProductSearchFilterList');">
+<input type="hidden" name="masid" value="{$masid}"/>
+<input type="hidden" name="type" value="{$type}"/>
+<input type="hidden" name="jump" value="1">
+<input type="hidden" name="code" value="{$code}">
+<input type="hidden" name="prodname" value="{$name}">
+<input type="hidden" name="prodsize" value="{$prodsize}">
+	 <div class="TablePress">
+	    <table class="table" layoutH="170" width="100%">
+	        <thead ename="code">
+	            <tr>
+					<th width="85">物料代码</th>
+					<th width="91">物料名称</th>
+					<th width="170">物料规格</th>
+					<th width="60">单位</th>
+					<th width="120">采购仓</th>
+					<th width="45">数量</th>
+					<th width="45">单价</th>
+					<th width="45">总价</th>
+					<th width="120">备注</th>
+					<th width="30">添加</th>
+				</tr>
+	        </thead>
+	        <tbody>
+	            <volist id="vo" name="list">
+				     <tr rel="{$vo.id}">
+					     <td>{$vo.code}</td>
+					     <td>{$vo.name}</td>
+					     <td>{$vo.prodsize}</td>
+					     <td>
+					     	<select class="" name="unitid[]">
+								{$vo['baseunitid']|getAllUnit=$vo[id],2,$vo[defaultsup]}
+							</select>
+					     </td>
+					     <td width="120">
+							<SELECT name="whid[]" style="width:100px;">
+				                  <volist id="whl" name="whidlist">
+				                      <option <if condition="$key eq $vo['purwhid']">selected</if> value="{$key}">{$whl}</option>
+				                  </volist>
+				            </SELECT>
+						</td>
+					     <td>
+					     	<input name="ids[]" value="{$vo['id']}" type="hidden">
+					     	<input type="text" size="10" name="qty[]" tabindex="{$k}01" rel="3" class="number keyBoard" 
+					     	onblur="updateapplysub(this);" value="{:getDigits(0)}"/>
+					     </td>
+					     <td>
+					     	<input type="text" name="showprice[]" value="{:getDigits(0)}" tabindex="{$k}02" rel="3" 
+					     	class="number keyBoard" size="10" onblur="updateapplysub(this);"/>
+					     </td>
+					     <td>
+					     	<input type="text" name="showamount[]" value="{:getDigits(0)}" readonly="readonly" class="number keyBoard" size="10"/>
+					     </td>
+					     <td>
+					     	<input type="text" size="15" tabindex="{$k}03" rel="3" class="keyBoard" name="remark[]" width="100%" />
+					     </td>
+						<td>
+							<button type="button" class="btnAdd" onclick="submit_refreshsub(this.form,'MisPurchaseApplysub','qty','',{$vo.id});">添加</button>
+						</td>
+					</tr>
+				</volist>
+	        </tbody>
+	    </table>
+	    <div class="panelBar panelPageBar">
+			<div class="pages">
+				<span>共{$totalCount}条</span>
+			</div>
+			<div class="pages" style="padding:0px 15px 0px 5px; height:25px; float:right;margin-top:1px;">
+				<ul style="padding:0px;">
+					<li style="height:25px;">
+						<div class="buttonActive">
+							<div class="buttonContent"><button type="button" onclick="submit_refreshsub(this.form,'MisPurchaseApplysub','qty');">{$Think.lang.save}</button></div>
+						</div>
+					</li>
+					<li style="height:25px;">
+						<div class="buttonActive">
+							<div class="buttonContent"><button type="button" onclick="submit_refreshsub(this.form,'MisPurchaseApplysub','qty',1);">{$Think.lang.saveandclose}</button></div>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="pagination" rel="MisProductSearchFilterList" targetType="dialog" totalCount="{$totalCount}" numPerPage="{$numPerPage}" pageNumShown="10" currentPage="{$currentPage}"></div>
+		</div>
+	</div>
+</form>

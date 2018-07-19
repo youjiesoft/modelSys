@@ -1,0 +1,40 @@
+<script type="text/javascript">
+$(function(){
+	var $box=navTab.getCurrentPanel();
+	
+	$('.nbmaccordion' , $box).nbmaccordion();
+});
+</script>
+<div class="page unitBox general_page">
+	<div class="pageContent">
+		<div class="general_tree_left treeleft">
+			<!-- left accordion -->
+
+            <!--  参数说明：* @parame spread 全关全开控制，默认0：全关 @parame selecter 打开指定项下标。默认-1， @parame open 展开的样式效果 @parame close 关闭样式效果 -->
+			<div class="nbmaccordion"  data-option="close:icon-double-angle-down;open:icon-double-angle-up" layouth="40">
+				<volist name="data" id="v1" key="i">
+						<div title="{$v1.name}">
+							<ul>
+								<volist name="v1['sub']" id="v2">
+									<li>
+										<a href="__URL__/lookupGetWork/projectid/{$projectid}/formid/{$v2.form_id}" title="{$v2.form_name}" rel="missalesprojectleft_ajax" target="ajax">
+											<span>
+												{$v2.form_name}
+											</span>
+										</a>
+									</li>
+								</volist>
+							</ul>
+						</div>
+				</volist>
+			</div>
+			<!-- left end -->	
+		</div>
+		<!-- ***************************************************** -->
+		<div id="missalesprojectleft_ajax" class="unitBox treeright">
+			<include file="lookupGetWork"  />
+		</div>
+		<!-- end -->
+	</div>
+</div>
+

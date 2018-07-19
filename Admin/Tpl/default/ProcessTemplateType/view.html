@@ -1,0 +1,49 @@
+<style>
+.userli{float:left;width:60px;}
+.userul{margin-left: 50px;}
+
+</style>
+<div class="page">
+	<div class="pageContent">
+	<form method="post" action="__URL__/update/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+            <input type="hidden" class="textInput" name="pid" size="30" value="{$vo.pid}"/>
+            <input type="hidden" class="textInput" name="tid" size="30" value="{$vo.tid}"/>
+            <div class="pageFormContent" layoutH="58">
+                        <div class="unit">
+				<label>节点授权：</label>
+			</div>
+                        <div id="processuser" >
+                        <div style="clear:both"></div>
+                        <div class="testDiv">
+                        {$str}
+                        </div>
+                        </div>
+                        <div class="unit">
+				<label>走向规则：</label>
+				<input type="text" class="textInput alphanumeric" minlength="2" maxlength="100" name="rule" size="30" value="{$vo.rule}"/>
+			</div>
+			<div class="unit">
+				<label>备注：</label>
+				<textarea name="remark" class="textInput" minlength="2" maxlength="100" rows="2" cols="40">{$vo.remark}</textarea>
+			</div>
+			<div class="unit">
+				<label>状 态：</label>
+				<select name="status"  class="combox">
+					<option <eq name="vo.status" value="1" >selected</eq> value="1">启用</option>
+					<option <eq name="vo.status" value="0" >selected</eq> value="0">禁用</option>
+				</select>
+			</div>
+
+		</div>
+
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">{$Think.lang.save}</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">{$Think.lang.close}</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+
+	</div>
+</div>
+

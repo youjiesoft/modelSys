@@ -1,0 +1,205 @@
+<script type="text/javascript">
+function turnaround(obj){
+	 var va = $(obj).val();
+	 //内部使用
+	 if(va == 1){
+		 $("#customertype", navTab.getCurrentPanel()).hide();
+		 $("#isfree",navTab.getCurrentPanel()).hide();
+		 $("#payamount",navTab.getCurrentPanel()).hide();
+	 }
+	 //外部免费
+	 if(va == 2){
+		 $("#customertype",navTab.getCurrentPanel()).show();
+		 $("#isfree",navTab.getCurrentPanel()).hide();
+		 $("#payamount",navTab.getCurrentPanel()).hide();
+	 }
+	 //外部收费
+	 if(va == 3){
+		 $("#customertype",navTab.getCurrentPanel()).show();
+		 $("#isfree",navTab.getCurrentPanel()).show();
+		 $("#payamount",navTab.getCurrentPanel()).show();
+	 }
+}
+</script>
+<div class="page">
+	<div class="pageContent">
+		<div class="pageFormContent applecloth anchorsToolBarParent" layoutH="56">
+						<div class="keepContentCenter">
+							<H2 class="contentTitle contentTitle_center">会议室申请信息
+								{:W('ShowAdvices',array('id'=>$vo['id']))}
+								{:W('ShowOrderno',array(0,'mis_meeting_user_mange',$vo['orderno']))}
+							</H2>
+							<fieldset class="side-catalog-anchor ">
+								<legend class="fieldset_legend_toggle side-catalog-firstanchor side-catalog-text"><b>基本信息</b></legend>
+                        	<div class="tml-row">
+									<div class="tml-form-col" >
+										<label>会&nbsp;议&nbsp;室：</label>
+										<div class="tml-input-append">
+											<input type="hidden" class="org.id" name="objid" value="{$vo['objid']}" />
+											<input type="text" class="org.name" value="{$vo['objid']|getFieldby='id','name','MisMeetingRoom'}"  readonly="readonly"/>
+											<a class="input-addon input-addon-addon input-addon-add " param="field=id,orderno,name,galleryful&model=MisMeetingRoom" href="__URL__/lookupGeneral" lookupGroup="org">会议室选择</a>
+										</div>
+									</div>
+									<div class="tml-form-col">
+										<label>编&nbsp;&nbsp;&nbsp;&nbsp;号：</label>
+										<input type="text" name="code" class="org.orderno"  readonly="readonly" value="{$vo['objid']|getFieldby='id','orderno','MisMeetingRoom'}">
+									</div>
+									<div class="tml-form-col">
+										<label>容纳人数：</label>
+										<input type="text" name="code" class="org.galleryful digits"  readonly="readonly" value="{$vo['objid']|getFieldby='id','galleryful','MisMeetingRoom'}">
+									</div>
+									<div class="tml-form-col">
+										<label>申请单位：</label>
+										<input name="tel" type="text" class="textInput required " name="organization"  readonly="readonly" value="{$vo['organization']}" />
+									</div>
+									<div class="tml-form-col">
+										<label>联&nbsp;系&nbsp;人：</label>
+										<input type="text" class="textInput qq  " name="linkman" readonly="readonly" value="{$vo['linkman']}">
+									</div>
+									<div class="tml-form-col">
+										<label>联系电话：</label>
+										<input name="linktel" type="text" class="textInput " readonly="readonly" value="{$vo['linktel']}"/>
+									</div>
+									<div class="tml-form-col">
+										<label>负&nbsp;责&nbsp;人：</label>
+										<input type="text" class="textInput required" value="{$vp['principal']}" readonly="readonly" name="principal">
+									</div>
+								</div>
+							</fieldset>
+							<fieldset class="side-catalog-anchor">
+								<legend class="fieldset_legend_toggle side-catalog-text"><b>会议相关</b></legend>
+									<div class="tml-row">	
+										<!-- <div class="tml-form-col">
+											<label>会议室使用日期：</label>
+											<div class="tml-input-append">
+												<input class="Wdate js-wdate textInput valid" readonly="readonly" type="text" value="{$vo['meetingtime']|date='Y-m-d',###}" name="meetingtime" format="{dateFmt:'yyyy-MM-dd'}" style="width:150px;">
+												<a class="input-addon input-addon-calendar" href="javascript:;">选择</a>
+											</div>
+										</div> -->
+										<div class="tml-form-col">
+											<label>预计开始时间：</label>
+											<div class="tml-input-append">
+												<input class="Wdate js-wdate textInput valid" readonly="readonly" type="text" value="{$vo['estimatedStrtime']|date='Y-m-d h:i:s',###}" name="estimatedStrtime" format="{dateFmt:'yyyy-MM-dd HH:mm'}">
+												<a class="input-addon input-addon-calendar" href="javascript:;">选择</a>
+											</div>
+										</div>
+										<div class="tml-form-col">
+											<label>预计结束时间：</label>
+											<div class="tml-input-append">
+												<input class="Wdate js-wdate textInput valid" readonly="readonly" type="text" value="{$vo['estimatedEndtime']|date='Y-m-d h:i:s',###}" name="estimatedEndtime" format="{dateFmt:'yyyy-MM-dd HH:mm'}">
+												<a class="input-addon input-addon-calendar" href="javascript:;">选择</a>
+											</div>
+										</div>
+										<div class="tml-form-col">
+											<label>预计会议人数：</label>
+											<input name="estimatedcount" type="text" readonly="readonly" class="textInput required digits" value="{$vo['estimatedcount']}"/>
+										</div>
+									</div>	
+	                               	<div class="tml-form-row">
+										<label>出席对象：</label>
+										<textarea name="attend"  class="textInput" readonly="readonly" >{$vo['attend']}</textarea>
+	                                </div>
+	                                	<div class="tml-form-row">
+										<label>使用情况：</label>
+										<textarea name="usage"  class="textInput" readonly="readonly">{$vo['usage']}</textarea>
+	                                </div>
+	                                <div class="tml-form-row">
+										<label>会议名称及内容：</label>
+										<textarea name="meetingrelated"  class="textInput" readonly="readonly">{$vo['meetingrelated']}</textarea>
+	                                </div>
+							</fieldset>
+							<fieldset class="side-catalog-anchor">
+									<legend class="fieldset_legend_toggle side-catalog-text"><b>费用情况</b></legend>
+										<div class="tml-form-col">
+												<label>内/外部使用：</label>
+												<select class="combox" name="scope" onchange="turnaround(this)" readonly="readonly">
+													<option value="1" <if condition="$vo['scope'] eq 1">selected="selected"</if>>内部使用</option>
+													<option value="2" <if condition="$vo['scope'] eq 2">selected="selected"</if>>外部免费</option>
+													<option value="3" <if condition="$vo['scope'] eq 3">selected="selected"</if>>外部收费</option>
+												</select>
+										</div>
+										<div class="tml-row" <if condition="$vo['scope'] lt 2">style="display:none;"</if> id="customertype">
+											<div class="tml-form-col" >
+												<label>客户类型：</label>
+												<input name="customertype" type="radio" value="1" <if condition="$vo['customertype'] eq 1" readonly="readonly">checked="checked"</if> />协议客户 &nbsp; &nbsp; &nbsp;
+												<input name="customertype" type="radio" value="2" <if condition="$vo['customertype'] eq 2" readonly="readonly">checked="checked"</if> />临时客户
+											</div>
+										</div>
+										<div class="tml-row" <if condition="$vo['scope'] lt 3">style="display:none;"</if> id="isfree">	
+											<div class="tml-form-col" id="fuc">
+												<label>收费金额：</label>
+												<span class="xyInputWithUnit">
+													<input class="required textInput valid" type="text"  readonly="readonly" value="{$vo['amount']}" onblur="FormatNumber(this);countfixationaddamount();" name="amount">
+													<span class="input-addon-unit" title="元">元</span>
+												</span>
+											</div>
+										</div>	
+										<div class="tml-row" <if condition="$vo['scope'] lt 3">style="display:none;"</if> id="payamount">	
+											<div class="tml-form-col">
+												<label>已付金额：</label>
+												<span class="xyInputWithUnit">
+													<input class="required textInput valid" type="text" readonly="readonly" value="{$vo['prepaid']|getDigits}" onblur="FormatNumber(this);countfixationaddamount();" name="prepaid">
+													<span class="input-addon-unit" title="元">元</span>
+												</span>
+											</div>
+											<div class="tml-form-col">
+												<label>未付金额：</label>
+												<span class="xyInputWithUnit">
+													<input class="required textInput valid" type="text" readonly="readonly" value="{$vo['unpaid']|getDigits}" onblur="FormatNumber(this);countfixationaddamount();" name="unpaid">
+													<span class="input-addon-unit" title="元">元</span>
+												</span>
+											</div>
+										</div>	
+							</fieldset>
+							<fieldset class="side-catalog-anchor">
+								<legend class="fieldset_legend_toggle side-catalog-text">
+									<b>会议名称及内容</b>
+								</legend><table cellspacing="0" id="mishrapplication" class="data-table">
+								<thead>
+									<tr>
+										<td><strong>物品名称</strong></td>
+										<td><strong>数量</strong></td>
+										<td style="width:300px;"><strong>备注</strong></td>
+										</tr>
+								</thead>
+								<tbody>
+									<volist name="goodslist" id="gs">
+										<tr>
+											<td>{$gs['name']}</td>
+											<td><input type="text"  name ="{$gs['key']}" value="{$gs['count']}" readonly="readonly" class="xytdinput textInput digits"></td>
+											<td><input type="text"  name="{$gs['key_mark']}" value="{$gs['mark']}" readonly="readonly" class="xytdinput textInput"></td>
+										</tr>
+									</volist>
+								</tbody>
+							</table>
+						</fieldset>
+						<fieldset class="side-catalog-anchor">
+								<legend class="fieldset_legend_toggle side-catalog-text">
+									<b>备注</b>
+								</legend>
+								 <div class="tml-form-row">
+										<label>备注：</label>
+										<textarea name="remark"  class="textInput readonly" >{$vo['remark']}</textarea>
+	                            </div>
+						</fieldset>
+						 <fieldset class="side-catalog-anchor"> 
+							<legend class="fieldset_legend_toggle side-catalog-text"><b>制单信息</b></legend>
+							<div class="tml-row">
+								<div class="tml-form-col">
+									<label>制单人：</label>
+							   		<input type="text" class="textInput" readonly="readonly" value="{$vo['createid']|getFieldby='id','name','User'}"/>
+								</div>
+								<div class="tml-form-col">
+									<label>制单时间：</label>
+							   		 <input type="text" class="textInput" value="{$vo['createtime']|transTime}" readonly="readonly" />
+								</div>
+							</div>
+						</fieldset>
+                	 </div>
+                	 </div>
+		{:W('ShowAction',array('data'=>$vo))}
+		<!-- <div class="formBar tml-text-c">
+			<button type="button" class="tml-btn tml-btn-white close">{$Think.lang.close}</button>
+		</div> -->
+	</div>
+</div>

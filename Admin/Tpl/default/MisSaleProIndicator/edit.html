@@ -1,0 +1,67 @@
+<script type="text/javascript">
+$(function(){
+	var conf = new Object();
+	var data = '{$list}';
+	conf.data =$.parseJSON(data);
+	conf.ids = '#missalepiadd_yiji,#missalepiadd_erji,#missalepiadd_sanji,#missalepiadd_siji';
+	conf.tag = 'yiji,erji,sanji,siji'; 
+	conf.pid = 'erjiid,sanjiid,sijiid';
+	conf.tex = 'name'; 
+	conf.val = 'id';
+	conf.defaultVal='{$proid}';
+	$.linkage(conf); 
+});
+
+</script>
+<!-- 		<style>
+		.tml-form-row label.tmp_label{margin-left:0px;width: 120px;float: none;font: 14px/30px "Microsoft Yahei","微软雅黑",sans-serif;}
+		.tml-form-row label.tmp_label:hover{color:#006699;}
+		</style> -->
+	<div class="page">
+	<div class="pageContent">
+		<form method="post" action="__URL__/update/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return iframeCallback(this, dialogAjaxDone)">
+			<input type="hidden" name="id" value="{$vo['id']}" />
+			<div class="pageFormContent layoutH="65">
+					<fieldset>
+						<div class="tml-form-row">
+								<label>行业111：</label>
+								 <select  name="professionid[]"   class="combox required "  id="missalepiadd_yiji"><option>--请选择--</option></select>   
+							
+								 <select  name="professionid[]"   class="combox required "  id="missalepiadd_erji"><option>--请选择--</option></select>
+							
+								 <select  name="professionid[]"   class="combox required "  id="missalepiadd_sanji"><option>--请选择--</option></select>
+							
+								 <select  name="professionid[]"   class="combox required "  id="missalepiadd_siji"><option>--请选择--</option></select>
+							</div>
+							<div class="tml-form-row">
+								<label>产业链：</label>	
+								 <select  name="industryid"   class="required combox">
+								 <option>--请选择--</option>				 
+								<volist name="indu" id="v">
+									<option value='{$v.id}'<if condition="$v.id eq $induid['id']">selected="selected"</if>>{$v.name}</option>
+								</volist>
+								</select>			
+								<!--  <select  name="industryid"   class="required ">
+								 {:getDataBaseByHtml('mis_sale_industry')}
+								</select> -->	
+							</div>
+							<div class="tml-form-row nbm_add_item">
+								<label>指标：</label>
+								 <select  name="indicatorid"   class="required  combox">
+								 <option>--请选择--</option>				 
+								<volist name="indicator" id="vos">
+									<option value='{$vos.id}'<if condition="$vos.id eq $indica.id">selected="selected"</if>>{$vos.name}</option>
+								</volist>
+								</select>	
+							</div>	
+							<div class="tml-form-row">
+								<label>备注说明：</label>
+								<textarea  name="remark"  rows="4">{$vo.remark}</textarea>
+							</div>
+					</fieldset>					
+					 {:W('ShowAction')}
+			</div>
+		
+		</form>
+	</div>
+	</div>

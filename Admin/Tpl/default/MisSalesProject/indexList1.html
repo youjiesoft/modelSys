@@ -1,0 +1,88 @@
+<script>
+function judgeAuditlist(obj,method,id){
+	var projectid = id;
+	//var stepAdd = '{$stepAdd}';
+	//if(stepAdd == 0){
+		//alertMsg.error("该模块下，你没有操作权限，或者你没有可以操作的内容，请选择其他模块");
+		//return false;
+	//}else{
+		var title = $(obj).attr("title");
+		var tabids = "MisSalesProjectedit";
+		var url = TP_APP+"/MisSalesProject/"+method+"/projectid/"+projectid;
+		var titles = title;
+		navTab.openTab(tabids, url, {title : titles});
+	//}
+}
+</script>
+<form id="pagerForm" action="__URL__/index" method="post">
+	<input type="hidden" name="pageNum" value="1"/>
+	<input type="hidden" name="indexlist" value="{$indexlist}"/>
+	<input type="hidden" name="orderField" value="{$order}" />
+	<input type="hidden" name="orderDirection" value="{$sort}" />
+    <input type="hidden" name="executiontypeid" value="{$executiontypeid}" />
+    <input type="hidden" name="typeid" value="{$typeid}" />
+    <input type="hidden" name="jump" value="1">
+</form>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<volist name="toolbarextension" id="toolb">
+				<if condition="$_SESSION.a eq 1 or $toolb['ifcheck'] eq 0 or ($toolb['ifcheck'] eq 1 and !empty($toolb['permisname']) and $_SESSION[$toolb['permisname']])">
+					<li>{$toolb['html']}</li>
+				</if>
+			</volist>
+		</ul>
+			<form rel="pagerForm" onsubmit="return divSearch(this,'MisSalesProjectRel');" action="__URL__/index" method="post">
+			<input type="hidden" name="jump" value="1">
+			<input type="hidden" name="indexlist" value="{$indexlist}"/>
+			<input type="hidden" name="typeid" value="{$typeid}">
+            <input type="hidden" name="executiontypeid" value="{$executiontypeid}" />
+			<div class="searchBar">
+				<table class="searchContent">
+					<tr>
+						<include file="Public:quickSearchCondition" />
+					</tr>
+				</table>
+			</div>
+			</form>
+	</div>
+	<div class="pageContent applecloth" layoutH="108">
+		<ul class="clearfix">
+			<volist name="list" id="volist">
+				<li class="left grid-50">
+					<div class="tml-m20 tml-p20" style="background:#f3f3f3;border:1px solid #ccc;">
+						<h3 class="tml-h3">{$volist.name}</h3>
+						<div class="divider-content help"><span></span></div>
+						<table class="tml-table tml-table-w">
+							<tbody>
+								<tr>
+									<td>项目编号:</td>
+									<td>{$volist.code}</td>
+									<td>项目类型:</td>
+									<td>{$volist.typeid|getfieldby='id','name','mis_system_flow_type'}</td>
+								</tr>
+								<tr>
+									<td>合同总价:</td>
+									<td>{$volist.principalcost|getDigits}</td>
+									<td>总工期:</td>
+									<td>{$volist.limittime}</td>
+								</tr>
+							</tbody>
+						</table>
+						<div class="pt5">
+							<!-- <a class="tml-btn tml-btn-small tml-btn-primary mr10" onclick="judgeAuditlist(this,'lookupmywork','{$volist['id']}');"  href="javascript:;" title="可执行工作"><span class="icon icon-play-circle"></span> 执行</a>
+							<a class="tml-btn tml-btn-small tml-btn-orange mr10" onclick="judgeAuditlist(this,'lookupauditindex','{$volist['id']}');" title="审核工作" href="javascript:;"><span class="icon icon-edit"></span> 审核</a> -->
+							<a class="tml-btn tml-btn-small tml-btn-green" href="__URL__/lookupEdit/projectid/{$volist.id}" title="项目查阅" target="navTab" rel="MisSalesProjectedit"><span class="icon icon-eye-open"></span> 项目查看</a>
+						</div>
+					</div>
+				</li>
+			</volist>
+		</ul>
+	</div>
+	<div class="panelBar panelPageBar">
+		<div class="pages">
+			<span>共{$totalCount}条</span>
+		</div>
+		<div class="pagination"  rel="MisSalesProjectRel" targetType="navTab" totalCount="{$totalCount}" numPerPage="{$numPerPage}" pageNumShown="10" currentPage="{$currentPage}"></div>
+	</div>
+</div>

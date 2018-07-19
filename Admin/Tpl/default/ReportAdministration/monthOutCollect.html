@@ -1,0 +1,36 @@
+<script>
+	function monthoutcollect_doSearch() {
+		var collhandledate = $("input[name='collhandledate']").val();
+		if (collhandledate == '') {
+			alert('请选择要汇总的月份');
+			return false;
+		}
+		show_doSearch('generalmonthoutcollect','__URL__/lookupMonthOutCollect');
+	}
+</script>
+<div class="pageFormContent applecloth" layoutH="0">
+	<div class="keepContentCenter clearfix">
+		<h2 class="contentTitle contentTitle_center">月初苗汇总表</h2>
+		<div id="generalmonthoutcollect">
+			<fieldset>
+				<div class="xyformunit">
+					<label>月份：</label>
+					<input type="text" style="margin-left: 25px;" class="date " readonly="readonly" name="collhandledate" value="">
+				</div>
+				<volist id="vo" name="colnamelist" key="key">
+				<div class="xyformunit">
+					<label>{$vo}：</label>
+					<input style="margin-left: 25px;" type="text" name="{$colmodellist[$key-1]['name']}" onchange="" />
+				</div>
+				</volist>
+			</fieldset>
+		</div>
+		<div class="export_new">
+			<div class="buttonActive">
+				<div class="buttonContent">
+					<button name="showgrid" onclick="monthoutcollect_doSearch()">检索</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,63 @@
+
+
+<script>
+
+	 $(function(){;
+
+	 //为左侧栏目导航点击后修改选中状态@nbmxkj 20141009 1629
+
+		 nbm_getfouce();
+
+	 });
+
+</script>
+
+<div class="pageContent">
+
+	<div class="treeleft">
+
+		<div class="collapse" layoutH="0">
+
+			<div class="toggleCollapse">
+
+				<div></div>
+
+			</div>
+
+		</div>
+
+	<div class="close" layoutH="40"  >
+
+
+
+				<div class="tml_divider_xiangqing"></div>
+
+					<div class="tml_bar_nav">
+
+						<ul class="bar_nav">
+						<if condition="$huoyuandanhao neq 0"> 
+							<li class="active"><a href="__URL__/index/huoyuandanhao/{$huoyuandanhao}/jump/jump" target="ajax" rel="MisSaleWaybillDetailsindexview">全部运单管理</a></li>
+							<li><a rel="MisSaleWaybillDetailsindexview" target="ajax" href="__URL__/index/huoyuandanhao/{$huoyuandanhao}/fieldtype/ordertype/ordertype/1/jump/jump">待确认</a></li><li><a rel="MisSaleWaybillDetailsindexview" target="ajax" href="__URL__/index/huoyuandanhao/{$huoyuandanhao}/fieldtype/ordertype/ordertype/2/jump/jump">运输中</a></li><li><a rel="MisSaleWaybillDetailsindexview" target="ajax" href="__URL__/index/huoyuandanhao/{$huoyuandanhao}/fieldtype/ordertype/ordertype/3/jump/jump">已完成</a></li>
+						
+						<else/>
+							<li class="active"><a href="__URL__/index/jump/jump" target="ajax" rel="MisSaleWaybillDetailsindexview">全部运单管理</a></li>
+							<li><a rel="MisSaleWaybillDetailsindexview" target="ajax" href="__URL__/index/fieldtype/ordertype/ordertype/1/jump/jump">待确认</a></li><li><a rel="MisSaleWaybillDetailsindexview" target="ajax" href="__URL__/index/fieldtype/ordertype/ordertype/2/jump/jump">运输中</a></li><li><a rel="MisSaleWaybillDetailsindexview" target="ajax" href="__URL__/index/fieldtype/ordertype/ordertype/3/jump/jump">已完成</a></li>
+						 </if>
+							
+						</ul>
+
+					</div>
+
+		<!--<ul id="misSalesCustomerTree" class="ztree" layoutH="43"></ul>-->
+
+				</div>
+
+			</div>
+
+			<div id="MisSaleWaybillDetailsindexview" class="unitBox treeright">
+
+				<include file="indexview" />
+
+			</div>
+
+		</div>

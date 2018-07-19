@@ -1,0 +1,29 @@
+<script>
+$(function(){
+	var $box=navTab.getCurrentPanel();
+	var url = "__URL__/lookupHrLeaveEmployeeChart";
+	var swf = 'MSArea';
+	chart("__PUBLIC__/Charts/"+swf+".swf","HrLeaveEmployeeChartChart",url,"800", "413");
+	$box.find('#ReportHrLeaveEmployeeChart').selectButton().change(function(){
+		var swf = $(this).val();
+		chart("__PUBLIC__/Charts/"+swf+".swf","HrLeaveEmployeeChartChart",url,"800", "40");
+	});
+});
+</script>
+<div class="pageContent applecloth" layoutH="0">
+	<div class="pageHeader">
+		<h2 class="contentTitle contentTitle_center">离职人数</h2>
+		<div class="clearfix" style="margin: 10px auto; width: 800px">
+			<!-- <select name="select" id="ReportHrLeaveEmployeeChart" class="">
+				<option value="MSArea" selected="selected">2D面积图</option>
+				<option value="MSLine">2D折线图</option>
+				<option value="MSColumn2D">2D柱图</option>
+				<option value="MSColumn3D">3D柱图</option>
+			</select> -->
+			<div class="tml-c-red" style="margin: 10px;">
+				<p>截止目前各部门离职人数统计	【横坐标为部门，纵坐标为人数(人)】</p>
+			</div>
+		</div>
+		<div id="HrLeaveEmployeeChartChart" style="margin: 0 auto; width: 800px"></div>
+	</div>
+</div>

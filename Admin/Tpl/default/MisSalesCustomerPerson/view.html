@@ -1,0 +1,148 @@
+<div class="pageContent">
+    <form method="post" action="__URL__/update/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,navTabAjaxDone);">
+        <input type="hidden" name="callbackType" value="closeCurrent">
+        <input type="hidden" name="id" value="{$vo.id}"/>
+        <div class="pageFormContent applecloth anchorsToolBarParent" layoutH="56">
+            <div class="keepContentCenter form-affix-content">
+                <H2 class="contentTitle contentTitle_center form-affix-title">个人客户</H2>
+                <fieldset>
+                    <legend class="fieldset_legend_toggle">
+                        <b>基本信息</b>
+                    </legend>
+                    <div class="tml-row">
+	                    <div class="tml-form-col nbmmove">
+	                        <label>{$fields["name"]}:</label>
+	                        <input type="text" name="name" class="required" value="{$vo.name}">
+	                    </div>
+                        <div class="tml-form-col nbmmove">
+                            <label>{$fields["phone"]}:</label>
+                            <input type="text" name="phone" class="" value="{$vo.phone}">
+                        </div>
+                        <div class="tml-form-col nbmmove">
+                            <label>{$fields["address"]}:</label>
+                            <input type="text" name="address" class="" value="{$vo.address}">
+                        </div>
+                        <div class="tml-form-col nbmmove">
+                            <label>{$fields["job"]}:</label>
+                            <input type="text" name="job" class="" value="{$vo.job}">
+                        </div>
+                        <div class="tml-form-col nbmmove">
+                            <label>{$fields["companyname"]}:</label>
+                            <input type="text" name="companyname" class="" value="{$vo.companyname}">
+                        </div>
+                        <div class="tml-form-col nbmmove">
+                            <label>{$fields["income"]}:</label>
+                            <input type="text" name="income" class="" onblur="FormatNumber(this);" value="{$vo.income|getDigits}">
+                        </div>
+                        <div class="tml-form-col">
+							<label>客户类型： </label>
+							<select name="typeid" class="combox required">
+								<option value="" selected="selected">请选择</option>
+								<volist name="typeList" id="list">
+									<option <if condition="$vo.typeid eq $list.id">selected</if> value="{$list.id}">{$list.name}</option>
+								</volist>
+							</select>
+						</div>
+						<div class="tml-form-col nbmmove">
+	                        <label>{$fields["debt"]}:</label>
+	                        <input type="text" name="debt" class="number" onblur="FormatNumber(this);" value="{$vo.debt|getDigits}">
+	                    </div>
+	                    <div class="tml-form-col nbmmove">
+	                        <label>{$fields["assets"]}:</label>
+	                        <input type="text" name="assets" class="number" onblur="FormatNumber(this);" value="{$vo.assets|getDigits}">
+	                    </div>
+                    </div>
+                 </fieldset>   
+                 <fieldset>
+                 	<legend class="fieldset_legend_toggle">
+                        <b>跟踪情况</b>
+                    </legend>
+                    <div class="tml-form-row">
+						<label>企业需求服务：</label>
+						<div class="left tml-checkbox tml-w100">
+							<label>
+								<input name="enterpriseserve[]" type="checkbox" value="1" <if condition="in_array('1', explode(',',$vo['enterpriseserve']))">checked</if> /> 投资需求
+							</label>
+						</div>
+						<div class="left tml-checkbox tml-w100">
+							<label>
+								<input name="enterpriseserve[]" type="checkbox" value="2" <if condition="in_array('2', explode(',',$vo['enterpriseserve']))">checked</if>/> 融资需求
+							</label>
+						</div>
+						<div class="left tml-checkbox tml-w100">
+							<label>
+								<input name="enterpriseserve[]" type="checkbox" value="3" <if condition="in_array('3', explode(',',$vo['enterpriseserve']))">checked</if>/> 其他
+							</label>
+						</div>
+					</div>
+					<div class="tml-row pt5">
+						<div class="tml-form-col">
+							<label>需求金额：</label>
+							<div class="tml-input-append">
+								<input class="number TextMagnifier-money textInput valid" type="text" onblur="FormatNumber(this);" name="needmoney" value="{$vo['needmoney']|getDigits}" />
+								<span class="input-addon-unit" title="元">元</span>
+							</div>
+						</div>
+						<div class="tml-form-col nbmmove">
+	                        <label>
+	                            {$fields["firstcontacttime"]}:
+	                        </label>
+	                        <div class="tml-input-append">
+	                            <input type="text" class="date " name="firstcontacttime" value="{$vo.firstcontacttime|transtime}">
+	                            <a href="javascript:;" class="inputDateButton input-addon input-addon-calendar ">选择</a>
+	                        </div>
+	                    </div>
+						<div class="tml-form-col nbmmove">
+                            <label>服务部门:</label>
+                            <input type="text" name="deptname" class="" value="{$vo.deptname}">
+                        </div>
+                        <div class="tml-form-col nbmmove">
+                            <label>经办人人员:</label>
+                            <input type="text" name="username" class="" value="{$vo.username}">
+                        </div>	
+	                    <div class="tml-form-col nbmmove">
+	                        <label>企业服务跟踪:</label>
+	                        <div class="tml-input-append">
+	                            <input type="text" class="date " name="serverinfo" value="{$vo.serverinfo|transtime}">
+	                            <a href="javascript:;" class="inputDateButton input-addon input-addon-calendar ">选择</a>
+	                        </div>
+	                    </div>
+	                    <div class="tml-form-col nbmmove">
+                            <label>情况说明:</label>
+                            <input type="text" name="qksm" class="" value="{$vo.qksm}">
+                        </div>
+                        <div class="tml-form-col nbmmove">
+	                        <label>提醒日期:</label>
+	                        <div class="tml-input-append">
+	                            <input type="text" class="date " name="txdata" value="{$vo.txdata|transtime}">
+	                            <a href="javascript:;" class="inputDateButton input-addon input-addon-calendar ">选择</a>
+	                        </div>
+	                    </div>
+                        <div class="tml-form-col nbmmove">
+                            <label>
+                                {$fields["servercompany"]}:
+                            </label>
+                            <input type="text" name="servercompany" class="" value="{$vo.servercompany}">
+                        </div>
+                        <div class="tml-form-col nbmmove">
+                            <label>
+                                {$fields["lendamount"]}:
+                            </label>
+                            <input type="text" name="lendamount" class="number" onblur="FormatNumber(this);" value="{$vo.lendamount|getDigits}">
+                        </div>
+                        <div class="tml-form-col nbmmove">
+                            <label>
+                                {$fields["lendtime"]}:
+                            </label>
+                            <div class="tml-input-append">
+                                <input type="text" class="date required" name="lendtime" value="{$vo.lendtime|transtime}">
+                                <a href="javascript:;" class="inputDateButton input-addon input-addon-calendar"> 选择</a>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        {:W('ShowAction')}
+    </form>
+</div>

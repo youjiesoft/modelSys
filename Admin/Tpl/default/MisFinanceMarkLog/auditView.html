@@ -1,0 +1,64 @@
+<div class="pageContent">
+	<form method="post" action="__URL__/seal/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+		<input type="hidden" name="callbackType" value="closeCurrent">
+		<input type="hidden" name="id" value="{$vo['id']}" />
+		<h2 class="contentTitle contentTitle_center">盖章申请{:W('ShowAdvices',array('id'=>$vo['id']))}
+			{:W('ShowOrderno',array(0,'mis_finance_mark_log',$vo['orderno']))}
+		</h2>
+		<div class="pageFormContent " layoutH="115">
+			<div class="tml-row">
+				<div class="tml-form-col">
+					<label>{$fields["master_mark"]}：</label>
+					<input type="text" value="{$vo.master_mark|getfieldby='id','name','mis_seal_of_registration'}"  readonly="readonly"/>
+				</div>
+				<div class="tml-form-col">
+					<label>{$fields["category"]}：</label>
+					<input type="text" readonly="readonly" value="{$vo.category|getfieldby='id','name','mis_seal_of_registration'}"/>
+				</div>
+				<div class="tml-form-col">
+					<label>份&nbsp;&nbsp;&nbsp;&nbsp;数：</label>
+					<div class="tml-input-append">
+						<input  type="text" name="unit" readonly="readonly"  class="" value="{$vo['unit']}" size="5">
+						<span class="input-addon-unit  " title="份">份</span>
+					</div>
+				</div>
+				<div class="tml-form-col">
+					<label>{$fields["log_time"]}：</label>
+					<div class="tml-input-append">
+					<input type="text" class="required js-wdate" readonly="readonly" name="log_time" size="17" value="{$vo['log_time']|date='Y-m-d',###}">
+					<a href="javascript:;" class="input-addon input-addon-calendar js-inputCheckDate">选择</a>
+					</div>
+				</div>
+			</div>
+			<div class="tml-form-row">
+				<label>{$fields["content"]}：</label>
+				<input type="text" name="content" readonly="readonly" class="required" value="{$vo['content']}" size="30" />
+			</div>
+			<div class="tml-form-row">
+				<label>备&nbsp;&nbsp;&nbsp;&nbsp;注：</label>
+				<textarea cols="80" rows="3" readonly="readonly" name="remark">{$vo['remark']}</textarea>
+			</div>
+			<div class="clear"></div>
+			<div class="tml-row">
+				<div class="tml-form-col">
+					<label>申 请 人：</label>
+					<input type="text" readonly="readonly" value="{$vo.createid|getFieldBy='id','name','user'}" />
+				</div>
+				<div class="tml-form-col">
+					<label>申请时间：</label>
+					<input type="text" readonly="readonly" value="{$vo.createtime|transTime}" />
+				</div>
+				<!-- <div class="tml-form-col">
+					<label>申请部门：</label>
+					<input type="text" readonly="readonly" value="{$time|transTime}" />
+				</div> -->
+			</div>
+			<div class="tml-form-row">
+				<label>&nbsp;</label>
+				<img <if condition="$dotype eq 1">src="__PUBLIC__/Images/signature/{$vo.sealuserid}.gif"<elseif condition="$dotype eq 0"/>src="__PUBLIC__/Images/stamp-donot.png"</if>/>
+			</div>
+			
+		</div>
+		{:W('ShowAction')}
+	</form>
+</div>

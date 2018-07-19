@@ -1,0 +1,211 @@
+<style>
+	.dialog .showMoreInformation_div{
+		width: auto;
+	}
+	
+	/* //系统编号 */
+	.showMoreInformation_div .contentTitle .auto_code {
+		
+		display: inline-block;
+		color: #9b0000;
+		background-color: transparent;
+		float:right;
+		font-weight: normal;
+		#position: absolute; /* IE8 */
+		#margin-left:120px; /* IE8 */
+		
+	}
+	
+	/* 图片信息 右浮动 */
+	.dialog .showMoreInformation_div .rightShowPicture{
+		margin-top:50px;
+		margin-right:10px;
+		float:right;
+		padding:2px ;
+		border: 2px solid #fafafa;
+	}
+	/* 信息数据样式 左浮动 */
+	.dialog .showMoreInformation_div .leftShowDetail{
+		float:left;
+		width: 550px;
+	}
+	/* 标题底线 */
+	.dialog .showMoreInformation_div .leftShowDetail .contentTitle_center{
+		text-align: left;
+		border-bottom: 2px solid #9c9c9c;
+		font-weight: bold;
+	}
+	/* 添除label背影 */
+	.dialog .showMoreInformation_div label{
+		background-position: -1000px -10000px;
+		width:58px;
+	}
+	/* 备注信息 占满 */
+	.dialog .showMoreInformation_div .bottomFieldset{
+		border: 1px solid #d1d1d1;
+		background-color: transparent;
+		width: 720px;
+		height:auto;
+		background-color: white;
+	}
+	.dialog .showMoreInformation_div .bottomFieldset div{
+		color:#868686;
+		margin-bottom: 2px;
+		padding: 2px;
+		width:710px;
+		height:auto;
+		border: 1px solid #eaeaea;
+	}
+	.dialog .showMoreInformation_div fieldset{
+		border: 1px solid #d1d1d1;
+		background-color: transparent;
+		width: 550px;
+		height:auto;
+		background-color: white;
+	}
+	/* 小旗 */
+	.dialog .showMoreInformation_div fieldset legend{
+		color: #990000;
+		border-top: 1px solid #d1d1d1;
+		border-left: 1px solid #d1d1d1;
+		border-right: 1px solid #d1d1d1;
+		border-bottom: 1px solid #ededed;
+		background-color: #fafafa;
+	}
+
+	.dialog .showMoreInformation_div fieldset div{
+		color: #868686;
+		border: 1px solid #eaeaea;
+		width:270px;
+		float:left;
+		height:auto;
+		margin-bottom: 1px;
+		margin-right:1px;
+	}
+	.dialog .showMoreInformation_div .longFieldset div{
+		color: #868686;
+		border: 1px solid #eaeaea;
+		width:550px;
+		float:left;
+		height:auto;
+		margin-bottom: 1px;
+		margin-right:1px;
+	}
+	/* 字体不居中 */
+	.dialog .showMoreInformation_div fieldset div span{
+		display:inline-block;
+ 		padding-top:5px;
+	}
+
+	.bottomShowDetail{
+		clear: both;
+	}
+
+</style>
+
+
+<include file="Public:pagerForm" />
+<div class="page">
+	<div class="pageContent">
+		<form method="post" action="__URL__/insert/rel/computermodel" class="pageForm required-validate" onsubmit="return validateCallback(this,dialogAjaxDone);">
+			<div class="pageFormContent" layoutH="58">
+				<div class="showMoreInformation_div">
+					<div class="rightShowPicture"><img src="__PUBLIC__/Images/404/404_cat.jpg" width="170" /></div>
+					<div class="leftShowDetail">
+						<H2 class="contentTitle contentTitle_center">设备编号：{$vo['name']} <span class="auto_code">No.{$vo['code']}</span></H2>
+						<fieldset class="shortFieldset">
+							<legend>⚑用户信息</legend>
+							<div>
+								<label>{$fields["user_id"]}:</label><span> {$vo['user_id']|getFieldBy='id','name','mis_hr_personnel_person_info'}</span>
+							</div>
+							<div>
+								<label>{$fields["type"]}:</label>
+								<span>
+									<switch name="vo.type">
+										<case value="1">台式机</case>
+										<case value="2">笔记本</case>
+										<case value="3">相机</case>
+										<case value="4">服务器</case>
+										<case value="5">打印机</case>
+										<case value="6">网络设备</case>
+										<case value="7">电话机</case>
+										<case value="8">其它</case>
+										<default />
+											default
+									</switch>
+								</span>
+							</select>
+							</div>
+							<div>
+								<label>{$fields["department_id"]}:</label><span> {$vo['department_id']|getFieldBy='id','name','mis_system_department'}</span>
+							</div>
+							<div>
+						        <label>{$fields["principal"]}:</label><span> {$vo['principal']|getFieldBy='id','name','mis_hr_personnel_person_info'}</span>
+						    </div>
+							<div>
+								<label>{$fields["buy_time"]}:</label> <span>{$vo['buy_time']|transTime}</span>
+							</div>
+							<div>
+								<label>{$fields["price"]}:</label><span> {$vo['price']}</span>
+							</div>
+						</fieldset>
+						<fieldset class="longFieldset">
+							<legend>⚑配制信息</legend>
+							<div>
+								<label>{$fields["oem"]}:</label><span>{$vo['oem']}</span>
+							</div>
+							<div>
+								<label>{$fields["model"]}:</label><span> {$vo['model']}</span>
+							</div>
+							<div>
+								<label>{$fields["os"]}:</label><span> {$vo['os']}</span>
+							</div>
+							<div>
+						        <label>{$fields["cpu"]}:</label><span> {$vo['cpu']}</span>
+						    </div>
+							<div>
+								<label>{$fields["ram"]}:</label> <span>{$vo['ram']}</span>
+							</div>
+							<div>
+								<label>{$fields["hardisk"]}:</label><span> {$vo['hardisk']}</span>
+							</div>
+							<div>
+								<label>{$fields["mainboard"]}:</label><span> {$vo['mainboard']}</span>
+							</div>
+							<div>
+								<label>{$fields["graphics_card"]}:</label><span> {$vo['graphics_card']}</span>
+							</div>
+							<div>
+								<label>{$fields["modisplay_screen"]}:</label><span> {$vo['modisplay_screen']}</span>
+							</div>
+							<div>
+								<label>{$fields["cd_rom"]}:</label><span> {$vo['cd_rom']}</span>
+							</div>
+							<div>
+								<label>{$fields["network_card"]}:</label><span> {$vo['network_card']}</span>
+							</div>
+							<div>
+								<label>{$fields["other_hardware"]}:</label><span> {$vo['other_hardware']}</span>
+							</div>
+						</fieldset>
+						
+					</div>
+					<div class="bottomShowDetail">
+						<fieldset class="bottomFieldset">
+							<legend>⚑附加信息</legend>
+							<div>
+								<label>{$fields["remark"]}:</label> <span>{$vo['remark']}</span>
+							</div>
+						</fieldset>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</div>
+			<div class="formBar">
+				<ul>
+					<li><button type="button" class="close tml-btn tml-btn-default">{$Think.lang.close}</button></li>
+				</ul>
+			</div>
+		</form>
+	</div>
+</div>

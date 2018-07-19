@@ -1,0 +1,105 @@
+<script>
+var $box=$.pdialog.getCurrent();
+$("input:[name='totalKM']",$box).blur(function(){
+	var currntVal=$("input:[name='totalKM']",$box).val();
+	var oldVal=$("input:[name='tempTotalKM']",$box).val();
+	
+	var reslutValue = currntVal-oldVal;
+	$("input:[name='runKM']",$box).val(reslutValue);
+});
+
+$("input:[name='keepTimeTrue']",$box).focus(function(){
+	var obj=$(this);
+	var endtime=$("input:[name='returnTime']",$box).val();  //2012-12-12 00:00
+	var begintime=$("input:[name='tempReturnTime']",$box).val();
+	$.ajax({
+		type:'POST',
+		url:"__URL__/lookupgethours",
+		data:{sdate:begintime,edate:endtime},
+		cache:false,
+		success:function(d){
+			$(obj).val(d);
+		}
+	});
+});
+
+</script>
+
+<include file="Public:pagerForm" />
+	<div class="page">
+		<div class="pageContent">
+			<form method="post" action="__URL__/insert/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,dialogAjaxDone);">
+				<input type="hidden" name="callbackType" value="closeCurrent">
+				
+				<input  type="hidden" name="rtype" class="required" value="{$vo['rtype']}34"><!-- 关联表类型 -->
+				<div class="pageFormContent" layoutH="55">
+				<table width="100%" border="0" cellspacing="0">
+				<tr>
+					<td>
+						<label>
+					           用车人:
+				        </label>
+				        <input type="hidden" class="readonly org.roid" name="roid" readonly="readonly" value="{$vo['id']}" >
+				        <input type="text" class="required readonly org.name" name="name" readonly="readonly" value="{$vo['name']}" >
+				        <a class="input-addon input-addon-addon input-addon-add" href="__URL__/lookup" lookupGroup="org">查找带回</a>
+					</td>
+					<td>
+						<div class="unit">
+							<label>车辆名称：</label>
+							<input  type="text" name="carName" value="{$vo['carID']|}" class="org.carName">
+							<input type="hidden" name="carID" value="" class="org.carID"/>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="unit">
+						<label>当前总里程：</label><input  type="text" name="totalKM" class="required" value="{$vo['totalKM']}">
+												<input type="hidden" name="tempTotalKM" class="org.tempTotalKM"  value="" />
+						</div>
+					</td>
+					<td><div class="unit">
+						<label>本次使用里程：</label><input  type="text" name="runKM" class="readonly required" readonly="readonly" value="{$vo['runKM']}"></div></td>
+				</tr>
+				<tr>
+					
+					<td><div class="unit">
+						<label>加油量：</label><input  type="text" name="addOilNo" class="" value="{$vo['addOilNo']}"></div></td>
+					<td>
+						
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div class="unit">
+						<label>返回时间：</label>
+						<input type="text"  class="date required" readonly="readonly"  name="returnTime" format="yyyy-MM-dd HH:mm"  value="">
+						<input type="hidden" name="tempReturnTime" class="org.tempReturnTime" value="" />
+						</div>
+					</td>
+					<td><div class="unit">
+						<label>实际使用时长：</label><input  type="text" name="keepTimeTrue" class="" value="{$vo['keepTimeTrue']}"></div></td>
+				</tr>
+				<tr>
+					<td>
+						<div class="unit">
+						<label>实际行程：</label>
+						<textarea  name="trueJourney">{$vo['trueJourney']}*（由司机填写）</textarea>
+						</div>
+					</td>
+					<td><div class="unit">
+						<label>有/无异常：</label><textarea  name="helthStatus">{$vo['helthStatus']}无</textarea></div></td>
+				</tr>
+				</table>
+			</div>
+			<div class="formBar">
+				<ul>
+					<if condition="$_SESSION.a eq 1 or $_SESSION.miscarstatus_insert">
+						<li><button type="submit" class="tml-btn tml-btn-primary">{$Think.lang.save}</button></li>
+					</if>
+					<li><button type="button" class="tml-btn close">{$Think.lang.close}</button></li>
+				</ul>
+			</div>
+		</form>
+	</div>
+</div>

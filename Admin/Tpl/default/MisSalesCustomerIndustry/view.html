@@ -1,0 +1,30 @@
+<div class="page">
+	<div class="pageContent">
+		<form method="post" action="__URL__/update/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+			<input type="hidden" name="id" value="{$vo.id}">
+			<div class="pageFormContent" layoutH="58">
+			<div class="tml-row">
+				<div class="tml-form-col">
+					<label>{$fields["code"]}：</label>
+					<input type="text" class="required alphanumeric" maxlength="10" name="code" value="{$vo.code}" />
+				</div>
+				<div class="tml-form-col">
+					<label>{$fields["name"]}：</label>
+					<input type="text" class="required" maxlength="25" name="name" value="{$vo.name}" />
+				</div>
+			</div>	
+				<div class="tml-form-row">
+					<label>备&nbsp;&nbsp;&nbsp;&nbsp;注：</label>
+					<textarea name="remark" class="textInput" maxlength="200">{$vo.remark}</textarea>
+				</div>
+			</div>
+			<div class="formBar">
+				<ul>
+					<li>
+						<button type="button" class="close tml-btn tml-btn-default">{$Think.lang.close}</button>
+					</li>
+				</ul>
+			</div>
+		</form>
+	</div>
+</div>

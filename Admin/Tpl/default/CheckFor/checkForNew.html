@@ -1,0 +1,67 @@
+<div id="checkfor">
+<style>
+#checkfor{
+	border: 1px solid #95B8E7;
+	position: absolute;
+	background: #fff;
+	text-align: center;
+	z-index: 9999 !important;
+	max-width:500px;
+	min-width:50px;
+	max-height:238px;
+}
+#checkfor .current{
+	background: #fbec88;
+}
+
+#checkfor .dataTables_wrapper .top{
+	padding-top:0;
+	padding-bottom:0;
+}
+</style>
+<if condition="$list">
+	<div>
+		<table id="checkForNewTable" class=" nbm_data_table" table_data='{"paging":false,"searching":false,"scrollY":"200px","isYMInfo":false}' targetType="dialog" width="100%">
+		<thead>
+			<tr>
+				<volist id="vos" name="detailList">
+			    	<if condition="$vos[shows] eq 1"><th <if condition="$vos[widths]">width="{$vos[widths]}"</if><if condition="$vos[sorts]">orderField="{$vos[sortname]}" class="{$sort}"</if>>{$vos[showname]}</th></if>	<!--类型-->
+			    </volist>
+			</tr>
+		</thead>
+		<tbody>
+			<volist id="vo2" name="list" key="key2">
+				<tr rel_data='{$vo2["lookupJson"]}'>
+					<volist id="vo1" name="detailList">
+						<if condition="$vo1[shows] eq 1">
+							<td width="{$vo1[widths]}">
+								<if condition="count($vo1['func']) gt 0">
+									<volist name="vo1.func" id="nam">
+										<if condition="!empty($vo1['extention_html_start'][$key])">{$vo1['extention_html_start'][$key]}</if>
+										{:getConfigFunction($vo2[$vo1['name']],$nam,$vo1['funcdata'][$key],$list[$key2-1])}
+										<if condition="!empty($vo1['extention_html_end'][$key])">{$vo1['extention_html_end'][$key]}</if>
+									</volist>
+								<else />
+								{$vo2[$vo1['name']]}
+								</if>
+							</td>
+						</if>
+					</volist>
+				</tr>
+		    </volist>
+		</tbody>
+	</table>
+	</div>
+<else/>
+未查询到相关内容！
+</if>
+<script type="text/javascript">
+$(function(){
+	var a = initTableWNEWOne("#checkForNewTable");
+	$("#checkfor tbody tr:first").addClass("current");
+	if($("#checkfor tbody tr").length==1){
+		 setTimeout('$("#checkfor tbody tr.current").click();',30);
+	}
+});
+</script>
+</div>

@@ -1,0 +1,81 @@
+<div class="page">
+	<div class="pageContent">
+	<form method="post" action="__URL__/update/rel/misordertypesBox" class="pageForm required-validate" onsubmit="return validateCallback(this,dialogAjaxDone);">
+		<input type="hidden" name="id" value="{$OrderTypesList['id']}" />
+		<input type="hidden" name="utype" value="{$utype}" />
+		<input type="hidden" name="ajax" value="1">
+        <input type="hidden" name="rel" value="ordertypeBox" />
+		<input type="hidden" name="callbackType" value="closeCurrent">
+		<div class="pageFormContent" layoutH="58">
+			<table width="100%" border="0" cellspacing="0">
+				<tr>
+				  <td><div class="unit"><label>{$fields["code"]}：</label>
+				  <input type="text"  name="code" value="{$OrderTypesList['code']}" class="required alphanumeric" <if condition='$writable eq 0'> readonly="readonly" </if>  maxlength="10" /></div></td>
+				</tr>
+				<tr>
+				  <td><div class="unit"><label>{$fields["name"]}：</label>
+				  <input type="text" value="{$OrderTypesList['name']}" name="name" class="required" maxlength="25"/></div></td>
+				</tr>
+				<tr>
+				  <td><div class="unit"><label>{$fields["type"]}：</label>
+				  <select name="type" class="required combox">
+				  <volist id="vot" name="typelist">
+				  <if condition="$OrderTypesList.type eq $vot['type']">
+				  <option selected value="{$vot['type']}">{$vot['typename']}</option>
+				  <else/>
+				  <option value="{$vot['type']}">{$vot['typename']}</option>
+				  </if>
+				  </volist>
+				  </select>
+				</tr>
+                <if condition="$_SESSION.a eq 1">
+                <tr>
+                    <td>
+                        <div class="unit">
+                            <label>{$fields["accountid"]}：</label>
+                            <input type="text" value="{$OrderTypesList['accountid']}" checkfor="MisFinanceAmountTitle" class="checkByInput textInput" name="accountid" show="code" insert="id" maxlength="25"/>
+                            <input type="hidden" value="{$OrderTypesList['accountid']}" name="accountid">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="unit">
+                            <label>{$fields["accountname"]}：</label>
+                            <input  type="text"  check_key="accountname"  class="readonly" value="" />
+                        </div>
+                    </td>
+                </tr>
+                </if>
+				<tr>
+				  <td><div class="unit"><label>{$fields["tablename"]}：</label>
+				  <input type="text" value="{$OrderTypesList['tablename']}" name="tablename" class="" maxlength="25"/>*功能扩展</div></td>
+				</tr>
+				<tr>
+				  <td><div class="unit"><label>{$fields["modelname"]}：</label>
+				  <input type="text" value="{$OrderTypesList['modelname']}" name="modelname" class="" maxlength="25"/>*功能扩展</div></td>
+				</tr>
+				<tr>
+				  <td ><div class="unit"><label>{$fields["remark"]}：</label>
+				  <textarea  name="remark" maxlength="100" cols="40" rows="2">{$OrderTypesList['remark']}</textarea></div></td>
+				</tr>
+		</div>
+			</table>
+
+		</div>
+
+		<div class="formBar">
+			<ul>
+			<if condition="$_SESSION.a eq 1 or $_SESSION.misordertypes_update">
+				<li><button type="submit" class="tml-btn tml-btn-primary">{$Think.lang.save}</button></li>
+			</if>
+				<li><button type="button" class="tml-btn close">{$Think.lang.close}</button></li>
+			</ul>
+		</div>
+	</form>
+
+	</div>
+</div>
+
+
+

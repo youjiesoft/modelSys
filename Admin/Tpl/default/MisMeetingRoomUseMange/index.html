@@ -1,0 +1,30 @@
+<div class="pageContent">
+	<div class="tabs" currentIndex="{$zhi}" eventType="click">
+		<div class="tabsHeader">
+			<div class="tabsHeaderContent">
+				<ul>
+					<if condition="$_SESSION.a eq 1 or $_SESSION.mismeetingroomusemange_indexview ">
+					<li><a href="__URL__/index/type/1" rel="__MODULE__indexview" class="j-ajax"><span>会议室</span></a></li>
+					</if>
+						<if condition="$_SESSION.a eq 1 or $_SESSION.mismeetingroomusemange_waitAudit">
+					<li><a href="__URL__/waitAudit" class="j-ajax" rel="__MODULE__waitAudit"><span>待审会议室</span></a></li>
+					</if>
+						<if condition="$_SESSION.a eq 1 or $_SESSION.mismeetingroomusemange_alreadyAudit">
+					<li><a href="__URL__/alreadyAudit" class="j-ajax" rel="__MODULE__alreadyAudit"><span>已审会议室</span></a></li>
+					</if>
+				</ul>
+			</div>
+		</div>
+		<div class="tabsContent" style="background:#FFFFFF;padding:0px;">
+		<if condition="$_SESSION.a eq 1 or $_SESSION.mismeetingroomusemange_indexview ">
+			<div id="__MODULE__indexview" class="unitBox"></div>
+		</if>
+		<if condition="$_SESSION.a eq 1 or $_SESSION.mismeetingroomusemange_waitAudit">
+			<div id="__MODULE__waitAudit" class="unitBox"></div>
+		</if>
+		<if condition="$_SESSION.a eq 1 or $_SESSION.mismeetingroomusemange_alreadyAudit">
+			<div id="__MODULE__alreadyAudit" class="unitBox"></div>
+		</if>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,43 @@
+<script>
+$(document).ready(function(){
+	var setting = {
+			view: {
+               selectedMulti: false,
+               fontCss: getFontCss
+			},
+			data: { 
+				simpleData: { 
+					enable: true
+				}
+			}
+		};
+	var zNodes = {$json_arr};
+	$.fn.zTree.init($("#lookupapproveTree"), setting, zNodes);
+	var zTree = $.fn.zTree.getZTreeObj("lookupapproveTree");
+	var selectid = '{$ztreeid}';
+    var nodes = zTree.getNodesByParam("id", selectid, null);
+    zTree.selectNode(nodes[0]);
+});
+</script>
+<div class="pageContent">
+{:W("ShowToLevelMenu")}
+	<div class="treeleft">
+	<div class="work_statement"></div>
+		<div class="collapse" layoutH="28">
+			<div class="toggleCollapse"><div></div></div>
+		</div>
+		<div class="close">
+		   <div class="toggleCollapse"><h2></h2><div></div></div>
+			<div class="clearfix p5">
+				<div class="member_searcher">
+					<input class="add_key left" id="lookupapproveTreeSearchNodeKeys"  type="text" placeholder="请输入查找词" name=""/>
+					<button class="btn_member icon-search right" onclick="SearchZTreeNode('lookupapproveTree','lookupapproveTreeSearchNodeKeys')" type="button"></button>
+				</div>
+			</div>
+			<ul id="lookupapproveTree" class="ztree" layoutH="146"></ul>
+		</div>
+	</div>
+	<div id="lookupapprove" class="unitBox treeright">
+		<include file="lookupapproveView"  />
+	</div>
+</div>

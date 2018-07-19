@@ -1,0 +1,72 @@
+<script>
+function changeExpertquestiontype(obj) {
+	var bepart = $(obj).val();
+	var $ref = $("#expertquestionptype");
+	$.ajax({
+		type : 'POST',
+		dataType : "json",
+		url : "__URL__/lookupgetexpertquestiontype",
+		cache : false,
+		data : {
+			bepart : bepart
+		},
+		success : function(json) {
+			var html = '';
+			$.each(json, function(i) {
+				if (json[i] && json[i].length > 1) {
+					html += '<option value="'+json[i][0]+'">' + json[i][1]
+							+ '</option>';
+				}
+			});
+			var $refCombox = $ref.parents("div.combox:first");
+			$ref.html(html).insertAfter($refCombox);
+			$refCombox.remove();
+			$ref.trigger("change").combox();
+		},
+		error : DWZ.ajaxError
+	})
+};
+</script>
+<div class="page">
+	<div class="pageContent">
+	<form method="post" action="__APP__/MisExpertquestionList/insert" class="pageForm required-validate" onsubmit="return validateCallback(this,dialogAjaxDone);">
+	<input type="hidden" name="iseditor" value="1">
+	<input type="hidden" name="type" value="{$type}">
+	<input type="hidden" name="parentid" value="{$parentid}">
+	<input type="hidden" name="views" value="1">
+	<input type="hidden" name="expertid" class="readonly" value="{$expertid}">
+		<div class="pageFormContent xyEmployee" layoutH="58">
+			<div class="tml-form-row">
+				<label>分&nbsp;&nbsp;&nbsp;&nbsp;类：</label>
+				<select name="typeid" class="combox required" onchange="changeExpertquestiontype(this)">
+					<volist name="typelist" id="vozw">
+					<option value="{$vozw['id']}" >{$vozw['name']}</option>
+					</volist>
+				</select>
+				<select name="categoryid" class="combox required" id="expertquestionptype">
+					<volist name="ptypelist" id="ptype">
+					<option value="{$ptype['id']}" >{$ptype['name']}</option>
+					</volist>
+				</select>
+			</div>
+			<div class="tml-form-row">
+				<label>标&nbsp;&nbsp;&nbsp;&nbsp;题：</label>
+				<input type="text"  style="width:450px" name="title" class="required">
+			</div>
+			<div class="tml-form-row">
+				<label>详&nbsp;&nbsp;&nbsp;&nbsp;细：</label>
+				<textarea  name="content" class="ueditor" style="width:700px;height:160px"></textarea>
+			</div>
+		</div>
+		{:W('ShowAction')}
+		<!-- <div class="formBar">
+			<ul>
+			<if condition="$_SESSION.a eq 1 or $_SESSION.misexpertquestionlist_insert">
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">{$Think.lang.save}</button></div></div></li>
+			</if>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">{$Think.lang.close}</button></div></div></li>
+			</ul>
+		</div> -->
+	</form>
+	</div>
+</div>

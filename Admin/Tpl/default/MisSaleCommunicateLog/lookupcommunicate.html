@@ -1,0 +1,49 @@
+<style>
+.dialog .tml-form-col .tml-input-append2 .temp_css{
+width: 130px;
+}
+</style>
+<div class="page">
+	<div class="pageContent">
+	<form method="post" action="__APP__/MisSaleCommunicateLog/insert/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+			<input type="hidden" name="callbackType" value="closeCurrent" />
+			<input type="hidden" name="userid" class="textInput"  value="{$userid}"/>
+			<input type="hidden" name="bid" class="textInput"  value="{$bid}"/>
+			<div class="pageFormContent" layoutH="58">
+				<div class="tml-row">
+					{:W('ShowOrderno',array(1,'mis_sale_communicate_log'))} 
+					<div class="tml-form-col ">
+						<label>沟通人:</label>
+						<input type="text"  name="linkpeople" class="  " value="{$userid|getFieldBy='id','name','User'}">
+					</div>
+				</div>
+				<div class="tml-row">
+					<div class="tml-form-row ">
+						<label>沟通结果:</label>
+						<textarea  cols="100" rows="2" class="required " name="linknews"></textarea>
+					</div>
+				</div>
+					<div class="tml-form-col ">
+						<label>沟通时间:</label>
+						<div  class="tml-input-append">
+							<input type="text" name="linktime" class="Wdate js-wdate required " format="{dateFmt:'yyyy-MM-dd HH:mm'}" value="{$time||transtime='Y-m-d H:i'}"/>
+							<a href="javascript:;" class="input-addon input-addon-calendar js-inputCheckDate">选择</a>
+						</div>
+					</div>
+					<div class="tml-form-col ">
+						<label>沟通方式:</label>
+						<select  name="communicatetype"  class="required select2 ">
+							{:getControllbyHtml('selectlist',array('type'=>'select','key'=>'CommunicationType','selected'=>$vo['communicatetype']))}
+						</select>
+					</div>
+			</div>			
+			<div class="formBar">
+			<ul>
+				<li>
+				<button type="submit" class="tml_formBar_btn tml_formBar_btn_blue enterIndex">保存</button>
+				</li>
+			</ul>
+		</div>
+	</form>
+	</div>
+</div>

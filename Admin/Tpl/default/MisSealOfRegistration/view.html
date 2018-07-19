@@ -1,0 +1,31 @@
+<div class="page">
+	<div class="pageContent">
+		<form method="post" action="__URL__/update/rel/missealofregistration" class="pageForm required-validate" onsubmit="return validateCallback(this,dialogAjaxDone);">
+			<input type="hidden" name="id" value="{$vo['id']}" />
+			<div class="pageFormContent" layoutH="58">
+				<div class="tml-row">
+					<!-- <div class="tml-form-col"><label>分类编码：</label><input type="text" name="code"  <if condition='$writable eq 0'> readonly="readonly" </if> value="{$vo['code']}"></div> -->
+					<div class="tml-form-col"><label>分类名称：</label><input type="text" name="name" class="required" value="{$vo['name']}"></div>
+				</div>
+				<div class="tml-row">
+				  <if condition="!$top">
+                        <div class="tml-form-col" id="sel">
+                            <label>章类型：</label>
+                              <select  name="typeid" class="combox"> <!-- onchange="comfirqtype(this)" -->
+                                  		<option value="1" <if condition="1 eq $vo['typeid']">selected="selected"</if> >主章</option>
+                                   	<option value="2" <if condition="2 eq $vo['typeid']">selected="selected"</if>>辅章</option>
+                            </select>
+                        </div>
+                  </if>
+                  	<input type="hidden" name="createtime" value="{$createid}"/>
+                    <input type="hidden" name="createid" value="{$createtime}"/>
+                 </div>
+                 <div class="tml-form-row">
+                    <label>说&nbsp;&nbsp;&nbsp;&nbsp;明：</label>
+                    <textarea name="remark" >{$vo['remark']}</textarea>
+                 </div>
+			</div>
+			{:W('ShowAction',array('data'=>$vo))}
+		</form>
+	</div>
+</div>

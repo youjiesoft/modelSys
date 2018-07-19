@@ -1,0 +1,161 @@
+<script>
+	//编辑回答  /  编辑问题
+	function openquestionedit(ids,typeid){
+		if(typeid=="Q"){
+			var w=570;
+			var h=430;
+			var title="编辑";
+		}else if(typeid=="A"){
+			var w=640;
+			var h=480;
+			var title="回复";
+		}else if(typeid=="C"){
+			var w=640;
+			var h=480;
+			var title="评论";
+		}
+		$.pdialog.open("__URL__/edit/id/"+ids,'__MODULE__edit',title,{mask:true,width:w,height:h});
+		return false;
+	}
+	//关闭
+	function questionclose(ids){
+		$.pdialog.open("__URL__/closequestion/id/"+ids,"__MODULE__close","关闭原因",{mask:true,width:500,height:270});
+		return false;
+	}
+	//首页页面的 显示
+	function questionshow(ids){
+		$.ajax({
+			url: "__URL__/showquestion",
+			type: 'POST',
+			data:{id:ids},
+			dataType: 'json',
+			timeout: 1000,
+			error: function(){
+			    alert("数据更新失败!");
+			},
+			success: function(json){
+				navTabAjaxDone(json);
+				navTab.reloadFlag("MisExpertquestionList");
+			}
+		});
+		return false;
+	}
+	//链接    作者
+	function expertquestionlistuser(ids,title){
+		navTab.openTab("__MODULE__","__URL__/index/createid/"+ids,{title:title, fresh:true});
+		return false;
+	}
+	//我来解答
+	function MisExpertquestionListIToAnwer(ids,title){
+		navTab.openTab("__MODULE__","__URL__/index/my/1/expertid/"+ids,{title:title, fresh:true});
+		return false;
+	}
+	//我的提问
+	function MisExpertquestionListMyQuestions(ids,title){
+		navTab.openTab("__MODULE__","__URL__/index/my/2/createid/"+ids,{title:title, fresh:true});
+		return false;
+	}
+	//我的回答
+	function MisExpertquestionListMyAnwer(ids,title){
+		navTab.openTab("__MODULE__","__URL__/index/my/3/id/"+ids,{title:title, fresh:true});
+		return false;
+	}
+	//关闭问题
+	function MisExpertquestionListClosedQuestions(ids,title){
+		navTab.openTab("__MODULE__","__URL__/index/my/4/closedbyid/"+ids,{title:title, fresh:true});
+		return false;
+	}
+	//链接    所有分类
+	function questionalink(ids,title){			
+		navTab.openTab("__MODULE__","__URL__/index/categoryid/"+ids,{title:title, fresh:true});
+		return false;
+	}
+	//链接    所有分类all
+	function questionalinkall(title){			
+		navTab.openTab("__MODULE__","__URL__/index",{title:title, fresh:true});
+		return false;
+	}
+	$(function(){
+		 //跳转至外页
+		window.open("__APP__/MisSystemNoticeMethod/knowledge");
+		 return false;
+	});
+</script>
+<form id="pagerForm" action="__URL__/index">
+	<input type="hidden" name="pageNum" value="{$pageNum}"/>
+	<input type="hidden" name="dwzpageNum" value="1"/>
+	<input type="hidden" name="orderField" value="{$order}" />
+	<input type="hidden" name="orderDirection" value="{$sort}" />
+	<input type="hidden" name="numPerPage" value="{$numPerPage}" />
+	<input type="hidden" name="categoryid" value="{$categoryid}">
+	<input type="hidden" name="frame" value="1">
+</form>
+<div class="pageContent">
+	<div class="xyqa applecloth">
+		<div class="xyqa-context clearfix">
+			<ul class="xyqa-toolbar">
+				<if condition="$_SESSION.a eq 1 or $_SESSION.misexpertquestionlist_add"><li><a class="add tml-btn tml_look_btn tml_mp" href="__URL__/add" target="dialog" rel="__MODULE__add" mask="true" width="670" height="580"><span><span class="icon icon-question icon_lrp"></span>提问</span></a></li></if>
+				<if condition="$_SESSION.a eq 1"><li><a class="delete tml-btn tml_look_btn tml_mp" target="selectedTodo" rel="id" postType="string" href="__URL__/delete"><span><span class="icon icon-trash icon_lrp"></span>删除</span></a></li></if>
+				<volist name="toolbarextension" id="toolb">
+					<if condition="$_SESSION.a eq 1 or $toolb['ifcheck'] eq 0 or ($toolb['ifcheck'] eq 1 and !empty($toolb['permisname']) and $_SESSION[$toolb['permisname']])">
+						<li>{$toolb['html']}</li>
+					</if>
+				</volist>
+			</ul>
+			<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="__URL__/index" method="post">
+			<input type="hidden" name="categoryid" value="{$categoryid}">
+			<input type="hidden" name="numPerPage" value="{$numPerPage}" />
+				<div class="xyqa-context-search">
+					<div class="xyqa-context-searcher">
+						<label>搜索</label>
+						<span class="xyqa-context-search-txt"><input type="text" name="keywordindex" value="{$keywordindex}" /></span>
+					</div>
+					<span class="xyqa-context-search-button"><button type="submit">{$Think.lang.subsearch}</button></span>
+				</div>
+				<!-- <div class="xyqa-context-newfile">
+					<a href="__APP__/MisKnowledgeManage/add" rel="__MODULE__add" target="navTab" title="发表文章"><span>发表文章</span></a>
+				</div> -->
+			</form>
+		</div>
+		<div class="pageContent" layoutH="72">
+			<div class="xyqa-main-wrapper">
+				<div class="xyqa-main-con clearfix">
+					<div class="xyqa-sidepanel">
+						<div class="xyqa-nav-cat">
+							<ul class="xyqa-nav-cat-list xyqa-nav-cat-list-1">
+								<li class="xyqa-nav-cat-item xyqa-nav-cat-all"><span class="proRel qa-nav-cat-link">个人中心</span></li>
+								<li class="xyqa-nav-cat-item "><a class=" " onclick="return parent.MisExpertquestionListIToAnwer('{$_SESSION[C('USER_AUTH_KEY')]}','问题列表');">我来解答</a></li>
+								<li class="xyqa-nav-cat-item "><a class=" " onclick="return parent.MisExpertquestionListMyQuestions('{$_SESSION[C('USER_AUTH_KEY')]}','问题列表');">我的提问({$MyQuestions})</a></li>
+								<li class="xyqa-nav-cat-item "><a class=" " onclick="return parent.MisExpertquestionListMyAnwer('{$_SESSION[C('USER_AUTH_KEY')]}','问题列表');">我的回答<if condition="$MyAnwer">({$MyAnwer})<else/>(0)</if></a></li>
+								<li class="xyqa-nav-cat-item "><a class=" " onclick="return parent.MisExpertquestionListClosedQuestions('{$_SESSION[C('USER_AUTH_KEY')]}','问题列表');">关闭问题<if condition="$ClosedQuestions">({$ClosedQuestions})<else/>(0)</if></a></li>
+								<li class="xyqa-nav-cat-item xyqa-nav-cat-all"><a class="proRel qa-nav-cat-link" onclick="return parent.questionalinkall('所有问题');">所有分类</a></li>
+								<volist name="typeidlist" id="meltype">
+									<li class="qa-nav-cat-item">
+										<a class="qa-nav-cat-link" title="{$meltype}" style="cursor:pointer;" onclick="return parent.questionalink('{$key}','所有问题');" >{$meltype}</a>
+										<span class="qa-nav-cat-note"></span>
+									</li>
+								</volist>
+							</ul>
+						</div>
+					</div>
+					<div id="ExpertquestionBox" class="xyqa-main">
+						<include file="dwzloadindex" />
+					</div><!-- end xyqa-main -->
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="panelBar panelPageBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.value},'ExpertquestionBox')">
+				<option value="20" <if condition="$numPerPage eq 20"> selected </if> >20</option>
+				<option value="50" <if condition="$numPerPage eq 50 "> selected </if> >50</option>
+				<option value="100" <if condition="$numPerPage eq 100"> selected </if>>100</option>
+				<option value="250" <if condition="$numPerPage eq 250"> selected </if>>250</option>
+			</select>
+			<span>共{$totalCount}条</span>
+		</div>
+		<div class="pagination" targetType="navTab" rel="ExpertquestionBox" totalCount="{$totalCount}" numPerPage="{$numPerPage}" pageNumShown="10" currentPage="{$currentPage}"></div>
+	</div>
+</div>

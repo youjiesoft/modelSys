@@ -1,0 +1,200 @@
+<div class="pageContent">
+	<form method="post" action="__URL__/update" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+		<div class="panelBar">
+			<ul class="toolBar">
+				<li><a class="add tml-btn tml_look_btn tml_mp" href="#" ><span><span class="icon icon-plus icon_lrp"></span>{$Think.lang.add}</span></a></li>
+			</ul>
+		</div>
+		<div class="pageContent tml-bg-white" layoutH="77">
+			
+			<table class="list" id="processconfig_list_page" width="100%">
+				<thead>
+					<tr>
+						<th>流程标题</th>
+						<th>模型名称</th>
+						<th>流程配置</th>
+						<th>规则</th>
+						<th>允许跨级数</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="defaulttr" rel="0" style="display:none;">
+						<td>
+							<input type="text" size="30" class="textInput" name="title">
+						</td>
+						<td>
+							<input type="text" size="35" class="textInput" name="modulename"></td>
+						<td>
+							<select class="combox processtype_obj" name="processtype" >
+								<option value="">请选择流程类型</option>
+								<volist id="vos" name="typelist">
+									<option value="{$vos['id']}">{$vos['name']}</option>
+								</volist>
+							</select>
+							<select class="combox processlist_obj" name="processlist" >
+								<option value="">请选择流程</option>
+							</select>
+						</td>
+						<td>
+							<input type="text" size="30" class="textInput" name="rules">
+						</td>
+						<td>
+							<input type="text" size="15" class="textInput" name="crosslevel">
+						</td>
+						<td><a class="btnDel" href="javascript:void(0)">删除</a>
+						&nbsp;<input type="hidden" value="1" name="countprocess" class="countprocess"><a class="btnAdd" href="javascript:void(0)">添加流程</a></td>
+					</tr>
+					<tr class="defaultsubtr" rel="0" style="display:none;">
+						<td></td>
+						<td></td>
+						<td>
+							<select class="combox processtype_obj" name="processtype" >
+								<option value="">请选择流程类型</option>
+								<volist id="vos" name="typelist">
+									<option value="{$vos['id']}">{$vos['name']}</option>
+								</volist>
+							</select>
+							<select class="combox processlist_obj"  name="processlist" >
+								<option value="">请选择流程</option>
+							</select>
+						</td>
+						<td>
+							<input type="text" size="30" class="textInput" name="rules">
+						</td>
+						<td>
+							<input type="text" size="15" class="textInput" name="crosslevel">
+						</td>
+						<td><a class="btnDel" href="javascript:void(0)">删除</a></td>
+					</tr>
+					<volist name='list' id='vo' key="key1">
+						<volist name='vo.process_rule' id='vo2' key="key2">
+							<tr class="defaulttr">
+								<td>
+									<if condition="$key2 eq 1">
+										<input type="text" size="30" class="required textInput"  name="title[{$key1-1}]" value="{$vo['title']}">
+									</if>
+								</td>
+								<td>
+									<if condition="$key2 eq 1">
+										<input type="text" size="30" class="required textInput"  name="modulename[{$key1-1}]" value="{$vo['modulename']}"></td>
+									</if>
+								</td>
+								<td>
+									<select class="required combox  processtype_obj" name="processtype[{$key1-1}][{$key2-1}]">
+										<option value="">请选择流程类型</option>
+										<volist id="vos" name="typelist">
+											<option value="{$vos['id']}" <if condition="$vo2['typeid'] eq $vos['id']">selected="selected"</if>>{$vos['name']}</option>
+										</volist>
+									</select>
+									<select class="required combox processlist_obj" name="processlist[{$key1-1}][{$key2-1}]">
+										<option value="">请选择流程</option>
+										<volist id="vof" name="plist">
+											<if condition="($vo2['typeid'] eq $vof['typeid'] OR $vof['typeid'] eq 0)">
+											<option value="{$vof['id']}"  <if condition="$vo2['pid'] eq $vof['id']">selected="selected"</if>>{$vof['name']}</option>
+											</if>
+										</volist>
+									</select>
+								</td>
+								<td>
+									<input type="text" size="30" class="textInput" value="{$vo2['rules']}" name="rules[{$key1-1}][{$key2-1}]" />
+								</td>
+								<td>
+									<input type="text" size="15" class="textInput" value="{$vo2['crosslevel']}" name="crosslevel[{$key1-1}][{$key2-1}]">
+								</td>
+								<td><a class="btnDel" href="javascript:void(0)">删除</a>
+								<if condition="$key2 eq 1">&nbsp;<input type="hidden" value="{:count($vo['process_rule'])}" name="countprocess[{$key1-1}]" class="countprocess"><a class="btnAdd"  href="javascript:void(0)" rel="{$key1-1}">添加流程</a></if></td>
+							</tr>
+						</volist>
+					</volist>
+				</tbody>
+			</table>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><button class="tml-btn tml-btn-primary" type="submit">保存</button></li>
+				<li><button class="close tml-btn tml-btn-default" type="button">关闭</button></li>
+			</ul>
+		</div>
+		<script>
+			var $box= navTab.getCurrentPanel();
+			var $firsttr=$box.find("tr.defaulttr:first");
+			var $firstsubtr=$box.find("tr.defaultsubtr:first");
+			$box.find("a.btnDel").bind('click',function(){
+				if($(this).parents("tr").next().attr("rel")==1) $(this).parents("tr").next().remove();
+				$(this).parents("tr").remove();
+				return false;
+			});
+			$box.find("a.btnAdd").bind('click',function(){
+				var b=$(this).parents("tr");
+				var n1=$(this).attr("rel");
+				var n=parseInt($(this).siblings("input.countprocess").val());
+				$(this).siblings("input.countprocess").val(n+1);
+				$firstsubtr.clone(true).insertAfter(b);
+				b.next("tr").css("display","");
+				b.next("tr").find(":input").each(function(index){
+					var sn=$(this).attr("name");
+					var snn=sn+"["+n1+"]["+n+"]";
+					$(this).attr("name",snn);
+					if(sn!="rules") $(this).addClass("required");
+					if( $(this).hasClass("processtype_obj") ||  $(this).hasClass("processlist_obj") ){
+						var td=$(this).parents("td:first");
+						$(td).append($(this).clone(true));
+						$(this).parents("div.combox:first").remove();
+						$(td).find("select").last().trigger("change").combox();
+					}
+				});
+			});
+			var counttr=$box.find("table tbody tr td a.btnAdd").length-1;
+			$box.find("a.add").bind('click',function(){
+				var s=$firsttr.clone(true);
+				$box.find("table tbody").append(s);
+				$box.find("table tbody tr:last").find(":input").each(function(index){
+					var n=$(this).attr("name");
+					var nn=n+"["+counttr+"][0]";
+					var m=n+"["+counttr+"]";
+					if( n=="modulename" ||  n=="title" || n=="countprocess"){
+						$(this).attr("name",m);
+					}else{
+						$(this).attr("name",nn);
+						if( $(this).hasClass("processtype_obj") ||  $(this).hasClass("processlist_obj") ){
+							var td=$(this).parents("td:first");
+							$(td).append($(this).clone(true));
+							$(this).parents("div.combox:first").remove();
+							$(td).find("select").last().trigger("change").combox();
+						}
+					}
+					if(n!="rules") $(this).addClass("required");
+				});
+				$box.find("table tbody tr:last").find("a.btnAdd").attr("rel",counttr);
+				counttr++;
+				$box.find("tr.defaulttr").css("display","");
+				$box.find("tr.defaulttr:first").css("display","none");
+			});
+			
+			
+			$("#processconfig_list_page select.processtype_obj").change(function(){
+				var t=$(this).val();
+				if(t){
+					var $ref = $(this).parents("div.combox:first").next("div.combox").find("select.processlist_obj");
+					$.ajax({
+						type:'POST',dataType:"json",url:"__URL__/comboxgetprocess",cache:false,
+						data:{typeid:t},
+						success:function(json){
+						if(!json)return;
+						var html='';
+						$.each(json,function(i){
+						if(json[i]&&json[i].length>1){
+						html+='<option value="'+json[i][0]+'">'+json[i][1]+'</option>';}});
+						var $refCombox=$ref.parents("div.combox:first");
+						$ref.html(html).insertAfter($refCombox);
+						$refCombox.remove();
+						$ref.trigger("change").combox();},
+						error:DWZ.ajaxError
+					});
+				}
+			});
+			
+		</script>
+	</form>
+</div>

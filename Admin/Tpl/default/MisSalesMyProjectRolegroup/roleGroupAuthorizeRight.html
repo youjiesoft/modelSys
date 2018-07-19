@@ -1,0 +1,75 @@
+<script type="text/javascript">
+	function lookupDetailRoleGroupAccess($nodename,$nodeid,$rolegroupid,$group_id,$divrel){
+		var options = {};
+		options.param={nodeid:$nodeid,rolegroupid:$rolegroupid,group_id:$group_id};
+		options.mask = "true";
+		options.width = "770";
+		options.height = "450";
+		var url = "__URL__/lookupDetailRoleGroupAccess/divrel/"+$divrel;
+		$.pdialog.open(url,"lookupDetailRoleGroupAccess", $nodename,options);
+	}
+	function comboxUpdate(obj){
+		var $obj = $(obj);
+		var rel = $obj.find("option:selected").attr("rel");
+		var $parent = $obj.closest("div.tml-form-row");
+		$parent.find("input.js-liulan").val(rel);
+	}
+</script>
+<form id="pagerForm" action="__URL__/{$mA}" method="post">
+</form>
+<form rel="pagerForm" onsubmit="return divSearch(this,'{$divrel}');" action="__URL__/{$mA}" method="post">
+	<input type="hidden" name="rolegroupid" value="{$rolegroupid}">
+    <input type="hidden" name="group_id" value="{$group_id}">
+</form>
+<form method="post" action="__URL__/writeRoleGroup/rel/{$divrel}" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+<input type="hidden" name="rolegroupid" value="{$rolegroupid}">
+<div class="pageContent" layoutH="35">
+	<div class="pageFormContent keepContentCenter">
+		<h2 class="contentTitle contentTitle_center">权限管理</h2>
+		<volist name="nodelist" id="nlt">
+		<fieldset>
+			<legend class="fieldset_legend_toggle">
+				<b>项目授权管理</b>
+			</legend>
+				<div id="rel{$tnd.id}">
+					<div class="tml-form-row">
+						<label>浏览权限</label>
+						<input type="hidden" name="groupModel[]" value="{$tnd.id}"/><!-- 根据modelID来判断选中的模块 -->
+						<input type="hidden" name="oldliulan[{$tnd.id}]" value="{$tnd.liulan}"/>
+						<input type="hidden" class="js-liulan" name="liulan[{$tnd.id}]" value="{$tnd.liulan}"/>
+						<input type="hidden" name="zhidan[{$tnd.id}]" value="{$tnd.zhidan}"/>
+						<input type="hidden" name="tesu[{$tnd.id}]" value="{$tnd.tesu}"/>
+						<input type="hidden" name="delAccess[{$tnd.id}]" <if condition="$tnd.selected eq 1">value="{$tnd.id}"<else/>value="0"</if>/>
+						<div class="right">
+							<span class="tml-form-text">浏览级别：</span>
+							<select name="plevels" id="plevels" class="combox" onchange="comboxUpdate(this);">
+								<option rel="" value="0" <if condition="$vo.plevels eq 0">selected</if>>无浏览权限</option>
+								<option rel="" value="1" <if condition="$vo.plevels eq 1">selected</if>>全部</option>
+								<option rel="" value="2" <if condition="$vo.plevels eq 2">selected</if>>部门及子部门</option>
+								<option rel="" value="3" <if condition="$vo.plevels eq 3">selected</if>>部门</option>
+							</select>
+							<div>
+            				</div>
+						</div>
+					</div>
+					<div class="tml-form-row">
+	                    <label>过滤条件：</label>
+	                    {:W('ShowAddResult', array('model'=>'MisAutoPvb','data'=>$vo))}
+                	</div>
+                	<div class="tml-form-row">
+                		<label>授予项目ID权限：</label>
+						<input class="ORG#ids#2.orderno nbm input_new half_angle_input active_lookup textInput enterIndex readonly valid" type="text" value="{$listProjectstring}" readonly="readonly" autocomplete="off">
+						<input class="ORG#ids#2.projectid " type="hidden" value="{$vo.dandushouquanID}" name="dandushouquanID">
+						<a class="icon_elm mid_icon_elm icon-plus" lookupgroup="ORG#ids#2" href="/Admin/index.php/MisAutoNjo/lookupGenerals" param="lookupchoice=a945d1a1f0487f8621c1d7797b894295&newconditions=" condition="" newconditions="" syscondition=""></a>
+						<a class="icon_elm icon-trash" onclick="clearOrg('ORG#ids#2');" href="javascript:void(0);" title="清空信息-可读写"></a>
+					</div>
+				</div>
+		</fieldset>
+		</volist>
+		<div class="formBar">
+			<ul>
+				<li><button type="submit" class="tml-btn tml-btn-blue">{$Think.lang.save}</button></li>
+			</ul>
+		</div>
+	</div>
+</form>

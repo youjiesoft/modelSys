@@ -1,0 +1,88 @@
+<div class="page">
+	<div class="pageContent">
+	<form method="post" action="__URL__/insert/rel/viewunitexchange" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+		<input type="hidden" name="prodid" value="{$prodid}" >
+		<div class="pageFormContent"  layoutH="58">
+			<div class="unit">
+				<label>转换类型：</label>
+				<select name="typeid" class="combox required" onchange="choosetypeofunitadd(this.value)">
+					<option value="0">全局</option>
+					<option value="1">销售</option>
+					<option value="2">采购</option>
+				</select>
+			</div>
+			<div class="unit">
+				<label>转换编码：</label>
+				<input type="text"  name="code" value="" class="required"/>
+			</div>
+			<div class="unit">
+				<label>转换名称：</label>
+				<input type="text"  name="name" value="" class="required"/>
+			</div>
+			<div class="unit mpucustomer" style="display:none;">
+				<label>客户：</label>
+				<input type="text" class="org1.custname"/>
+				<input type="hidden" name="typeobjid" class="org1.cid"/>
+				<a class="input-addon input-addon-addon input-addon-add" lookupgroup="org1" href="__URL__/lookupcustomer/prodid/{$prodid}">查找带回</a>
+			</div>
+			<div class="unit mpucsupplier" style="display:none;">
+				<label>供应商：</label>
+				<input type="text"   class="org2.name"/>
+				<input type="hidden" name="typeobjid" class="org2.sid"/>
+				<a class="input-addon input-addon-addon input-addon-add" lookupgroup="org2" href="__URL__/lookupsupplier/prodid/{$prodid}">查找带回</a>
+			</div>
+			<script>
+				function choosetypeofunitadd( v ){
+					if(v ==2 ){
+						$("div.mpucsupplier").css("display","block");
+						$("div.mpucustomer").css("display","none");
+					}else if(v==1 ){
+						$("div.mpucustomer").css("display","block");
+						$("div.mpucsupplier").css("display","none");
+					}else{
+						$("div.mpucsupplier,div.mpucustomer").css("display","none");
+					}
+				}
+			</script>
+			<div class="unit">
+				<label>物资名称：</label>
+				<input name="prodid_code" type="text" readonly="readonly" value="[{$prodid|getFieldBy='id','code','MisProductCode'}]{$prodid|getFieldBy='id','name','MisProductCode'}"/>
+			</div>
+			<div class="unit">
+				<label>转换公式：</label>
+				<foreach name="typelist" item="t">
+					<if condition="$t['id'] eq $baseunitid">
+					<input name="baseunitid" type="hidden" readonly="readonly" value="{$baseunitid}"/>
+					<input size="10" type="text" class="required" readonly="readonly" value="[{$t['code']}]{$t['name']}" /><span class="info small">(主单位)</span>
+					 <span class="info" style="font-size:20px;">&nbsp;&nbsp;X</span>
+					 <span class="info">(乘以)&nbsp;&nbsp;</span>
+					<input size="5" type="text" class="required number" name="exchange" /><span class="info small">(转换系数)</span>
+					<span class="info" style="font-size:20px;">&nbsp;&nbsp;=&nbsp;&nbsp;</span>
+					<select name="subunitid" class="combox">
+					<volist name="typelist" id="list">
+						<option value={$list['id']} >[{$list['code']}]{$list['name']}</option>
+					</volist>
+					</select>
+					<span class="info">(转换单位)</span>
+					</if>
+				</foreach>
+			</div>
+			<div class="unit">
+				<label>备注：</label>
+				<textarea rows="2" cols="40" name="remark"></textarea>
+			</div>
+
+		</div>
+		<div class="formBar">
+			<ul>
+			<if condition="$_SESSION.a eq 1 or $_SESSION.misproductunitexchange_insert">
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">{$Think.lang.save}</button></div></div></li>
+			</if>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">{$Think.lang.close}</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+
+	</div>
+</div>
+

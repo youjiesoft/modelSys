@@ -1,0 +1,24 @@
+<style>
+.userli{float:left;width:60px;}
+.userul{margin-left: 50px;}
+.testDiv{
+height:250px ;
+width: 100%;
+overFlow-y: scroll ;
+overFlow-x: hidden ;
+}
+</style>
+<div style="clear:both"></div>
+<div class="testDiv">
+<volist name="user" id="user">
+<div class="unit textInput"style="margin-top:5px;width: 100%;">
+        <label><input type="checkbox"  class="checkboxCtrl" name="role[]"  value="{$user['id']}" />{$user['name']}：</label>
+        <div class="divider"></div>
+        <ul class="userul">
+            <volist id="sub" name="user['sub']">
+                <li class="userli"><input type="checkbox"  name="userid[]"  value="{$sub['id']}"/>{$sub['name']}</li>
+            </volist>
+        </ul>
+</div>
+</volist>
+</div>

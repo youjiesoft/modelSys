@@ -1,0 +1,75 @@
+<div class="page">
+	<div class="pageContent">
+		<form method="post" action="__URL__/insert/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,dialogAjaxDone);">
+			<input type="hidden" name="callbackType" value="closeCurrent">
+			<div class="pageFormContent " layoutH="56">
+				<p>
+					<label>{$fields["code"]}:</label>
+					<input  type="text" name="code" class="required" value="{$vo['code']}">
+				</p>
+				<p>
+					<label>{$fields["name"]}:</label>
+					<input  type="text" name="name" class="required" value="{$vo['name']}">
+				</p>
+				<p>
+					<label>{$fields["sname"]}:</label>
+					<input  type="text" name="sname" class="" value="{$vo['sname']}">
+				</p>
+				<p>
+					<label>{$fields["atype"]}:</label>
+					<select name="atype"  class="combox required">
+						<option  value="资产">资产</option>
+						<option  value="负债">负债</option>
+						<option  value="所有者权益">所有者权益</option>
+						<option  value="成本">成本</option>
+						<option  value="损益">损益</option>
+					</select>
+				</p>
+				<p>
+					<label>{$fields["debit"]}:</label>
+					<input  name="debit" type="checkbox" value="1" />
+				</p>
+				<p>
+					<label>{$fields["credit"]}:</label>
+					<input  name="credit" type="checkbox" value="1" />
+				</p>
+				<p>
+					<label>{$fields["projectid"]}:</label>
+					<input type="hidden"  name="projectid"  class="orgp.projectid" value="" />
+					<input type="text" name="projectname" class="orgp.projectname" value=""  readonly="readonly" />
+					<span class="info"><a class="input-addon input-addon-addon input-addon-add" href="__URL__/lookupproject" lookupGroup="orgp">查找带回</a></span>
+				</p>
+				<p>
+					<label>{$fields["balance"]}:</label>
+					<input  type="text" name="balance" value="0.000" onblur="FormatNumber(this);" class="" value="{$vo['balance']}">
+				</p>
+				<p>
+					<label>{$fields["employeeid"]}:</label>
+					<input type="hidden"  name="employeeid"  class="orgy.mangid" value="">
+					<input type="text" name="employename" class="orgy.name" value="" readonly="readonly" />
+					<span class="info"><a class="input-addon input-addon-addon input-addon-add" href="__URL__/lookupmanage" lookupGroup="orgy">查找带回</a></span>
+				</p>
+			</div>
+			<div class="formBar">
+				<ul>
+					<if condition="$_SESSION.a eq 1 or $_SESSION.misfinanceamounttitle_insert">
+						<li>
+							<div class="buttonActive">
+								<div class="buttonContent">
+									<button type="submit">{$Think.lang.save}</button>
+								</div>
+							</div>
+						</li>
+					</if>
+					<li>
+						<div class="button">
+							<div class="buttonContent">
+								<button type="button" class="close">{$Think.lang.close}</button>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</form>
+	</div>
+</div>

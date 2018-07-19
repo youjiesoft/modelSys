@@ -1,0 +1,45 @@
+<div class="page">
+	<div class="pageContent">
+		<form method="post" action="__URL__/insert/navTabId/__MODULE__"  class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+			{:W('HiddenInput')}<!-- 作用域为项目管理入库调用模板文件的隐藏input -->
+			<input type="hidden" name="beforeInsert" value="1" /><!-- 新增启动流程在startprocess方法中进行判断 -->
+			<input type="hidden" name="callbackType" value="closeCurrent"><!-- 关闭当前窗口 -->
+			
+			<div class="pageFormContent applecloth anchorsToolBarParent" layoutH="40" >
+				<div class="keepContentCenter form-affix-content">
+					<div class="contentTitle contentTitle_center form-affix-title">
+						转储备申请单
+					</div>
+					<fieldset class="side-catalog-anchor">
+					<legend class="fieldset_legend_toggle side-catalog-text side-catalog-firstanchor">
+						<b>基础信息</b>
+                        <div class="tml_style_line tml_sl4 tml_slb_blue"></div>
+					</legend>
+					<div class="tml-row">
+						{:W('ShowOrderno',array(1,'mis_sale_business_check'))}
+						<div class="tml-form-col">
+							<label>商机：</label>
+							<div class="tml-input-append2">
+								<input type="text" class="ORG1.clientname required  temp_css" autocomplete="off" readonly="readonly" value="{$bid|getFieldBy='id','clientname','mis_sale_business'}" />
+								<input type="hidden" class="ORG1.id" name="bid" value="{$bid}"  />
+								<a class="input-addon input-addon-addon input-addon-add" param="field=id,clientname&model=MisSaleBusiness&conditions=businessstatus,3" href="__URL__/lookupGeneral" lookupGroup="ORG1" >{$fields["bid"]}</a>
+								<a title="清空信息" class="input-addon input-addon-recycle"  href="javascript:void(0);" onclick="clearOrg('ORG1');"></a>
+							</div>
+						</div>
+					</div>
+					<div class="tml-form-row">
+						<label>转储备说明：</label>
+						<textarea name="useexplain"></textarea>
+					</div>
+				</fieldset>
+                	{:W('ShowUpload',array("0"=>$uploadarry["upload"],"1"=>upload,"2"=>$fields[upload],"3"=>"","4"=>""))}
+	                <div class="showFormFlow">
+	                {:W('ShowFormFlow')}<!-- 流程管理 -->
+	                </div>
+	                {:W('ShowNotify')}
+	                {:W('ShowAction')}
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

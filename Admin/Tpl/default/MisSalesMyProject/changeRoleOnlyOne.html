@@ -1,0 +1,52 @@
+<div class="page">
+	<div class="pageContent">
+		<div class="pageFormContent applecloth anchorsToolBarParen" <if condition="!$_REQUEST['main'] or $_REQUEST['main'] eq MODULE_NAME"> <if condition="!$_REQUEST['bindaname']"> layoutH="40"</if> </if>>
+			<div class="new_version_page ">
+				<form id="MisAutoCbj_edit"  method="post" action="__URL__/changeRoleOnlyOneEdit/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,navTabAjaxDone);">
+					<input name="dataid" type="hidden" value="{$dataid}">
+					<input name="modelname" type="hidden" value="{$modelname}">
+					<input name="tablename" type="hidden" value="{$tablename}">
+					<input type="hidden" name="callbackType" value="closeCurrent" />
+					<div class="new_version_page_content">
+						<div class="col_1_7 form_group_lay">
+							<label>选择转授人员：</label>
+							<ul class="addressee left checkCc" id="Mismessage_add_copyTo" style="width:720px;">
+							<volist name="userids" id="uv">
+							<php>$uname = getFieldBy($uv,'id','name','user')</php>
+								<li>
+									<input type="hidden" value="{$uname}" name="copytopeoplename[]">
+									<span>{$uname}</span>
+									<input type="hidden" value="{$uv}" name="copytopeopleid[]">
+									<input type="hidden" value="" name="emailCopy[]">
+									<a href="javascript:;"
+										onclick="this.parentNode.parentNode.removeChild(this.parentNode);"
+										title="删除" class="delAddressee">x</a>
+								</li>
+							</volist>
+							
+							</ul>
+		
+							<a class="input-addon input-addon-addon input-addon-userplus checkUser" 
+								href="javascript:;" ulid="Mismessage_add_copyTo" 
+								data="copytopeoplename,username,text;copytopeopleid,userid,hidden,1;emailCopy,email,hidden"
+							>查找带回</a>&nbsp;
+							
+							<a class="input-addon input-addon-recycle" href="javascript:;" onclick="clearreceverMismessage('2','Mismessage_add_copyTo');" title="清空接收用户"></a>
+					</div>
+					</div>
+					
+					
+					<div style="border-top: 1px solid #d8d8d8; padding-top: 15px" class="formBar">
+						<ul> 
+							
+				            <li><button class="tml_formBar_btn tml_formBar_btn_blue enterIndex" type="submit">保存</button>
+				            	</li>
+				            
+			            </ul>
+			        </div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+

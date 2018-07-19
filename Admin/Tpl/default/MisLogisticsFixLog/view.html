@@ -1,0 +1,94 @@
+<div class="page">
+	<div class="pageContent applecloth" layoutH="0">
+		<form method="post" action="__URL__/update/md/{$md}/rel/mislogisticsfixhandlebox" class="pageForm required-validate" onsubmit="return validateCallback(this,dialogAjaxDone);">
+			<input type="hidden" name="id" value="{$vo['id']}" />
+			<input type="hidden" name="dotype" value="0"/>
+			<input type="hidden" name="callbackType" value="closeCurrent">
+			<input type="hidden" name="handle" value="2"/>
+		 <div class="pageFormContent applecloth" layoutH="56">
+				<div class="keepContentCenter form-affix-content">
+					<H2 class="contentTitle contentTitle_center form-affix-title">日常维护申请{:W('ShowAdvices',array('id'=>$vo['id']))}
+						{:W('ShowOrderno',array(0,'mis_logistics_fix_log',$vo['orderno']))}
+					</H2>
+			<img class="right" style="position: absolute; z-index: 100;right:20px;" <if condition="$dotype eq 1">src="__PUBLIC__/Images/stamp-done.png"<elseif condition="$dotype eq 2"/>src="__PUBLIC__/Images/stamp-doing.png"<elseif condition="$dotype eq 0"/>src="__PUBLIC__/Images/stamp-donot.png"</if>/>
+			<fieldset>
+			<legend class="fieldset_legend_toggle side-catalog-text">
+						<b>报修信息</b>
+					</legend>
+				<div class="tml-row">
+					<div class="tml-form-col">
+						<label>{$fields["falut_type"]}:</label>
+						<input type="text" readonly="readonly" <if condition="$vo['falut_type'] eq 1">value="给排水"<elseif condition="$vo['falut_type'] eq 2"/>value="电路"<elseif condition="$vo['falut_type'] eq 3"/>value="电气设备"<elseif condition="$vo['falut_type'] eq 4"/>value="其他"</if>/>
+					</div>
+					<div class="tml-form-col">
+						<label>{$fields["name"]}:</label>
+						<input type="text" class="required" value="{$vo['name']}" readonly="readonly" />
+					</div>
+				</div>
+					<div class="tml-form-row">
+					<label>{$fields["fault_cause"]}:</label>
+					<textarea cols="50" rows="2"  readonly="readonly" >{$vo['fault_cause']}</textarea>
+					</div>
+				<div class="tml-row">
+					<div class="tml-form-col">
+						<label>报修人员:</label>
+						<input readonly="readonly" type="text" value="{$vo['report_name']}" class="required" />
+					</div>
+					<div class="tml-form-col">
+						<label>报修时间:</label>
+						<input  type="text" readonly="readonly" value="{$vo['createtime']|transtime}" />
+					</div>
+				</div>
+			</fieldset>
+			<fieldset>
+			<legend class="fieldset_legend_toggle side-catalog-text">
+						<b>维护信息</b>
+					</legend>
+				<div class="tml-row">
+					<div class="tml-form-col">
+						<label>结 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 果:</label>
+						<input type="text" readonly="readonly"
+							<if condition="$vo.fixed eq 1">value='修复'</if>
+							<if condition="$vo.fixed eq 2">value='未修复'</if>
+							<if condition="$vo.fixed eq 3">value='报废'</if>
+							<if condition="$vo.fixed eq 4">value='外修'</if>
+							<if condition="$vo.fixed eq 5">value='其他'</if>
+						/>
+					</div>
+				</div>
+				<div class="tml-form-row">
+					<label>{$fields["solution"]}:</label>
+					<textarea cols="50" rows="2" readonly="readonly" class="required" name="solution" >{$vo.solution}</textarea>
+				</div>
+				<div class="tml-row">
+					<div class="tml-form-col">
+						<label>检修人员:</label>
+						<input type="text" readonly="readonly" class="required" value="{$vo.fix_man}" />
+					</div>
+					<div class="tml-form-col">
+						<label>检修日期:</label>
+						<input type="text" readonly="readonly" value="{$vo.fix_time|transtime}" />
+					</div>
+				</div>
+				<if condition="$attarry">
+					<div class="tml-form-row"><!--此处为上传列表-->
+						<label>附件:</label>
+						<span id="swfupload_mislogisticsfixlog_edit-queue" class="info uploadify_queue">
+							<if condition="$attarry">
+								<volist name="attarry" id="att">
+									<div class="uploadify-queue-item">
+										<span class="fileName"><a href="__URL__/misFileManageDownload/path/{$att['attached']|base64_encode}/rename/{$att['upname']}" target="_blank">{$att['upname']}</a></span>
+										<a  class="tml-btn tml-btn-small tml-btn-green" href="__URL__/lookupDocumentCollateAtta/t/0/id/{$att['id']}" mask="true" rel="aa" title="文件归档" target="dialog"><span class="tml-icon tml-icon-file"></span><span class="tml-icon-text">归档</span></a>
+									</div>
+								</volist>
+							</if>
+						</span>
+					</div>
+				</if>
+				</fieldset>
+				</div>
+			</div>
+			{:W('ShowAction')}
+	</form>
+	</div>
+</div>

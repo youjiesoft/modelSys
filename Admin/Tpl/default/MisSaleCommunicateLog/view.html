@@ -1,0 +1,43 @@
+<div class="page">
+	<div class="pageContent">
+	<form method="post" action="__APP__/MisSaleCommunicateLog/update/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+			<input type="hidden" name="callbackType" value="closeCurrent" />
+			<input type="hidden" name="id" value="{$vo['id']}" />
+			<input type="hidden" name="userid" class="textInput"  value="{$userid}"/>
+			<div class="pageFormContent" layoutH="48">
+				<div class="tml-row">
+					{:W('ShowOrderno',array(1,'mis_sale_communicate_log'),$vo['orderno'])} 
+					<div class="tml-form-col ">
+							<label>{$fields["bid"]}:</label>
+							<input type="text" readonly="readonly"   value="{$vo['bid']|getFieldBy='id','clientname','mis_sale_business'}" />
+					</div>
+					<div class="tml-form-col ">
+						<label>{$fields["linkpeople"]}:</label>
+						<input type="text"  name="linkpeople" readonly="readonly" class="  " value="{$vo['linkpeople']}">
+					</div>
+					<div class="tml-form-col ">
+							<label>{$fields["title"]}:</label>
+							<input type="text"  name="title" readonly="readonly" class="required " value="{$vo['title']}">
+					</div>
+				</div>
+				<div class="tml-row">
+					<div class="tml-form-row ">
+							<label>{$fields["linknews"]}:</label>
+							<textarea  cols="100" rows="2"  readonly="readonly" class="required " name="linknews">{$vo['linknews']}</textarea>
+					</div>
+					<div class="tml-form-row ">
+						<label>{$fields["address"]}:</label>
+						<textarea  cols="100" rows="2" readonly="readonly"  name="address">{$vo['address']}</textarea>
+					</div>
+				</div>
+					<div class="tml-form-col ">
+						<label>{$fields["linktime"]}:</label>
+						<div  class="tml-input-append">
+							<input type="text" name="linktime" readonly="readonly"   value="{$vo['linktime']|transtime='Y-m-d H:i'}"/>
+						</div>
+					</div>
+			</div>			
+			{:W('ShowAction',array('data'=>$vo))}
+	</form>
+	</div>
+</div>

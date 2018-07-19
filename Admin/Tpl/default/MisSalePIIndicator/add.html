@@ -1,0 +1,111 @@
+﻿<script type="text/javascript">
+$(function(){
+	var conf = new Object();
+	var data = '{$list}';
+	conf.data =$.parseJSON(data);
+	conf.ids = '#missalepiadd_yiji,#missalepiadd_erji,#missalepiadd_sanji,#missalepiadd_siji';
+	conf.tag = 'yiji,erji,sanji,siji'; 
+	conf.pid = 'erjiid,sanjiid,sijiid';
+	conf.tex = 'name'; 
+	conf.val = 'id';  
+	$.linkage(conf); 
+});
+
+ $(function(){
+	var box = navTab.getCurrentPanel();
+	
+	$('a.nbm_add_item_sale_pll' , box).on('click',function(){
+		var  p = $(this).closest('div');
+		var order = p.next('div.tml-form-row');
+		order.after(order.clone());
+delitem();
+	});
+	
+	function delitem(){
+		$('div.nbm_add_item a.nbm_del_item_sale_pll' , box).on('click',function(){
+			if($('div.nbm_add_item').length>1){
+ 				var order = $(this).closest('div.tml-form-row');
+				order.remove();
+			}
+		}); 		
+
+	}
+	
+});
+</script>
+<div class="page">
+	<div class="pageContent">
+	<form method="post" action="__URL__/insert/navTabid/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,navTabAjaxDone)">
+		<input type="hidden" name="callbackType" value="closeCurrent">
+<!-- 		<input type="hidden" name="linkid" value="{$linkid}" />
+		<input type="hidden" name="catalogid" value="{$catalogid}" />		
+		<input type="hidden" name="refreshtabs[tabid]" value="MisProductType">
+		<input type="hidden" name="refreshtabs[url]" value="__URL__/index">
+		<input type="hidden" name="refreshtabs[type]" value="navtab">
+		<input type="hidden" name="refreshtabs[data]" value="{ id:{$vo['linkid']}}">
+		<input type="hidden" name="refreshtabs[title]" value="产品类别">
+ -->		
+		<div class="pageFormContent" layoutH="146">
+		 <div class="keepContentCenter">
+		 <fieldset>
+		<div class= "tml-form-row">
+		
+		<div class="tml-form-row">
+				<label>行业：</label>
+				 <select  name="professionid[]"   class="combox required "  id="missalepiadd_yiji"><option>--请选择--</option></select>   
+			
+				 <select  name="professionid[]"   class="combox required "  id="missalepiadd_erji"><option>--请选择--</option></select>
+			
+				 <select  name="professionid[]"   class="combox required "  id="missalepiadd_sanji"><option>--请选择--</option></select>
+			
+				 <select  name="professionid[]"   class="combox required "  id="missalepiadd_siji"><option>--请选择--</option></select>
+			</div>
+	
+		
+<!-- 			<div class="tml-form-row">
+				<label>行业：</label>
+				 <select  name="professionid"   class="required ">
+				 <option>--请选择--</option>
+				<volist name="plist" id="vo">
+					<option value='{$vo.id}'>{$vo.level}==>{$vo.name}</option>
+				</volist>
+				</select>	
+			</div> -->
+			<div class="tml-form-row">
+				<label>产业链：</label>				
+				 <select  name="industryid"   class="required ">
+				 {:getDataBaseByHtml('mis_sale_industry')}
+				</select>	
+			</div>
+			<div class="tml-form-row">
+				<a href="javascript:void(0);" class="nbm_add_item_sale_pll">点击添加指标</a>
+			</div>
+			<div class="tml-form-row nbm_add_item">
+				<label>指标：</label>
+				 <select  name="indicatorid[]"   class="required ">
+				 <option>--请选择--</option>				 
+				<volist name="indicator" id="vos">
+					<option value='{$vos.id}'>{$vos.name}</option>
+				</volist>
+				</select>
+				<a href="javascript:void(0);" class="nbm_del_item_sale_pll" style="color:blue">删除</a>	
+			</div>
+			
+			<div class="tml-form-row">
+				<label>备注说明：</label>
+				<textarea  name="remark"  rows="4"></textarea>
+			</div>
+		</div>
+		</fieldset>
+  </div>
+		<div class="formBar">
+			<ul>
+			<if condition="$_SESSION.a eq 1 or $_SESSION.missystemtransport_insert">
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">{$Think.lang.save}</button></div></div></li>
+			</if>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">{$Think.lang.cancel}</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+	</div>
+</div>

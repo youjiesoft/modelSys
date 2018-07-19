@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>所在项目报表</title>
+<link rel="stylesheet" type="text/css"
+	href="__PUBLIC__/Js/jqGrid/themes/redmond/jquery-ui-1.8.2.custom.css" />
+<link rel="stylesheet" type="text/css"
+	href="__PUBLIC__/Js/jqGrid/css/ui.jqgrid.css" />
+<link rel="stylesheet" type="text/css"
+	href="__PUBLIC__/Js/jqGrid/css/redmond/jquery-ui-1.8.2.custom.css" />
+<script src="__PUBLIC__/Js/jquery-1.7.1.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Js/jquery.textSearch-1.0.js"
+	type="text/javascript"></script>
+<script src="__PUBLIC__/Js/jqGrid/js/i18n/grid.locale-en.js"
+	type="text/javascript"></script>
+<script src="__PUBLIC__/Js/jqGrid/js/jquery.jqGrid.min.js"
+	type="text/javascript"></script>
+<script src="__PUBLIC__/Js/report_forms.js" type="text/javascript"></script>
+<script>
+$(function(){
+	var h = $(window).height()-200;
+	$("#jsonlookupHrProjectRecordsEport").jqGrid({
+		url:"__URL__/lookupHrProjectRecordsEport{$suburl}",
+		mtype: "POST",
+		postData:{listtype:1},
+		datatype: "json",
+		colNames:{$colNames},
+		colModel:[
+				{ name: 'perid', index: 'perid', width: 60, align: 'center',hidden:true,
+	                cellattr: function(rowId, tv, rawObject, cm, rdata) {
+	                    return "id=\'perid" + rowId + "\'";
+	                }
+	            },
+		        {name:'name',index:'name',align:'center',
+					cellattr: function(rowId, tv, rawObject, cm, rdata) {
+		                return "id='name" + rowId + "'";
+		            }},
+		        {name:'deptname',index:'deptname',align:'center',
+		            	cellattr: function(rowId, tv, rawObject, cm, rdata) {
+			                return "id='deptname" + rowId + "'";
+			            }},
+		        {name:'dutyname',index:'dutyname',align:'center',
+			            	cellattr: function(rowId, tv, rawObject, cm, rdata) {
+				                return "id='dutyname" + rowId + "'";
+				            }},
+		        {name:'indate',index:'indate',align:'center',
+				            cellattr: function(rowId, tv, rawObject, cm, rdata) {
+	                			return "id='indate" + rowId + "'";
+	            }},
+		        {name:'mis_hr_personnel_project_records_projectid',index:'mis_hr_personnel_project_records_projectid',align:'center',hidden:true
+					 },
+	            {name:'mis_hr_personnel_project_records_projectname',index:'mis_hr_personnel_project_records_projectname',align:'center',
+					cellattr: function(rowId, tv, rawObject, cm, rdata) {
+		                return "id='mis_hr_personnel_project_records_projectname" + rowId + "'";
+		            }},
+	            {name:'mis_hr_personnel_project_records_pjposition',index:'mis_hr_personnel_project_records_pjposition',align:'center',
+					cellattr: function(rowId, tv, rawObject, cm, rdata) {
+		                return "id='mis_hr_personnel_project_records_pjposition" + rowId + "'";
+		            }},
+	            {name:'mis_hr_personnel_project_records_begindate',index:'mis_hr_personnel_project_records_begindate',align:'center',
+					cellattr: function(rowId, tv, rawObject, cm, rdata) {
+		                return "id='mis_hr_personnel_project_records_begindate" + rowId + "'";
+		            }},
+	            {name:'mis_hr_personnel_project_records_enddate',index:'mis_hr_personnel_project_records_enddate',align:'center',
+					cellattr: function(rowId, tv, rawObject, cm, rdata) {
+		                return "id='mis_hr_personnel_project_records_enddate" + rowId + "'";
+		            }},
+	            {name:'mis_hr_personnel_project_records_iscondition',index:'mis_hr_personnel_project_records_iscondition',align:'center',
+					cellattr: function(rowId, tv, rawObject, cm, rdata) {
+		                return "id='mis_hr_personnel_project_records_iscondition" + rowId + "'";
+		            }},
+	            {name:'mis_hr_personnel_project_records_remark',index:'mis_hr_personnel_project_records_remark',align:'center',
+					cellattr: function(rowId, tv, rawObject, cm, rdata) {
+		                return "id='mis_hr_personnel_project_records_remark" + rowId + "'";
+		            }},
+		     	 ],
+	 	rowNum:50,
+       	scroll:true,
+       	pager: '#pjmaplookupHrProjectRecordsEport',
+    	sortname: 'perid',
+     	//autowidth: true,
+        viewrecords: true,
+        sortorder: "asc",
+        altRows : true,
+        rownumbers: true,
+        height: h,
+        gridComplete: function() {
+ 	   var gridName = "jsonlookupHrProjectRecordsEport";
+ 	      Merger(gridName, 'name','perid');
+ 	   	  Merger(gridName, 'deptname','perid');
+ 	      Merger(gridName, 'dutyname','perid');
+ 	      Merger(gridName, 'indate','perid');
+ 	      Merger(gridName, 'mis_hr_personnel_project_records_projectname','perid');
+         }
+	});
+});
+
+</script>
+</head>
+<body style="font-size: 12px;">
+	<div class="pageContent" layoutH="0">
+		<div style="width: 95%; margin: 0 auto; overflow: hidden;">
+			<button type="button"
+				onclick="lookupfunc_exportExcel('__APP__','jsonlookupHrProjectRecordsEport','{$reporttype}',1,'{$suburl}')">导出EXCEL</button>
+			<button type="button"
+				onclick="lookupfunc_exportExcel('__APP__','jsonlookupHrProjectRecordsEport','{$reporttype}',2,'{$suburl}')">导出PDF</button>
+		</div>
+		<div class="clear"></div>
+		<br />
+		<div style="width: 95%; margin: 0 auto;">
+			<table id="jsonlookupHrProjectRecordsEport"></table>
+			<div id="pjmaplookupHrProjectRecordsEport"></div>
+		</div>
+	</div>
+</body>
+</html>

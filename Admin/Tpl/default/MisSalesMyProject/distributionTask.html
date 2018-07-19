@@ -1,0 +1,30 @@
+<script type="text/javascript">
+$(function(){
+	var $box=navTab.getCurrentPanel();
+	
+	$('.nbmaccordion' , $box).nbmaccordion();
+});
+</script>
+<div class="page unitBox general_page">
+	<div class="pageContent">
+		<div class="general_tree_left treeleft">
+			<div class="task_dis_lay">
+                <div class="task_stage">阶段名称</div>
+                <ul class="task_node_ul">
+                    <li class="task_node"><a href="#">节点名称1</a></li>
+                    <li class="task_node"><a href="#">节点名称2</a></li>
+                    <li class="task_node"><a href="#">节点名称3</a></li>
+                    <li class="task_node"><a href="#">节点名称4</a></li>
+                    <li class="task_node"><a href="#">节点名称5</a></li>
+                </ul>
+			</div>
+			<!-- left end -->	
+		</div>
+		<!-- ***************************************************** -->
+		<div id="missalesprojectleft_ajax" class="unitBox treeright">
+			<include file="lookupTask"/>
+		</div>
+		<!-- end -->
+	</div>
+</div>
+

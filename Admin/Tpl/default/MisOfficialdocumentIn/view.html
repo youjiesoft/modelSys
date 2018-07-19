@@ -1,0 +1,111 @@
+<style>
+.tml-table-bordered th, .tml-table-bordered td{border:1px solid #e5e5e5;}
+.tml-table-red th, .tml-table-red td{border-color:red;white-space:nowrap;font-weight:700;font-family:"楷体_GB2312";}
+.tml-table-red .textInput{background:none;border:none;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box;width:100%;*width:95%;}
+.tml-table-red textarea{resize:none;}
+</style>
+<div class="page">
+	<div class="pageContent">
+		<form method="post" action="" class="pageForm required-validate" onsubmit="return validateCallback(this,navTabAjaxDone);">
+	    <input type="hidden" name="id" value="{$vo.id}" />
+	    	<div class="pageFormContent applecloth" layoutH="56">
+				<div class="keepContentCenter" style="color:red;font-size:14px;">
+					<H2 class="contentTitle contentTitle_center"  style="border:none;font-size:26px;font-family:方正大标宋简体">
+						{$company_infor['name']}公文处理笺
+					</H2>
+					<table class="tml-table tml-table-bordered grid-100 tml-table-w tml-table-red">
+					<tr>
+						<td style="text-align: center;">收文时间</td>
+						<td colspan="3">
+							<input type="text" name="indate" value="{$vo.indate|transTime}" class="tml-border-r0 Wdate required" />
+						</td>
+						<td style="text-align: center;">密级</td>
+						<td>
+							<input class="" type="text" name="secrecylevel" value="{$vo.secrecylevel}"/>
+						</td>
+						<td style="text-align: center;">份数</td>
+						<td>
+							<input class="" type="text" name="copynum" value="{$vo.copynum}"/>
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align: center;">来文单位</td>
+						<td colspan="3">
+							<input class="" type="text" name="incompany" value="{$vo.incompany}"/>
+						</td>
+						<td style="text-align: center;">文号</td>
+						<td colspan="3">
+							<input type="text" name="referencenum" value="{$vo.referencenum}" />
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align: center;">文件名称：</td>
+						<td colspan="7">
+							<input class="" type="text" name="filename" value="{$vo.filename}"/>
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align: center;">内容摘要：</td>
+						<td colspan="7">
+							<TEXTAREA rows="" cols="" style="height:100px;" name="abstract">
+								{$vo.abstract}
+							</TEXTAREA>
+						</td>
+					</tr>
+					<volist name="arr" id="arrlist">
+						<tr>
+							<td class="tml-text-c">{$arrlist.name}：</td>
+							<td colspan="7">
+								<table width="100%">
+									<tr>
+										<volist name="arrlist.nextarr" id="ldvo">
+											<td width="{$arrlist.bl}%" height="100">{$ldvo.doinfo}
+												<div class="tml-text-r">{$ldvo.userid|getFieldBy='id','name','user'}</div>
+												<div class="tml-text-r">{$ldvo.dotime|transTime}</div>
+											</td>
+										</volist>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</volist>
+					<tr>
+						<td style="text-align: center;">附件</td>
+						<td colspan="7">
+							<if condition="$attarry">
+								<volist name="attarry" id="att">
+									<div class="tml-form-row">
+										<label>附件{$key+1}</label>
+										<div class="pt5">
+										<a rel="{$att['id']}" target="_blank" href="__URL__/misFileManageDownload/path/{$att['name']}/rename/{$att['upname']}"><span>{$att['upname']}</span></a>
+										<a class="tml-btn tml-btn-small tml-btn-green tml-ml5" href="__URL__/lookupDocumentCollateAtta/t/0/id/{$att['id']}" title="文件归档" target="dialog"><span class="icon icon-file"></span> 归档</a>
+										<a class="tml-btn tml-btn-small tml-btn-green tml-ml5" style="cursor:pointer;" rel="__URL__/playSWF/name/{$att.name}/filename/{$att.upname}" onclick="openNewWindowsDisplayFile(this)"><span class="icon icon-file"></span> 在线查看</a>
+										</div>
+									</div>
+								</volist>
+							</if>
+						</td>
+					</tr>
+				</table>
+				<table class="tml-table-w tml-table-red">
+					<tr>
+						<td style="text-align: center;">承办人：</td>
+						<td>
+							<input type="text" show="name" value="{$vo.undertakeempId|getFieldBy='id','name','mis_hr_personnel_person_info'}"/>
+						</td>
+						<td style="text-align: center;">电话：</td>
+						<td>
+							<input type="text" class="" name="phone" value="{$vo.phone}"/>
+						</td>
+					</tr>
+				</table>
+				</div>
+	        </div>
+			<div class="formBar">
+				<ul>
+					<li><button type="button" class="close tml-btn tml-btn-default">{$Think.lang.close}</button></li>
+				</ul>
+			</div>
+		</form>
+	</div>
+</div>

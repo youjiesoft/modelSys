@@ -1,0 +1,23 @@
+<div class="page">
+	<div class="pageContent">
+		<form method="post" action="__URL__/update/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+			<input type="hidden" name="id" value="{$vo.id}"/>
+			<input type="hidden" name="callbackType" value="closeCurrent">
+			<div class="pageFormContent" layoutH="58">
+			<div class="tml-row">
+				<div class="tml-form-col">
+					<label>类型：</label>
+					<select name="typeid" class="combox">
+						<option value="1">滚动公告</option>
+					</select>
+				</div>
+			</div>
+				<div class="tml-form-row">
+					<label>{$fields['content']}:</label>
+					<textarea class="ueditor required" name="content" style="height:180px;width:580px" readonly="readonly">{$vo.content}</textarea>
+				</div>
+			</div>
+			{:W('ShowAction')}
+		</form>
+	</div>
+</div>

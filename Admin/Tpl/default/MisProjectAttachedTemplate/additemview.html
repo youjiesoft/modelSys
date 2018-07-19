@@ -1,0 +1,172 @@
+<style>
+.gmlkeepContentCenter {
+    background: none repeat scroll 0 0 #fff;
+    border-radius: 4px;
+    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.3);
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+}
+.keepContentCenter div.gmlcontentTitle{
+	width: auto;
+	margin-bottom:0px;
+}
+
+.list_group_lay .uploadify {
+    float: none;
+    text-align: center;
+}
+</style>
+<script>
+function onUplodeOk_projectadditemview(file, data, response) {
+	var $box = $("#"+file.id).parents("tr").find(".js_privyIndex");
+	var $val = $box.find("input[name='subid[]']").val();
+	
+	var s=data.split(TP_PUBLIC+"/Uploadstemp/");
+	var html='<input name="swf_upload_save_name['+$val+'][]" value="'+s[1]+'" type="hidden" /><input name="swf_upload_source_name['+$val+'][]" value="'+file.name+'" type="hidden" />';
+	$('#' + file.id).find('.swf_upload_save_name').append(html);
+};
+
+function openFile(obj){
+	$this = $(obj);
+	//获取需要的参数信息
+	//1、获取模型名称
+	var modelname =$this.attr("modelname");
+	//2、获取class的唯一名称标志，方便后面用JS赋值
+	var order =$this.attr("order");
+	//获取默认值
+	var listarr = $this.attr("listarr");
+	var multitype = $this.attr("multitype");
+	var title=$this.attr("title")||$this.text();
+	var rel=$this.attr("rel")||"_blank";
+	var id=$this.attr("id")||"_blank";
+	var options={};
+	var attached = new Array();
+	var rel_id = $this.attr("rel_id");
+	var rel_masid = $this.attr("rel_masid");
+	$this.siblings("div").each(function(i){
+		var obj = {};
+		var filename = $(this).find("input[name*='swf_upload_source_name']").val();
+		var index1=filename.lastIndexOf(".");  
+		var index2=filename.length;
+		obj.filename = $(this).find("input[name*='swf_upload_source_name']").val();
+		obj.filename_0 = filename.substring(0,index1);
+		obj.ext = filename.substring(index1,index2);
+		obj.url = $(this).find("input[name*='swf_upload_save_name']").val();
+		obj.rand = $(this).attr("rel");
+		attached.push(obj);
+	});
+	options.width="800";
+	options.height="500";
+	options.mask=true;
+	options.max=false;
+	options.maxable=false;
+	options.minable=false;
+	options.fresh=false;
+	options.resizable=false;
+	options.drawable=false;
+	options.close=eval($this.attr("close")||"");
+	options.param  = {id:"#"+id,list:attached,rel_id:rel_id,rel_masid:rel_masid};
+	var url = "__URL__/uploadtest";
+	$.pdialog.open(url,rel,title,options);
+}
+</script>
+<div class="pageContent">
+	<form action="__URL__/lookupprojecttemplateupdate/navTabId/__MODULE__" method="post" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);"layoutH="40">
+		<input type="hidden" name="callbackType" value="closeCurrent"><!-- 关闭当前窗口 -->
+		<input type="hidden" name="masid" value="{$mas_vo.id}"><!-- 当前数据单头ID -->
+		<input type="hidden" name="projectid" value="{$mas_vo.projectid}"><!-- 项目ID -->
+		<input type="hidden" name="projectworkid" value="{$mas_vo.projectworkid}"><!-- 项目任务ID -->
+		<div class="pageFormContent applecloth anchorsToolBarParent">
+			<div class="keepContentCenter gmlkeepContentCenter">
+				<div class="contentTitle contentTitle_center gmlcontentTitle">项目模板({$mas_vo.name})项列表</div>
+						<table class="into_table_new nbm_data_table"  table_data='{"searching":false,"paging":false,"add_col_input":false}' table_type="edit">
+							<thead>
+								<tr>
+									<th style="width:40px;" template_key="serial" template_name="ndnumber">序号</th>
+									<!-- <th template_key="select" template_class="required" template_html='{:getDataBaseLevelByHtml("mis_auto_wqzrv")}' template_name="subjuese[#index#]">所属角色</th> -->
+									<th template_key="select" template_name="subdatum[#index#]" template_html='{:getDataBaseLevelByHtml("mis_auto_fkhvh")}'>资料分类</th>
+									<th template_key="input" style='min-width:200px;,width:200px;' template_class="required" template_name="subname[#index#]">资料名称</th>
+									<th template_key="input" template_name="subremark[#index#]">描述</th>
+									<th style='min-width:200px;,width:200px;' template_key="">资料参照</th>
+									<th template_key="">资料上传</th>
+									<!-- <th template_key="select" template_name="subtype[#index#]" template_data='{$allexts|json_encode}'>类型限制</th> -->
+									<th  template_key="">归档</th>
+									<th template_key="action" >操作</th>
+								</tr>					
+							</thead>
+						<tbody id="Addprivy_divA_edit" class="clearfix">
+							<volist name="sublist" id="subvo" key="key2">
+								<tr >
+									<td>
+										<span class="serial_number ">{$key2}</span>
+										<input type="hidden" value="{$key2}" name="ndnumber[]">
+									</td>
+									<!-- <td>
+										<div class="list_group_lay">
+											{$subvo['suoshujuese']|getFieldBy='orderno','name','mis_auto_wqzrv'}
+										</div>
+									</td> -->
+									<td>
+										<div class="list_group_lay">
+											{$subvo['datum']|getFieldBy='id','name','mis_auto_fkhvh'}
+											<!-- <select class="select2 list_select2" name="subdatum[{$key2}]" >
+											{:getDataBaseLevelByHtml("mis_auto_fkhvh",array('selected'=>$subvo['datum']))}
+											</select> -->
+										</div>
+									</td>
+									<td>
+										<div class="list_group_lay">
+											{$subvo.name}
+											<input class="list_input" name="subname[{$key2}]" value="{$subvo.name}" type="hidden">
+										</div>
+									</td>
+									<td>
+										<div class="list_group_lay">
+											{$subvo.remark}
+										</div>
+									</td>
+									<td>
+										<div class="list_group_lay">
+											<div class="">
+												<ul class="">
+													<volist name="subvo['record']" id="recvo" key="key3">
+														<li>
+									                        <a href="__URL__/misFileManageDownload/path/{$recvo['name']}/rename/{$recvo['lookname']}" target="_blank" class="attlink">{$recvo['filename']}</a>
+									                     </li>
+													</volist>
+												</ul>
+											</div>
+										</div>
+									</td>
+									<td>
+										<div class="list_group_lay">
+											<div class="js_privyIndex" style="padding-top: 10px;">
+											<input type="hidden" name="subid[{$key2-1}]" value="{$subvo.id}">
+											<a title="附件管理" id="uploadtest{$key2}" rel_id="{$subvo['id']}" class="tml_task_btn" style="padding:3px 10px;" rel_masid = "{$subvo['masid']}" class="projectAttachedUploadList" href="javascript:;" onClick="openFile(this)">附件管理(<span class="attached_count">{$subvo['record']|count}</span>)</a>
+											</div>
+										</div>
+									</td>
+									<td>
+									<div class="list_group_lay">
+									<input class="list_input" type="checkbox" name="subisfile[{$key2-1}]" <if condition="$subvo['isfile'] eq 1">checked="checked"</if> value="1"/>
+									</div>
+									</td>
+									<td>
+										<button type="button" title="删除" del_url="undefined" del_table="undefined" del_id="0" class="into_table_btn itb_del"><span class="icon-remove"></span></button>
+									</td>
+								</tr>
+							</volist>
+						</tbody>
+					</table>
+                <div class="formBar">
+					<ul>
+						<li id="salesprojectsave">
+						<button type="submit"  class="tml_formBar_btn tml_formBar_btn_blue">{$Think.lang.save}</button></li>
+						<li><button type="button" class="tml_formBar_btn tml_formBar_btn_blue" onclick="ConfirmCommit(this.form,'__MODULE__');">确认提交</button></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>

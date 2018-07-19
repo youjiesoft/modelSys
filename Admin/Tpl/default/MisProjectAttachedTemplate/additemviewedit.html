@@ -1,0 +1,91 @@
+<style>
+.gmlkeepContentCenter {
+    background: none repeat scroll 0 0 #fff;
+    border-radius: 4px;
+    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.3);
+    margin: 15px auto 5px;
+    padding: 0 0 5px;
+    width: 100%;
+}
+.keepContentCenter div.gmlcontentTitle{
+	width: auto;
+	margin-bottom:0px;
+}
+</style>
+<script>
+</script>
+<div class="pageContent">
+	<form action="__URL__/lookupprojecttemplateupdate/navTabId/__MODULE__" method="post" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);" layoutH="60">
+		<input type="hidden" name="callbackType" value="closeCurrent"><!-- 关闭当前窗口 -->
+		<input type="hidden" name="masid" value="{$mas_vo.id}"><!-- 当前数据单头ID -->
+		<input type="hidden" name="projectid" value="{$mas_vo.projectid}"><!-- 项目ID -->
+		<input type="hidden" name="projectworkid" value="{$mas_vo.projectworkid}"><!-- 项目任务ID -->
+		<div class="pageFormContent applecloth anchorsToolBarParent">
+			<div class="keepContentCenter gmlkeepContentCenter">
+				<div class="contentTitle contentTitle_center gmlcontentTitle">项目模板({$mas_vo.name})项列表</div>
+						<table class="into_table_new nbm_data_table" table_data='{"searching":false}' table_type="view">
+							<thead>
+								<tr>
+									<th style="width:40px;" template_key="serial" template_name="ndnumber">序号</th>
+									<th template_key="select" template_name="subdatum[#index#]" template_html='{:getDataBaseLevelByHtml("mis_auto_fkhvh")}'>资料分类</th>
+									<th template_key="input" template_class="required" template_name="subname[#index#]">资料名称</th>
+									<th template_key="input" template_name="subremark[#index#]">描述</th>
+									<th template_key="input">资料参照</th>
+									<th style='min-width:240px;,width:240px;' template_key="uploadfile" template_data='{"uploadpath":"MisProjectAttachedTemplate"}'>资料上传</th>
+								</tr>					
+							</thead>
+						<tbody id="Addprivy_divA_edit" class="clearfix">
+							<volist name="sublist" id="subvo" key="key2">
+								<tr >
+									<td>
+										<span class="serial_number ">{$key2}</span>
+										<input type="hidden" value="{$key2}" name="ndnumber[]">
+									</td>
+									<td>
+										<div class="list_group_lay">
+											{$subvo['datum']|getFieldBy='id','name','mis_auto_fkhvh'}
+											<!-- <select class="select2 list_select2" name="subdatum[{$key2}]" >
+											{:getDataBaseLevelByHtml("mis_auto_fkhvh",array('selected'=>$subvo['datum']))}
+											</select> -->
+										</div>
+									</td>
+									<td>
+										<div class="list_group_lay">
+											{$subvo.name}
+											<input class="list_input" name="subname[{$key2}]" value="{$subvo.name}" type="hidden">
+										</div>
+									</td>
+									<td>
+										<div class="list_group_lay">
+											{$subvo.remark}
+										</div>
+									</td>
+									<td>
+										<div class="list_group_lay">
+											<ul class="">
+												<volist name="subvo['record']" id="recvo" key="key3">
+													<li>
+														<a href="__URL__/misFileManageDownload/path/{$recvo['name']}/rename/{$recvo['lookname']}" target="_blank" class="attlink">{$recvo['filename']}</a>
+													 </li>
+												</volist>
+											</ul>
+										</div>
+									</td>
+									<td>
+										<div class="tml-row">
+											<div class="js_privyIndex" style="padding-top: 10px;">
+												<input type="hidden" name="subid[]" value="{$subvo.id}">
+											<if condition="$subvo['record']">
+											<a title="查看已上传资料" target="dialog" mask="true" class="tml-btn tml_look_btn" rel="lookupattched" href="__URL__/lookupattched/id/{$subvo['id']}/masid/{$subvo['masid']}">查看已上传资料</a>
+											</if>
+											</div>
+										</div>
+									</td>
+								</tr>
+							</volist>
+						</tbody>
+					</table>
+			</div>
+		</div>
+	</form>
+</div>

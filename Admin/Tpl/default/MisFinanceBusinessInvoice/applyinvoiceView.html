@@ -1,0 +1,289 @@
+<script>
+function batchInvoiceToMakeNext(form) {
+	var $form = $(form);
+	$form.attr("action", '__URL__/batchInvoiceToMake/navTabId/__MODULE__');
+	return validateCallback(form, function(json){
+		DWZ.ajaxDone(json);
+		if(json.statusCode==DWZ.statusCode.ok){
+			if(json.navTabId){
+				navTab.reloadFlag(json.navTabId);
+			}else{
+				if(json.refreshtabs&&json.refreshtabs.data!=null){
+					var t = json.refreshtabs.data;
+					var d=t;
+				}else{
+					var d="";
+				}
+				navTabPageBreak({realnavTab:true,refreshtabs:d},json.rel);
+			}
+			var id = json.refreshtabs.data;
+			navTab.openTab('__MODULE__edit', "__URL__/applyinvoiceView/id/"+id+"/makestatus/-2", {title : '开票申请单',fresh:true});
+		}
+	});
+}
+//用户点击确认收款的时候,弹出diolog
+//时间运算 dirc by yuansl
+function todate(str,par){
+	var year = parseInt(str.substr(0,4));
+	var day = str.substr(8,2);
+	var mon = str.substr(5,2);
+	var monpten = str.substr(5,1);
+	var newmon = 0;
+	var newyear = 0;
+		 if(monpten == '0'){
+			 mon = parseInt(str.substr(6,1));
+		 }else{
+			 mon = parseInt(mon);
+		 }
+		
+	var newmon =  parseInt(par) + mon -1;
+		if(newmon > 12){
+			year = year + 1;
+			newmon =  newmon - 12 ;
+		}
+		
+		if(newmon < 10){
+			newmon = '0' + newmon ;
+		}
+		newdate = year + '-' + newmon + '-' + day ;
+		return newdate;
+}
+//判断用户输入开票期正误 dirc by yuansl
+function contrlindexnum(obx){
+	var invla = $(obx).val();
+	//alert(invla);return false;
+	var maxvla = {$vo.surinvoicenum};//剩余开票期数
+	var nextinvoicetime = $("#nextinvoicetime").val();//下次开票开始日期
+	var nextinvoiceendtime = $("#nextinvoiceendtime").val();//下次开票结束日期
+	if(invla > maxvla ){
+		alertMsg.error('开票期数已超过剩余数!');
+		return false;
+		}
+	if(invla <= 0 ||invla ==null){
+		alertMsg.error('请规范输入合法数据!');
+		return false;
+		}
+	if(invla >= 1 && invla <= maxvla ){
+				//当开票期数被修改之后,对应的开票金额会累加
+				var financeamount = {$vo.amount};
+				financeamount = parseInt(financeamount) * parseInt(invla);
+				//alert(financeamount);
+				$("#financeamount").val( financeamount);
+				newdaten = todate(nextinvoiceendtime,invla);
+				$("#nextinvoiceendtime").parent().find(".textInput").val(newdaten);
+				//重构url
+				var urlx = "__URL__/lookupgetdata/id/{$vo.id}/amount/"+financeamount +"/indexnum/" + invla +"/nextinvoicetime/" + newdatei +"/nextinvoiceendtime/" + newdaten;
+				$("#dialogconfir").attr('href',urlx);
+			}
+		}
+</script>
+<div class="page">
+	<form method="post" action="__URL__/batchInvoiceToMake/rel/jbsxmisfinaneinvoiceBox/" class="pageForm required-validate" onSubmit="return validateCallback(this, navTabAjaxDone);" enctype="multipart/form-data">
+		<input type="hidden" name="callbackType" value="closeCurrent">
+		<input type="hidden" name="refreshtabs[data]" value="{$nextinvoice['id']}" >
+		<input type="hidden" name="id" value="{$vo.id}">
+		<input type="hidden" name="suspend" value="{$vo.suspend}">
+		<div class="pageFormContent applecloth" layoutH="55">
+			<div class="keepContentCenter">
+				<h2 class="contentTitle contentTitle_center">开票申请单</h2>
+				<fieldset>
+					<legend class="fieldset_legend_toggle">一、合同信息</legend>
+					<div class="tml-row">
+						<div class="tml-form-col">
+							<label title="合同编号">合同编号：</label>
+							<input  value="{$vo.objorderno}"  type="text" class=" textInput" readonly="readonly"/>
+						</div>
+						<div class="tml-form-col">
+							<label title="开据的发票类型">开据的发票类型:</label>
+							<input type="text" readonly="readonly" value="{:getSelectByName('financemakeinvoicetype', $vo['makeinvoicetype'])}" />
+						</div>
+						<div class="tml-form-col">
+							<label title="合同开始日期">合同开始日期:</label>
+							<span class="xyInputWithUnit">
+	                            <input type="text"  name="effectdate"  readonly="readonly" class="tml-border-r0 Wdate" value="{$vo.effectdate|transTime}" />
+	                            <span class="xyInputWithUnitButton inputDateGrayButton"></span>
+							</span>
+						</div>
+						<div class="tml-form-col">
+							<label title="合同结束日期">合同结束日期:</label>
+							<span class="xyInputWithUnit">
+	                            <input type="text"  name="expirydate"  readonly="readonly" class="tml-border-r0 Wdate" value="{$vo.expirydate|transTime}" />
+	                            <span class="xyInputWithUnitButton inputDateGrayButton"></span>
+							</span>
+						</div>
+						<div class="tml-form-col">
+							<label title="合同总金额">合同总金额:</label>
+							<span class="xyInputWithUnit">
+								<input type="text" name="invoicetotalamount" readonly="readonly" class="" value="{$vo.invoicetotalamount|getDigits}" />
+								<span class="input-addon-unit" title="元">元</span>
+							</span>
+						</div>
+						<div class="tml-form-col">
+							<label title="应开票金额">应开票金额:</label>
+							<span class="xyInputWithUnit">
+								<input type="text" name="amount" readonly="readonly" class="" value="{$vo.amount|getDigits}" />
+								<span class="input-addon-unit" title="元">元</span>
+							</span>
+						</div>
+					</div>
+				</fieldset>	
+				<fieldset>
+					<legend class="fieldset_legend_toggle">二、发票信息 </legend>
+					<div class="tml-form-row">
+						<label title="客户全称">客户全称：</label>
+						<input type="text" name="customer" readonly="readonly"  class="" value="[{$vo.customerid|getFieldBy='id','code','mis_sales_customer'}] {$vo.customername}" />
+					</div>
+					<if condition="$vo.objmodelname eq 'MisBusinessContractCivilianBlasting' || $vo.objmodelname eq 'MisBusinessReceiptNote'">
+						<div class="tml-form-row">
+							<label title="客户二级单位">客户二级单位:</label>
+							<input type="text" name="subunit" readonly="readonly" class="" value="{$vo.subunit}"  />
+						</div>
+					</if>
+					<div class="tml-form-row">
+						<label title="客户税号">客户税号:</label>
+						<input type="text" name="taxno" readonly="readonly" class="" value="{$vo.taxno}" />
+					</div>
+					<div class="tml-form-row">
+						<label title="客户地址">客户地址:</label>
+						<input type="text" name="caddr" readonly="readonly" class="" value="{$vo.caddr}" />
+					</div>
+					<div class="tml-row">
+						<div class="tml-form-col">
+							<label title="客户电话">客户电话:</label>
+							<input type="text" name="tel" readonly="readonly" class="" value="{$vo.tel}" />
+						</div>
+						<div class="tml-form-col">
+							<label title="开户行">开户行:</label>
+							<input type="text" name="bankname" readonly="readonly" class="org1.bankname" value="{$vo.bankname}" /> 
+						</div>
+						<div class="tml-form-col">
+							<label title="开户账号">开户账号:</label>
+							<input type="text" name="bank" readonly="readonly"  class="org1.bank" value="{$vo.bank}" /> 
+						</div>
+					</div>
+					<div class="tml-row">
+			<!-- yuansl -->
+							<div class="tml-form-col">
+								<label title="本次开票开始时间">本次开票开始时间 ：</label>
+								<input  class="textInput" readonly="readonly"   value="{$vo.nextinvoicetime|transTime}" />
+								<input  type="hidden"  id = "nextinvoicetime" value="{$vo.nextinvoicetime|transTime}" />
+							</div>
+							<div class="tml-form-col">
+								<label title="本次开票结束时间">本次开票结束时间：</label>
+								<input  class="textInput"  readonly="readonly"   value="{$vo.nextinvoiceendtime|transTime}" />
+								<input  type="hidden"  id = "nextinvoiceendtime" value="{$vo.nextinvoiceendtime|transTime}" />
+							</div>
+			<!-- yuansl -->
+						<div class="tml-form-col">
+							<label title="下次开票结束时间">总开票期数：</label>
+							<input type="text" readonly="readonly" id ="totalcoun" value="{$vo.invoicetotalnum}" />
+						</div>
+						<div class="tml-form-col">
+							<label title="剩余开票期数">剩余开票期数：</label>
+							<input type="text" readonly="readonly" value="{$vo.surinvoicenum}" />  
+						</div>
+						<div class="tml-form-col">
+							<label title="已开票期数">已开票期数：</label>
+							<input type="text" readonly="readonly"  value="{$vo['invoicetotalnum'] - $vo['surinvoicenum']}" />
+						</div>
+							<if condition="$makestatus eq -2 and $vo.suspend eq 0" >
+							<if condition="$_SESSION.a eq 1 or $_SESSION.misfinancebusinessinvoice_batchinvoicetomake">
+						<!-- yuansl -->
+								<div class="tml-form-col"><!-- yuanl 原来为"当次开票期数"-->
+									<label title="已开票期数">开票合计数：</label>
+									<if condition="$index eq 1">
+										<input type="text" name="indexnum" class="required number"  min="1" max="{$vo['surinvoicenum']}" onchange="contrlindexnum(this)" value="1" />
+									<else/>
+										<input type="text" name="indexnum" class="required number" readonly  value="1" />
+									</if>
+								</div>
+							<!-- 是否已收款
+							<p>
+								<label>确认收款:</label>
+								<!-- <input type="checkbox" name="financestatus" value="1" onclick="checkAll(this);"> 
+								<a href="__URL__/index/id/{$vo.id}"   id="dialogconfir" target="dialog" title="财务开票-确认收款" width="450" height="240" rel="__MODULE__11" mask="true">保存</a>
+							</p>
+							-->
+							<!-- 
+								<div class=" istrue control_display_none">
+									<p>
+										<label  title="已开票期数">收款金额:</label>
+										<span class="xyInputWithUnit">
+				                            <input type="text" name="financeamount"  id="financeamount" value="{$vo.amount|getDigits}" onblur="FormatNumber(this);" class=" textInput"/>
+				                            <span class="input-addon-unit" title="元">元</span>
+				                        </span>
+									</p>
+									<p>
+										<label  title="已开票期数">收款日期:</label>
+										<span class="xyInputWithUnit">
+			                                <input id="" type="text"  name="finamcetime"  readonly="readonly" class="tml-border-r0 Wdate required" value="{$_SERVER['REQUEST_TIME']|transTime}" />
+			                                <span class="xyInputWithUnitButton inputDateGrayButton"></span>
+										</span>
+									</p>
+								</div>
+							 -->
+						</if>
+					</if>
+				</div>
+				</fieldset>		
+				<if condition="$attcount">
+					<fieldset>
+						<legend class="fieldset_legend_toggle"><b>附件信息</b></legend>	
+						<if condition="$attarry">
+							<volist name="attarry" id="att">
+							<div class="uploadify-queue-item">
+								<div class="tml-form-row">
+									<label>附件{$key+1}</label>
+									<a class="attlink" rel="{$att['id']}" target="_blank" href="__PUBLIC__/{$att['attached']}">
+										<span class="info">{$att['upname']}</span>
+									</a>
+									<a href="__URL__/lookupDocumentCollateAtta/t/0/id/{$att['id']}" title="文件归档" target="dialog">
+	                           			<span class="tml-icon tml-icon-file"></span>
+	                           			<span class="tml-icon-text">归档</span>
+		                      		</a>
+								</div>
+							</volist>
+						</if>
+					</fieldset>		
+				</if>	
+	            	<fieldset class="zlqk_1">
+	                	<legend class="fieldset_legend_toggle"><b>备注说明</b></legend>
+	                     <div class="tml-form-row">
+	                          <label>备注说明：</label>
+	                          <textarea  readonly="readonly" name="remark" minlength="0" maxlength="100" class="textInput">{$vo.remark}</textarea>
+	                    </div>
+	                </fieldset>
+                </if>
+                <fieldset>
+					<legend class="fieldset_legend_toggle"><b>页脚</b></legend>
+					<div class="tml-row">
+						<div class="tml-form-col">
+							<label title="制单人">制单人：</label>
+							<input type="text" readonly="readonly" class="textInput" value="{$vo.createid|getFieldBy='id','name','user'}" />
+						</div>
+						<div class="tml-form-col">
+							<label title="制单时间">制单时间：</label>
+							<input  class="textInput" readonly="readonly" value="{$vo.createtime|transTime}" />
+						</div>
+					</div>
+				</fieldset>
+			</div>
+		</div>
+		<div class="formBar">
+			<ul>
+				<if condition="$makestatus eq -2 and $vo.suspend eq 0 and $vo.surinvoicenum neq 0" >
+				<if condition="$_SESSION.a eq 1 or $_SESSION.misfinancebusinessinvoice_batchinvoicetomake">
+					<li>
+						<!-- dirc by yuansl -->
+								<a class="tml-btn tml-btn-blue" href="__URL__/lookupgetdata/id/{$vo.id}/amount/{$vo.amount|getDigits}/indexnum/1/nextinvoicetime/{$vo.nextinvoicetime|transTime}/nextinvoiceendtime/{$vo.nextinvoiceendtime|transTime}" id="dialogconfir" target="dialog" title="财务开票-确认收款" width="470" height="230" rel="__MODULE__11" mask="true">开票并收款</a>
+					</li>
+					<li>
+								<button class="tml-btn" type="submit">开票</button>
+					</li>
+				</if>
+				</if>
+				<li><button type="button" class="close tml-btn">{$Think.lang.close}</button></li>
+			</ul>
+		</div>
+	</form>
+</div>

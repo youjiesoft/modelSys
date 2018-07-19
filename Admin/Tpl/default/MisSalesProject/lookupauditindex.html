@@ -1,0 +1,183 @@
+<script type="text/javascript">
+    function showlimanage(obj){
+    	var $box=navTab.getCurrentPanel();
+    	$box.find(".tabs .tabsHeader .tabsHeaderContent ul li").each(function (){
+    		$ulrel=$(this).find("a").attr("rel");
+    		if($ulrel == obj){
+    			$(this).find("a").click();
+    		}
+    	});
+    }
+    function shrink(obj){
+    	if($(obj).next("ul").is(':visible')){
+    		$(obj).parent().find("ul").slideUp();
+    	}else{
+    		$(obj).parent().find("ul").slideUp();
+    		$(obj).next("ul").slideDown();
+    	}
+    }
+</script>
+<div class="pageContent tml-p5">
+    <div class="tabs tabh" eventType="click">
+        <div class="tabsHeader treeleft">
+            <div class="collapse" layouth="9"><div class="toggleCollapse"><div></div></div></div>
+            <div class="tabsHeaderContent close" style="border:none;">
+                <div class="toggleCollapse" style="border:none;height:0px;"><div style="right:-7px;"></div></div>
+                <div class="clearfix p5" style="background: #ddd;border-bottom: 1px solid #3c78b6;">
+                    <h3 class="left">审核流</h3>
+                    <div class="right">
+                        (<a href="javascript:;" onclick="showlimanage('missalesproject_projectmanageview');"><span style="color:blue;">项目信息</span></a>|<a href="javascript:;" onclick="showlimanage('missalesproject_zhixingview');" ><span style="color:blue;">监控信息</span></a>)
+                    </div>
+                </div>
+                <a href="javascript:;" onclick="shrink(this)">
+                    <div class="clearfix p5" style="background: #ddd;border-bottom: 1px solid #3c78b6;">
+                        <h3 class="left">项目综合</h3>
+                    </div>
+                </a>
+                <ul layouth="202">
+                    <li style="display:none;"><a href="__URL__/lookupEdit/stepType/1/projectid/{$projectid}" rel="missalesproject_projectmanageview" class="j-ajax"><span>项目综合信息</span></a></li>
+                    <li style="display:none;"><a href="__URL__/lookupShowAuditWorkFlowManage/projectid/{$projectid}" rel="missalesproject_zhixingview" class="j-ajax"><span>综合信息</span></a></li>
+                    <if condition="$_SESSION.a eq 1 or $_SESSION.misprojectstagetract_index">
+                        <li><a href="__APP__/MisProjectStageTract/index/projectid/{$projectid}" rel="misprojectstagetract_progress" class="j-ajax"><span>项目进度</span></a></li>              
+                    </if>
+                    <!-- 项目周报 -->
+                    <if condition="$_SESSION.a eq 1 or $_SESSION.misprojectweekreport_index">
+                        <li><a href="__URL__/lookupSynthesis/md/pwr/stepType/6/rel/missalesproject_weekreport/id/{$projectid}" rel="missalesproject_weekreport" class="j-ajax"><span>项目周报</span></a></li>
+                    </if>
+                    <!-- 项目里程碑 -->
+                    <if condition="$_SESSION.a eq 1 or $_SESSION.misprojectmilestonemas_index">
+                        <li><a href="__URL__/lookupSynthesis/md/pmm/stepType/2/rel/missalesproject_costanalysis/id/{$projectid}" rel="missalesproject_milestonemas" class="j-ajax"><span>进度计划</span></a></li>
+                    </if>
+                    <if condition="$_SESSION.a eq 1 or $_SESSION.missalesprojectuser_index">
+                        <li><a href="__APP__/MisSalesProjectUser/index/projectid/{$projectid}" rel="missalesproject_projectuserlist" class="j-ajax"><span>项目人员</span></a></li>
+                    </if>
+                    <if condition="$_SESSION.a eq 1 or $_SESSION.missalesprojectteam_index">
+                        <li><a href="__APP__/MisSalesProjectTeam/index/projectid/{$projectid}" rel="missalesproject_constructionlist" class="j-ajax"><span>施工班组</span></a></li>
+                    </if>
+                    <if condition="$_SESSION.a eq 1 or $_SESSION.missalesprojectmachineryequipment_index">
+                        <li><a href="__APP__/MisSalesProjectMachineryequipment/index/projectid/{$projectid}" rel="missalesproject_machineryequipmentlist" class="j-ajax"><span>机械设备</span></a></li>
+                    </if>
+                    <if condition="$_SESSION.a eq 1 or $_SESSION.misprojectimagestoreroommas_index">                    
+                        <li><a href="__APP__/MisProjectImagestoreroomMas/index/projectid/{$projectid}" rel="misprojectimagestoreroommas_index" class="j-ajax"><span>项目图库</span></a></li>
+                    </if>
+                </ul>
+                <a href="javascript:;" onclick="shrink(this)">
+                    <div class="clearfix p5" style="background: #ddd;border-bottom: 1px solid #3c78b6;">
+                        <h3 class="left">项目监控</h3>
+                    </div>
+                </a>
+                <ul layouth="202" style="display:none;">
+                	 <!-- 阶段进度分析 -->
+                    <if condition="$_SESSION.a eq 1 or $_SESSION.misprojectscheduleanalysis_index">
+                        <li><a href="__URL__/lookupSynthesis/md/psay/stepType/2/rel/missalesproject_scheduleanalysis/id/{$projectid}" rel="missalesproject_scheduleanalysis" class="j-ajax"><span>阶段进度分析</span></a></li>
+                    </if>
+                    <!-- 阶段质量分析 -->
+                    <if condition="$_SESSION.a eq 1 or $_SESSION.misprojectqualityanalysis_index">
+                        <li><a href="__URL__/lookupSynthesis/md/pqay/stepType/2/rel/missalesproject_qualityanalysis/id/{$projectid}" rel="missalesproject_qualityanalysis" class="j-ajax"><span>阶段质量分析</span></a></li>
+                    </if>
+                    <!-- 阶段成本分析 -->
+                    <if condition="$_SESSION.a eq 1 or $_SESSION.misprojectcostanalysis_index">
+                        <li><a href="__URL__/lookupSynthesis/md/pcay/stepType/2/rel/missalesproject_costanalysis/id/{$projectid}" rel="missalesproject_costanalysis" class="j-ajax"><span>阶段成本分析</span></a></li>
+                    </if>
+                </ul>
+                <a href="javascript:;" onclick="shrink(this)">
+                    <div class="clearfix p5" style="background: #ddd;border-bottom: 1px solid #3c78b6;">
+                        <h3 class="left">项目成本</h3>
+                    </div>
+                </a>
+                <ul layouth="202" style="display:none;">
+                	<!-- 项目物质申请 -->
+                    <if condition="$_SESSION.a eq 1 or $_SESSION.misprojectmaterialapplicationmas_index">
+                        <li><a href="__URL__/lookupSynthesis/md/pmam/stepType/2/rel/missalesproject_materialapplicationmas/id/{$projectid}" rel="missalesproject_materialapplicationmas" class="j-ajax"><span>项目物资申请</span></a></li>
+                    </if>
+                    <!-- 工程量申报表 -->
+                    <if condition="$_SESSION.a eq 1 or $_SESSION.misprojectmeasurereport_index">
+                        <li><a href="__URL__/lookupSynthesis/md/pmr/stepType/6/rel/missalesproject_measurereport/id/{$projectid}" rel="missalesproject_measurereport" class="j-ajax"><span>工程量申报表</span></a></li>
+                    </if>
+                    <!-- 工程进度款审批 -->
+                    <if condition="$_SESSION.a eq 1 or $_SESSION.misprojectpaymentmas_index">
+                        <li><a href="__URL__/lookupSynthesis/md/ppm/stepType/2/rel/missalesproject_paymentmas/id/{$projectid}" rel="missalesproject_paymentmas" class="j-ajax"><span>工程进度款审批</span></a></li>
+                    </if>
+                    <if condition="$_SESSION.a eq 1 or $_SESSION.misprojectcloseoutmas_index">
+                        <li><a href="__URL__/lookupSynthesis/md/pcm/stepType/2/rel/missalesproject_closeoutmas/id/{$projectid}" rel="missalesproject_closeoutmas" class="j-ajax"><span>工程结算款审批</span></a></li>
+                    </if>
+                </ul>
+                <a href="javascript:;" onclick="shrink(this)">
+                    <div class="clearfix p5" style="background: #ddd;border-bottom: 1px solid #3c78b6;">
+                        <h3 class="left">项目预算</h3>
+                    </div>
+                </a>
+                <ul layouth="202" style="display:none;">
+                </ul>
+                <a href="javascript:;" onclick="shrink(this)">
+                    <div class="clearfix p5" style="background: #ddd;border-bottom: 1px solid #3c78b6;">
+                        <h3 class="left">项目结算</h3>
+                    </div>
+                </a>
+                <ul layouth="202" style="display:none;">
+                </ul>
+            </div>
+        </div>
+        <div class="tabsContent tml-p0 treeright unitBox">
+        	<!-- 项目监控 -->
+            <div id="missalesproject_projectmanageview"></div>
+            <div id="missalesproject_zhixingview"></div>
+            <if condition="$_SESSION.a eq 1 or $_SESSION.misprojectstagetract_index">
+                <div id="misprojectstagetract_progress"></div>          
+            </if>
+            <if condition="$_SESSION.a eq 1 or $_SESSION.misprojectweekreport_index">
+                <div id="missalesproject_weekreport" style="border-top:none;"></div>         
+            </if>
+            <!-- 项目里程碑 -->
+            <if condition="$_SESSION.a eq 1 or $_SESSION.misprojectmilestonemas_index">
+                <div id="missalesproject_milestonemas"></div>           
+            </if>
+            <!-- 项目人员 -->
+            <if condition="$_SESSION.a eq 1 or $_SESSION.missalesprojectuser_index">
+                <div id="missalesproject_projectuserlist"></div>
+            </if>
+            <!-- 施工班组 -->
+            <if condition="$_SESSION.a eq 1 or $_SESSION.missalesprojectteam_index">
+                <div id="missalesproject_constructionlist"></div>
+            </if>
+            <!-- 机械设备 -->
+            <if condition="$_SESSION.a eq 1 or $_SESSION.missalesprojectmachineryequipment_index">
+                <div id="missalesproject_machineryequipmentlist"></div>
+            </if>
+            <!-- 项目图库 -->
+            <if condition="$_SESSION.a eq 1 or $_SESSION.misprojectimagestoreroommas_index">    
+                <div id="misprojectimagestoreroommas_view"></div>
+            </if>
+            <!-- 项目监控 -->
+            
+            <!-- 阶段进度分析 -->
+            <if condition="$_SESSION.a eq 1 or $_SESSION.misprojectscheduleanalysis_index">
+                <div id="missalesproject_scheduleanalysis"></div>           
+            </if>
+            <!-- 阶段质量分析 -->
+            <if condition="$_SESSION.a eq 1 or $_SESSION.misprojectqualityanalysis_index">
+                <div id="missalesproject_qualityanalysis"></div>            
+            </if>
+            <!-- 阶段成本分析 -->
+            <if condition="$_SESSION.a eq 1 or $_SESSION.misprojectcostanalysis_index">
+                <div id="missalesproject_costanalysis"></div>           
+            </if>
+            <!-- 项目成本 -->
+            
+            <!-- 项目物质申请 -->
+            <if condition="$_SESSION.a eq 1 or $_SESSION.misprojectmaterialapplicationmas_index">
+                <div id="missalesproject_materialapplicationmas"></div>         
+            </if>
+            <!-- 工程量申报表 -->
+            <if condition="$_SESSION.a eq 1 or $_SESSION.misprojectmeasurereport_index">
+                <div id="missalesproject_measurereport"></div>           
+            </if>
+            <if condition="$_SESSION.a eq 1 or $_SESSION.misprojectpaymentmas_index">
+                <div id="missalesproject_paymentmas"></div>            
+            </if>
+            <if condition="$_SESSION.a eq 1 or $_SESSION.misprojectcloseoutmas_index">
+                <div id="missalesproject_closeoutmas"></div>           
+            </if>
+        </div>
+    </div>
+</div>

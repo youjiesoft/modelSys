@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>转正提醒统计报表</title>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/jqGrid/themes/redmond/jquery-ui-1.8.2.custom.css" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/jqGrid/css/ui.jqgrid.css" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/jqGrid/css/redmond/jquery-ui-1.8.2.custom.css" />
+<script src="__PUBLIC__/Js/jquery-1.7.1.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Js/jquery.textSearch-1.0.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Js/jqGrid/js/i18n/grid.locale-en.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Js/jqGrid/js/jquery.jqGrid.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Js/report_forms.js" type="text/javascript"></script>
+
+<style>
+ .ui-jqgrid tr.jqgrow td {line-height: 20px;}
+ .ui-jqgrid .ui-jqgrid-sortable {cursor:pointer;line-height: 20px;}
+ .clear{ clear:both;}
+ .export_new{ float:left;}
+ .export_new button{background:#E3E3E3; width:100px; height:21px; text-align:center; cursor:pointer; border:none; font-size:12px; line-height:21px; margin-bottom:2px;}
+ .graph_new{ float:left; background:#E3E3E3; width:59px; height:21px; cursor:pointer; margin-bottom:2px; text-align:center; margin-left:10px;}
+ .graph_new a{ line-height:21px; height:21px;}
+ .xh_new{ float:left; width:90px; text-align:right; line-height:20px;}
+ .xh{ float:left; padding-top:10px;}
+ td{font-size:12px;}
+ th{font-size:12px;}
+</style>  
+<script>
+$(function(){
+	var h = $(window).height()-200;
+    $("#jsonlookupHrPersonnelPositiveInfo").jqGrid({
+        url:"__URL__/lookupHrPersonnelPositiveInfo{$suburl}",
+		mtype: "POST",
+		postData:{listtype:1},
+		datatype: "json",
+		colNames:{$colNames},
+		colModel:[
+				{name:'id',index:'id',key : true,align:'center',hidden:true},
+				{name:'orderno',index:'orderno',align:'center'},
+				{name:'name',index:'name',align:'center'},
+				{name:'deptname',index:'deptname',align:'center'},
+				{name:'dutyname',index:'dutyname',align:'center'},
+				{name:'indate',index:'indate',align:'center'},
+	     	 ],
+	   	rowNum:50,
+	   	pager: '#pjmaplookuplookupHrPersonnelPositiveInfo',
+	   	sortname: 'id',
+		//autowidth: true,
+	    viewrecords: true,
+	    sortorder: "asc",
+	    scroll:true,
+	    altRows : true,
+	    rownumbers: true,
+	    height: h,
+       /*gridComplete: function() {
+	   var gridName = "jsonmaplookupprocurementexecution";
+	   Merger(gridName, 'executeid','executeid');
+        }*/
+    });
+});
+</script>
+</head>
+<body>
+<div class="pageContent" layoutH="0">
+    <div style=" width:95%; margin:0 auto; overflow:hidden;">
+		<button type="button" onclick="lookupfunc_exportExcel('__APP__','jsonlookupHrPersonnelPositiveInfo','{$reporttype}',1,'{$suburl}')">导出EXCEL</button>
+		<button type="button" onclick="lookupfunc_exportExcel('__APP__','jsonlookupHrPersonnelPositiveInfo','{$reporttype}',2,'{$suburl}')">导出PDF</button>
+	</div>
+	<div class="clear"></div>
+	<br/>
+    <div style=" width:95%; margin:0 auto;">
+        <table id="jsonlookupHrPersonnelPositiveInfo"></table>
+        <div id="pjmaplookuplookupHrPersonnelPositiveInfo"></div>
+    </div>
+</div>
+</body>
+</html>

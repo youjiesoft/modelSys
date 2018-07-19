@@ -1,0 +1,146 @@
+<div class="page">
+	<div class="pageContent applecloth" layoutH="0">
+		<form method="post" action="__URL__/update/md/{$md}/rel/mislogisticsfixhandlebox" class="pageForm required-validate" onsubmit="return validateCallback(this,navTabAjaxDone);">
+			<input type="hidden" name="id" value="{$vo['id']}" />
+			<input type="hidden" name="dotype" value="0"/>
+			<input type="hidden" name="callbackType" value="closeCurrent">
+			<input type="hidden" name="handle" value="2"/>
+		 <div class="pageFormContent applecloth" layoutH="56">
+				<div class="keepContentCenter form-affix-content">
+					<H2 class="contentTitle contentTitle_center form-affix-title">日常维护申请{:W('ShowAdvices',array('id'=>$vo['id']))}
+						{:W('ShowOrderno',array(0,'mis_logistics_fix_log',$vo['orderno']))}
+					</H2>
+			<img class="right" style="position: absolute; z-index: 100;right:20px;" <if condition="$dotype eq 1">src="__PUBLIC__/Images/stamp-done.png"<elseif condition="$dotype eq 2"/>src="__PUBLIC__/Images/stamp-doing.png"<elseif condition="$dotype eq 0"/>src="__PUBLIC__/Images/stamp-donot.png"</if>/>
+				<fieldset>
+				<legend class="fieldset_legend_toggle side-catalog-text">
+						<b>报修信息</b>
+					</legend>
+					<div class="tml-row">
+						<div class="tml-form-col">
+							<label>{$fields["falut_type"]}:</label>
+							<input type="text" readonly="readonly" value="{$vo.falut_type|getFieldBy='id','name','mis_logistics_fix_logtype'}" />
+						</div>
+						</div>
+						</fieldset>
+						 <fieldset>
+                    <legend>
+                        <b>设备明细</b>
+                    </legend>
+                         <table class="tml-table" width="100%">
+				    <thead>
+				        <tr>
+				       		<th width="40">序号</th>
+							<th width="120">设备编号</th>
+							<th >设备类型</th>
+							<th width="100">设备名称</th>
+							<th>设备型号</th>
+							<th>现存部门</th>
+							<th>申请总数量</th>
+							<th width="40">单位</th>
+							<th>可维修数量</th>
+							<th>需维修数量</th>
+						</tr>
+				    </thead>
+				    <tbody >
+				    <if condition="$sublist">
+				    <volist name="sublist" id="subvo" key="i">
+				    <tr>
+				    <td >{$i}</td>
+				    <td>
+						<input   type="hidden"   value="{$subvo.manageid}" name="manageid[]">
+						<input type="hidden"  name="subid[]" value="{$subvo.id}"/>
+						<input type="hidden"  name="oldqty[]" value="{$subvo.qty}"/>
+						<input type="hidden"  name="appsubid[]" value="{$subvo.appsubid}"/>
+						<input class="applications" type="hidden" value="{$subvo.appsubid}{$subvo.manageid}" name="submanageid[]">
+						{$subvo.manageid|getFieldBy='id','orderno','mis_work_facility_manage'}
+					</td>
+				 	<td>{$subvo.manageid|getFieldBy='id','equipmenttype','mis_work_facility_manage'|getFieldBy='id','name','mis_work_facility_type'}</td>
+				  	<td>{$subvo.manageid|getFieldBy='id','equipmentname','mis_work_facility_manage'}</td>
+				   	<td>{$subvo.manageid|getFieldBy='id','version','mis_work_facility_manage'}</td>
+				   	<td>{$subvo.appsubid|getFieldBy='id','applydepartmentid','mis_work_facility_distribute'|getFieldBy='id','name','mis_system_department'}</td>
+				    <td>{$subvo.appsubid|getFieldBy='id','appqty','mis_work_facility_distribute'|getDigits}</td>
+				    <td>{$subvo.manageid|getFieldBy='id','unit','mis_work_facility_manage'|getFieldBy='id','name','mis_product_unit'}</td>
+				    <td>{$subvo.sumreturnqty|getDigits}</td>
+				    <td>  {$subvo.qty|getDigits}</td>
+				    </tr>
+				    </volist>
+				    </if>
+				    </tbody>
+				</table>
+                </fieldset>
+					 <fieldset>
+					  <legend>
+                        <b>故障描述</b>
+                    </legend>
+					<div class="tml-form-row">
+						<label>{$fields["fault_cause"]}:</label>
+						<textarea style="height:100px;" rows="2"  readonly="readonly" name="fault_cause">{$vo['fault_cause']}</textarea>
+					</div>
+					<if condition="$attarry">
+					<div class="tml-form-row"><!--此处为上传列表-->
+						<label>附件:</label>
+						<span id="swfupload_mislogisticsfixlog_edit-queue" class="info uploadify_queue">
+							<if condition="$attarry">
+								<volist name="attarry" id="att">
+									<div class="uploadify-queue-item">
+										<span class="fileName"><a href="__URL__/misFileManageDownload/path/{$att['attached']|base64_encode}/rename/{$att['upname']}" target="_blank">{$att['upname']}</a></span>
+										<a  class="tml-btn tml-btn-small tml-btn-green" href="__URL__/lookupDocumentCollateAtta/t/0/id/{$att['id']}" mask="true" rel="aa" title="文件归档" target="dialog"><span class="tml-icon tml-icon-file"></span><span class="tml-icon-text">归档</span></a>
+									</div>
+								</volist>
+							</if>
+						</span>
+					</div>
+					</if>
+				</fieldset>
+			<fieldset>
+			<legend class="fieldset_legend_toggle side-catalog-text">
+						<b>维护信息</b>
+					</legend>
+				<div class="tml-row">
+					<div class="tml-form-col">
+						<label>结 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 果:</label>
+						<input type="text" readonly="readonly"
+							<if condition="$vo.fixed eq 1">value='修复'</if>
+							<if condition="$vo.fixed eq 2">value='未修复'</if>
+							<if condition="$vo.fixed eq 3">value='报废'</if>
+							<if condition="$vo.fixed eq 4">value='外修'</if>
+							<if condition="$vo.fixed eq 5">value='其他'</if>
+						/>
+					</div>
+				</div>
+				<div class="tml-form-row">
+					<label>{$fields["solution"]}:</label>
+					<textarea cols="50" rows="2" readonly="readonly" class="required" name="solution" >{$vo.solution}</textarea>
+				</div>
+				<div class="tml-row">
+					<div class="tml-form-col">
+						<label>检修人员:</label>
+						<input type="text" readonly="readonly" class="required" value="{$vo.fix_man}" />
+					</div>
+					<div class="tml-form-col">
+						<label>检修日期:</label>
+						<input type="text" readonly="readonly" value="{$vo.fix_time|transtime}" />
+					</div>
+				</div>
+				<if condition="$attarry">
+					<div class="tml-form-row"><!--此处为上传列表-->
+						<label>附件:</label>
+						<span id="swfupload_mislogisticsfixlog_edit-queue" class="info uploadify_queue">
+							<if condition="$attarry">
+								<volist name="attarry" id="att">
+									<div class="uploadify-queue-item">
+										<span class="fileName"><a href="__URL__/misFileManageDownload/path/{$att['attached']|base64_encode}/rename/{$att['upname']}" target="_blank">{$att['upname']}</a></span>
+										<a class="tml-btn tml-btn-small tml-btn-green" href="__URL__/lookupDocumentCollateAtta/t/0/id/{$att['id']}" mask="true" rel="aa" title="文件归档" target="dialog"><span class="tml-icon tml-icon-file"></span><span class="tml-icon-text">归档</span></a>
+									</div>
+								</volist>
+							</if>
+						</span>
+					</div>
+				</if>
+				</fieldset>
+				</div>
+			</div>
+			{:W('ShowAction')}
+	</form>
+	</div>
+</div>

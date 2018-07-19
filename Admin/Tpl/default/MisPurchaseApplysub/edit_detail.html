@@ -1,0 +1,221 @@
+<script>
+var $box= $.pdialog.getCurrent();
+var $istax = '{$istax}';
+function editapplysub(){
+	//数量 
+	var qty = $box.find("input[name='qty']").val();
+	//单价
+	var showprice = $box.find("input[name='showprice']").val();
+	//获得税金
+	var taxval=$box.find("select.taxid option:selected").attr("rel");
+	
+	qty = Number(qty.replace(/,/g,""));
+	showprice = Number(showprice.replace(/,/g,""));
+	taxval = Number(taxval.replace(/,/g,""));
+	taxval = (100+taxval)/100;
+	//本身总价
+	var showamount = comboxMathematicalOperation(qty+"*"+showprice);
+	//向前计算总价
+	var amount = comboxMathematicalOperation(qty+"*"+showprice+"/"+taxval);
+	//向后计算总价
+	var taxamount=comboxMathematicalOperation(qty+"*"+showprice+"*"+taxval);
+	if($istax == 1){
+		//表示是含税中的单价进行计算。我们则计算出了税前总价
+		$box.find("input[name='showamount']").val(FormatN(amount));
+		//税后价就是本身的总价
+		$box.find("input[name='taxamount']").val(FormatN(showamount));
+		
+		$box.find("input[name='qty']").val(FormatN(qty));
+		$box.find("input[name='showprice']").val(FormatN(showprice));
+	}else{
+		//基本总价 
+		$box.find("input[name='showamount']").val(FormatN(showamount));
+		//表示是含税中的单价进行计算。我们则计算出了税后总价 
+		$box.find("input[name='taxamount']").val(FormatN(taxamount));
+		$box.find("input[name='qty']").val(FormatN(qty));
+		$box.find("input[name='showprice']").val(FormatN(showprice));
+	}
+}
+function mispurchaseapplysubu_pdateunit(json,obj){
+	//物料ID
+	var prodid=json.prodid;
+	if(prodid){
+		//主单位
+		var baseunitid = json.baseunitid;
+		//数组ID 循环时方便锁定到某个input 
+		var $ref =$(obj).parents("div").find("select.unit_obj");
+		$.ajax({
+			type:'POST',dataType:"json",url:"__URL__/comboxGetAllUnit",cache:false,
+			data:{prodid:prodid,baseunitid:baseunitid},
+			success:function(json){
+			if(!json)return;
+			var html='';
+			$.each(json,function(i){
+			if(json[i]&&json[i].length>1){
+				html+='<option value="'+json[i][0]+'" rel="'+json[i][2]+'">'+json[i][1]+'</option>';
+			}});
+			var $refCombox=$ref.parents("div.combox:first");
+			$ref.html(html).insertAfter($refCombox);
+			$refCombox.remove();
+			$ref.combox();
+			},
+			error:DWZ.ajaxError
+		});
+	}
+}
+//修改详情数据后刷新JS
+function mispurchaseapplysub_submit(form){
+	var oldprodid = "{$vo['prodid']}";
+	var newprodid = $("input[name='prodid']").val();
+	if (oldprodid == newprodid) {
+		mispurchaseapplysub_clicksubmit(form);
+	} else {
+	alertMsg.confirm("你确定要替换此物料吗？",{  
+		okCall:function(){
+			mispurchaseapplysub_clicksubmit(form)
+		}});
+	}
+}
+</script>
+<div class="page">
+	<div class="pageContent">
+		<form method="post" action="__URL__/update" class="pageForm required-validate" onsubmit="return validateCallback(this,dialogAjaxDone);">
+		<input type="hidden" name="oldprodid" value="{$vo['prodid']}"/><!-- 原物料ID -->
+		<input type="hidden" name="oldsubid" value="{$vo.id}"/><!-- 原来的详情ID -->
+		<input type="hidden" name="masid" value="{$masid}"/>
+			<div class="xyTab">
+				<div class="xyTabHeaderRe">
+					<ul class="xyTabHeaderUl clearfix">
+						<li class="xyTabList xyTabListCu"><a href="#0" onclick="xy.changeTab(this,event)">基本信息</a></li>
+						<li class="xyTabList"><a href="#1" onclick="xy.changeTab(this,event)">附件信息</a></li>
+					</ul>
+				</div>
+				<div class="pageFormContent" layoutH="116">
+					<div class="xyform">
+						<h2 class="xyformtitle">
+							<span><b>No.</b>{$vo['nd']}</span>
+						</h2>
+						<fieldset>
+							<div class="xyTabContent xyTabContentCu">
+								<div class="xyformdiv clearfix">
+									<label>物资名称：</label>
+									<input class="apply.prodid" name="prodid" type="hidden" value="{$vo.prodid}"/>
+									<input class="apply.prodname" readonly="readonly" type="text" value="{$vo['pname']}" />
+									<if condition="$vo.ptypeid eq '1'">  <a class="inputsearchicon" href="__APP__/MisProductCodeSearch/lookupindex" width="950" height="550" lookupGroup="apply" title="查找" mask="true"></a></if> 
+									<if condition="$vo.ptypeid eq '2'">  <a class="inputsearchicon" href="__APP__/MisProductCodeSearch/lookupnursery" width="950" height="550" lookupGroup="apply" title="查找"  mask="true"></a></if>
+									<input class="apply.prodcode xyautonum" readonly="readonly" type="text" value="{$vo['pcode']}" />
+								</div>
+								<div class="xyformdiv clearfix">
+									<label>物资类型：</label>
+									<input class="apply.protype textInput" readonly="readonly" value="{$vo['ptname']}" />
+								</div>
+								<div class="xyformdiv clearfix">
+									<label>物资规格：</label>
+									<input class="textInput" readonly="readonly" value="{$vo['prodsize']}" />
+								</div>
+								<div class="xyformdiv clearfix">
+									<label>单位：</label>
+									<select class="combox unit_obj apply.baseunitid" name="unitid">
+										{$vo['baseunitid']|getAllUnit=$vo[prodid],2,$vo[defaultsup],true,$vo['unitid']}
+									</select>
+								</div>
+								<div class="xyformdiv clearfix">
+									<label>数量：</label>
+									<input type="text" name="qty" class="number" onblur="editapplysub();" value="{$vo['qty']|getDigits}" />
+								</div>
+								<div class="xyformdiv clearfix">
+									<label>单价：</label>
+									<input type="text" name="showprice" class="number" onblur="editapplysub();" value="{$vo['showprice']|getDigits}" />
+								</div>	
+								<div class="xyformdiv clearfix">
+									<label>税金组：</label>
+									<select class="combox taxid" name="taxid" onchange="editapplysub();">
+										{$vo['id']|getAllTax='MisPurchaseApplysub'}
+									</select>
+								</div>
+								<div class="xyformdiv clearfix">
+									<label>采购仓：</label>
+									<SELECT name="whid" class="combox" style="width:100px;">
+						                  <volist id="whl" name="whidlist">
+						                      <option <if condition="$key eq $vo['whid']">selected</if> value="{$key}">{$whl}</option>
+						                  </volist>
+						            </SELECT>
+								</div>
+								<div class="xyformdiv clearfix">
+									<label>总金额：</label>
+									<input type="text" name="showamount" readonly="readonly" class="number" <if condition="$istax">value="{$vo['amount']|getDigits}"<else/>value="{$vo['showamount']|getDigits}"</if>/>
+								</div>
+								<div class="xyformdiv clearfix">
+									<label>含税总金额：</label>
+									<input type="text" name="taxamount" readonly="readonly" class="number" <if condition="$istax">value="{$vo['showamount']|getDigits}"<else/>value="{$vo['taxamount']|getDigits}"</if>/>
+								</div>
+								<div class="xyformdiv clearfix">
+									<label>备注：</label>
+									<textarea style="height:48px;resize:vertical;width:250px;" name="remark">{$vo['remark']}</textarea>
+								</div>
+								<div class="xyformdiv clearfix">
+									<dl class="nowrap"><!--此处为上传列表-->
+										<label>产品图片：</label>
+										<include file="Public:showProductImage" />
+									</dl>
+								</div>
+							</div>
+							<div class="xyTabContent">
+								<div class="xyformdiv clearfix">
+									<div class="unit">
+										<label>上传附件：</label>
+										<input id="swfupload_MisPurchaseApplysub_edit" type="file" uploader="true" fileTypeExts="*.jpg;*.jpeg;*.gif;*.png;" fileTypeDesc="*.jpg;*.jpeg;*.gif;*.png;" name="MisPurchaseApplysub_edit_file" formData="{ uploadpath:'MisPurchaseApplysub' }" />
+										<input type="image" onclick="$('#swfupload_MisPurchaseApplysub_edit').uploadify('upload','*');return false;" src="__PUBLIC__/uploadify/upload2.png">
+									</div>
+									<dl class="nowrap"><!--此处为上传列表-->
+										<dt><label>&nbsp;</label></dt>
+										<dd style="width:240px;">
+											<span id="swfupload_MisPurchaseApplysub_edit-queue" class="info uploadify_queue  editProPic">
+												<if condition="$attarry">
+													<volist name="attarry" id="att">
+														<div class="uploadify-queue-item">
+															<div class="cancel">
+																<a  class="dellink" href="__URL__/lookupdelatt/id/{$att['id']}" rel="{$att['id']}" target="ajaxTodo" callback="mis_swf_upload_del" callbackdata="swfupload_MisPurchaseApplysub_edit-queue" >X</a>
+															</div>
+															<span class="fileName"><a href="__URL__/misFileManageDownload/path/{$att['attached']|base64_encode}/rename/{$att['upname']}" target="_blank">{$att['upname']}</a></span>
+															<span class="data"> - 已经传</span>-
+															<a href="__URL__/lookupDocumentCollateAtta/t/0/id/{$att['id']}" title="文件归档" target="dialog"><span class="tml-icon tml-icon-file"></span><span class="tml-icon-text">归档</span></a>
+															<div class="uploadify-progress">
+															<div class="uploadify-progress-bar" style="width: 100%;"></div>
+															</div>
+														</div>
+													</volist>
+												</if>
+											</span>
+										</dd>
+									</dl>
+								</div>
+							</div>
+						</fieldset>
+					</div>
+				</div>
+			</div>
+			<div class="formBar">
+				<ul>
+					<li>
+						<div class="buttonActive" style="text-indent:999px;background:none;width:1px;">
+							<div class="buttonContent"><button type="submit" >检索</button></div>
+						</div>
+						<div class="buttonActive">
+							<div class="buttonContent">
+								<button type="button"  onclick="mispurchaseapplysub_submit(this.form)">{$Think.lang.save}</button>
+							</div>
+						</div>
+					</li>
+					<li>
+						<div class="button">
+							<div class="buttonContent">
+								<button type="button" class="close">{$Think.lang.close}</button>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</form>
+	</div>
+</div>

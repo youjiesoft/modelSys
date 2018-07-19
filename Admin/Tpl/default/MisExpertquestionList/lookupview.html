@@ -1,0 +1,453 @@
+<style>
+div.qa-a-selection input.qa-a-unselect-button:hover{background-position: 0 -50px;}
+div.qa-a-selection input.qa-a-select-button:hover{background-position: 0 -100px;}
+</style>
+<script>
+//加关注
+function setmistaskAttention(obj, status, tableid, modelname){
+	$.ajax({
+		type : 'POST',
+           url  : '__URL__/lookupSetAttention',
+           data : {status:status,tableid:tableid,modelname:modelname,type:5},
+           success : function (succ){
+			if (succ == 1) {
+				$(obj).text('取消关注');
+			}
+			if (succ == 0) {
+				$(obj).text('+关注');
+			}
+		},
+		async:false,
+		global:false,
+	});
+}
+
+//查看页面的   显示
+function QuestionShowLook(ids){
+	$.ajax({
+		url: "__URL__/showquestion",
+		type: 'POST',
+		data:{id:ids},
+		dataType: 'json',
+		timeout: 1000,
+		error: function(){
+		    alert("数据更新失败!");
+		},
+		success: function(json){
+			navTabAjaxDone(json);
+			navTab.reloadFlag("MisExpertquestionListlook");
+		}
+	});
+	return false;
+}
+//验证表单(关闭问题、回答问题、编辑问题)
+function CloseQuestionCallbacklook($form){
+	var $box = $($form);
+	var textarea = $box.find("textarea").val();
+	if(textarea.length < 1){
+		alertMsg.error("<span style='color:red'>请您输入文字内容</span>");
+		return false;
+	}
+	return validateCallback($form,navTabAjaxDone);
+}
+//关闭问题（closequestionlook）
+function CloseQuestionLook($this){
+	var $parent = $($this).closest(".page");
+    var value = $parent.find('.closeLook');
+   
+    if(value.is(":hidden")){
+    	value.show();
+    	$($this).text('取消关闭');
+    }else{
+    	value.hide();
+    	$($this).text('关闭问题');
+    }
+}
+//回答问题(reply)
+function Replyadd($this){
+	var $parent = $($this).closest(".page");
+    var value = $parent.find('.replyadd');
+    if(value.is(":hidden")){
+    	value.show();
+    	$($this).text('取消回答');
+    }else{
+    	value.hide();
+    	$($this).text('回答');
+    }
+}
+//编辑问题(reply)
+function Replyedit($this){
+	var $parent = $($this).closest(".clearfix");
+    var value = $parent.find('.replyedit');
+    if(value.is(":hidden")){
+    	value.show();
+    	$($this).text('取消修改');
+    }else{
+    	value.hide();
+    	$($this).text('完善回答');
+    }
+}
+ //继续追问(askto)
+function Askto($this){
+	var $parent = $($this).closest(".clearfix");
+    var value = $parent.find('.askto');
+    if(value.is(":hidden")){
+    	value.show();
+    	$($this).text('取消追问');
+    }else{
+    	value.hide();
+    	$($this).text('继续追问');
+    }
+}
+//修改追问(askedit)
+function Askedit($this){
+	var $parent = $($this).closest(".clearfix");
+    var value = $parent.find('.askedit');
+    if(value.is(":hidden")){
+    	value.show();
+    	$($this).text('取消修改');
+    }else{
+    	value.hide();
+    	$($this).text('修改追问');
+    }
+} 
+//评论(conments)
+function Conments($this,val){
+	var $parent = $($this).closest(".clearfix");
+    var value = $parent.find('.conments');
+    if(value.is(":hidden")){
+    	value.show();
+    	$($this).text('取消评论');
+    }else{
+    	value.hide();
+    	$($this).text('评论');
+    }
+}
+//回复(conments)
+function ConmentsReply($this,val){
+	var $parent = $($this).closest(".hentry");
+    var value = $parent.find('.conmentsreply');
+    if(value.is(":hidden")){
+    	value.show();
+    	$($this).text('取消回复');
+    }else{
+    	value.hide();
+    	$($this).text('回复');
+    }
+}
+</script>
+<div class="page">
+	<div class="pageContent">
+		<div class="qa-main-shadow">
+			<div class="qa-context clearfix">
+				<div class="qa-context-search">
+					<form onsubmit="return navTabSearch(this);" action="__URL__/view/id/{$vo['id']}" method="post">
+					<div class="xyqa-context-search">
+						<div class="xyqa-context-searcher">
+							<label>搜索</label>
+							<span class="xyqa-context-search-txt"><input type="text" name="lookname" value="{$lookname}" /></span>
+						</div>
+						<span class="xyqa-context-search-button"><button type="submit"></button></span>
+					</div>
+					</form>
+				</div>
+				<!-- <div class="qa-context-newfile">
+					<a target="navTab" title="发表文章" href="__APP__/MisKnowledgeManage/add" rel="__MODULE__add"><span>发表文章</span></a>
+				</div> -->
+			</div>
+			<div class="qa-main-wrapper clearfix" layoutH="76">
+				<div class="qa-sidepanel">
+					<div class="qa-nav-cat">
+						<ul class="qa-nav-cat-list qa-nav-cat-list-1">
+							<li class="qa-nav-cat-item qa-nav-cat-all"><samp class="qa-nav-cat-link">所有分类</samp></li>
+							<volist name="typeidlist" id="t">
+							<li class="qa-nav-cat-item">
+								<a class="qa-nav-cat-link" title="{$t['name']}" style="cursor:pointer;" onclick="return parent.questionalink('{$t['id']}','所有问题');" >{$t["name"]}</a>
+								<span class="qa-nav-cat-note"></span>
+							</li>
+							</volist>
+						</ul>
+						<div class="qa-nav-cat-clear">
+						</div>
+					</div>
+				</div>
+					<div class="qa-main <if condition="$vo['closedbyid']"> qa-main-hidden</if> ">
+						<div class="qa-main-q-wrap">
+								<h1>
+									<!--span id="favoriting" class="qa-favoriting">
+										<input type="submit" onmouseout="this.className='qa-favorite-button';" onmouseover="this.className='qa-favorite-hover';" class="qa-favorite-button" value="" onclick="return false;" name="favorite_Q_2_1" title="收藏此问题"> 
+									</span-->
+									<span class="entry-title">{$vo["title"]}</span>
+									<if condition="$vo['sourcetype'] eq 1">
+										<span class="auto_code" style="float:right;font-size:12px;padding-right:20px;">
+											<a href="javascript:;" onclick="setmistaskAttention(this,'{$attent['status']}', '{$vo['id']}', 'MisExpertquestionList');"><if condition="$attent['status'] eq '1'">取消关注<else/>+关注</if></a>
+										</span>
+									</if>
+								</h1>
+							<div id="q2" class="qa-q-view  <if condition="$vo['closedbyid']">qa-q-view-hidden</if>  hentry question">
+									<div class="qa-voting qa-voting-net">
+										<if condition="$vo.picture">
+											<img src="__PUBLIC__/Uploads/{$vo.picture}" style="width: 59px;height:59px;"/>
+										<else/>
+											<img src="__PUBLIC__/Images/xyimages/xyheader_image.jpg" alt="暂无图片" style="width: 59px;height:59px;"/>
+										</if>
+										<div class="qa-vote-clear"></div>
+									</div>
+								<div class="qa-q-view-main">
+										<div class="qa-q-view-content">
+											<a name="2"></a><div class="entry-content" style="text-indent: 2em;Line-height:20px;">{$vo["content"]}</div>
+										</div>
+										<if condition="$vo['closedbyid']">
+										<div class="qa-q-view-closed">
+											<font style="color:red;">关闭说明：&nbsp;&nbsp;</font>
+											<span class="qa-q-view-closed-content">
+												{$colsVO['content']}
+											</span>
+										</div>
+										</if>
+										<div class="">
+											<div class="qa-q-view-buttons">
+												<if condition="$vo['closedbyid']">
+												<form action="__URL__/xx/" method="POST">
+													<if condition="$_SESSION.a eq 1 or ($_SESSION.misexpertquestionlist_showquestion eq 1  and $_SESSION.authId eq $vo['createid']) || ($_SESSION.misexpertquestionlist_showquestion eq 1)">
+													<input onmouseout="this.className='qa-form-light-button qa-form-light-button-reshow';" onmouseover="this.className='qa-form-light-hover qa-form-light-hover-reshow';" class="qa-form-light-button qa-form-light-button-reshow" title="" value="显示" name="q_doreshow"  onclick="return parent.QuestionShowLook('{$vo['id']}');"></if>
+												</form>
+												<else />
+												<if condition="$_SESSION.a eq 1 || ($_SESSION.misexpertquestionlist_edit eq 1 and $_SESSION.authId eq $vo['createid']) || ($_SESSION.misexpertquestionlist_edit eq 1)">
+													<a class="qa-form-light-button qa-form-light-button-edit" target="dialog" rel="__MODULE__edit" title="编辑" width="570" height="430" mask="true" href="__URL__/edit/id/{$vo['id']}">编辑</a>
+												</if>
+												<if condition="$_SESSION.a eq 1 || ($_SESSION.misexpertquestionlist_closequestion eq 1 and $_SESSION.authId eq $vo['createid']) || ($_SESSION.misexpertquestionlist_closequestion eq 1)">
+												&nbsp;&nbsp;
+												<a onclick="CloseQuestionLook(this);" style="line-height:24px;"><span>关闭问题</span></a>
+												</if>
+												<if condition="$_SESSION.a eq 1 || $_SESSION.misexpertquestionlist_reply eq 1 ">
+												&nbsp;&nbsp;
+												<a class="qa-form-light-button qa-form-light-button-answer" onclick="Replyadd(this);" style="line-height:24px;"><span>回答</span></a>
+												<!-- <a class="qa-form-light-button qa-form-light-button-answer" target="dialog" rel="__MODULE__reply" title="回答" width="500" height="270" mask="true" href="__URL__/reply/id/{$vo['id']}">回答</a> -->
+												</if>
+												</if>
+												&nbsp;&nbsp;<input type="hidden" value="" name="qa_click">
+											</div>
+											<span class="qa-q-view-avatar-meta">
+												<span class="qa-q-view-meta">
+													<span class="qa-q-view-what">发布时间:</span>
+													<span class="qa-q-view-when">
+														<span class="qa-q-view-when-data">
+															<span class="published">{$vo['createtime']|timeDiff=###}</span>
+														</span>
+													</span>&nbsp;&nbsp;&nbsp;
+													<span class="qa-q-view-where">
+														<span class="qa-q-view-where-pad">分类:</span>
+														<span class="qa-q-view-where-data">
+															<volist name="typeidlist" id="tt">
+																<if condition="$tt['id'] eq $vo['categoryid']">
+																	<a class="qa-category-link" style="cursor:pointer;" onclick="return parent.questionalink('{$tt['id']}','所有问题');">{$tt["name"]}</a>
+																</if>
+															</volist>
+														</span>
+													</span>&nbsp;&nbsp;&nbsp;
+													<span class="qa-q-view-who">
+														<span class="qa-q-view-who-pad">作者:</span>
+														<span class="qa-q-view-who-data">
+															<span class="vcard author">
+																<a class="qa-user-link url nickname" style="cursor:pointer;"  onclick="return parent.expertquestionlistuser('{$vo['createid']}','所有问题');">{$vo['name']}</a>
+															</span>
+														</span>
+													</span>
+												</span>
+											</span>
+											<!-- 关闭问题表单 -->
+											<div style="display:none;" class="closeLook left">
+												<include file="closequestionlook"/>
+											</div>
+											<!-- 回答问题表单 -->
+											<div style="display:none;" class="replyadd left">
+												<include file="reply"/>
+											</div>
+										</div>
+									<div class="qa-c-form">
+									</div> <!-- END qa-c-form -->
+									
+								</div> <!-- END qa-q-view-main -->
+								<div class="qa-q-view-clear">
+								</div>
+							</div> <!-- END qa-q-view -->
+							<h2><span id="a_list_title">{$acount}个回答</span></h2>
+							<div class="qa-a-arrow"></div>
+						</div>
+
+						<div id="a_list" class="qa-a-list">
+							<volist name="anserlist" id="alist">
+							<div class="qa-a-list-item-wrap">
+								<div class="qa-a-list-item hentry answer <if condition="$alist['id'] eq $vo['selchildid']">answer-selected qa-a-list-item-selected</if>">
+									<div  class="qa-voting qa-voting-net">
+										<if condition="$vo.picture">
+											<img src="__PUBLIC__/Uploads/{$vo.picture}" style="width: 59px;height:59px;"/>
+										<else/>
+											<img src="__PUBLIC__/Images/xyimages/xyheader_image.jpg" alt="暂无图片" style="width: 59px;height:59px;"/>
+										</if>
+										<div class="qa-vote-clear"></div>
+									</div> 
+									<div class="qa-a-item-main">
+										<div class="qa-a-item-selected">
+											<div class="qa-a-selection">
+												<if condition="$_SESSION.authId eq $vo['createid']">
+													<input type="submit" value="" <if condition="$alist['selchildid']">class="qa-a-unselect-button" <if condition="!$vo['closedbyid']"> title="点击取消最佳答案" onclick="return parent.questioncannelbest('{$vo[id]}');"</if><else />class="qa-a-select-button" <if condition="!$vo['closedbyid']">title="点击选择最佳答案" onclick="return parent.questionbest('{$vo[id]}', '{$alist[id]}');"</if></if> > 
+													<if condition="$alist['id'] eq $vo['selchildid']"><div class="qa-a-selected-text">最佳答案</div></if>
+												<else />
+													<if condition="$alist['id'] eq $vo['selchildid']">
+														<input type="submit" value="" class="qa-a-unselect-button" >
+														<div class="qa-a-selected-text">最佳答案</div>
+													</if>
+												</if>
+												
+											</div> 
+											
+											<div class="qa-a-item-content">
+												<div class="entry-content" style="text-indent: 2em;Line-height:20px;">{$alist['content']}</div>
+											</div>
+											<volist name="alist.askfo" id="askfo">
+											<div class="qa-a-item-content">
+												<div class="entry-content" style="text-indent: 2em;Line-height:20px;">追问：&nbsp;&nbsp;{$askfo['askto']}</div>
+											</div>
+											</volist>
+										</div>
+										<div class="clearfix">
+											<div class="qa-a-item-buttons">
+											<if condition="$vo['closedbyid']">
+											&nbsp;&nbsp;<span class="qa-form-light-button qa-form-light-button-edit" >编辑</span>
+											<if condition="$alist.askid neq '1'">
+													<span class="qa-form-light-button qa-form-light-button-follow">继续追问</span>
+													<else/>
+													<span class="qa-form-light-button qa-form-light-button-follow">修改追问</span>
+													</if>
+											&nbsp;&nbsp;<span class="qa-form-light-button qa-form-light-button-comment">评论({$alist.conmentsconut})</a>
+											<else/>
+											<if condition="$_SESSION.a eq 1 || ($_SESSION.misexpertquestionlist_edit eq 1 and $_SESSION.authId eq $alist['createid']) || ($_SESSION.misexpertquestionlist_edit eq 1)">
+											&nbsp;&nbsp;<!-- <a class="qa-form-light-button qa-form-light-button-edit" target="dialog" rel="__MODULE__edit" title="关闭" width="570" height="430" mask="true" href="__URL__/edit/id/{$alist['id']}">编辑</a> -->
+											<a class="qa-form-light-button qa-form-light-button-edit" onclick="Replyedit(this);" style="line-height:24px;"><span>完善回答</span></a>
+											</if>
+											<if condition="$alist.askid">
+												<volist name="alist.askfo" id="askgo">
+												<if condition="$_SESSION.a eq 1 || $_SESSION.misexpertquestionlist_askedit">&nbsp;&nbsp;
+													<!-- <a class="qa-form-light-button qa-form-light-button-follow" target="dialog" rel="__MODULE__askedit" title="修改追问" width="570" height="430" mask="true" href="__URL__/askedit/askid/{$askgo.id}">修改追问</a> -->
+													<a  onclick="Askedit(this);" style="line-height:24px;"><span>修改追问</span></a>
+												</if>
+											</volist>
+											<else/>
+												<if condition="$_SESSION.a eq 1 || $_SESSION.misexpertquestionlist_askto">&nbsp;&nbsp;
+													<!-- <a class="qa-form-light-button qa-form-light-button-follow" target="dialog" rel="__MODULE__askto" title="继续追问" width="570" height="430" mask="true" href="__URL__/askto/id/{$alist['id']}">继续追问</a> -->
+													<a onclick="Askto(this);" style="line-height:24px;"><span>继续追问</span></a>
+												</if>
+											</if>
+											
+											<if condition="$_SESSION.a eq 1 || $_SESSION.misexpertquestionlist_conments">
+											&nbsp;&nbsp;<!-- <a class="qa-form-light-button qa-form-light-button-comment" target="dialog" rel="__MODULE__conments" title="评论" width="570" height="430" mask="true" href="__URL__/conments/id/{$alist['id']}">评论({$alist.conmentsconut})</a> -->
+												<a class="qa-form-light-button qa-form-light-button-comment" onclick="Conments(this);" style="line-height:24px;"><span>评论({$alist.conmentsconut})</span></a>
+											</if>
+											</if>
+											&nbsp;
+											</div>
+											<span class="qa-a-item-avatar-meta">
+												<span class="qa-a-item-meta">
+													<a class="qa-a-item-what" href="#">已回复</a>
+													<span class="qa-a-item-when">
+														<span class="qa-a-item-when-data"><span class="published">{$alist['createtime']|timeDiff=###,2}</span></span>
+													</span>&nbsp;&nbsp;&nbsp;
+													<span class="qa-a-item-who">
+														<span class="qa-a-item-who-pad">作者:</span>
+														<span class="qa-a-item-who-data">
+														<span class="vcard author">
+											<a class="qa-user-link url nickname" style="cursor:pointer;"  onclick="return parent.expertquestionlistuser('{$alist['createid']}','所有问题');">{$alist['createid']|getFieldBy='id','name','User'}</a>
+														</span>
+														</span>
+														&nbsp;
+														<span class="qa-a-item-who-points">
+															<span class="qa-a-item-who-points-pad">(</span><span class="qa-a-item-who-points-data">{$alist['createid']|getFieldby=###,'id','score','user'}</span><span class="qa-a-item-who-points-pad"> 积分)</span>
+														</span>
+													</span>
+												</span>
+											</span>
+											<!-- 完善问题表单 -->
+											<div style="display:none;" class="replyedit left">
+												<include file="replyedit"/>
+											</div>
+											<!-- 继续追问表单 -->
+											<div style="display:none;" class="askto left">
+												<include file="askto"/>
+											</div>
+											<!-- 修改追问表单 -->
+											<div style="display:none;" class="askedit left">
+												<include file="askedit"/>
+											</div>
+											<!-- 评论表单 -->
+											<div style="display:none;" class="conments left">
+												<include file="conments"/>
+											</div>
+										</div>
+										<if condition="$alist['children']">
+										<div id="c4_list" class="qa-a-item-c-list">
+											<volist name="alist.children" id="cinfo">
+											<div class="qa-c-list-item  hentry comment">
+											<!-- <a class="" style="cursor:pointer;"  onclick="return parent.expertquestionlistuser('{$alist['createid']}','所有问题');"> -->
+												{$alist['createid']|getFieldBy=###,'id','name','user'}					
+											<!-- </a> -->
+												<!-- ({$alist['createid']|getFieldby=###,'id','score','user'}积分) -->&nbsp;&nbsp;&nbsp;
+												{$cinfo['createtime']|timeDiff=###,2}
+												<div >
+													<span style="color: black">{$cinfo['content']}</span>&nbsp;&nbsp;&nbsp;
+													<if condition="$vo['closedbyid']">
+														<span >回复</span>
+													<else/>
+													<if condition="$_SESSION.a eq 1 || $_SESSION.misexpertquestionlist_conments">
+														<!-- <a class="qa-form-light-button" target="dialog" rel="__MODULE__conments" title="回复" width="570" height="430" mask="true" href="__URL__/conments/id/{$alist['id']}/replyid/1/replyname/{$alist['createid']|getFieldBy=###,'id','name','user'}" >回复</a> -->
+														<a onclick="ConmentsReply(this);" style="line-height:24px;"><span>回复</span></a>
+													</if>
+													</if>
+													<br/>
+													<!-- 评论、回复表单 -->
+													<div style="display:none;" class="conments conmentsreply left">
+														<include file="conments"/>
+													</div>
+												</div>
+												<div class="qa-c-item-footer">
+													<!-- <span class="qa-c-item-avatar-meta">
+														<span class="qa-c-item-meta">
+															<span class="qa-c-item-what">时间:</span>
+															<span class="qa-c-item-when">
+																<span class="qa-c-item-when-data">{$cinfo['createtime']|timeDiff=###,2}</span>
+															</span>
+															<span class="qa-c-item-who">
+																<span class="qa-c-item-who-pad">作者:</span>
+																<span class="qa-c-item-who-data"><a class="qa-user-link url nickname" style="cursor:pointer;"  onclick="return parent.expertquestionlistuser('{$vo['createid']}','所有问题');">{$alist['createid']|getFieldBy=###,'id','name','user'}</a></span>
+																<span class="qa-c-item-who-points">
+																	<span class="qa-c-item-who-points-pad">(</span><span class="qa-c-item-who-points-data">{$alist['createid']|getFieldby=###,'id','score','user'}</span><span class="qa-c-item-who-points-pad"> 积分)</span>
+																</span>
+															</span>
+															
+														</span>
+													</span> -->
+													
+													<if condition="$cinfo['type'] eq 'C'">
+													<div class="qa-c-item-buttons">
+													<if condition="$_SESSION.a eq 1 || ($_SESSION.misexpertquestionlist_edit eq 1 and $_SESSION.authId eq $alist['createid']) || ($_SESSION.misexpertquestionlist_edit eq 1)">
+														<!-- <input type="submit" onmouseout="this.className='qa-form-light-button qa-form-light-button-edit';" onmouseover="this.className='qa-form-light-hover qa-form-light-hover-edit';" class="qa-form-light-button qa-form-light-button-edit" title="编辑此评论" value="编辑"  onclick="return parent.openquestionedit('{$cinfo[id]}','{$cinfo[type]}');" /> --></if>
+													</div>
+													</if>
+												</div>
+												<div class="qa-c-item-clear">
+												</div>
+											</div>
+											</volist>
+										</div> <!-- END qa-c-list -->
+										</if>
+										 
+									</div> <!-- END qa-a-item-main -->
+									<div class="qa-a-item-clear">
+									</div>
+								</div> <!-- END qa-a-list-item -->
+							</div><!-- END qa-a-list-item-wrap -->
+							</volist>
+						</div> <!-- END qa-a-list -->
+					</div> <!-- END qa-main -->
+					</div></div></div></div>

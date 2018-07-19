@@ -1,0 +1,80 @@
+<div class="pageFormContent applecloth" layoutH="0">
+	<div class="keepContentCenter clearfix">
+		<h2 class="contentTitle contentTitle_center">人事基本信息报表</h2>
+		<div id="hrPersonnelBasisEport_doSearch">
+			<FIELDSET>
+				<div class="xyformunit">
+					<label>员工编号：</label>
+					<input type="text" name="orderno" class="checkByInput" other="array('pername'=>'name');" map="array('status'=>1);" fields="array('id'=>'0','orderno'=>'编号','name'=>'姓名');"  checkfor="mis_hr_personnel_person_info" show="orderno"/>
+					<input type="hidden" name="ordernoid"/>
+				</div>
+					<div class="xyformunit">
+					<label>姓名：</label>
+					<input type="text" name="name" check_key="pername"/>
+				</div>
+				<div class="xyformunit">
+					<label>部门：</label>
+					<input type="text" name="deptidname" class="checkByInput" map="array('status'=>1);" fields="array('id'=>'0','code'=>'部门编号','name'=>'部门名称');" checkfor="mis_system_department" show="name"/>
+					<input type="hidden" name="deptid" />
+				</div>
+				<div class="xyformunit">
+					<label>职务：</label>
+					<input type="text" name="dutyname" class="textInput"/>
+				</div>
+				<div class="xyformunit">
+					<label>性别：</label>
+					 <select name="sex" class="combox"  >
+					 	<option value="">--请选择--</option>
+						<option value="1">男</option>
+						<option value="0">女</option>
+					</select>
+				</div>
+				<div class="xyformunit">
+					<label>工种：</label>
+					<select name="workkid" class="combox" style="margin-left:20px;">
+						<option value="">--请选择--</option>
+						<volist name="userTypeArray" id="userType">
+						<option value="{$userType['id']}">{$userType['name']}</option>
+						</volist>
+					</select>
+				</div>
+				<div class="xyformunit">
+					<label>内部编号：</label>
+					<input type="text" name="itemid" class="checkByInput" map="array('status'=>1);" fields="array('id'=>'0','itemid'=>'内部编号','name'=>'姓名');" checkfor="mis_hr_personnel_person_info" show="itemid"/>
+				</div>
+				<div class="xyformunit">
+					<label>是否转正：</label>
+					 <select name="positivestatus" class="combox"  >
+					 	<option value="">--请选择--</option>
+						<option value="1">是</option>
+						<option value="0">否</option>
+					</select>
+				</div>
+					<div class="xyformunit">
+					<label>联系电话：</label>
+					<input type="text" name="phone" />
+				</div>
+				<div class="clear"></div>
+				<div class="">
+					<label>入职日期：</label>
+					<span class="xyInputWithUnit">
+					<input type="text"  name="indate" yearstart="-40" yearend="1" onfocus="WdatePicker()" class="tml-border-r0 Wdate" />
+					 <span class="input-addon input-addon-calendar"></span>
+					</span><span class="xyInputTo">至</span>
+					<span class="xyInputWithUnit">
+					 <input  type="text"  name="leavedate"  yearstart="-40" yearend="1" onfocus="WdatePicker()" class="tml-border-r0 Wdate" />
+					 <span class="input-addon input-addon-calendar"></span>
+					 </span>
+				</div>
+			</FIELDSET>
+		</div>
+		<div class="export_new">
+			<div class="buttonActive">
+				<div class="buttonContent">
+					<button name="showgrid"
+						onclick="show_doSearch('hrPersonnelBasisEport_doSearch','__URL__/lookupHrPersonnelBasisEport','{$result}')">检索</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

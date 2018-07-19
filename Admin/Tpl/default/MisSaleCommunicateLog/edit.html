@@ -1,0 +1,54 @@
+<style>
+.dialog .tml-form-col .tml-input-append2 .temp_css{
+width: 130px;
+}
+</style>
+<div class="page">
+	<div class="pageContent">
+	<form method="post" action="__APP__/MisSaleCommunicateLog/update/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+			<input type="hidden" name="callbackType" value="closeCurrent" />
+			<input type="hidden" name="id" value="{$vo['id']}" />
+			<input type="hidden" name="userid" class="textInput"  value="{$userid}"/>
+			<div class="pageFormContent" layoutH="48">
+				<div class="tml-row">
+					{:W('ShowOrderno',array(1,'mis_sale_communicate_log'),$vo['orderno'])} 
+					<div class="tml-form-col ">
+							<label>{$fields["bid"]}:</label>
+						<div class="tml-input-append2">
+							<input type="text" class="ORG1.clientname required  " autocomplete="off" readonly="readonly"   value="{$vo['bid']|getFieldBy='id','clientname','mis_sale_business'}" />
+							<input type="hidden" class="ORG1.id" name="bid" value="{$vo['bid']}"  />
+							<a class="input-addon input-addon-addon input-addon-add" param="field=id,clientname&model=MisSaleBusiness&conditions=" href="__URL__/lookupGeneral" lookupGroup="ORG1" >{$fields["bid"]}</a>
+							<a title="清空信息" class="input-addon input-addon-recycle"  href="javascript:void(0);" onclick="clearOrg('ORG1');"></a>
+						</div>
+					</div>
+					<div class="tml-form-col ">
+						<label>{$fields["linkpeople"]}:</label>
+						<input type="text"  name="linkpeople" class="  " value="{$vo['linkpeople']}">
+					</div>
+					<div class="tml-form-col ">
+							<label>{$fields["title"]}:</label>
+							<input type="text"  name="title" class="required " value="{$vo['title']}">
+					</div>
+				</div>
+				<div class="tml-row">
+					<div class="tml-form-row ">
+							<label>{$fields["linknews"]}:</label>
+							<textarea  cols="100" rows="2" class="required " name="linknews">{$vo['linknews']}</textarea>
+					</div>
+					<div class="tml-form-row ">
+						<label>{$fields["address"]}:</label>
+						<textarea  cols="100" rows="2"  name="address">{$vo['address']}</textarea>
+					</div>
+				</div>
+					<div class="tml-form-col ">
+						<label>{$fields["linktime"]}:</label>
+						<div  class="tml-input-append">
+							<input type="text" name="linktime" class="Wdate js-wdate required " format="{dateFmt:'yyyy-MM-dd HH:mm'}" value="{$vo['linktime']|transtime='Y-m-d H:i'}"/>
+							<a href="javascript:;" class="input-addon input-addon-calendar js-inputCheckDate">选择</a>
+						</div>
+					</div>
+			</div>			
+			{:W('ShowAction',array('data'=>$vo))}
+	</form>
+	</div>
+</div>

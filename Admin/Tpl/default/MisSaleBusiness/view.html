@@ -1,0 +1,338 @@
+<div class="page">
+ <div class="pageContent" >
+	<form method="post" action="__APP__/MisSaleMyBusiness/update/rel/MisSaleMyBusiness_left" class="pageForm required-validate" onsubmit="return iframeCallback(this, navTabAjaxDone)">
+		<input type="hidden" name="callbackType" value="closeCurrent" />
+		<input type="hidden" name="refreshtabs[data]" value="1" />
+		<input type="hidden" name="id" value="{$vo['id']}" />
+		<div class="pageFormContent applecloth anchorsToolBarParent" layoutH="40">
+			<div class="new_version_page">
+				<div class="new_version_page_header pageFormContent">商机</div>
+				<div class="new_version_page_content">
+					{:W('ShowOrderno',array(4,'mis_sale_business',$vo['orderno'],array('contentcls'=>'col_1_3 form_group_lay field_orderno', 'inputcls'=>'class="input_new " ','title'=>$fields["orderno"])))}
+					<div class="col_1_3 form_group_lay ">
+						<label class="label_new">{$fields["clientname"]}:</label>
+						<input type="text"  name="clientname" class="required  input_new" value="{$vo['clientname']}">
+					</div>
+					<div class="col_1_3 form_group_lay ">
+						<label class="label_new">{$fields["controller"]}:</label>
+						<input type="text"  name="controller" class=" required input_new" value="{$vo['controller']}">
+					</div>
+					<div class="col_1_3 form_group_lay ">
+						<label class="label_new">{$fields["sourceid"]}:</label>
+						<select  name="sourceid"  onchange="getSourceTime(this.value)" class="select2 select_elm required  ">
+						{:getControllbyHtml('table',array('type'=>'select','table'=>'mis_sale_business_source','id'=>'id','name'=>'name','selected'=>$vo['sourceid']))}
+						</select>
+					</div>
+					<div class="col_1_2 form_group_lay " style="display:none;">
+						<label class="label_new">{$fields["intentiontypesid"]}:</label>
+						{:W('ShowSelect',array($vo['intentiontypesid'],array('',array('type'=>'table',array('readonly'=>'','targevent'=>'','actionName'=>'MisSaleBusiness','names'=>'intentiontypesid','defaultcheckitem'=>'','defaultval'=>'','defaulttext'=>'请选择','table'=>'mis_system_flow_type', 'id'=>'orderno','name'=>'name','conditions'=>'outlinelevel = 1','parentid'=>'','mulit'=>'','isnextend'=>'','treeheight'=>'','treewidth'=>'','key'=>'','isedit'=>'1')))))}
+					</div>
+					<div class="col_1_3 form_group_lay ">
+						<label class="label_new">{$fields["areaid"]}:</label>
+						<div class="tml-input-lookup">
+							<div  >
+								<input type="text" value="{$vo['areaid']|getFieldBy='orderno','name','mis_auto_jcztc'}" autocomplete="off"  class="orgareaidDBC3773.name   input_new half_angle_input required  textInput enterIndex valid">
+								<input type="hidden" value="{$vo['areaid']}"  name="areaid" class="orgareaidDBC3773.orderno required">
+								<a lookupgroup="orgareaidDBC3773" href="__APP__/MisSaleMyBusiness/lookupGenerals" param="lookupchoice=f6da20b93856d64802716d33adc050f5&amp;newconditions=" condition="" newconditions="" syscondition="" class="icon_elm mid_icon_elm icon-plus"></a>
+								<a onclick="clearOrg('orgareaidDBC3773');" href="javascript:void(0);" class="icon_elm icon-trash" title="清空信息"></a>
+							</div>
+						</div>						
+					</div>
+					<div class="col_1_1 form_group_lay field_shifunarudanbaofengx" original="{$vo['shifunarudanbaofengx']}" category="select" style="display:none;">
+							<label class="label_new">是否纳入担保风险保证金范围:</label>
+							{:W('ShowSelect',array($vo['shifunarudanbaofengx'],array(' orgareaidDBC3773.shifunarudanbaofengx',array('type'=>('LD是否'==''?'table':'selectlist'),array('key'=>'LD是否','readonly'=>'1','targevent'=>'','actionName'=>'MisAutoMji','names'=>'shifunarudanbaofengx','defaultcheckitem'=>'','defaultval'=>'','defaulttext'=>'--请选择--','table'=>'', 'id'=>'','name'=>'' ,'conditions'=>'','parentid'=>'','mulit'=>'','isnextend'=>'','treeheight'=>'','treewidth'=>'','isedit'=>'1','showtype'=>'','defaultcheckitem'=>'')))))}
+					</div>
+					 <!-- <div class="col_1_3 form_group_lay ">
+						<label class="label_new">{$fields["areaid"]}:</label>
+						{:W('ShowSelect',array($vo['areaid'],array('  required',array('type'=>'table',array('readonly'=>'1','targevent'=>'','actionName'=>'MisSaleBusiness','names'=>'areaid','defaultcheckitem'=>'','defaultval'=>'','defaulttext'=>'请选择','table'=>'mis_auto_jcztc', 'id'=>'orderno','name'=>'name','conditions'=>'','parentid'=>'parentid','mulit'=>'','isnextend'=>'1','treeheight'=>'','treewidth'=>'','key'=>'','isedit'=>'1')))))}<div class="display_none {$classNodeSettingArr["areaid"]}"></div>
+					</div>  -->
+					<div class="col_1_3 form_group_lay ">
+						<label class="label_new">{$fields["customertypeid"]}:</label>
+						{:W('ShowSelect',array($vo['customertypeid'],array('',array('type'=>'table',array('readonly'=>'','targevent'=>'','actionName'=>'MisSaleBusiness','names'=>'customertypeid','defaultcheckitem'=>'','defaultval'=>'','defaulttext'=>'请选择','table'=>'mis_sale_client_type', 'id'=>'orderno','name'=>'name','conditions'=>'','parentid'=>'','mulit'=>'','isnextend'=>'','treeheight'=>'','treewidth'=>'','key'=>'','isedit'=>'1')))))}
+					</div>
+					<div class="col_1_3 form_group_lay combox_tree">
+						<label class="label_new">{$fields["professionid"]}:</label>
+						{:W('ShowSelect',array($vo['professionid'],array('orgDBC1859.xingye readonly ',array('type'=>'table',array('readonly'=>'1','targevent'=>'','actionName'=>'MisSaleBusiness','names'=>'professionid','defaultcheckitem'=>'','defaultval'=>'','defaulttext'=>'','table'=>'mis_sale_profession', 'id'=>'orderno','name'=>'name','conditions'=>'','parentid'=>'parentid','mulit'=>'0','isnextend'=>'1','treeheight'=>'','treewidth'=>'','key'=>'','isedit'=>'1','showtype'=>'0')))))}
+						</div>
+					<div class="col_1_3 form_group_lay ">
+							<label class="label_new">{$fields["industryid"]}:</label>
+							{:W('ShowSelect',array($vo['industryid'],array('',array('type'=>'table',array('readonly'=>'','targevent'=>'','actionName'=>'MisSaleBusiness','names'=>'industryid','defaultcheckitem'=>'','defaultval'=>'','defaulttext'=>'请选择','table'=>'mis_sale_industry', 'id'=>'orderno','name'=>'name','conditions'=>'','parentid'=>'','mulit'=>'','isnextend'=>'','treeheight'=>'','treewidth'=>'','key'=>'','isedit'=>'1')))))}
+					</div>
+					<div class="col_1_2 form_group_lay field_kehujichuxinyonglian" original="{$vo['kehujichuxinyonglian']}" category="text" >
+
+							<div class="tml-input-unit">
+
+								<label class="label_new">客户基础信用量化 :</label>
+
+								<input  dropback=""   readonly="readonly" type="text" name="kehujichuxinyonglian" class=" input_new half_angle_input "
+
+									 <if condition="$vo['kehujichuxinyonglian'] neq ''">value="{$vo['kehujichuxinyonglian']|unitExchange=###,mm,mm,2}"<else/>value=""</if>>
+
+								<span class="icon_elm icon_unit" title="分">分</span>
+
+								</div>
+
+								<div class="display_none {$classNodeSettingArr['kehujichuxinyonglian']}">
+
+									{$vo['kehujichuxinyonglian']|unitExchange=###,mm,mm,2}
+
+								</div>
+
+					</div>	
+					<div class="col_1_2 form_group_lay ">
+						<label class="label_new">{$fields["kehujichuxinyongping"]}:</label>
+						<div class="tml-input-lookup">
+							<div  >
+								<input type="text" readonly="readonly" value="{$vo['kehujichuxinyongping']|getFieldBy='orderno','orderno','mis_auto_bfbwk'}" autocomplete="off"  class="orgkehujichuxinyongpingDBC3773.orderno   input_new half_angle_input   textInput enterIndex valid">
+								<input type="hidden" value="{$vo['kehujichuxinyongping']}"  name="kehujichuxinyongping" class="orgkehujichuxinyongpingDBC3773.orderno " >
+								<!-- <a lookupgroup="orgkehujichuxinyongpingDBC3773" href="__APP__/MisSaleMyBusiness/lookupGenerals" param="lookupchoice=3d6ab386688c0da67a87e84a141fe6cf&amp;newconditions=" condition="" newconditions="" syscondition="" class="icon_elm mid_icon_elm icon-plus"></a> -->
+								<a  class="icon_elm mid_icon_elm icon-plus"></a>
+								<a onclick="clearOrg('orgkehujichuxinyongpingDBC3773');" href="javascript:void(0);" class="icon_elm icon-trash" title="清空信息"></a>
+							</div>
+						</div>						
+					</div>
+					<div class="col_1_1 form_group_lay ">
+						<label class="label_new">{$fields["xuqiushijian"]}:</label>
+						{:W('ShowSelect',array($vo['xuqiushijian'],array('required  ',array('type'=>'selectlist',array('readonly'=>'1','targevent'=>'','actionName'=>'MisSaleBusiness','names'=>'xuqiushijian','defaultcheckitem'=>'','defaultval'=>'','defaulttext'=>'','table'=>'', 'id'=>'','name'=>'','conditions'=>'','parentid'=>'','mulit'=>'','isnextend'=>'','treeheight'=>'','treewidth'=>'','key'=>'FundsNeedTime','isedit'=>'1','showtype'=>'0')))))}<div class="display_none {$classNodeSettingArr['xuqiushijian']}">{$vo['xuqiushijian']|getSelectlistValue='FundsNeedTime'}</div>
+					</div>
+					<div class="col_1_7 form_group_lay ">
+						<label class="label_new">{$fields["zhucedizhi"]}</label>
+						{:W('ShowArea',array("0"=>$areainfoarry["zhucedizhi"],"1"=>zhucedizhi,"2"=>$fields[zhucedizhi],"3"=>"col_1_7 form_group_lay field_zhucedizhi",'4'=>'MisSaleBusiness'))}
+					</div>
+					<div class="col_1_7 form_group_lay ">
+						<label class="label_new">{$fields["address"]}</label>
+						{:W('ShowArea',array("0"=>$areainfoarry["address"],"1"=>address,"2"=>$fields[address],"3"=>"col_1_7 form_group_lay field_areainfo5",'4'=>'MisSaleBusiness'))}
+					</div>
+					<div class="col_1_3 form_group_lay">
+						<label class="label_new">{$fields["linkman"]}:</label>
+						<input type="text"  name="linkman" class=" required input_new" value="{$vo['linkman']}">
+					</div>
+					<div class="col_1_3 form_group_lay ">
+						<label class="label_new">{$fields["mobile"]}:</label>
+						<input type="text"  name="mobile" minlength="11"  maxlength="11" class=" required  number input_new" value="{$vo['mobile']}">
+					</div>
+					<div class="col_1_3 form_group_lay ">
+						<label class="label_new">{$fields["bangongdianhua"]}:</label>
+						<input type="text"  name="bangongdianhua"  onblur="onChuanzhen(this.value);" class="    input_new" value="{$vo['bangongdianhua']}">
+						<input type="hidden"  name="chuanzhen"  class="    input_new" value="{$vo['chuanzhen']}">
+					</div>
+					<div class="col_1_3 form_group_lay ">
+						<label class="label_new">{$fields["acquiretime"]}:</label>
+						<div  class="tml-input-calendar">
+							<input type="text" name="acquiretime" class="Wdate js-wdate required input_new half_angle_input" format="{dateFmt:'yyyy-MM-dd'}" value="{$vo['acquiretime']|transtime='Y-m-d'}"/>
+							<a href="javascript:;" class="icon_elm icon-calendar"></a>
+						</div>
+					</div>
+					 <div class="col_1_3 form_group_lay "><div class="tml-input-unit">
+						<label class="label_new">{$fields["days"]}:</label>
+						<input   type="text"  name="days" class=" input_new number half_angle_input input_new  " value="{$vo['days']}"><span class="icon_elm icon_unit" title="天">天</span></div>
+						</div> 
+					<!--  <div class="col_1_3 form_group_lay ">
+						<label class="label_new">{$fields["days"]}:</label>
+						<select  name="days"  class="select2 select_elm required">
+							{:getControllbyHtml('table',array('type'=>'select','table'=>'mis_sale_expiry_date','id'=>'id','name'=>'name','selected'=>$vo['days']))}
+						</select>
+					</div>  -->
+					<div class="col_1_3 new_field_hiddens form_group_lay field_toolid" >
+					<input type="hidden" class=" input_new" name="toolid" value="{$vo['toolid']}" />
+					<div class="display_none {$classNodeSettingArr['toolid']}">{$vo['toolid']}</div>
+					</div>
+					<!-- <div class="col_1_1 form_group_lay ">
+						<label class="label_new">{$fields["toolid"]}:</label>
+						<select  name="toolid"  class="required select2 select_elm  ">
+							{:getControllbyHtml('selectlist',array('type'=>'select','key'=>'tool','selected'=>$vo['toolid']))}
+						</select>
+					</div> -->
+					<div class="col_1_3 form_group_lay ">
+						<label class="label_new">{$fields["xuanzeleixing"]}:</label>
+						<select  name="xuanzeleixing"  onchange="getThisType(this.value)" class="required select2 select_elm  ">
+							{:getControllbyHtml('selectlist',array('type'=>'select','key'=>'UserOrInterfaceLocation','selected'=>$vo['xuanzeleixing']))}
+						</select>
+					</div>
+					<div class="col_1_3 form_group_lay ">
+						<label class="label_new">{$fields["provider"]}:</label>
+						<div class="tml-input-lookup">
+								<input type="text" value="{$vo['provider']|getFieldBy='id','name','user'}" autocomplete="off" class="orgbusiDBC3773.name   input_new half_angle_input   textInput enterIndex valid">
+								<input type="hidden" value="{$vo['provider']}"  name="provider" class="orgbusiDBC3773.id addProviderUserid">
+								<a lookupgroup="orgbusiDBC3773" href="__APP__/MisSaleMyBusiness/lookupGenerals" param="lookupchoice=2ba96fc5ab7bef0ac9a4d3f5d72bb1f0&amp;newconditions=" condition="" newconditions="" syscondition="" class="icon_elm mid_icon_elm icon-plus"></a>
+								<a onclick="clearOrg('orgbusiDBC3773');" href="javascript:void(0);" class="icon_elm icon-trash" title="清空信息"></a>
+						</div>						
+					</div>
+					<div class="col_1_3 form_group_lay   "  id="editProviderLian"  <if condition="$vo['xuanzeleixing'] neq 2">style="display:none"</if>>
+						<label class="label_new">金融联络站:</label>
+						<div class="tml-input-lookup">
+							<div id="addProviderLian"  >
+								<input type="text" value="{$vo['jinronglianluozhan']|getFieldBy='id','name','mis_auto_gbdzk'}" autocomplete="off" class="orgbusiDBC3773lian.name   input_new half_angle_input   textInput enterIndex valid">
+								<input type="hidden"  value="{$vo['jinronglianluozhan']}" name="jinronglianluozhan" class="orgbusiDBC3773lian.id  addProviderLianid">
+								<a lookupgroup="orgbusiDBC3773lian" href="__APP__/MisSaleMyBusiness/lookupGenerals" param="lookupchoice=026e02b9b708d5d7b7527daabd746ea7&amp;newconditions=" condition="" newconditions="" syscondition="" class="icon_elm mid_icon_elm icon-plus"></a>
+								<a onclick="clearOrg('orgbusiDBC3773lian');" href="javascript:void(0);" class="icon_elm icon-trash" title="清空信息"></a>
+							</div>
+						</div>						
+					</div>
+					
+				<div class="col_1_7 form_group_lay ">
+					<label class="label_new">{$fields["name"]}:</label>
+					<textarea  cols="100" rows="2" class=" text_area" name="name">{$vo['name']}</textarea>
+				</div>
+				<div class="col_1_3 form_group_lay field_shifuzhuanweixiangmu" original="{$vo['shifuzhuanweixiangmu']}" category="select" style="">
+				<label class="label_new">
+					{$fields["shifuzhuanweixiangmu"]}:
+				</label>
+				<span class="input_new">{:getControllbyHtml('selectlist',array('type'=>'select','key'=>'YesOrNo','conditions'=>'','selected'=>$vo[shifuzhuanweixiangmu] ,'showtype'=>'1'))}</span>
+			</div>
+			<div class="col_1_3 form_group_lay field_xiangmubianhao" original="{$vo['xiangmubianhao']}" category="text" style="">
+				<label class="label_new">
+					{$fields["xiangmubianhao"]}:
+				</label>
+				<span class="input_new">{$vo['xiangmubianhao']}</span>
+			</div>
+			<div class="col_1_3 form_group_lay field_supcategory" original="{$vo['supcategory']}" category="select" style="">
+				<label class="label_new">
+					{$fields["supcategory"]}:
+				</label>
+				<span class="input_new">{:getControllbyHtml('table',array('type'=>'select','table'=>'mis_system_flow_type','id'=>'orderno','name'=>'name','conditions'=>'outlinelevel=1','selected'=>$vo[supcategory],'showtype'=>'1'))}</span>
+			</div>
+			<div class="col_1_3 form_group_lay field_category" original="{$vo['category']}" category="select" style="">
+				<label class="label_new">
+					{$fields["category"]}:
+				</label>
+				<span class="input_new">{:getControllbyHtml('table',array('type'=>'select','table'=>'mis_system_flow_type','id'=>'orderno','name'=>'name','conditions'=>'outlinelevel=2','selected'=>$vo[category],'showtype'=>'1'))}</span>
+			</div>
+			<div class="col_1_3 form_group_lay field_xiangmuzhudiao" original="{$vo['xiangmuzhudiao']}" category="lookup" style="">
+				<label class="label_new">
+					{$fields["xiangmuzhudiao"]}:
+				</label>
+				<span class="input_new">{:getControllbyHtml('table',array('type'=>'select','table'=>'user','id'=>'id','name'=>'name','conditions'=>'','selected'=>$vo[xiangmuzhudiao],'showtype'=>'1'))}</span>
+			</div>
+			<div class="col_1_3 form_group_lay field_pifujine" original="{$vo['pifujine']}" category="text" style="">
+				<label class="label_new">
+					{$fields["pifujine"]}:
+				</label>
+				<span class="input_new">{$vo['pifujine']|unitExchange=###,yuan,wan,3}</span>
+			</div>
+			<div class="col_1_3 form_group_lay field_pifuqixian" original="{$vo['pifuqixian']}" category="text" style="">
+				<label class="label_new">
+					{$fields["pifuqixian"]}:
+				</label>
+				<span class="input_new">{$vo['pifuqixian']|unitExchange=###,months,months,3}</span>
+			</div>
+			<div class="col_1_3 form_group_lay field_fangkuanjine" original="{$vo['fangkuanjine']}" category="text" style="">
+				<label class="label_new">
+					{$fields["fangkuanjine"]}:
+				</label>
+				<span class="input_new">{$vo['fangkuanjine']|unitExchange=###,yuan,wan,3}</span>
+			</div>
+			<div class="col_1_3 form_group_lay field_fangkuanqixian" original="{$vo['fangkuanqixian']}" category="text" style="">
+				<label class="label_new">
+					{$fields["fangkuanqixian"]}:
+				</label>
+				<span class="input_new">{$vo['fangkuanqixian']|unitExchange=###,months,months,3}</span>
+			</div>
+				{:W('ShowAction')}
+				
+				
+				<if condition="$endVoList">
+	 		 <volist id="endVoList" name="endVoList" key="key">
+                 <div class="tml_time_line">
+                  <p></p> 
+                     <div class="timeline">
+                         <div class="separator"></div>
+                         <if condition="$endVoList['leixing'] eq 1">
+		                         <div class="timeline-entry group_bl_color">
+                                    <span class="time_warp">{$endVoList['linktime']||transtime='Y-m-d H:i'}</span>
+                                    <div class="metadata">
+                                    	 <p class="bidjiacu">沟通记录</p>
+                                        <p>沟通人：<span class="group_per">{$endVoList['linkpeople']}</span>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                     	   沟通方式：<span class=" group_per">{$endVoList['communicatetype']|getSelectlistValue='CommunicationType'}</span>
+                                        </p>
+                                    </div>
+                                    <div class="time_line_content">
+                                        <ul class="tlc_ul1">
+                                            <li>
+                                                <span>沟通结果：</span>
+                                               
+                                                <ul class="tlc_ul1 tlc_ul2" >
+                                                	
+                                                    <li style="list-style-type:none">{$endVoList['linknews']}</li>
+                                                  <!--   <li>公司规模比较大（拥有2万多头肉羊）</li>
+                                                    <li>对羊肉的品质要求比较高</li> -->
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                          <elseif condition="$endVoList['leixing'] eq 2"/>
+                          		 <div class="timeline-entry group_bl_color">
+                                    <span class="time_warp">{$endVoList['createtime']||transtime='Y-m-d H:i'}</span>
+                                    <div class="metadata">
+                                     <p  class="bidjiacu">分派记录</p>
+                                        <p>分派人：<span class="group_per">{$endVoList['fenpairen']|getFieldBy='id','name','user'}</span>
+                                        	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        	业务员：<span class="group_per">{$endVoList['yewuyuan']|getFieldBy='id','name','user'}</span></p>
+                                   			<p>是否自动获取：<span class="group_per">{$endVoList['zidonghuoqu']|getSelectlistValue='YesOrNo'}</span></p>
+                                    
+                                    </div>
+                                </div>
+                          <elseif condition="$endVoList['leixing'] eq 3"/>
+                          		<div class="timeline-entry group_bl_color">
+	                                    <span class="time_warp">{$endVoList['createtime']|transtime='Y-m-d H:i'}</span>
+	                                    <div class="metadata">
+	                                     <p  class="bidjiacu">转交记录</p>
+	                                        <p>转交人：<span class="group_per">{$endVoList['zhuanjiaoren']|getFieldBy='id','name','user'}</span><!-- <span class="icon-map-marker flower_adds"> {$endVoList['address']}</span> -->
+	                                         	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	                                         	接收人：<span class="group_per">{$endVoList['jieshouren']|getFieldBy='id','name','user'}</span></p>
+	                                   		 <p>是否同意：<span class="group_per">{$endVoList['shifoujieshou']|getSelectlistValue='YesOrNo'}</span>
+	                                   		 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	                                   			操作时间：<span class="group_per">{$endVoList['quxiaoshijian']|transtime='Y-m-d H:i'}</span></p>
+	                                   			<if condition="$endVoList['shifoujieshou'] eq 0 " >
+	                                   			<div class="time_line_content">
+			                                        <ul class="tlc_ul1">
+			                                            <li>
+			                                                <span>不同意理由：</span>
+			                                               
+			                                                <ul class="tlc_ul1 tlc_ul2" >
+			                                                	
+			                                                    <li style="list-style-type:none">{$endVoList['quxiaoliyou']}</li>
+			                                                </ul>
+			                                            </li>
+			                                        </ul>
+			                                    </div>
+	                                   		
+	                                   			</if>
+	                                    </div>
+	                                </div>
+	                      <elseif condition="$endVoList['leixing'] eq 4"/>
+	                      			<div class="timeline-entry group_bl_color">
+	                                    <span class="time_warp">{$endVoList['createtime']|transtime='Y-m-d H:i'}</span>
+	                                    <div class="metadata">
+	                                     <p  class="bidjiacu">转储备记录</p>
+	                                   			操作时间：<span class="group_per">{$endVoList['createtime']|transtime='Y-m-d H:i'}</span></p>
+	                                   			<div class="time_line_content">
+			                                        <ul class="tlc_ul1">
+			                                            <li>
+			                                                <span>转储备理由：</span>
+			                                               
+			                                                <ul class="tlc_ul1 tlc_ul2" >
+			                                                	
+			                                                    <li style="list-style-type:none">{$endVoList['zhuanchubeishuoming']}</li>
+			                                                </ul>
+			                                            </li>
+			                                        </ul>
+			                                    </div>
+	                                    </div>
+	                                </div>
+		                   </if>
+                     </div>
+                 </div>
+                </volist>
+               </if>
+			
+			</div>
+			</div>
+		</div>
+	</form>
+</div>
+</div>
+
+

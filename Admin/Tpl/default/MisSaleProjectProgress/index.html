@@ -1,0 +1,136 @@
+<link href="__PUBLIC__/Css/tmlstyle/tml.css" rel="stylesheet" type="text/css" media="screen"/>
+<div class="pageContent">
+	<div class="pageFormContent new_basis_archives_page">
+		<div class="new_version_page_content" style="width: calc(100% - 4px);padding:0;">
+					<div class="into_table_lay">
+				<div class="into_table_title">项目进度情况分析</div>
+				<table class="into_table_new nbm_data_table"   table_type="view">
+					<thead>
+						<tr>
+							<th  rowspan="2" style="min-width:150px;max-width:150px;">序号</th>
+							<th rowspan="2" style="min-width:120px;max-width:120px;">部门</th>
+							<th rowspan="2" style="min-width:120px;max-width:120px;">人员</th>
+							<th  colspan="2">立项阶段</th>
+							<th colspan="2" style="min-width:120px;max-width:120px;">尽职调查</th>
+							<th colspan="2" style="min-width:120px;max-width:120px;">风险评估</th>
+							<th colspan="2">出具批复数</th>
+							<th  colspan="2">签约放款</th>
+							<th  colspan="2">放款项目数</th>
+							<th  colspan="2">保后管理</th>
+						</tr>
+						<tr>
+							<th style="border-left: none;">金额</th>
+							<th>笔数</th>
+							<th>金额</th>
+							<th>笔数</th>
+							<th>金额</th>
+							<th>笔数</th>
+							<th>金额</th>
+							<th>笔数</th>
+							<th>金额</th>
+							<th>笔数</th>
+							<th>金额</th>
+							<th>笔数</th>
+							<th>金额</th>
+							<th>笔数</th>
+						</tr>
+						</thead>
+						<tbody>
+						<volist name="list['dept']" id="deptvo" key="i">
+						<volist name="list['list'][$deptvo]" id="vo" key="j">
+						<tr <if condition="$vo['count']">style="background:yellow"</if>>
+						<!--$vo['isline']---判断是否第一行  rowspan="{$list['list'][$deptvo]['sumcount']['count']+2}" -->
+						<if condition="$vo['isline']==1">
+						<td rowspan="{$list['list'][$deptvo]['sumcount']['count']+2}">
+						{$i}
+						</td>
+						<td rowspan="{$list['list'][$deptvo]['sumcount']['count']+2}">
+							{$deptvo|getFieldBy='id','name','mis_system_department'}
+						</td>
+						</if>
+						<td>
+						<if condition="$vo['count']">
+						合计
+						<else/>
+						{$vo.userid|getFieldBy='id','name','user'}
+						</if>
+						</td>
+						<td>
+						{$vo['lxsum']|getDigits}
+						</td>
+						<td>
+						<if condition="$vo['count']">
+						<a target="navtab" title="项目详细信息" rel="MisSaleProjectProgress_ProjectMessage"  href="__URL__/projectMessage/jieduan/01001/deptid/{$deptvo}">{$vo['lxcount']}</a>
+						<else/>
+						<a target="navtab" title="项目详细信息" rel="MisSaleProjectProgress_ProjectMessage"  href="__URL__/projectMessage/jieduan/01001/uid/{$vo.userid}">{$vo['lxcount']}</a>
+						</if>
+						</td>
+						<td >
+						{$vo['jzsum']|getDigits}
+						 </td>
+						<td>
+						<if condition="$vo['count']">
+						<a target="navtab" title="项目详细信息" rel="MisSaleProjectProgress_ProjectMessage"  href="__URL__/projectMessage/jieduan/01002/deptid/{$deptvo}">{$vo['jzcount']}</a>
+						<else/>
+						<a target="navtab" title="项目详细信息" rel="MisSaleProjectProgress_ProjectMessage"  href="__URL__/projectMessage/jieduan/01002/uid/{$vo.userid}">{$vo['jzcount']}</a>
+						</if>
+						</td>
+						<td>
+						{$vo['fxsum']|getDigits}
+						</td>
+						<td>
+						<if condition="$vo['count']">
+						<a target="navtab" title="项目详细信息" rel="MisSaleProjectProgress_ProjectMessage"  href="__URL__/projectMessage/jieduan/01003/deptid/{$deptvo}">{$vo['fxcount']}</a>
+						<else/>
+						<a target="navtab" title="项目详细信息" rel="MisSaleProjectProgress_ProjectMessage"  href="__URL__/projectMessage/jieduan/01003/uid/{$vo.userid}">{$vo['fxcount']}</a>
+						</if>
+						</td>
+						<td>
+						{$vo['pfsum']|getDigits}
+						</td>
+						<td>
+						<if condition="$vo['count']">
+						<a target="navtab" title="项目详细信息" rel="MisSaleProjectProgress_ProjectMessage"  href="__URL__/projectMessage/pf/1/deptid/{$deptvo}">{$vo['pfcount']}</a>
+						<else/>
+						<a target="navtab" title="项目详细信息" rel="MisSaleProjectProgress_ProjectMessage"  href="__URL__/projectMessage/pf/1/uid/{$vo.userid}">{$vo['pfcount']}</a>
+						</if>
+						</td>
+						<td>
+						{$vo['qysum']|getDigits}
+						</td>
+						<td>
+						<if condition="$vo['count']">
+						<a target="navtab" title="项目详细信息" rel="MisSaleProjectProgress_ProjectMessage"  href="__URL__/projectMessage/jieduan/01004/deptid/{$deptvo}">{$vo['qycount']}</a>
+						<else/>
+						<a target="navtab" title="项目详细信息" rel="MisSaleProjectProgress_ProjectMessage"  href="__URL__/projectMessage/jieduan/01004/uid/{$vo.userid}">{$vo['qycount']}</a>
+						</if>
+						</td>
+						<td>
+						{$vo['fksum']|getDigits}
+						</td>
+						<td>
+						<if condition="$vo['count']">
+						<a target="navtab" title="项目详细信息" rel="MisSaleProjectProgress_ProjectMessage"  href="__URL__/projectMessage/fk/1/deptid/{$deptvo}">{$vo['fkcount']}</a>
+						<else/>
+						<a target="navtab" title="项目详细信息" rel="MisSaleProjectProgress_ProjectMessage" href="__URL__/projectMessage/fk/1/uid/{$vo.userid}">{$vo['fkcount']}</a>
+						</if>
+						</td>
+						<td>
+						{$vo['bhsum']|getDigits}
+						</td>
+						<td>
+						<if condition="$vo['count']">
+						<a target="navtab" title="项目详细信息" rel="MisSaleProjectProgress_ProjectMessage"  href="__URL__/projectMessage/jieduan/01006/deptid/{$deptvo}">{$vo['bhcount']}</a>
+						<else/>
+						<a target="navtab" title="项目详细信息" rel="MisSaleProjectProgress_ProjectMessage"  href="__URL__/projectMessage/jieduan/01006/uid/{$vo.userid}">{$vo['bhcount']}</a>
+						</if>
+						</td>
+						</tr>
+						</volist>
+						</volist>
+					</tbody>
+					</table>
+					</div>
+			</div>
+		</div>
+	</div>														

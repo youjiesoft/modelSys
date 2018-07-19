@@ -1,0 +1,49 @@
+<script>
+$(document).ready(function(){
+	var zNodes = {$amounttitletree};
+	var setting = {
+			view: {
+               selectedMulti: false,
+               fontCss: getFontCss
+			},
+			data: {
+				simpleData: {
+					enable: true
+				}
+			}
+		};
+	$.fn.zTree.init($("#misfinaceamounttitle_tree"), setting, zNodes);
+	var zTree = $.fn.zTree.getZTreeObj("misfinaceamounttitle_tree");
+	var valid='{$selectednodeid}';
+	var nodes = zTree.getNodesByParam("id", valid, null);
+	zTree.selectNode(nodes[0]);
+});
+</script>
+<div class="pageContent">
+	<div class="tabs">
+		<div class="tabsContent">
+			<div>
+                <div class="treeleft">
+                    <div class="collapse" style="display:none;width:24px;height:auto;border:0;" layoutH="0">
+                        <div class="toggleCollapse"><div></div></div>
+                    </div>
+                    <div class="close">
+                        <div class="toggleCollapse" ><h2></h2><div></div></div>
+                        <div class="clearfix" style="border:0 solid #95B8E7;border-width:1px 0;padding:4px;">
+							<input class="tree-search-input" type="text" id="MisFinanceAmountTitleSearchNodeKeys" />
+							<div class="buttonActive"><div class="buttonContent" onclick="SearchZTreeNode('misfinaceamounttitle_tree','MisFinanceAmountTitleSearchNodeKeys')"><button>搜索</button></div></div>
+						</div>
+                        <ul id="misfinaceamounttitle_tree" class="ztree"  layoutH="77"></ul>
+                    </div>
+                </div>
+                
+				<div id="misfinaceamounttitle_right_content" class="treeright">
+					<include file="unitlist"  />
+				</div>
+			</div>
+		</div>
+		<div class="tabsFooter">
+			<div class="tabsFooterContent"></div>
+		</div>
+	</div>
+</div>

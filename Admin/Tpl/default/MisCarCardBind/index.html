@@ -1,0 +1,52 @@
+<script>
+$(document).ready(function(){
+	$(this).find("[layoutH]").layoutH();  //加载后，把内容区自适应高__URL__/indexGroup/carid/{$carid}/
+});
+</script>
+<form id="pagerForm" action="__URL__/index" method="post">
+	<input type="hidden" name="pageNum" value="1"/>
+	<input type="hidden" name="orderField" value="{$order}" />
+	<input type="hidden" name="orderDirection" value="{$sort}" />
+	<input type="hidden" name="numPerPage" value="{$numPerPage}" />
+</form>
+<div class="pageContent tml-bg-white">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<volist name="toolbarextension" id="toolb">
+					<li>{$toolb['html']}</li>
+			</volist>
+		</ul>
+		<form rel="pagerForm" <if condition="$carid">onsubmit="return divSearch(this,'card_model_car');"<else/> onsubmit="return navTabSearch(this);"</if> action="__URL__/index" method="post">
+			<input type="hidden" name="carid" value="{$carid}" />
+			<div class="searchBar">
+				<table class="searchContent">
+					<tr>
+						<include file="Public:quickSearchCondition" />
+						<if condition="$_SESSION.a eq 1 or $_SESSION.miscarcardbind_exportbysearchhtml">
+						<td><button  class="xyOutput" type="button" onclick="exportBysearch(this.form,'__URL__/index','__URL__/exportBysearchHtml');">导出</button></td>
+					    </if>
+					</tr>
+				</table>
+			</div>
+		</form>
+	</div>
+	<table class="table" width="100%"  <notempty  name="carid">layoutH="103"<else />layoutH="68"</notempty >>
+		<thead>
+			<tr>
+			    <th width='24'>序号</th>
+				<volist id="vo" name="detailList">
+					<if condition="$vo[shows] eq 1"><th <if condition="$vo[widths]">width="{$vo[widths]}"</if><if condition="$vo[sorts]"> <if condition="$carid">rel="card_model_car"</if> orderField="{$vo[sortname]}" class="{$sort}"</if>>{$vo[showname]}</th></if>	<!--类型-->
+				</volist>
+			</tr>
+		</thead>
+		<tbody>
+			<include file="dwzloadindex" />
+		</tbody>
+	</table>
+	<div class="panelBar panelPageBar">
+		<div class="pages">
+			<span>共{$totalCount}条</span>
+		</div>
+		<div class="pagination" <if condition="$carid">rel="card_model_car" <else/>  targetType="navTab"</if> totalCount="{$totalCount}" numPerPage="{$numPerPage}" pageNumShown="10" currentPage="{$currentPage}"></div>
+	</div>
+</div>

@@ -1,0 +1,111 @@
+ <div class="page">
+	<div class="pageContent">
+		<form method="post" action="__APP__/MisSaleBusiness/update/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return iframeCallback(this, navTabAjaxDone)" enctype="multipart/form-data">
+			<input type="hidden" name="callbackType" value="closeCurrent"/>
+			<div class="pageFormContent applecloth" layoutH="40">
+				<div class="keepContentCenter form-affix-content">
+				<div class="contentTitle contentTitle_center form-affix-title">任务管理</div>
+                <fieldset class="side-catalog-anchor">
+                    <table class="data-table" width="100%" cellspacing="0" style="line-height:32px;" >
+                        <tbody>
+   		  <tr>
+   		  	<td class="cell_left" width="12%">编号:</td>
+			<td class="cell_right" width="21%" >{:W('ShowOrderno',array(2,'mis_project_flow_form',$vo['orderno']))}</td>
+			<td class="cell_left" width="12%">{$fields["name"]}:</td>
+			<td class="cell_right" width="21%" >{$vo['name']}</td>
+			<td class="cell_left" width="12%">{$fields["days"]}:</td>
+			<td class="cell_right" width="21%" >{$vo['days']}天</td>
+		</tr>
+		 <tr>
+			 <td class="cell_left" width="12%">{$fields["supcategory"]}:</td>
+			<td class="cell_right" width="21%" >{$vo['supcategory']|getFieldBy='id','name','mis_project_flow_type'}</td>
+		 	<td class="cell_left" width="12%">{$fields["category"]}:</td>
+			<td class="cell_right" width="21%" >{$vo['category']|getFieldBy='id','name','mis_project_flow_type'}</td>
+			<td class="cell_left" width="12%">{$fields["parentid"]}:</td>
+			<td class="cell_right" width="21%" >{$vo['parentid']|getFieldBy='id','name','mis_project_flow_form'}</td>
+			
+		</tr>
+		<tr>
+			<td class="cell_left" width="12%">{$fields["sort"]}:</td>
+			<td class="cell_right" width="21%" >{$vo['sort']}</td>
+			<td class="cell_left" width="12"   width="12%">{$fields["critical"]}:</td>
+			<td class="cell_right" width="21%" ><if condition="($vo['critical'] eq 1)">是<else/>否</if></td>
+			<td class="cell_left"  width="12%">{$fields["formtype"]}:</td>
+			<td class="cell_right"  width="21%" >{$vo['formtype']|getFieldBy='id','name','mis_system_flow_inventory_type'}</td>
+		</tr>
+		<tr>
+			<td class="cell_left" >{$fields["readtaskrole"]}:</td>
+			<td class="cell_line_right" colspan="5" >
+			<volist name="readtaskrole" id="atrole">{$atrole|getFieldBy='id','name','rolegroup'}，</volist></td>
+		</tr>
+		<tr>
+			<td class="cell_left" >{$fields['notes']}:</td>
+			<td class="cell_line_right"  colspan="5"><pre>{$vo['notes']}</pre></td>
+		</tr>
+		 <tr>
+			 <td class="cell_left" width="12%">是否启用：</td>
+			<td class="cell_right"  width="21%" ><if condition="$vo.status eq 1">启用<else/>禁用</if></td>
+			<td class="cell_left" width="12%">{$fields["formobj"]}:</td>
+			<td class="cell_right"  width="21%" >
+				{$vo['formobj']||getFieldBy='name','title','node'}
+				</td>
+			<td class="cell_left" width="12%">是否列表:</td>
+			<td class="cell_right"  width="21%" >{$vo['datatype']|getSelectlistValue='ListYesOrNo'}</td>
+		</tr> 
+		<tr>
+			<td class="cell_left"  width="12%">前置任务:</td>
+			<td class="cell_right" width="21%" >{$vo['predecessorid']|getFieldBy='id','name','mis_project_flow_form'}</td>
+			<td class="cell_left" width="12%">引用任务:</td>
+			<td class="cell_right" width="21%" >{$vo['quote']|getFieldBy='id','name','mis_project_flow_form'}</td>
+			<td class="cell_left"  width="12%">项目角色:</td>
+			<td class="cell_right" width="21%" >{$vo['xiangmujuese']|getFieldBy='orderno','name','mis_auto_wqzrv'}</td>
+		</tr>
+		<tr>
+			<td class="cell_left" width="12%">生单数据:</td>
+			<td class="cell_right" width="21%" >{$vo['sourcemodel']|getFieldBy='name','title','node'}</td>
+			<td class="cell_left" width="12%">总报告:</td>
+			<td class="cell_right" width="21%" ><if condition="$vo['totalreport'] eq 1">是<else/>否</if></td>
+			<td class="cell_left" width="12%">显示顺序:</td>
+			<td class="cell_right" width="21%" >{$vo.totalsort}</td>
+		</tr>
+		
+	    <tr >
+			<td class="cell_left" width="12%">阶段报告:</td>
+			<td class="cell_right" width="21%" ><if condition="($vo['smallreport'] eq 1)">是<else/>否</if></td>
+			<td class="cell_left" width="12%">显示顺序:</td>
+			<td class="cell_right" width="21%" >{$vo.smallsort}</td>
+			<td class="cell_left" width="12%">动态阶段条件:</td>
+			<td class="cell_right" width="21%" >{$typename}</td>
+			</tr>
+		<tr >
+			<td class="cell_left" width="12%">分派人:</td>
+			<td class="cell_right" width="21%" >{$vo['alloterid']|getFieldBy='id','name','user'}</td>
+			<td class="cell_left" width="12%">执行人:</td>
+			<td class="cell_right" width="21%" >{$vo['executorid']|getFieldBy='id','name','user'}</td>
+			<td class="cell_left"  width="12%">是否归档:</td>
+			<td class="cell_right"  width="21%" ><if condition="($vo['isfile'] eq 1)">是<else/>否</if></td>
+			
+		</tr>
+		<tr>
+			<td class="cell_left" width="12%">归档类型</td>
+			<td class="cell_right"  width="21%" >{$vo['guidangleixing']|getFieldBy='orderno','name','mis_auto_zhlgn'}</td>
+			<td class="cell_left" width="12%">资料名称:</td>
+			<td class="cell_right" width="21%" >{$vo['ziliaomingcheng']}</td>
+			<td class="cell_left"  width="12%"></td>
+			<td class="cell_right"  width="21%" ></td>
+			
+		</tr> 
+                      
+                            
+                        </tbody>
+                    </table>
+                    <br />
+                </fieldset>
+				
+			</div>
+			</div>
+			{:W('ShowAction',array('data'=>$vo))}
+	</form>
+	</div>
+</div>
+ 

@@ -1,0 +1,98 @@
+<script>
+$(document).ready(function(){
+	$(this).find("[layoutH]").layoutH();  //加载后，把内容区自适应高__URL__/indexGroup/carid/{$carid}/
+});
+
+
+function divAjaxDone(json){
+	DWZ.ajaxDone(json);	
+	if (json.statusCode == DWZ.statusCode.ok){
+		var url=json.forwardUrl;
+		$("#"+json.rel).loadUrl(url,'','');
+		$("#"+json.rel).find("[layoutH]").layoutH();
+		if ("closeCurrent" == json.callbackType) {
+			$.pdialog.closeCurrent();
+		}
+	}
+}
+
+
+</script>
+<div class="tabs" eventType="click">
+	<div class="tabsHeader">
+		<div class="tabsHeaderContent">
+			<ul>
+				<li class="selected">
+					<a href="__APP__/MisSystemCar/detail/carid/{$carid}/jump/1"  class="j-ajax"  rel="missystemcardetail_model_car">
+						<span>-车辆基本信息-</span>
+					</a>
+				</li>
+				</if>
+				<if condition="$_SESSION.a eq 1 or $_SESSION.miscarinsurance_index">
+					<li>
+						<a href="__APP__/MisCarInsurance/index/carid/{$carid}" rel="insurance_model_car" class="j-ajax">
+							<span>-车辆保险信息-</span>
+						</a>
+					</li>
+				</if>
+				<if condition="$_SESSION.a eq 1 or $_SESSION.miscarfix_index">
+					<li>
+						<a href="__APP__/MisCarFix/index/carid/{$carid}" rel="fix_model_car" class="j-ajax">
+							<span>-车辆维修信息-</span>
+						</a>
+					</li>
+				</if>
+				<if condition="$_SESSION.a eq 1 or $_SESSION.miscartrafficpenalty_index">
+					<li>
+						<a href="__APP__/MisCarTrafficPenalty/index/carid/{$carid}" rel="trafical_illegal_model_car" class="j-ajax">
+							<span>-车辆违章信息-</span>
+						</a>
+					</li>
+				</if>
+				<if condition="$_SESSION.a eq 1 or $_SESSION.miscaraddoilinfo_index">
+					<li>
+						<a href="__APP__/MisCarAddOilInfo/index/carid/{$carid}" rel="add_oil_model_car" class="j-ajax">
+							<span>-车辆加油信息-</span>
+						</a>
+					</li>
+				</if>
+				<if condition="$_SESSION.a eq 1 or $_SESSION.miscarcardbind_index">
+					<li>
+						<a href="__APP__/MisCarCardBind/index/carid/{$carid}" rel="card_model_car" class="j-ajax">
+							<span>-油卡管理信息-</span>
+						</a>
+					</li>
+				</if>
+			</ul>
+		</div>
+	</div>
+     <div class="tabsContent tml-p0" layoutH="35">
+    	<!-- 第一个TABS -->
+		<div id="missystemcardetail_model_car" class="unitBox"></div>
+		<!-- 第一个TABS -->
+		
+		<!-- 第二个TABS -->
+		<div id="insurance_model_car" class="unitBox"></div>
+		<!-- 第二个TABS -->
+		
+		<!-- 第三个TABS -->
+		<div id="fix_model_car" class="unitBox"></div>
+		<!-- 第三个TABS -->
+		
+		<!-- 第四个TABS -->
+		<div id="trafical_illegal_model_car" class="unitBox"></div>
+		<!-- 第四个TABS -->
+		
+		<!-- 第五个TABS -->
+		<div id="add_oil_model_car" class="unitBox"></div>
+		<!-- 第五个TABS -->
+		
+		<!-- 第六个TABS -->
+		<div id="tires_model_car" class="unitBox"></div>
+		<!-- 第六个TABS -->
+		
+		<!-- 第七个TABS -->
+		<div id="card_model_car" class="unitBox"></div>
+		<!-- 第七个TABS -->
+     </div>
+</div>

@@ -1,0 +1,159 @@
+<script type="text/javascript">
+$("#list1, #list2").dragsort({ dragSelector: "div", dragBetween: true, dragEnd: dragTemplate, placeHolderTemplate: "<li class='placeHolder'><div></div></li>" });
+function dragTemplate(){
+   var itemLength = $('#list1 .itemID').length;//有效节点数
+   var virifyItem = $("#authorcount").val();//验证成功节点数
+   var virifyItem = $('#list1 .itemID font').length;//有效节点数
+   //"流程结束、结束"位置不变
+   var theFirstHtml = '<b class="b1"></b><b class="b2 d1"></b><b class="b3 d1"></b><b class="b4 d1"></b><div style="cursor: move;" class="b d1 k"><input value="0" name="tid[]" type="hidden">开始</div><div style="cursor: move;" class="process_ico"></div><b class="b4b d1"></b><b class="b3b d1"></b><b class="b2b d1"></b><b class="b1b"></b>';
+   var theLastHtml = '<b class="b1"></b><b class="b2 d1"></b><b class="b3 d1"></b><b class="b4 d1"></b><div style="cursor: move;" class="b d1 k"><input value="0" name="tid[]" type="hidden">结束</div><b class="b4b d1"></b><b class="b3b d1"></b><b class="b2b d1"></b><b class="b1b"></b>';
+   var itemRight = itemLength+1;//右移一位
+   if($("#list1 li:last-child").html() != theLastHtml){
+   		$("#list1 .start:nth-child("+itemRight+")").insertAfter("#list1 li:last-child");
+   }
+   if($("#list1 li:first-child").html() != theFirstHtml){
+   		$("#list1 .start:nth-child(2)").insertBefore("#list1 li:first-child");
+   }
+}
+function getptNode(str){
+	var $form = $(str);
+	var v=$("#process_index_type_list").val();
+	if(v){
+		$form.attr("action","__URL__/index/navTabId/__MODULE__");
+		return navTabSearch($form);
+	}
+};
+function tips_over(obj){
+    $(obj).children("span").css("display","block");
+    $("#list1 .delete").css("display","none");//屏蔽
+    $("#list2 .delete").css("display","none");
+}
+function tips_out(obj){
+    $(obj).children("span").css("display","none");
+}
+
+$("#process_index_type").change(function(){
+	var t=$(this).val();
+	var $ref =$("#process_index_type_list");
+	$.ajax({
+		type:'POST',dataType:"json",url:"__URL__/comboxgetprocess",cache:false,
+		data:{typeid:t},
+		success:function(json){
+		if(!json)return;
+		var html='';
+		$.each(json,function(i){
+		if(json[i]&&json[i].length>1){
+		html+='<option value="'+json[i][0]+'">'+json[i][1]+'</option>';}});
+		var $refCombox=$ref.parents("div.combox:first");
+		$ref.html(html).insertAfter($refCombox);
+		$refCombox.remove();
+		$ref.trigger("change").combox();},
+		error:DWZ.ajaxError
+	});
+});
+</script>
+<style type="text/css">
+#list1 .process_ico{ display:block;}
+#list2 .process_ico{ display:none;}
+#list1, #list2 { width:auto; list-style-type:none; margin:0px;margin-left:auto;margin-right:auto;}/*height:160px;*/
+#list1 li, #list2 li { float:left; padding:5px; width:100px; height:30px; text-align: center; margin:7px 0;}
+#list1 li{ margin-right:55px;}
+.itemID{float:left; padding:5px; width:100px; height:30px; text-align: center; margin:7px 0; margin-right:55px;}
+.start{float:left; padding:5px; width:100px; height:30px; text-align: center; margin:7px 0; margin-right:55px; cursor: default;}
+.process li span{ display: none;}
+#list1 div, #list2 div {height:30px;  text-align:center;}
+.process_ico{background-image: url(__PUBLIC__/Images/process_ico.png);background-repeat:no-repeat;background-position:center;width:30px; height:30px; float:left;margin-right:-48px; margin-top:-33px; float:right;}
+.placeHolder div { background-color:white !important; border:dashed 1px gray !important; }
+.b1,.b2,.b3,.b4,.b1b,.b2b,.b3b,.b4b,.b{display:block;overflow:hidden;}
+.b1,.b2,.b3,.b1b,.b2b,.b3b{height:1px;}
+.b2,.b3,.b4,.b2b,.b3b,.b4b{border-left:1px solid #999;border-right:1px solid #999;}
+.process .b{border-left:1px solid #999;border-right:1px solid #999;}
+.b1,.b1b{margin:0 5px;background:#999;}
+.b2,.b2b{margin:0 3px;border-width:2px;}
+.b3,.b3b{margin:0 2px;}
+.b4,.b4b{height:2px;margin:0 1px;}
+.d1{background:#F7F8F9;}
+.k {height:300px;}
+.k_new{height:30px;}
+#start{ float:left;}
+</style>
+<script>
+	function systemprocessset(){
+		var from = $("#systemprocesssetform");
+		return validateCallback(from, navTabAjaxDone);
+	}
+</script>
+<div class="pageContent" layoutH="36">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<if condition="$_SESSION.a eq 1 or $_SESSION.processtemplate_add ">
+			   <li><a class="add" href="__APP__/ProcessTemplate/add" target="dialog" title="新增流程节点" width="700"><span>新增节点</span></a></li>
+			</if>
+			<volist name="toolbarextension" id="toolb">
+				<if condition="$_SESSION.a eq 1 or $toolb['ifcheck'] eq 0 or ($toolb['ifcheck'] eq 1 and !empty($toolb['permisname']) and $_SESSION[$toolb['permisname']])">
+					<li>{$toolb['html']}</li>
+				</if>
+			</volist>
+		</ul>
+	</div>
+    <div class="process" style="padding-bottom:20px;">
+        <h1>以下是所有节点：</h1>
+        <ul id="list2" class="clearfix">
+            <volist id="list" name="list">
+				<li class="itemID" onmouseover="tips_over(this);" onmouseout="tips_out(this);">
+                    <b class="b1"></b><b class="b2 d1"></b><b class="b3 d1"></b><b class="b4 d1"></b>
+                    <div class="b d1 k" >
+                        <input type="hidden" name="tid[]" value="{$list['id']}"/>
+                        {$list['name']}
+                    </div>
+                    <div class="process_ico"></div>
+                    <b class="b4b d1"></b><b class="b3b d1"></b><b class="b2b d1"></b><b class="b1b"></b>
+                    <span><a href="__APP__/ProcessTemplate/edit/id/{$list['id']}" target="dialog" title="编辑流程节点" width="700">编辑</a><a warn="请选择流程节点" title="你确定要删除吗？" target="ajaxTodo" callback="navTabAjaxMiwh" href="__APP__/ProcessTemplate/delete/id/{$list['id']}" class="delete">删除</a></span>
+                </li>
+            </volist>
+		</ul>
+    </div>
+    <div class="clear"></div>
+	<form method="post" id='systemprocesssetform' action="__URL__/update/navTabId/__MODULE__" class=" required-validate" >
+	<div class="panelBar" >
+        <ul class="toolBar">
+	       <label style="float:left;padding-top:5px;">&nbsp;选择模型：</label>
+	       <select name="typeid" class="combox" id="process_index_type">
+		   <option value="">&mdash;&mdash;选择类型&mdash;&mdash;</option>
+		   <volist id="t" name="typelist">
+		       <option <eq name="typeid" value="$t['id']" >selected</eq> value="{$t['id']}">{$t['name']}</option>
+		   </volist>
+	       </select> 
+	       <select name="pid" class="combox" id="process_index_type_list" onchange="getptNode(this.form);">
+		   <option value="">&mdash;&mdash;选择&mdash;&mdash;</option>
+		   <volist id="tylist" name="tylist">
+		       <option <eq name="sspid" value="$tylist['id']" >selected</eq> value="{$tylist['id']}">{$tylist['name']}</option>
+		   </volist>
+	       </select>
+            <li calss="info"><a class="add" href="__APP__/ProcessInfo/add" target="dialog" mask="true" ><span>新增流程</span></a></li>
+            <if condition="$sspid neq ''"><li calss="info"><a class="edit" href="__APP__/ProcessInfo/edit/id/{$sspid}" target="dialog" mask="true" ><span>修改流程</span></a></li></if>
+        </ul>
+    </div>
+    <div class="process">
+    	<if condition="$sspid neq ''">
+			<span class="start" style="cursor:default;float: left;"><b class="b1"></b><b class="b2 d1"></b><b class="b3 d1"></b><b class="b4 d1"></b><div class="b d1 k k_new">流程开始</div><div class="process_ico"></div><b class="b4b d1"></b><b class="b3b d1"></b><b class="b2b d1"></b><b class="b1b"></b></span>
+		</if>
+		<ul id="list1" style="float: left;">
+			{$str}
+		</ul>
+		<if condition="$sspid neq ''">
+			<span class="start" style="cursor:default;float: left;"><b class="b1"></b><b class="b2 d1"></b><b class="b3 d1"></b><b class="b4 d1"></b><div class="b d1 k k_new">流程结束</div><b class="b4b d1"></b><b class="b3b d1"></b><b class="b2b d1"></b><b class="b1b"></b></span>
+		</if>
+    </div>
+    </form>
+</div>
+<div class="formBar">
+   <ul>
+	<if condition="$sspid neq ''">
+		<li><button class="tml-btn tml-btn-primary" type="button" onclick="systemprocessset();">{$Think.lang.save}</button></li>
+	<else/>
+		<li><a class="tml-btn tml-btn-disabled" href="javascript:;"><span>{$Think.lang.save}</span></a></li>
+	</if>
+	   <li><button class="close tml-btn tml-btn-default" type="button">{$Think.lang.close}</button></li>
+   </ul>
+</div>

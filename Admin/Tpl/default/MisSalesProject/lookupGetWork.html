@@ -1,0 +1,73 @@
+<form id="pagerForm" action="__URL__/lookupGetWork" method="post">
+	<input type="hidden" name="formid" value="{$formid}"/>
+</form>
+<form rel="pagerForm" onsubmit="return divSearch(this,'missalesprojectleft_ajax');" action="__URL__/lookupGetWork" method="post">
+	<input type="hidden" name="formid" value="{$formid}"/>
+</form>
+<div class="pageContent" style="overflow: auto;">
+	<div class="xypc">
+		<div id="xywrap" class="xywrap clearfix" layouth="40">
+			<div class="general_wrap">
+                 <div class="general_wrap_top">
+                     <div class="fast_nav_header">
+                         <span class="fnh_left left">任务清单</span>
+                     </div>
+                     <div class="fast_nav_content">
+                     	<table class="tml_set_table" style="margin:0px;width:100%;" id="indexlist" width="100%" layoutH="58">
+							<thead>
+								<tr>
+									<th>序号</th>
+									<th>任务名称</th>
+									<th>清单类型</th>
+									<th>关联操作</th>
+									<th>备注</th>
+									<th>设置超期时间</th>
+									<th>执行人</th>
+									<th>是否完成</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								<volist id="vo" name="list" key="key2">
+									<tr name="fields">
+										<td>
+											{$key2}
+										</td>
+										<td>
+											{$vo.form_name}
+										</td>
+										<td>
+											{$vo.formtype|getFieldBy='id','name','mis_system_flow_inventory_type'}
+										</td>
+										<td>
+											<a href="__APP__/{$vo.formobj}/add/projectid/{$vo.projectid}/projectworkid/{$vo.form_id}" target="{$vo.urltarget}" mask="true" title="{$vo.urltitle}_新增" rel="{$vo.formobj}add">
+												执行
+											</a>
+										</td>
+										<td>
+											{$vo.notes}
+										</td>
+										<td>
+											<!-- 2014-10-22 -->
+										</td>
+										<td>
+											{$vo.executorname}
+										</td>
+										<td>
+											{:getSelectByName('credit',$vo['complete'])}
+										</td>
+										<td>
+											<a href="__APP__/MisProjectFlowForm/add/id/{$vo.form_id}" target="dialog" width="700" height="400"  mask="true" title="前后置任务新增" rel="{$vo.formobj}add">
+												添加
+											</a>
+										</td>
+									</tr>
+								</volist>
+							</tbody>
+						 </table>
+                     </div>
+                 </div>
+            </div>
+		</div>
+	</div>
+</div>

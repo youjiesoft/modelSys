@@ -1,0 +1,231 @@
+<div class="pageFormContent applecloth anchorsToolBarParent" layoutH="31">
+            <div class="keepContentCenter">
+                <H2 class="contentTitle contentTitle_center">项目综合信息</H2>
+                <fieldset class="side-catalog-anchor">
+                    <legend class="fieldset_legend_toggle side-catalog-firstanchor side-catalog-text">
+                        <b>基本信息</b>
+                    </legend>
+                    <div class="tml-form-row">
+                        <label>项目名称：</label>
+                        <input type="text" readonly="readonly" value="{$vo.id||getFieldBy='id','name','mis_sales_project'}" />
+                    </div>
+                    <div class="tml-form-row">
+                        <label>项目地址：</label>
+                        <input type="text" readonly="readonly" value="{$vo.address}" />
+                    </div>
+                    <div class="tml-form-col">
+                        <label>项目经理：</label>
+                        <input type="text" readonly="readonly" value="{$leadProjectName}" />
+                    </div>                                                              
+                    <div class="tml-form-col">
+                        <label>业务跟踪领导：</label>
+                        <input type="text" readonly="readonly" value="{$leadPersonName}" />
+                    </div>
+                    <div class="tml-form-col">
+                        <label>合同造价：</label>
+                        <div class="tml-input-append">
+                            <input type="text" readonly="readonly" value="{$vo.principalcost|getDigits}" />
+                            <span class="input-addon-unit" title="元">元</span>
+                        </div>
+                    </div>
+                    <div class="tml-form-col">
+                        <label>承包方式：</label>
+                        <input type="text" readonly="readonly" value="{$vo.offertype|getFieldBy='id','name','MisOrderTypes'}" />
+                    </div>
+                    <div class="tml-form-col">
+                        <label>项目面积：</label>
+                        <input type="text" readonly="readonly" value="{$vo.area}" />
+                    </div>
+                    <div class="tml-form-col">
+                        <label>合同工期：</label>
+                        <div class="tml-input-append">
+                            <input type="text" readonly="readonly" value="{$vo.limittime}" />
+                            <span class="input-addon-unit" title="天">天</span>
+                        </div>
+                    </div>
+                    <div class="tml-form-col">
+                        <label>开工日期：</label>
+                        <div class="tml-input-append">
+                            <input type="text" readonly="readonly" value="{$vo.startdate|transTime}">
+                            <a class="xyInputWithUnitButton inputDateButton" href="javascript:;">选择</a>
+                        </div>
+                    </div>
+                    <div class="tml-form-col">
+                        <label>竣工日期：</label>
+                        <div class="tml-input-append">
+                            <input type="text" readonly="readonly" value="{$vo.enddate|transTime}">
+                            <a class="xyInputWithUnitButton inputDateButton" href="javascript:;">选择</a>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="side-catalog-anchor">
+                    <legend class="fieldset_legend_toggle side-catalog-text">
+                        <b>产值监控</b>
+                        <font>
+                            <if condition="$allcost['id']">
+                                <a href="__APP__/MisProjectWeekReport/edit/id/{$allcost['id']}" title="项目周报单据详情" target="navTab" rel="MisProjectWeekReport_edit">单据详情</a>
+                            </if>
+                        </font>
+                    </legend>
+                    <div class="tml-form-col">
+                        <label>累计完成产值：</label>
+                        <input type="text" readonly="readonly" value="{$allcost['allcost']|getDigits}" />
+                    </div>
+                    <div class="tml-form-col">
+                        <label>完工百分比：</label>
+                        <div class="tml-input-append">
+                            <input type="text" readonly="readonly" value="{$wgbfb|getDigits}" />
+                            <span class="input-addon-unit" title="%">%</span>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="side-catalog-anchor">
+                    <legend class="fieldset_legend_toggle side-catalog-text">
+                        <b>进度监控</b>
+                        <font>
+                            <if condition="$day.id">
+                                <a href="__APP__/MisProjectScheduleAnalysis/auditView/id/{$day.id}" title="项目进度监控详情" target="navTab" rel="MisProjectScheduleAnalysis_edit">单据详情</a>
+                            </if>
+                        </font>
+                    </legend>
+                    <div class="tml-form-col">
+                        <label>计划工期：</label>
+                        <div class="tml-input-append">
+                            <input type="text" readonly="readonly" value="{$day.planday}" />
+                            <span class="input-addon-unit" title="天">天</span>
+                        </div>
+                    </div>
+                    <div class="tml-form-col">
+                        <label>当前工期：</label>
+                        <div class="tml-input-append">
+                            <input type="text" readonly="readonly" value="{$day.presentday}" />
+                            <span class="input-addon-unit" title="天">天</span>
+                        </div>
+                    </div>
+                    <div class="tml-form-col">
+                        <label>实际开工日期：</label>
+                        <div class="tml-input-append">
+                            <input type="text" readonly="readonly" value="{$day.completeday|transTime}">
+                            <a class="xyInputWithUnitButton inputDateButton" href="javascript:;">选择</a>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="side-catalog-anchor">
+                    <legend class="fieldset_legend_toggle side-catalog-firstanchor side-catalog-text">
+                        <b>成本监控</b>
+                        <font>
+                            <if condition="$cost.id">
+                                <a href="__APP__/MisProjectCostAnalysis/auditView/id/{$cost.id}" title="项目成本监控详情" target="navTab" rel="MisProjectCostAnalysis_edit">单据详情</a>
+                            </if>
+                        </font>
+                    </legend>
+                    <div class="tml-form-col">
+                        <label>目标成本：</label>
+                        <div class="tml-input-append">
+                            <input type="text" readonly="readonly" value="{$cost.budgetcost|getDigits}" />
+                            <span class="input-addon-unit" title="元">元</span>
+                        </div>
+                    </div>
+                    <div class="tml-form-col">
+                        <label>当前成本：</label>
+                        <div class="tml-input-append">
+                            <input type="text" readonly="readonly" value="{$cost.occucost|getDigits}" />
+                            <span class="input-addon-unit" title="元">元</span>
+                        </div>
+                    </div>
+                    <div class="tml-form-col">
+                        <label>占产值比例：</label>
+                        <div class="tml-input-append">
+                            <input type="text" readonly="readonly" value="{$zczbl|getDigits}" />
+                            <span class="input-addon-unit" title="%">%</span>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="side-catalog-anchor">
+                    <legend class="fieldset_legend_toggle side-catalog-text">
+                        <b>回款监控</b>
+                        <font>
+                            <if condition="$cost.id">
+                                <a href="__APP__/MisProjectCostAnalysis/auditView/id/{$cost.id}" title="项目成本监控详情" target="navTab" rel="MisProjectCostAnalysis_edit">单据详情</a>
+                            </if>
+                        </font>
+                    </legend>
+                    <div class="tml-form-col">
+                        <label>已回进度款：</label>
+                        <div class="tml-input-append">
+                            <input type="text" readonly="readonly" value="{$cost.collected|getDigits}" />
+                            <span class="input-addon-unit" title="元">元</span>
+                        </div>
+                    </div>
+                    <div class="tml-form-col">
+                        <label>回款百分比：</label>
+                        <div class="tml-input-append">
+                            <input type="text" readonly="readonly" value="{$cost.arrate|getDigits}" />
+                            <span class="input-addon-unit" title="%">%</span>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="side-catalog-anchor">
+                    <legend class="fieldset_legend_toggle side-catalog-text">
+                        <b>利润监控</b>
+                        <font>
+                            <if condition="$cost.id">
+                                <a href="__APP__/MisProjectCostAnalysis/auditView/id/{$cost.id}" title="项目成本监控详情" target="navTab" rel="MisProjectCostAnalysis_edit">单据详情</a>
+                            </if>
+                        </font>
+                    </legend>
+                    <div class="tml-form-col">
+                        <label>目标利润：</label>
+                        <div class="tml-input-append">
+                            <input type="text" readonly="readonly" value="{$cost.tprofit|getDigits}" />
+                            <span class="input-addon-unit" title="元">元</span>
+                        </div>
+                    </div>
+                    <div class="tml-form-col">
+                        <label>当前利润：</label>
+                        <div class="tml-input-append">
+                            <input type="text" readonly="readonly" value="{$cost.mprofit|getDigits}" />
+                            <span class="input-addon-unit" title="元">元</span>
+                        </div>
+                    </div>
+                    <div class="tml-form-col">
+                        <label>目标利润率：</label>
+                        <div class="tml-input-append">
+                            <input type="text" readonly="readonly" value="{$cost.tprofrate|getDigits}" />
+                            <span class="input-addon-unit" title="%">%</span>
+                        </div>
+                    </div>
+                    <div class="tml-form-col">
+                        <label>当前利润率：</label>
+                        <div class="tml-input-append">
+                            <input type="text" readonly="readonly" value="{$cost.mprofrate|getDigits}" />
+                            <span class="input-addon-unit" title="%">%</span>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="side-catalog-anchor">
+                    <legend class="fieldset_legend_toggle side-catalog-text">
+                        <b>项目人员</b>
+                        <font>
+                            <if condition="$injobingname">
+                                <a href="javascript:;" onclick="showlimanage('missalesproject_projectuserlist');">单据详情</a>
+                            </if>
+                        </font>
+                    </legend>
+                    <div class="tml-form-col">
+                        <label>技术人员：</label>
+                        <div class="tml-input-append">
+                            <input type="text" readonly="readonly" value="{$technology}" />
+                            <span class="input-addon-unit" title="人">人</span>
+                        </div>
+                    </div>
+                    <div class="tml-form-col">
+                        <label>非技术人员：</label>
+                        <div class="tml-input-append">
+                            <input type="text" readonly="readonly" value="{$notechnology}" />
+                            <span class="input-addon-unit" title="人">人</span>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>

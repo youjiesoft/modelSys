@@ -1,0 +1,80 @@
+<script>
+function  projectdefsetchange(obj){
+	var $box=navTab.getCurrentPanel();
+	var val=$(obj).val();
+	var projectdefset='{$projectdefset}';
+	//执行权限 
+	var stepAdd = '{$stepAdd}';
+	//审核权限
+	var stepAuditProcess = '{$stepAuditProcess}';
+	
+	if(stepAuditProcess == 0 && val == 2){
+		alertMsg.error("该模块下，你没有操作权限，或者你没有可以操作的内容，请设置其他模块为默认");
+		return false;
+	}
+	if(stepAdd == 0 && val == 1){
+		alertMsg.error("该模块下，你没有操作权限，或者你没有可以操作的内容，请设置其他模块为默认");
+		return false;
+	}
+	if(val!=projectdefset){
+		alertMsg.confirm("确定要设置当前选中为默认进入页面吗？", {
+			okCall: function(){
+				$.ajax({ 
+			        url: "__URL__/lookupchangeprojectdefset",
+			        type:'POST',
+			        async:true,
+			        data:{projectdefset:val},
+			        success: function(msg){
+			        	alertMsg.correct('设置成功！');
+			        } 
+			    });
+			}
+		});
+	 }
+} 
+function judgeAudit(obj,method){
+	var projectid = '{$id}';
+	var stepAdd = '{$stepAdd}';
+	if(stepAdd == 0){
+		alertMsg.error("该模块下，你没有操作权限，或者你没有可以操作的内容，请选择其他模块");
+		return false;
+	}else{
+		var title = $(obj).attr("title");
+		var tabids = "MisSalesProjectedit";
+		var url = TP_APP+"/MisSalesProject/"+method+"/projectid/"+projectid;
+		var titles = title;
+		navTab.openTab(tabids, url, {title : titles});
+	}
+}
+</script>
+<div class="page">
+	<div class="pageContent applecloth" layoutH="0">
+    	<div class="tml-m10">
+    		<div class="tml-text-c"><h2>设置：<input name="projectdefset" onclick="projectdefsetchange(this)" <if condition="$userprojectdefset eq '1'">checked="checked"</if>  value="1"  type="radio">执行<input name="projectdefset" onclick="projectdefsetchange(this)"  <if condition="$userprojectdefset eq '2'">checked="checked"</if>  value="2" type="radio">审核<input name="projectdefset"  onclick="projectdefsetchange(this)"  <if condition="$userprojectdefset eq '3'">checked="checked"</if> value="3" type="radio">查阅</h2></div>
+        </div><!-- MisSalesProjectedit -->
+        <div class="clearfix" style="margin:0 auto 10px;width:960px;">
+        	<div class="" style="background:#fff;border:1px solid #ddd;border-radius:4px;box-shadow:0 0 12px rgba(0,0,0,.3);float:left;margin-right:5%;text-align:center;width:29.333333%;">
+            	<a class="tml-bg-blue metro-link" onclick="judgeAudit(this,'lookupmywork');"  href="javascript:;" title="可执行工作">执行</a>
+                <div class="" style="line-height:20px;height:300px;padding:9px;">
+                	<h3>单据录制及查看</h3>
+                    <p></p>
+                </div>
+            </div>
+        	<div class="" style="background:#fff;border:1px solid #ddd;border-radius:4px;box-shadow:0 0 12px rgba(0,0,0,.3);float:left;margin-right:5%;text-align:center;width:29.333333%;">
+            	<a class="tml-bg-orange metro-link" onclick="judgeAudit(this,'lookupauditindex');" title="审核工作" href="javascript:;">审核</a>
+            	
+            	<div class="" style="line-height:20px;height:300px;padding:9px;">
+                	<h3>单据审核及查看</h3>
+                    <p></p>
+                </div>
+            </div>
+        	<div class="" style="background:#fff;border:1px solid #ddd;border-radius:4px;box-shadow:0 0 12px rgba(0,0,0,.3);float:right;text-align:center;width:29.333333%;">
+            	<a class="tml-bg-green metro-link" href="__URL__/lookupEdit/projectid/{$id}" title="项目查阅" target="navTab" rel="MisSalesProjectedit">项目查看</a>
+            	<div class="" style="line-height:20px;height:300px;padding:9px;">
+                	<h3>项目概况查看</h3>
+                    <p></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,42 @@
+<script>
+$(document).ready(function(){
+	var zNodes = {$treearr};
+	var setting = {
+			view: {
+               selectedMulti: false,
+               fontCss: getFontCss
+			},
+			data: {
+				simpleData: {
+					enable: true
+				}
+			}
+		};
+	$.fn.zTree.init($("#misfinanceexpensestypetree"), setting, zNodes);
+	var zTree = $.fn.zTree.getZTreeObj("misfinanceexpensestypetree");
+	var valid='{$valid}';
+	var nodes = zTree.getNodesByParam("id", valid, null);
+	zTree.selectNode(nodes[0]);
+});
+</script>
+<div class="pageContent" >
+	<div class="tabs">
+		<div class="tabsContent">
+			<div>
+				<div style="float:left; display:block; overflow:auto; width:200px; border:solid 1px #CCC; line-height:21px; background:#fff">
+				    <div class="clearfix" style="border:0 solid #95B8E7;border-width:1px 0;padding:4px;">
+						<input class="tree-search-input" type="text" id="MisFinanceExpensesTypeSearchNodeKeys" />
+						<div class="buttonActive"><div class="buttonContent" onclick="SearchZTreeNode('misfinanceexpensestypetree','MisFinanceExpensesTypeSearchNodeKeys')"><button>搜索</button></div></div>
+					</div>
+				    <ul id="misfinanceexpensestypetree" class="ztree" layoutH="62"></ul>
+				</div>
+				<div id="misfinanceexpensestypeBox" class="unitBox" style="margin-left:200px;">
+					<include file="unitlist"  />
+				</div>
+			</div>
+		</div>
+		<div class="tabsFooter">
+			<div class="tabsFooterContent"></div>
+		</div>
+	</div>
+</div>

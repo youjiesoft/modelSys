@@ -1,0 +1,54 @@
+<div class="page">
+	<div class="pageContent">
+	<form method="post" action="__URL__/insert/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+		<div class="pageFormContent" layoutH="58">
+			<div class="unit">
+				<label>{$fields["catalog"]}：</label>
+				<select name="catalog" class="required combox">
+					<option value="1">公司</option>
+					<option value="2">客户</option>
+					<option value="3">供应商</option>
+				</select>
+			</div>
+			<div class="unit">
+				<label>{$fields["code"]}：</label>
+				<input type="text" name="code" value="" class="required number creditcard" maxlength="19"  />
+			</div>
+			<div class="unit">
+				<label>{$fields["name"]}：</label>
+				<input type="text" name="name" value="" maxlength="25" />
+			</div>
+			<div class="unit">
+				<label>{$fields["sname"]}：</label>
+				<input type="text" name="sname" value="" maxlength="15" />
+			</div>
+			<div class="unit">
+				<label>{$fields["amount"]}：</label>
+				<input type="text" class="number" name="amount" value="" maxlength="18" />
+			</div>
+			<div class="unit">
+				<label>{$fields["bankid"]}：</label>
+				<select name="bankid" class="required combox">
+								<option selected value="">&mdash;&mdash;选择&mdash;&mdash;</option>
+								<volist id="banklist" name="banklist">
+								    <option  value="{$banklist['id']}">{$banklist['name']}</option>
+								</volist>
+				</select>
+			</div>
+			<div class="unit">
+				<label>{$fields["remark"]}：</label>
+				<textarea  name="remark" maxlength="100" cols="30" rows="2"></textarea>
+			</div>
+		</div>
+		<div class="formBar">
+			<ul>
+			<if condition="$_SESSION.a eq 1 or $_SESSION.misfinancebankaccount_insert">
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">{$Think.lang.save}</button></div></div></li>
+			</if>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">{$Think.lang.close}</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+	</div>
+</div>
+

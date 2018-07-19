@@ -1,0 +1,17 @@
+<form method="post" action="__URL__/conments/navTabId/MisExpertquestionListlook" class="pageForm required-validate"  onsubmit="return validateCallback(this,navTabAjaxDone);" >
+	<input type="hidden" value="1" name="iseditor">
+	<input type="hidden" value="1" name="save">
+	<input type="hidden" name="type" value="C">
+	<input type="hidden" name="parentid" value="{$alist.id}">
+	<div class="pageFormContent">
+		 <b>评论内容</b> 
+		<div class="unit">
+			<input class="required" name="content" style="width:570px;height:25px" <if condition="$cinfo.id">value="回复{$alist['createid']|getFieldBy=###,'id','name','user'}："</if>>
+		</div>
+		<div class="unit">
+			<if condition="$_SESSION.a eq 1 or $_SESSION.misexpertquestionlist_conments">
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">发布</button></div></div></li>
+			</if>
+		</div>
+	</div>
+</form>

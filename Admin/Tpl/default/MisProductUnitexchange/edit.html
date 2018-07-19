@@ -1,0 +1,88 @@
+<script>
+	function choosetypeofunitedit( v ){
+		if(v ==2 ){
+			$("div.mpucsupplier").css("display","block");
+			$("div.mpucustomer").css("display","none");
+		}else if(v==1 ){
+			$("div.mpucustomer").css("display","block");
+			$("div.mpucsupplier").css("display","none");
+		}else{
+			$("div.mpucsupplier,div.mpucustomer").css("display","none");
+		}
+	}
+</script>
+<div class="page">
+	<div class="pageContent">
+	<form method="post" action="__URL__/update/rel/viewunitexchange" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+		<input type="hidden" name="id" value="{$vo.id}" >
+		<div class="pageFormContent" layoutH="58">
+			<div class="unit">
+				<label>类型</label>
+				<select name="typeid" class="combox required" onchange="choosetypeofunitedit(this.value)">
+					<option value="">请选择</option>
+					<option value="0" <if condition="$vo['typeid'] eq 0">selected</if>>全局</option>
+					<option value="1" <if condition="$vo['typeid'] eq 1">selected</if>>销售</option>
+					<option value="2" <if condition="$vo['typeid'] eq 2">selected</if>>采购</option>
+				</select>
+			</div>
+			<div class="unit">
+				<label>转换编码</label>
+				<input type="text"  name="code" value="{$vo['code']}" class="required"/>
+			</div>
+			<div class="unit">
+				<label>转换名称</label>
+				<input type="text"  name="name" value="{$vo['name']}" class="required"/>
+			</div>
+			<div class="unit mpucustomer" <if condition="$vo['typeid'] neq 1">style="display:none;"</if> >
+				<label>客户</label>
+				<input type="text" class="org1.custname" value="{$vo['typeobjid']|getFieldBy='id','name','MisSalesCustomer'}" />
+				<input type="hidden"  name="typeobjid" class="org1.cid" value="{$vo['typeobjid']}" />
+				<a class="input-addon input-addon-addon input-addon-add" lookupgroup="org1" href="__URL__/lookupcustomer/prodid/{$vo['prodid']}">查找带回</a>
+			</div>
+			<div class="unit mpucsupplier" <if condition="$vo['typeid'] neq 2">style="display:none;" </if> >
+				<label>供应商</label>
+				<input type="text"  class="org2.sname"  value="{$vo['typeobjid']|getFieldBy='id','name','MisPurchaseSupplier'}" />
+				<input type="hidden" class="org2.sid" name="typeobjid" value="{$vo['typeobjid']}" />
+				<a class="input-addon input-addon-addon input-addon-add" lookupgroup="org2" href="__URL__/lookupsupplier/prodid/{$vo['prodid']}">查找带回</a>
+			</div>
+			<div class="unit">
+				<label>产品编码</label>
+				<input type="text" readonly="readonly" value="[{$vo.prodid|getFieldBy='id','code','MisProductCode'}]{$vo.prodid|getFieldBy='id','name','MisProductCode'}"/>
+			</div>
+			<div class="unit">
+				<label>转换公式</label>
+				<foreach name="typelist" item="t">
+					<if condition="$t['id'] eq $vo['baseunitid']">
+					<input name="baseunitid" type="hidden" readonly="readonly" value="{$vo['baseunitid']}"/>
+					<input size="10" type="text" class="required" readonly="readonly" value="[{$vo.baseunitid|getFieldBy='id','code','mis_product_unit'}]{$vo.baseunitid|getFieldBy='id','name','mis_product_unit'}" /><span class="info small">(主单位)</span>
+					 <span class="info" style="font-size:20px;">&nbsp;&nbsp;X</span>
+					 <span class="info">(乘以)&nbsp;&nbsp;</span>
+					<input size="5" type="text" class="required number" name="exchange" value="{$vo['exchange']}" /><span class="info small">(转换系数)</span>
+					<span class="info" style="font-size:20px;">&nbsp;&nbsp;=&nbsp;&nbsp;</span>
+					<select name="subunitid" class="combox">
+						<volist name="typelist" id="list">
+							<option value="{$list['id']}" <if condition="$list.id eq $vo.subunitid">selected</if>>[{$list['code']}]{$list['name']}</option>
+						</volist>
+					</select>
+					<span class="info">(转换单位)</span>
+					</if>
+				</foreach>
+			</div>
+			<div class="unit">
+				<label>备注</label>
+				<textarea rows="2" cols="40" name="remark">{$vo['remark']}</textarea>
+			</div>
+		</div>
+		<div class="formBar">
+			<ul>
+			<if condition="$_SESSION.a eq 1 or $_SESSION.misproductunitexchange_update">
+				<if condition="$vo['typeid'] neq 0 or  $vo['prodid'] neq 0">
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">{$Think.lang.save}</button></div></div></li>
+				</if>
+			</if>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">{$Think.lang.close}</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+	</div>
+</div>

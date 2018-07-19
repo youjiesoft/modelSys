@@ -1,0 +1,14 @@
+<form method="post" action="__URL__/replyedit/navTabId/MisExpertquestionListlook" class="pageForm required-validate" onsubmit="return CloseQuestionCallbacklook(this);">
+	<input type="hidden" name="id" value="{$alist['id']}">
+	<div class="pageFormContent">
+		<div class="unit">
+			<b>回复内容</b>
+			<textarea class="editor" name="content" tools="simple" style="width:423px;height:160px" >{$alist['content']}</textarea>
+		</div>
+		<div class="unit ">
+			<if condition="$_SESSION.a eq 1 or $_SESSION.misexpertquestionlist_update">
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交回答</button></div></div></li>
+			</if>
+		</div>
+	</div>
+</form>

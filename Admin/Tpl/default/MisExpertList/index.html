@@ -1,0 +1,86 @@
+<form id="pagerForm" action="__URL__" method="post">
+	<input type="hidden" name="pageNum" value="1"/>
+	<input type="hidden" name="orderField" value="{$order}" />
+	<input type="hidden" name="orderDirection" value="{$sort}" />
+</form>
+<!--  <form rel="pagerForm" onsubmit="return navTabSearch(this);" action="__URL__/index" method="post">
+ </form> -->
+<div class="pageContent">
+	<div class="xyqa applecloth">
+		<div class="xyqa-context clearfix">
+			<ul class="xyqa-toolbar">
+				<volist name="toolbarextension" id="toolb">
+					<if condition="$_SESSION.a eq 1 or $toolb['ifcheck'] eq 0 or ($toolb['ifcheck'] eq 1 and !empty($toolb['permisname']) and $_SESSION[$toolb['permisname']])">
+						<li>{$toolb['html']}</li>
+					</if>
+				</volist>
+			</ul>
+			<form class="right" rel="pagerForm" onsubmit="return navTabSearch(this);" action="__URL__/index" method="post">
+				<div class="xyqa-context-search">
+					<div class="xyqa-context-searcher">
+						<span class="xyqa-context-search-txt">
+						<input placeholder="输入专家姓名" type="text" name="keyword" value="{$keyword}" /></span>
+					</div>
+					<span class="xyqa-context-search-button">
+						<button class="xySearch enterIndex" type="submit"><span class="icon-search xyqa-context-search-button"></span></button>
+					</span>
+				</div>
+			</form> 
+		</div>
+		<div layoutH="70">
+			<div class="xyqa-main-wrapper">
+				<div class="xyqa-expert-main clearfix">
+				<volist id="vo" name="list">
+					<div class="xyqa-expert-items">
+						<div class="xyqa-expert-item" target="sid" rel="{$vo['id']}" title="编辑专家信息" dwidth="330" dheight="380" ondblclick='ondblclick_navTab(this,"MisExpertListedit","__URL__/edit/id/{$vo[id]}");'>
+							<div class="xyqa-expert-top" title="删除">
+								<input type="checkbox" name="id" value="{$vo['id']}" />
+							</div>
+							<div class="xyqa-expert-con clearfix">
+								<div class="xyqa-expert-head">
+									<div class="xyqa-expert-img">
+										<if condition="$vo['picpath']">
+											<img src="__PUBLIC__/Uploads/{$vo['picpath']}" style="width: 100px;height: 100px;"/>
+										<else/>
+											<img width="100" height="100" src="__PUBLIC__/Images/xyimages/xyheader_image.jpg" alt="暂无图片"/>
+										</if>
+									</div>
+									<div class="xyqa-expert-ask">
+										<if condition="$_SESSION.a eq 1 or $_SESSION.misexpertlist_edit">
+											<a class="edit" href="__URL__/edit/id/{$vo[id]}" rel="__MODULE__edit" target="navTab" mask="true" warn="请选择记录"  title="编辑专家信息" >
+												编辑
+											</a>
+										</if>&nbsp;
+									</div>
+								</div>
+								<div class="xyqa-expert-info">
+									<a href="__URL__/view/userid/{$vo['userid']}" title="查看专家信息" target="navTab" rel="MisExpertListview">  
+										<span class="xyqa-expert-name">{$vo['name']}</span>
+									</a>
+									<ul class="xyqa-expert-information">
+										<li class="xyqa-expert-infolist">所属机构：{$vo['typeid']|getFieldBy='id','name','mis_expert_question_type'}</li>
+										<!--<li class="xyqa-expert-infolist">部门：{$vo['deptname']}</li>-->
+										<li class="xyqa-expert-infolist">电话：{$vo['tel']}</li>
+										<li class="xyqa-expert-infolist">邮箱：{$vo['email']}</li>
+										<li class="xyqa-expert-infolist">
+										<a class="xyqa-user-link" href="__APP__/MisKnowledgeList/index/createid/{$vo['userid']}" rel="MisKnowledgeList" title="文章列表" target="navTab">
+												评审项目：{$vo['acount']}&nbsp;次
+											</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div><!-- end xyqa-expert-item -->
+					</div>
+				</volist>
+				</div>
+			</div><!-- end xyqa-main-wrapper -->
+		</div>
+	</div>
+	<div class="panelBar panelPageBar">
+		<div class="pages">
+			<span>共{$totalCount}条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="{$totalCount}" numPerPage="{$numPerPage}" pageNumShown="10" currentPage="{$currentPage}"></div>
+	</div>
+</div>

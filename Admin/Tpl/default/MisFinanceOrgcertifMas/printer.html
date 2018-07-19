@@ -1,0 +1,200 @@
+<div layoutH="35">
+<div style="color:#3185cb;line-height:2.5;text-align:center;margin: 0 auto; width:95%">
+    <h3 style="font-size:30px;letter-spacing:20px;">支出证明单</h3>
+    <div style="text-align:right;"><span class="gray" style="margin:-50px 0 0 300px;"><b style="color:#d10000;">No. </b>{$record['orderno']}</span></div>
+    <div><span class="gray">{$handledateList[0]}</span>年<span class="gray">&nbsp;&nbsp;{$handledateList[1]}</span>月&nbsp;&nbsp;<span class="gray">{$handledateList[2]}</span>日</div>
+    <div style="text-align:left;"> 部门/项目名称:<span class="gray">{$record['projectid']|getFieldby='id','name','mis_sales_project'}</span></div>
+    <table border="1" width="100%" bordercolor="#999999">
+        <tbody>
+            <tr>
+                <td rowspan="2" style="font-size:14px;letter-spacing:12px;" width="30%">单位名称</th>
+                <td rowspan="2" style="font-size:14px;letter-spacing:24px;" width="40%">内容</th>
+                <td colspan="9" style="letter-spacing:24px;">金额</th>
+            </tr>
+            <tr>
+                <td>百</td>
+                <td>十</td>
+                <td>万</td>
+                <td>千</td>
+                <td>百</td>
+                <td>十</td>
+                <td>元</td>
+                <td>角</td>
+                <td>分</td>
+            </tr>
+            <volist name="recordList" id="recordList">
+            <?php 
+                $totalamountprin = explode('.',$recordList['totalamount']);
+                $subJiaoFen = substr($totalamountprin[1],0,2);//角  分
+                $subJiaoFenArr1 = array();
+                $yuanMoreArr = array();
+                for ($i=0;$i<strlen($subJiaoFen);$i++){
+                    $subJiaoFenArr1[]=substr($subJiaoFen,$i,1);
+                }
+                $masMoney = (int)$totalamountprin[0];//字符转换成数组 mas表总金额的整数部分
+                $masmoneystr = strval($masMoney);
+                $countstr = strlen($masmoneystr);
+                $arr = array(
+                    '7'=>'baiwan','6'=>'shiwan','5'=>'wan',
+                    '4'=>'qian','3'=>'bai','2'=>'shi','1'=>'ge'
+                );
+                for ($i=7;$i>0;$i--) {
+                    $a = 1;
+                    for($j = 1; $j<$i; $j++){
+                        $a*=10;
+                    }
+                    if ($countstr >= $i) {
+                        if($i==7){
+                           $yuanMoreArr[$arr[$i]] =(int)($masMoney/$a);
+                        }else{
+                           $yuanMoreArr[$arr[$i]] =(int)(($masMoney % ($a*10))/$a);
+                        }
+                    } else {
+                        $yuanMoreArr[$arr[$i]] ='';
+                    }
+                }
+            ?>
+                <tr>
+                    <td><span class="gray">{$recordList['unitname']}</span></td>
+                    <td><span class="gray">{$recordList['summary']}</span></td>
+                    <td><span class="gray">{$yuanMoreArr['baiwan']}</span> </td>
+                    <td><span class="gray">{$yuanMoreArr['shiwan']}</span></td>
+                    <td><span class="gray">{$yuanMoreArr['wan']}</span></td>
+                    <td><span class="gray">{$yuanMoreArr['qian']}</span></td>
+                    <td><span class="gray">{$yuanMoreArr['bai']}</span></td>
+                    <td><span class="gray">{$yuanMoreArr['shi']}</span></td>
+                    <td><span class="gray">{$yuanMoreArr['ge']}</span></td>
+                    <td><span class="gray">{$subJiaoFenArr1[0]}</span></td>
+                    <td><span class="gray">{$subJiaoFenArr1[1]}</span></td>
+                </tr>
+            </volist>
+           
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <table width="100%">
+                        <tbody>
+                            <tr>
+                                <td width="10%">(大写)</td>
+                                <td width="10%"><span class="gray">{$daxieArr[0]}</span>佰</td>
+                                <td width="10%"><span class="gray">{$daxieArr[1]}</span>拾</td>
+                                <td width="10%"><span class="gray">{$daxieArr[2]}</span>万</td>
+                                <td width="10%"><span class="gray">{$daxieArr[3]}</span>仟</td>
+                                <td width="10%"><span class="gray">{$daxieArr[4]}</span>佰</td>
+                                <td width="10%"><span class="gray">{$daxieArr[5]}</span>拾</td>
+                                <td width="10%"><span class="gray">{$daxieArr[6]}</span>元</td>
+                                <td width="10%"><span class="gray">{$daxieArr[7]}</span>角</td>
+                                <td width="10%"><span class="gray">{$daxieArr[8]}</span>分</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+                <td><span class="gray">{$yuanMoreArr1['baiwan']}</span></td>
+                <td><span class="gray">{$yuanMoreArr1['shiwan']}</span></td>
+                <td><span class="gray">{$yuanMoreArr1['wan']}</span></td>
+                <td><span class="gray">{$yuanMoreArr1['qian']}</span></td>
+                <td><span class="gray">{$yuanMoreArr1['bai']}</span></td>
+                <td><span class="gray">{$yuanMoreArr1['shi']}</span></td>
+                <td><span class="gray">{$yuanMoreArr1['ge']}</span></td>
+                <td><span class="gray">{$subJiaoFenArr['0']}</span></td>
+                <td><span class="gray">{$subJiaoFenArr['1']}</span></td>
+            </tr>
+            <tr>
+                <td colspan="11">
+                    <table width="100%">
+                        <tbody>
+                            <tr>
+                                <td width="50%">收款方开户行：<span class="gray">{$record['bankname']}</span></td>
+                                <td>收款方帐号：<span class="gray">{$record['bankaccount']}</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="11">
+                    <table width="100%">
+                        <tbody>
+                            <tr>
+                                <td width="30%">合同金额：<span class="gray"><if condition="$record.cntamount eq '0.0000'">0<else/>{$record['cntamount']}</if></span></td>
+                                <td width="30%">已付款金额：<span class="gray"><if condition="$record.apamount eq '0.0000'">0<else/>{$record['apamount']}</if></span></td>
+                                <td>领款人：<span class="gray"></span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div>
+        <table width="100%">
+            <tbody>
+                <tr>
+                    <td width="16%">批准：<span class="gray"></span></td>
+                    <td width="16%">分管副总：<span class="gray"></span></td>
+                    <td width="16%">财务审批：<span class="gray"></span></td>
+                    <td width="16%">出纳：<span class="gray"></span></td>
+                    <td width="16%">部门审核：<span class="gray"></span></td>
+                    <td>经手人：<span class="gray"></span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</div>
+<div class="formBar">
+    <ul>
+        <li><div class="button"><div class="buttonContent"><button type="button" class="close">{$Think.lang.close}</button></div></div></li>
+    </ul>
+</div>

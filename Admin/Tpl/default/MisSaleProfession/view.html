@@ -1,0 +1,31 @@
+	<div class="page">
+	<div class="pageContent">
+	<form method="post" action="__APP__/MisSaleProfession/update/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return iframeCallback(this, navTabAjaxDone)" enctype="multipart/form-data">
+			<input type="hidden" name="callbackType" value="closeCurrent"/>
+			<div class="pageFormContent applecloth" layoutH="40">
+				<div class="keepContentCenter form-affix-content">
+				<div class="contentTitle contentTitle_center form-affix-title">行业{:W('ShowOrderno',array(0,'mis_sale_profession',$vo['orderno']))}
+					</div>
+                <fieldset class="side-catalog-anchor">
+                    <table class="data-table" width="100%" cellspacing="0" style="line-height:32px;" >
+                        <tbody>
+                            <tr>
+                               <td class="cell_left" width="12%">所属行业:</td>
+								<td class="cell_right" width="21%" >{$vo['pid']|getFieldBy='id','name','MisSaleProfession'}</td>
+								<td class="cell_left" width="12%">行业名称:</td>
+								<td class="cell_right" width="21%" >{$vo['name']}</td>
+								<td class="cell_left" width="12%">排序:</td>
+								<td class="cell_right" width="21%" >{$vo['sort']}</td>
+                            </tr>
+                            
+                        </tbody>
+                    </table>
+                    <br />
+                </fieldset>
+				
+			</div>
+			</div>
+			{:W('ShowAction',array('data'=>$vo))}
+	</form>
+	</div>
+</div>

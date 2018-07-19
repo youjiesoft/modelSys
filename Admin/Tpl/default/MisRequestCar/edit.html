@@ -1,0 +1,119 @@
+<script>
+
+//当查询条件变时， 那么，将控制不同模询输入框显示与隐     name="departureTime"     name="planReturnTime"
+$("#occupy_misrequestcar_edit").change(function(){
+	var v=$(this).val();
+	if( v=="1"){
+		$("input[name='departureTime']").val("{$Think.server.REQUEST_TIME|date='Y-m-d',###} 08:30");
+		$("input[name='planReturnTime']").val("{$Think.server.REQUEST_TIME|date='Y-m-d',###} 20:30");
+	}else if( v=="2"){
+		$("input[name='departureTime']").val("{$Think.server.REQUEST_TIME|date='Y-m-d',###} 08:30");
+		$("input[name='planReturnTime']").val("{$Think.server.REQUEST_TIME|date='Y-m-d',###} 12:00");
+
+	}else if( v=="4"){
+		$("input[name='departureTime']").val("{$Think.server.REQUEST_TIME|date='Y-m-d',###} 08:30");
+		$("input[name='planReturnTime']").val("");
+
+	}else{
+		$("input[name='departureTime']").val("{$Think.server.REQUEST_TIME|date='Y-m-d',###} 12:00");
+		$("input[name='planReturnTime']").val("{$Think.server.REQUEST_TIME|date='Y-m-d',###} 20:30");
+	}
+});
+</script>
+	<div class="page">
+		<div class="pageContent">
+			<form method="post" action="__URL__/update/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,dialogAjaxDone);">
+				<input type="hidden" name="id" value="{$vo['id']}" />
+				<input type="hidden" name="dotype" value="流程启动" />
+				<input type="hidden" name="ostatus" value="{$vo['ostatus']}" />
+				<input  type="hidden" name="applyUser" size="18" class="required" value="{$vo['applyUser']}">
+				
+				<input type="hidden" name="callbackType" value="closeCurrent">
+				<input type="hidden" class="selectaudituser.mangid" name="audit_option_user" value="" callback="auditOpion" />
+				<a class="input-addon input-addon-addon input-addon-add" style="display: none;" id="auditselectoption" rel="lookupSelectAuditOption" href="__URL__/lookupSelectAuditOption/modulename_auditoption/__MODULE__/audittype/dialog" lookupGroup="selectaudituser">选择下一步审核人</a>
+				<div class="pageFormContent applecloth anchorsToolBarParent" layoutH="40" >
+				<div class="keepContentCenter form-affix-content">
+					<div class="contentTitle contentTitle_center form-affix-title">派车申请{:W('ShowFlow')}
+					
+				</div>
+				{:W('ShowExtendField',$vo)}	
+					<div class="tml-row">
+					{:W('ShowOrderno',array(1,'mis_request_car',$vo['orderno']))}
+							<div class="tml-form-col">
+							    <label> {$fields["usename"]}： </label>
+							    <input type="text" name="usename" size="18" class="checkByInput" map="array('working'=>1);" value="{$vo['usename']}" insert="id" show="name"  checkfor="MisHrPersonnelManagement" iswrite="true">
+							</div>
+							<div class="tml-form-col">	
+								<label> {$fields["departmentID"]}： </label>
+								<input readonly="readonly"  value="{$vo['departmentID']|getFieldBy='id','name','MisSystemDepartment'}"  type="text"class="readonly textInput" />
+								<!-- <select name="departmentID"  class="combox required" check_key="deptname" >
+									<volist name="departmentIDlist" id="vodepartmentID">
+										<option value="{$vodepartmentID['id']}" <if condition="$vo['departmentID'] eq $vodepartmentID['id']">selected</if> >{$vodepartmentID['name']}</option>
+									</volist>
+								</select> -->
+							</div>
+							<div class="tml-form-col">
+								<label> {$fields["departurePlace"]}： </label><input  type="text" name="departurePlace" size="18" class="required" value="{$vo['departurePlace']}">
+							</div>
+							<div class="tml-form-col">
+								<label> {$fields["arrivePlace"]}： </label><input  type="text" name="arrivePlace" size="18" class="required"  value="{$vo['arrivePlace']}">
+							</div>
+							<div class="tml-form-col">
+							    <label> {$fields["occupy"]}： </label>
+								<select name="occupy"  class="combox" id="occupy_misrequestcar_edit">
+									<option <eq name="vo.occupy" value="" >selected</eq> value="">请选择点用区间</option>
+									<option <eq name="vo.occupy" value="1" >selected</eq> value="1">一天</option>
+									<option <eq name="vo.occupy" value="2" >selected</eq> value="2">上午</option>
+									<option <eq name="vo.occupy" value="3" >selected</eq> value="3">下午</option>
+									<option <eq name="vo.occupy" value="4" >selected</eq> value="4">多天</option>
+								</select>
+							</div>
+							<div class='clear'></div>
+							<div class="tml-form-col">
+								<label> {$fields["cartype"]}： </label>
+								<select class="combox" name="cartype">
+			                         <volist name="CarTypeList" id="type">
+		                           		<option value="{$type['id']}" <if condition="$vo['cartype'] eq $type['id']">selected=selected</if>>{$type['name']}</option>
+		                            </volist>
+			                     </select>
+							</div>
+							<div class="tml-form-col">
+								<label> {$fields["departureTime"]}： </label>
+								<div class="tml-input-append">
+								   	<input type="text" class="Wdate js-wdate required" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})" value="{$vo['departureTime']|transTime='Y-m-d H:i'}" name="departureTime" />
+								   	<a href="javascript:;" class="input-addon input-addon-calendar js-inputCheckDate">选择</a>
+								</div>
+							</div>
+						<div class="tml-form-col">
+							<label>{$fields["expectRestitutionTime"]}： </label>
+							<div class="tml-input-append">
+						   		<input type="text" class="Wdate js-wdate required" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})" value="{$vo['expectRestitutionTime']|transTime='Y-m-d H:i'}" name="expectRestitutionTime" />
+						   		<a href="javascript:;" class="input-addon input-addon-calendar js-inputCheckDate">选择</a>
+							</div>
+						</div>
+							
+             	 </div> 
+					<div class="tml-form-row">
+						<label> {$fields["passengerpersonname"]}： </label>
+						<textarea name="passengerpersonname" class="">{$vo.passengerpersonname}</textarea>
+					</div>
+					<div class="tml-form-row">
+						<label> {$fields["reason"]}： </label>
+						<textarea  name="reason" class="required">{$vo['reason']}</textarea>
+					</div>
+					<div class="tml-form-row">
+						<label> {$fields["remark"]}： </label>
+						<textarea  name="remark">{$vo['remark']}</textarea>
+					</div>
+                	<div class="showFormFlow">
+	                {:W('ShowFormFlow')}<!-- 流程管理 -->
+	                </div>
+	                {:W('ShowNotify')}
+                			{:W('ShowAction')}
+                			</div>
+                			</div>
+			</div>
+		
+		</form>
+	</div>
+</div>

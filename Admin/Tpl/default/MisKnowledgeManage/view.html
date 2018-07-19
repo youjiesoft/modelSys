@@ -1,0 +1,66 @@
+<div class="page">
+	<div class="pageContent">
+		<div class="pageFormContent applecloth" layoutH="56">
+			<div class="keepContentCenter {$auditImgClass}">
+				<H2 class="contentTitle contentTitle_center">文章信息	{:W('ShowAdvices',array('id'=>$vo['id']))}
+					{:W('ShowOrderno',array(0,'mis_knowledge_list',$vo['orderno']))}
+				</H2>
+				<fieldset>
+					<legend></legend>
+					<div class="tml-form-row">
+						<label>文章标题：</label>
+						<input type="text" name="title" value="{$vo['title']}" class="required" readonly="readonly">
+					</div>
+					<div class="tml-form-row">
+							<label>文章内容：</label>
+							<div class="edit-text">
+								<textarea class="ueditor" name="content" readonly="readonly" style="width:628px;height:300px">{$vo['content']}</textarea>
+							</div>
+					</div>
+                    <div class="tml-row">
+                        <div class="tml-form-col">
+                            <label>所属分类：</label>
+                            <input type="text" value="{$vo['categoryid']|getFieldBy='id','name','MisKnowledgeType'}" class="required " readonly="readonly" >
+                        </div>
+                       <div class="tml-form-col">
+                            <label>等&nbsp;&nbsp;&nbsp;&nbsp;级：</label>
+                            <select name="levels" class="combox required" >
+                                <option value="">未评级</option>
+                                <volist name="levels" id="le">
+                                    <option value="{$le['id']}" <if condition="$le['id'] eq $vo['levels']"> selected="selected"</if>>{$le['title']}</option>
+                                </volist>
+                            </select>
+                        </div>
+                    </div>
+					<if condition="$attarry">
+					<volist name="attarry" id="att">
+						<div class="tml-form-row">
+						<label>附件{$key+1}：</label>
+							<a class="attlink" rel="{$att['id']}" target="_blank" href="__URL__/misFileManageDownload/path/{$att['attached']|base64_encode}/rename/{$att['upname']}">
+								<span>{$att['upname']}</span>
+								<a class="tml-btn tml-btn-small tml-btn-green tml-ml5" href="__URL__/lookupDocumentCollateAtta/t/0/id/{$att['id']}" title="文件归档" target="dialog"><span class="icon icon-file"></span> 归档</a>
+							</a>
+						</div>
+					</volist>
+					</if>
+				</fieldset>
+				<fieldset>
+					<div class="tml-row">
+						<div class="tml-form-col">
+							<label>发&nbsp;布&nbsp;&nbsp;人：</label>
+							<input type="text" readonly="readonly" name="createid" value="{$vo['createid']|getFieldBy='id','name','user'}" />
+						</div>
+						<div class="tml-form-col">
+							<label>发起时间：</label>
+					   		 <input type="text" class="textInput" value="{$vo['createtime']|transtime}" readonly="readonly" />
+						</div>
+					</div>
+				</fieldset>
+			</div>
+		</div>
+		{:W('ShowAction',array('data'=>$vo))}
+		<!-- <div class="formBar tml-text-c">
+			<button type="button" class="tml-btn tml-btn-white close">{$Think.lang.close}</button>
+		</div> -->
+	</div>
+</div>

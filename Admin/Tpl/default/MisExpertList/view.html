@@ -1,0 +1,70 @@
+<include file="Public:pagerForm" />
+	<div class="page">
+		<div class="pageContent">
+			<form method="post" action="__URL__/update/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,navTabAjaxDone);">
+				<input type="hidden" name="orderid" value="{$vo['id']}" />
+				<input type="hidden" name="callbackType" value="closeCurrent">
+				<div class="pageFormContent xyEmployee" layoutH="56">
+				<div class="keepContentCenter">
+							<div class="contentTitle contentTitle_center">查看专家资料</div>
+							<fieldset class="side-catalog-anchor">
+                                <legend class="fieldset_legend_toggle side-catalog-firstanchor side-catalog-text">
+                                    <b>专家资料</b>
+                                    <div class="tml_style_line tml_sl4 tml_slb_blue"></div>
+                                </legend>
+                                <table class="data-table" width="100%" cellspacing="0" style="line-height:32px;">
+                                    <tbody>
+                                    <tr>
+                                        <td class="cell_left" width="12%">专家姓名:</td>
+                                        <td class="cell_right" width="21%">XXX</td>
+                                        <td class="cell_left" width="12%">z专家编码:</td>
+                                        <td class="cell_right" width="21%">CQWR28990290</td>
+                                        <td class="cell_left" width="12%">评审行业:</td>
+                                        <td class="cell_right" width="21%">委托贷款</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cell_left" width="12%">所属机构:</td>
+                                        <td class="cell_right" width="21%">重庆金融担保有限公司</td>
+                                        <td class="cell_left" width="12%">动态帐号:</td>
+                                        <td class="cell_right" width="21%">KHGB2014</td>
+                                        <td class="cell_left" width="12%">帐号密码:</td>
+                                        <td class="cell_right" width="21%">201411301030</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cell_left" width="12%">联系号码:</td>
+                                        <td class="cell_right" width="21%">13290056310</td>
+                                        <td class="cell_left" width="12%">联系邮箱:</td>
+                                        <td class="cell_right" width="21%">627311716@163.com</td>
+                                        <td class="cell_left" width="12%">参加场次</td>
+                                        <td class="cell_right" width="21%">总共8场</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+							</fieldset>
+							<fieldset class="side-catalog-anchor">
+								<legend class="fieldset_legend_toggle side-catalog-text">
+									<b>评审记录</b>
+									<div class="tml_style_line tml_sl4 tml_slb_blue"></div>
+								</legend>
+                                <ul class="history_note">
+                                    <li>
+                                        <span class="icon icon-legal"></span>
+                                        <span class="note_time_red">2014年10月24日</span>
+                                        <span>参与评审</span>
+                                        <span class="pro_name_rec">重庆金融担保有限公司XXXXX担保项目</span></li>
+                                    <li><span class="icon icon-legal"></span><span class="note_time_red">2014年10月24日</span><span>参与评审</span><span class="pro_name_rec">重庆农业担保XXX项目</span></li>
+                                    <li><span class="icon icon-legal"></span><span class="note_time_red">2014年10月24日</span><span>参与评审</span><span class="pro_name_rec">重庆农业担保XXX项目</span></li>
+                                    <li><span class="icon icon-legal"></span><span class="note_time_red">2014年10月24日</span><span>参与评审</span><span class="pro_name_rec">重庆农业担保XXX项目</span></li>
+                                    <li><span class="icon icon-legal"></span><span class="note_time_red">2014年10月24日</span><span>参与评审</span><span class="pro_name_rec">重庆农业担保XXX项目</span></li>
+                                    <li><span class="icon icon-legal"></span><span class="note_time_red">2014年10月24日</span><span>参与评审</span><span class="pro_name_rec">重庆农业担保XXX项目</span></li>
+                                    <li><span class="icon icon-legal"></span><span class="note_time_red">2014年10月24日</span><span>参与评审</span><span class="pro_name_rec">重庆农业担保XXX项目</span></li>
+                                    <li><span class="icon icon-legal"></span><span class="note_time_red">2014年10月24日</span><span>参与评审</span><span class="pro_name_rec">重庆农业担保XXX项目</span></li>
+
+                                </ul>
+							</fieldset>
+                	 </div>	
+			</div>
+			{:W('ShowAction',array('data'=>$vo))}
+		</form>
+	</div>
+</div>

@@ -1,0 +1,62 @@
+<div class="pageContent" style="overflow: auto;">
+	<div class="xypc">
+		<div id="xywrap" class="xywrap clearfix">
+			<div class="general_wrap">
+                 <div class="general_wrap_top"  layouth="58">
+                     <div class="fast_nav_header">
+                         <p class="fnh_left project_name"><span>项目名称：{$projectid|getFieldBy='id','name','MisAutoEbm'}</span></p>
+                         <p class="tml_task_stage">
+                             <span>所在阶段：{$jd}</span>
+                             <span style="margin-left: 20px;">主要负责人：{$zfzr}</span>
+                             <a class="initiate_auditing_meeting" href="__APP__/MisAutoNmf/add/id/{$projectid}" target="navTab"  title="评审申请单"><span class="icon-legal"></span> 发起评审会</a>
+                         </p>
+                     </div>
+                     <div class="fast_nav_content">
+                         <div class="tml_line_lay">
+                             <span class="tml_line_header">我的任务</span>
+                             <div class="tml_style_line tml_sl4 tml_slb_54d5eb"></div>
+                         </div>
+                         <table class="tml_set_table tml_task_list" style="margin:0px;width:100%;" id="indexlist#" width="100%">
+                             <thead>
+                             <tr>
+                                 <th>序号</th>
+                                 <th>任务名称</th>
+                                 <th>清单类型</th>
+                                 <th>开始时间</th>
+                                 <th>结束时间</th>
+                                 <th>执行人</th>
+                                 <th>任务状态</th>
+                                 <th>操作</th>
+                             </tr>
+                             </thead>
+                             <tbody>
+                             <volist id="vo" name="list" key="key2">
+                                 <tr name="fields">
+                                     <td>{$key2}</td>
+                                     <td>{$vo.work_name}</td>
+                                     <td>{$vo.formtype|getFieldBy='id','name','mis_system_flow_inventory_type'}</td>
+                                     <td>{$vo.begintime|transTime='Y-m-d H:i'}</td>
+                                     <td>{$vo.endtime|transTime='Y-m-d H:i'}</td>
+                                     <td>
+                                     	{:implode(",",$vo['executorname'])}
+                                     </td>
+                                     <td>{:getSelectByName('taskComplete',$vo['complete'])}</td>
+                                     <td>
+				                    	<if condition="$vo['ing'] eq 1">
+				                    		<a class="tml_task_btn" href="javascript:void(0);" data-js='{$vo["json"]}' onclick="ValidateRedirect(this,1);">执行</a>
+				                    	<elseif condition="$vo['ing'] eq 2"/>
+				                    		<a class="tml_task_btn" href="javascript:void(0);" data-js='{$vo["json"]}' onclick="ValidateRedirect(this,2);">查看</a>
+				                    	<else/>
+				                    		
+				                    	</if>
+				                    </td>
+                                 </tr>
+                             </volist>
+                             </tbody>
+                         </table>
+                     </div>
+                 </div>
+            </div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,175 @@
+<script>
+var $box=$.pdialog.getCurrent();
+$("input:[name='totalKM']",$box).blur(function(){
+	var currntVal=$("input:[name='totalKM']",$box).val();
+	var oldVal=$("input:[name='lastTotalKM']",$box).val();
+	currntVal =Number(currntVal.replace(/,/g,""));
+	oldVal =Number(oldVal.replace(/,/g,""));
+	var reslutValue = currntVal-oldVal;
+	if(reslutValue<0){
+		alertMsg.error("总里程数必须大于车辆原始里程"); 
+		return false;
+	}
+	$("input:[name='kilometre']",$box).val(FormatN(reslutValue));
+});
+function missyscaroilinfo(json){
+	//车辆ID
+	carid=json.mangid
+	$.ajax({
+		type : "POST",
+		url : "__URL__/lookupyscaroilinfo",
+		data : {
+			'carid' : carid
+		},
+		success : function(syscarjson) {
+			 if(syscarjson){
+				syscarjson=DWZ.jsonEval(syscarjson);
+				//上次里程止数
+				$("input[name='lastTotalKM']").val(syscarjson.totalKM);
+				//上次加油总金额
+				$("input[name='lastOilamount']").val(syscarjson.amount);
+				//上次油价
+				$("input[name='lastOilprice']").val(syscarjson.price);
+				//上次记录 Carid
+				$("input[name='lastCarId']").val(syscarjson.id);
+			 } 
+		}
+	});
+}
+</script>
+<div class="page">
+	<div class="pageContent">
+		<form method="post" action="__URL__/insert/rel/add_oil_model_car/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,dialogAjaxDone);">
+			<div class="pageFormContent " layoutH="56">
+				<div class="tml-row">
+					<if condition='$fields["pay_type"]'>
+						<div class="tml-form-col">
+							<label>{$fields["pay_type"]}:</label>
+							<select name="pay_type"  class="combox pay_type" onchange="miscaraddoilinfo_select_update(this);">
+								<option  value="1">油卡</option>
+								<option  value="0">现金</option>
+								<option  value="2">备用卡</option>
+							</select>
+						</div>
+					</if>
+					<if condition='$fields["car_id"]'>
+						<div class="tml-form-col">
+							<div class="tml-input-append">
+								<label>{$fields["car_id"]}:</label>
+			                    <input type="text" class="org.current_name required" name="carname" callback="missyscaroilinfo" value="{$carid|getFieldBy=\'id\',\'name\',\'MisSystemCar\'}" readonly="readonly" size="17"/>
+								<input type="hidden" class="org.mangid" name="car_id" value="{$carid}"/>
+								<a class="input-addon input-addon-add" href="__URL__/lookupmanage" lookupGroup="org">车辆选择</a><span class="info"></span>
+							</div>
+						</div>
+					</if>
+					<if condition='$fields["carno"]'>
+							<div class="tml-form-col">
+								<label>{$fields["carno"]}:</label>
+								<input  type="text" name="carno" class="org.carno" value="{$carid|getFieldBy=\'id\',\'carno\',\'MisSystemCar\'}" readonly="readonly">
+							</div>
+					</if>
+						<div class="tml-form-col">
+							<label>当前里程止数：</label>
+							<input type="text" name="totalKM" class="required"  onblur="FormatNumber(this);">
+							<!-- 上次记录加油ID -->
+							<input type="hidden"  name="lastCarId" value="0" />
+							<!-- 上次里程止数 -->
+							<input type="hidden" class="org.totalKM" name="lastTotalKM" value="0" />
+							<!-- 上次加油金额-->
+							<input type="hidden" name="lastOilamount" value="0"   />
+							<!-- 上次油价 -->
+							<input type="hidden" name="lastOilprice" value="0"  />
+						</div>
+						<div class="tml-form-col">
+							<label>本次使用里程：</label>
+							<input type="text" name="kilometre"  class="readonly required" readonly="readonly" value="">
+							<input  type="hidden" name="business_type" value="1">
+						</div>
+					<!-- <p>
+					<if condition='$fields["business_type"]'>
+						<label>{$fields["business_type"]}:</label>
+						<select name="business_type"  class="combox business_type">
+							<option  value="1">加油</option>
+						</select>
+					</if>
+					</p> -->
+						<if condition='$fields["oil_id"]'>
+							<div class="tml-form-col">
+								<label>{$fields["oil_id"]}:</label>
+								<input name="oil_id"  type="hidden" check_key="id"/>
+								<input type="text" class="checkByInput org.oilID" callback="miscaraddoilinfo_callback_update"  fields="array('id'=>'0','oil_id'=>'油卡ID','oil_balance'=>'余额');"  show="oil_id" checkfor="MisCarCardBind"  autocomplete='off'>
+							</div>
+						</if>
+						
+						<if condition='$fields["oil_balance"]'>
+							<div class="tml-form-col">
+								<label>{$fields["oil_balance"]}:</label>
+								<input  type="text" name="oil_balance" readonly="readonly" class="org.oilBalance" check_key="oil_balance" class="" value="0.00" >
+							</div>
+						</if>
+						<if condition='$fields["departmentID"]'>
+							<!-- <p>
+								<label>{$fields["departmentID"]}:</label>
+								<input type="hidden" name="departmentID" class="org.departmentID" value="{$carid|getFieldBy=\'id\',\'departmentID\',\'MisSystemCar\'}"/>
+								<input  type="text" class="org.departmentname" value="{$carid|getFieldBy=\'id\',\'departmentID\',\'MisSystemCar\'|getFieldBy=\'id\',\'name\',\'MisSystemDepartment\'}">
+							</p> -->
+						</if>
+						<if condition='$fields["price"]'>
+							<div class="tml-form-col">
+								<label>{$fields["price"]}:</label>
+								<input  type="text" name="price" class="" value="0.00" onblur="miscaraddoilinfo_cal_update();FormatNumber(this);">
+							</div>
+						</if>
+						<if condition='$fields["oil_type"]'>
+							<div class="tml-form-col">
+		                       <label>{$fields["oil_type"]}:</label>
+		                       <select class="combox" name="oil_type">
+		                           {:getSelectByHtml('fueltype')}
+		                       </select>
+			                </div>
+		                </if>
+						<if condition='$fields["amount"]'>
+							<div class="tml-form-col">
+								<label>{$fields["amount"]}:</label>
+								<input  type="text" name="amount" class="required" value="0.00" onblur="miscaraddoilinfo_cal_update();FormatNumber(this);">
+							</div>
+						</if>
+						<if condition='$fields["oil_number"]'>
+							<div class="tml-form-col">
+								<label>{$fields["oil_number"]}:</label>
+								<input  type="text" name="oil_number" readonly="readonly" value="0.00" class="">
+							</div>
+						</if>
+						<if condition='$fields["address"]'>
+							<div class="tml-form-col">
+								<label>{$fields["address"]}:</label>
+								<input  type="text" name="address" class=" ">
+							</div>
+						</if>
+						<if condition='$fields["add_time"]'>
+							<div class="tml-form-col">
+								<label>{$fields["add_time"]}:</label>
+								<div class="tml-input-append">
+									<input type="text" value="{$Think.server.REQUEST_TIME|transTime='Y-m-d H:i'}" class="tml-border-r0 Wdate required" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" name="add_time" size="17">
+									<span class="input-addon input-addon-calendar"></span>
+								</div>
+							</div>
+						</if>
+						<if condition='$fields["operator"]'>
+							<div class="tml-form-col">
+								<label>{$fields["operator"]}:</label>
+								<input  type="text" name="operator" class="">
+							</div>
+						</if>
+		          </div>
+				<if condition='$fields["remark"]'>
+					<div class="tml-form-row">
+						<label>{$fields["remark"]}:</label>
+						<textarea cols="45" rows="2"  name="remark">{$vo['remark']}</textarea>
+					</div>
+				</if>
+			</div>
+            {:W('ShowAction')}
+	</form>
+	</div>
+</div>

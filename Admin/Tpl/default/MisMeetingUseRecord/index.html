@@ -1,0 +1,38 @@
+<script>
+function addconference(roomid,date){
+	//alert(roomid);
+	//alert(date);
+	var url = TP_APP + "/MisMeetingRoomUseMange/add/roomid/" + roomid + "/date/" + date ;
+	//alert(url);
+	navTab.openTab("MisMeetingRoomUseMangeadd", url, { title:"会议室申请-新增", fresh:false, data:{} });
+}
+</script>
+<div class="pageContent">
+   <table class="table" layoutH="146" nowrapTD="true" width="100%">
+		<thead>
+			<tr>
+				<th width="80">X</th>
+				<volist name="timeX" id="dat">
+					<th>{$dat}</th>
+				</volist>
+			</tr>
+		</thead>
+		<tbody>
+			<volist name="rooms" id="roo">
+				<tr style="height:60px;">
+					<volist name="roo.sj" id="ab">
+						<if condition="$ab.type eq 1">
+							<td>{$ab.hys}</td>
+							<else/>
+							<td ondblclick="addconference({$roo.id} ,'{$ab[starttime]}')">
+								<volist name="ab.zyhys" id="bc">
+									<p style='text-align:center;background:yellow;'>{$bc}</p>
+								</volist>
+							</td>
+						</if>
+					</volist>
+				</tr>
+			</volist>
+		</tbody>
+	</table>
+</div>

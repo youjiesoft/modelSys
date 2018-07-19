@@ -1,0 +1,30 @@
+<script type="text/javascript">
+$(function(){
+    //为左侧栏目导航点击后修改选中状态@nbmxkj 20141009 1629
+    nbm_getfouce();
+});
+</script>
+<div class="pageContent">
+{:W("ShowToLevelMenu")}
+    <div class="treeleft">
+        <div class="collapse">
+            <div class="toggleCollapse"><div></div></div>
+        </div>
+        <div class="close" layoutH="40">
+            <div class="work_statement">我的项目</div>  <div class="edit_work_lay"><a class="edit_work_btn" href="__APP__/MisAutoXyc/add" target="navTab" rel="__MODULE__add" title="我的项目_新增">建立项目 <span class="icon-pencil"></span></a></div>
+            <div class="tml_divider"></div>
+            <div class="tml_bar_nav">
+                <ul class="bar_nav">
+                    <li <if condition="$type eq 4"> class="active"</if>><a href="__URL__/index/jump/jump/type/4" target="ajax" rel="MisSalesProjectRel">全部项目</a></li>
+                    <li <if condition="$type eq 1"> class="active"</if>><a href="__URL__/index/jump/jump/type/1" target="ajax" rel="MisSalesProjectRel">进行中</a></li>
+                    <li <if condition="$type eq 2"> class="active"</if>><a href="__URL__/index/jump/jump/type/2" target="ajax" rel="MisSalesProjectRel">已完成</a></li>
+                    <li <if condition="$type eq 3"> class="active"</if>><a href="__URL__/index/jump/jump/type/3" target="ajax" rel="MisSalesProjectRel">已终止</a></li>
+                </ul>
+            </div>
+			<!--<ul id="MisSalesProjectid" class="ztree" ></ul>-->
+		</div>
+    </div>
+    <div id="MisSalesProjectRel" class="unitBox treeright">
+		<include file="indexview"  />
+	</div>
+</div>

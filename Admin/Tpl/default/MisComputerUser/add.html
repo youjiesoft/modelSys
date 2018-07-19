@@ -1,0 +1,42 @@
+
+<include file="Public:pagerForm" />
+<div class="page">
+	<div class="pageContent">
+		<form method="post" action="__URL__/insert/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,navTabAjaxDone);">
+			<input type="hidden" name="callbackType" value="closeCurrent">
+			<div class="pageFormContent applecloth" layoutH="56">
+				<div class="keepContentCenter">
+						<H2 class="contentTitle contentTitle_center">修改用户电脑资料</H2>
+						<fieldset>
+						<p>
+							<label>{$fields["code_number"]}:</label><input  type="text" name="code_number" class="required" value="{$vo['code_number']}">
+						</p>
+						<p>
+							<label>{$fields["employe_id"]}:</label><input  type="text" name="employe_id" class="required" value="{$vo['employe_id']}">
+						</p>
+						<p>
+							<label>{$fields["department_id"]}:</label>
+							<select name="department_id" class="combox required">
+			                    <volist name="department_idlist" id="vodepartmentID">
+			                        <option value="{$vodepartmentID['id']}">
+			                            {$vodepartmentID['name']}
+			                        </option>
+			                    </volist>
+			                </select>
+							<!-- <input  type="text" name="department_id" class="required" value="{$vo['department_id']}"> -->
+						</p>
+							<dl class="nowrap"><dt>{$fields["remark"]}:</dt><dd><textarea cols="40" rows="2"  name="remark">{$vo['remark']}</textarea></dd></dl>
+						</fieldset>
+				</div>
+			</div>
+			<div class="formBar">
+				<ul>
+				<if condition="$_SESSION.a eq 1 or $_SESSION.miscomputeruser_insert">	
+					<li><button type="submit" class="tml-btn tml-btn-primary">{$Think.lang.save}</button></li>
+				</if>
+					<li><button type="button" class="tml-btn close">{$Think.lang.close}</button></li>
+				</ul>
+			</div>
+	</form>
+	</div>
+</div>

@@ -1,0 +1,36 @@
+<include file="Public:pagerForm" />
+<div class="page">
+	<div class="pageContent">
+		<form method="post" action="__URL__/update/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,dialogAjaxDone);">
+			<input type="hidden" name="iseditor" value="1">
+			<input type="hidden" name="id" value="{$vo['id']}">
+			<div class="pageFormContent" layoutH="56">
+				<p>
+					<label>标题：</label>
+					<input type="text" size="30" name="title" class="required" value="{$vo['title']}">
+				</p>
+				<p>
+					<label>分类：</label>
+					<select name="categoryid" class="combox required">
+						<option value="">请选择类型</option>
+						<volist name="typeidlist" id="vozw">
+						<option value="{$key}" <if condition="($key eq $vo['categoryid'])">selected</if>>{$vozw}</option>
+						</volist>
+					</select>
+				</p>
+				<dl class="nowrap">
+					<dt>详细：</dt>
+					<dd><textarea class="editor" tools="simple" name="content" rows="8" cols="50"  >{$vo["content"]}</textarea></dd>
+				</dl>
+			</div>
+			<div class="formBar">
+				<ul>
+				<if condition="$_SESSION.a eq 1 or $_SESSION.misexpertquestionlist_update">
+					<li><div class="buttonActive"><div class="buttonContent"><button type="submit">{$Think.lang.save}</button></div></div></li>
+				</if>
+					<li><div class="button"><div class="buttonContent"><button type="button" class="close">{$Think.lang.close}</button></div></div></li>
+				</ul>
+			</div>
+		</form>
+	</div>
+</div>

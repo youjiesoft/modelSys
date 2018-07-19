@@ -1,0 +1,98 @@
+<script>
+	function loadUrlEidtUser($id) {
+		$("#linkUserindex").loadUrl("__URL__/editbasic/id/" + $id + "", {},
+				function() {
+					$("#linkUserindex").find("[layoutH]").layoutH();
+				});
+		return false;
+	}
+	function loadUrlEidtStatus($id) {
+		$("#linkstatusindex").loadUrl("__URL__/editbasicstatus/id/" + $id + "", {},
+				function() {
+					$("#linkstatusindex").find("[layoutH]").layoutH();
+				});
+		return false;
+	}
+	$(function(){
+		$('.additem').additem();
+	});
+</script>
+<div class="edit-form MisPurchaseSupplierTextInput">
+	<div>
+		<div class="clearfix xyTab">
+			<div class="xyTabHeaderRe">
+				<ul class="xyTabHeaderUl clearfix">
+					<li class="xyTabList xyTabListCu">
+						<a href="#0" onclick="xy.changeTab(this,event)">基本信息</a>
+					</li>
+					<li class="xyTabList">
+						<a href="#1" onclick="xy.changeTab(this,event);loadUrlTo_rel('linkTrack','__APP__/MisSalesCustomer/lookupTrack/category/2/id/{$vosoft.id}');">企业服务跟踪</a>
+					</li>
+				</ul>
+			</div>
+			<form method="post" action="__APP__/MisSalesCustomerPerson/update/rel/misSalesCustomerTreeBox" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+					<input type="hidden" name="refreshtabs[byid]" value="1">
+					<input type="hidden" name="deptindex" value="1">
+					<input type="hidden" name="id" value="{$vosoft.id}">
+					<!-- 基本信息 -->
+					<div class="xyTabContent xyTabContentCu">
+						<div style="height: 188px; overflow: auto; position: relative;">
+							<div class="tml-row pt5">
+								<div class="tml-form-col">
+									<label>姓名：</label>
+									<input type="text" name="name" value="{$vosoft.name}"/>
+								</div>
+								<div class="tml-form-col">
+									<label>联系方式：</label>
+									<input type="text" name="phone" value="{$vosoft.phone}"/>
+								</div>
+								<div class="tml-form-col">
+									<label>所属区县：</label>
+									<input type="text" name="address" value="{$vosoft.address}"/>
+								</div>
+								<div class="tml-form-col">
+									<label>职业：</label>
+									<input type="text" name="job" value="{$vosoft.job}"/>
+								</div>
+								<div class="tml-form-col">
+		                            <label>{$fields["companyname"]}:</label>
+		                            <input type="text" name="companyname" class="" value="{$vosoft.companyname}">
+		                        </div>
+								<div class="tml-form-col nbmmove">
+		                            <label>{$fields["income"]}:</label>
+		                            <input type="text" name="income" class="" onblur="FormatNumber(this);" value="{$vosoft.income|getDigits}">
+		                        </div>
+		                        <div class="tml-form-col">
+									<label> {$fields["typeid"]}： </label>
+									<div class="tml-input-append">
+										<select name="typeid" class="combox additem" onchange="onChangeCode(this);" aurls="__APP__/MisSalesCustomertype/lookupAddSelectValue/model/MisSalesCustomertype" atitle="快捷添加{$fields["typeid"]}" laywidth="700" layheight="200">
+											{:getDataBaseByHtml('mis_sales_customertype',array('selected'=>$vosoft['typeid']))}
+										</select>
+									</div>
+								</div>
+								<div class="tml-form-col nbmmove">
+			                        <label>{$fields["debt"]}:</label>
+			                        <input type="text" name="debt" class="number" onblur="FormatNumber(this);" value="{$vosoft.debt|getDigits}">
+			                    </div>
+			                    <div class="tml-form-col nbmmove">
+			                        <label>{$fields["assets"]}:</label>
+			                        <input type="text" name="assets" class="number" onblur="FormatNumber(this);" value="{$vosoft.assets|getDigits}">
+			                    </div>
+						</div>
+						</div>
+						<div class="formBar">
+							<ul>
+								<li>
+									<button class="tml-btn tml-btn-primary" type="submit">{$Think.lang.save}</button>
+								</li>
+								<li>
+									<button type="button" class="close tml-btn tml-btn-default">{$Think.lang.close}</button>
+								</li>
+							</ul>
+						</div>
+					</div>
+			</form>
+		</div>
+		<div class="xyTabContent" id="linkTrack"></div>
+	</div>
+</div>

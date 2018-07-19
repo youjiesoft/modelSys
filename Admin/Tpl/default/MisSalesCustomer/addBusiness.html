@@ -1,0 +1,116 @@
+<div class="pageContent">
+	<form method="post" action="__URL__/insert/rel/linkstatusindex" class="pageForm required-validate" enctype="multipart/form-data" onsubmit="return validateCallback(this,dialogAjaxDone);">
+		<input type="hidden" name="ajax" value="1">
+		<input type="hidden" name="managestatus" value="1"/>
+		<input name="customerid" value="{$customerid}" type="hidden" />
+		<h2 class="contentTitle contentTitle_center">经营状况</h2>
+		<div class="pageFormContent applecloth" layoutH="102">
+			<div class="keepContentCenterCondensed clearfix">
+				<div class="tml-row">
+					<!-- <div class="tml-form-col">
+						<label>编号：</label>
+						<input type="text" name="code" />
+					</div> -->
+					<!-- <div class="tml-form-col">
+						<label>名称：</label>
+						<input type="text" name="name" />
+					</div> -->
+					<div class="tml-form-col">
+						<label>销售收入：</label>
+						<div class="tml-input-append">
+							<input class="number TextMagnifier-money textInput valid" type="text" onblur="FormatNumber(this);" name="sellprice">
+							<span class="input-addon-unit" title="万元">万元</span>
+						</div>
+					</div>
+					<div class="tml-form-col">
+						<label>纳税总额：</label>
+						<div class="tml-input-append">
+							<input class="number TextMagnifier-money textInput valid" type="text" onblur="FormatNumber(this);" name="ratepaying">
+							<span class=" input-addon-unit" title="万元">万元</span>
+						</div>
+					</div>
+					<div class="tml-form-col">
+						<label>净利润：</label>
+						<div class="tml-input-append">
+							<input class="number TextMagnifier-money textInput valid" type="text" onblur="FormatNumber(this);" name="profit">
+							<span class=" input-addon-unit" title="万元">万元</span>
+						</div>
+					</div>
+					<div class="tml-form-col">
+						<label>企业总资产：</label>
+						<div class="tml-input-append">
+							<input class="number TextMagnifier-money textInput valid" type="text" onblur="FormatNumber(this);" name="qyproperty">
+							<span class=" input-addon-unit" title="万元">万元</span>
+						</div>
+					</div>
+					<div class="tml-form-col">
+						<label>存货总额：</label>
+						<div class="tml-input-append">
+							<input class="number TextMagnifier-money textInput valid" type="text" onblur="FormatNumber(this);" name="inventory">
+							<span class=" input-addon-unit" title="万元">万元</span>
+						</div>
+					</div>
+					<div class="tml-form-col">
+						<label>设备总价值：</label>
+						<div class="tml-input-append">
+							<input class="number TextMagnifier-money textInput valid" type="text" onblur="FormatNumber(this);" name="facilityprice">
+							<span class=" input-addon-unit" title="万元">万元</span>
+						</div>
+					</div>
+					<div class="tml-form-col">
+						<label title="应收账款平均账期">应收账款平均账期：</label>
+						<div class="tml-input-append">
+							<input class="textInput" type="text" name="paymentday">
+							<span class=" input-addon-unit" title="月">月</span>
+						</div>
+					</div>
+					<div class="tml-form-col">
+						<label title="应收账款余额">应收账款余额：</label>
+						<div class="tml-input-append">
+							<input class="number TextMagnifier-money textInput valid" type="text" onblur="FormatNumber(this);" name="balance">
+							<span class=" input-addon-unit" title="万元">万元</span>
+						</div>
+					</div>
+					<div class="tml-form-col">
+						<label>企业上游：</label>
+						<input class="textInput" type="text" name="servicecase">
+					</div>
+					<div class="tml-form-col">
+						<label>企业下游：</label>
+						<input class="textInput" type="text" name="organization">
+					</div>
+				</div>
+				<div class="tml-form-row">
+					<label title="企业负债情况">企业负债情况：</label>
+					<input class="textInput" type="text" name="liabilitiescase">
+				</div>
+				<div class="tml-form-row">
+					<label title="企业基本情况">企业基本情况：</label>
+					<input class="textInput" type="text" name="propertycase">
+				</div>
+				<!-- <div class="tml-row">
+					<div class="tml-form-col">
+						<label>放款额度：</label>
+						<div class="tml-input-append">
+							<input class="number TextMagnifier-money textInput valid" type="text" onblur="FormatNumber(this);" name="loan">
+							<span class="input-addon-unit" title="万元">万元</span>
+						</div>
+					</div>
+					<div class="tml-form-col">
+						<label>放货日期：</label>
+						<div class="tml-input-append">
+							<input type="text" name="loandate" class="Wdate js-wdate" />
+							<a href="javascript:;" class="input-addon input-addon-calendar js-inputCheckDate">选择</a>
+						</div>
+					</div>
+				</div> -->
+			</div>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><button class="tml-btn tml-btn-primary" type="submit">{$Think.lang.save}</button></li>
+				<li><button type="button" class="close tml-btn tml-btn-default">{$Think.lang.close}</button></li>
+			</ul>
+		</div>
+	</form>
+</div>

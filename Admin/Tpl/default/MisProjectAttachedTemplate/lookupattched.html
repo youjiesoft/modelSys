@@ -1,0 +1,34 @@
+<script>
+$(".proupfilelist a.dellink").die("click");
+$(".proupfilelist a.dellink").live("click", function(){
+	$(this).parents("tr").remove();
+});
+</script>
+<div class="pageContent">
+	<div class="pageFormContent proupfilelist" layoutH="50">
+			<table class="table">
+				<thead>
+					<th>文件名</th>
+					<th>上传日期</th>
+					<th>上传人</th>
+					<th>操作</th>
+				</thead>
+				<tbody>
+					<volist name="recolist" id="recvo1" key="key4">
+					<tr>
+						<td><a href="__URL__/misFileManageDownload/path/{$recvo1['name']}/rename/{$recvo1['lookname']}" title="{$recvo1['lookname']}" target="_blank">{$recvo1['filename']}</a></td>
+						<td>{$recvo1['createdate']}</td>
+						<td>{$recvo1['userzhname']}</td>
+						<td>
+						<if condition="$_SESSION[C('USER_AUTH_KEY')] eq 1 or $recvo1.createid eq $_SESSION[C('USER_AUTH_KEY')]">
+						<a title="文件删除" class="dellink tml-btn tml_look_btn tml_mp" href="__URL__/lookupdelatt/id/{$recvo1['id']}" rel="{$recvo1['id']}" target="ajaxTodo" callback="mis_swf_upload_del" callbackdata="swf_up_gm{$key}id-queue"><span>删除</span>
+						</a>
+						</if>
+						<a class="tml-btn tml_look_btn tml_mp" mask="true" href="__URL__/lookupDocumentCollateAtta/t/0/id/{$recvo['id']}" title="文件归档" target="dialog">归档</a>
+						</td>
+					</tr>
+					</volist>
+				</tbody>
+			</table>
+	</div>
+</div>

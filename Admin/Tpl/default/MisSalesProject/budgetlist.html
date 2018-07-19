@@ -1,0 +1,102 @@
+<form id="pagerForm" action="__URL__/budgetlist/projectid/{$projectid}" method="post">
+    <input type="hidden" name="pageNum" value="1"/>
+</form>
+<form rel="pagerForm" onsubmit="return divSearch(this,'missalesproject_budgetlist');" action="__URL__/budgetlist/projectid/{$projectid}" method="post">
+</form>
+
+<div class="pageContent tml-bg-white" layoutH="8">
+    <div class="tml-p10">
+        <div>
+            <if condition = "$new_array">
+                <volist name="new_array" id="new_array" key="key">
+                <if condition="$key gt 2"><h2 class="tml-h3">变更签证( <?php echo $key-2; ?> )</h2><else/><h2 class="tml-h3">预算清单</h2></if>
+                <ul class="budget-list clearfix">
+                    <if condition="$_SESSION.a eq 1 or $_SESSION.missalesprojectbudget_import">
+                        <if condition="$new_array['budget']">
+                            <li>预算清单(已导入)&nbsp;&nbsp;
+                                <a title="下载源文件" href="__URL__/misFileManageDownload/path/{$new_array['budget']['filepath']}/rename/{$new_array['budget']['filename']}" target="_blank"><span class="tml-icon tml-icon-download tml-mr3"></span><span class="tml-icon-text">下载</span></a>
+                            </li>
+                        <else/>
+                            <li>预算清单(未导入)&nbsp;&nbsp;
+                                <a class="tbinput" href="__APP__/MisSalesProjectBudget/import/projectid/{$projectid}" rel="MisSalesProjectBudgetimport" target="dialog" mask="true"><span class="tml-icon tml-icon-file tml-mr3"></span><span class="tml-icon-text">导入</span></a>
+                            </li>
+                        </if>
+                    </if>
+                    <if condition="$_SESSION.a eq 1 or $_SESSION.missalesprojectbudget_importTwo">
+                        <if condition="$new_array['performance']">
+                            <li>绩效成本(已导入)&nbsp;&nbsp;
+                                <a title="下载源文件" href="__URL__/misFileManageDownload/path/{$new_array['performance']['filepath']}/rename/{$new_array['performance']['filename']}" target="_blank"><span class="tml-icon tml-icon-download tml-mr3"></span><span class="tml-icon-text">下载</span></a>
+                            </li>
+                        <else/>
+                            <li>绩效成本(未导入)&nbsp;&nbsp;
+                                <if condition="$new_array['budget']['uploadtimes']" >
+                                    <a class="tbinput" href="__APP__/MisSalesProjectBudget/importTwo/projectid/{$projectid}/retimes/{$count}" rel="MisSalesProjectBudgetimportTwo" target="dialog" mask="true"><span class="tml-icon tml-icon-file tml-mr3"></span><span class="tml-icon-text">导入</span></a>
+                                </if>
+                            </li>
+                        </if>
+                    </if>
+                    <if condition="$_SESSION.a eq 1 or $_SESSION.missalesprojectbudget_importThree">
+                        <if condition="$new_array['project']">
+                            <li>工程环节导入(已导入)&nbsp;
+                                <a title="下载源文件" href="__URL__/misFileManageDownload/path/{$new_array['project']['filepath']}/rename/{$new_array['project']['filename']}" target="_blank"><span class="tml-icon tml-icon-download tml-mr3"></span><span class="tml-icon-text">下载</span></a>
+                            </li>
+                        <else/>
+                            <li>工程环节导入(未导入)&nbsp;
+                                <if condition="$new_array['budget']['uploadtimes']" >
+                                    <a class="tbinput" href="__APP__/MisSalesProjectBudget/importThree/projectid/{$projectid}/retimes/{$count}" rel="MisSalesProjectBudgetimportThree" target="dialog" mask="true"><span class="tml-icon tml-icon-file tml-mr3"></span><span class="tml-icon-text">导入</span></a>
+                                </if>
+                            </li>
+                        </if>
+                    </if>
+                    <!-- 总表产出 -->
+                    <li>
+                        <a href="__APP__/MisSalesProjectBudget/index/retimes/{$new_array['budget']['retimes']}/projectid/{$projectid}/excelid/{$new_array['budget']['id']}" rel="MisSalesProjectBudgetsumTableExport" target="navTab" >总表产出</a>
+                    </li>
+                </ul>
+                </volist>
+            <else/>
+                <h2 class="tml-h3">预算清单</h2>
+                <ul class="budget-list clearfix">
+                    <if condition="$_SESSION.a eq 1 or $_SESSION.missalesprojectbudget_import">
+                        <li>预算清单(未导入)&nbsp;&nbsp;
+                            <a class="tbinput" href="__APP__/MisSalesProjectBudget/import/projectid/{$projectid}" rel="MisSalesProjectBudgetimport" target="dialog" mask="true"><span class="tml-icon tml-icon-file tml-mr3"></span><span class="tml-icon-text">导入</span></a>
+                        </li>
+                    </if>
+                    <if condition="$_SESSION.a eq 1 or $_SESSION.missalesprojectbudget_importTwo">
+                        <li>绩效成本(未导入)&nbsp;&nbsp;
+                            <!-- <a class="tbinput" href="__APP__/MisSalesProjectBudget/importTwo/projectid/{$projectid}" rel="MisSalesProjectBudgetimportTwo" target="dialog" mask="true"><span>导入</span></a> -->
+                        </li>
+                    </if>
+                    <if condition="$_SESSION.a eq 1 or $_SESSION.missalesprojectbudget_importThree">
+                        <li>工程环节导入(未导入)&nbsp;
+                            <!-- <a class="tbinput" href="__APP__/MisSalesProjectBudget/importThree/projectid/{$projectid}" rel="MisSalesProjectBudgetimportThree" target="dialog" mask="true"><span>导入</span></a> -->
+                        </li>
+                    </if>
+                        <li>总表产出</li>
+                </ul>
+            </if>
+            <div class="divider-content"></div>
+                <h2 class="tml-h3">变更签证( <if condition="$count eq 0"> 1 )<else/>{$count} )</if></h2>
+                <ul class="budget-list clearfix">
+                    <if condition="$_SESSION.a eq 1 or $_SESSION.missalesprojectbudget_import">
+                        <li>预算清单(未导入)&nbsp;&nbsp;
+                            <a class="tbinput" href="__APP__/MisSalesProjectBudget/import/projectid/{$projectid}" rel="MisSalesProjectBudgetimport" target="dialog" mask="true"><span class="tml-icon tml-icon-file tml-mr3"></span><span class="tml-icon-text">导入</span></a>
+                        </li>
+                    </if>
+                    <if condition="$_SESSION.a eq 1 or $_SESSION.missalesprojectbudget_importTwo">
+                        <li>绩效成本(未导入)&nbsp;&nbsp;
+                            <!-- <a class="tbinput" href="__APP__/MisSalesProjectBudget/importTwo/projectid/{$projectid}" rel="MisSalesProjectBudgetimportTwo" target="dialog" mask="true"><span>导入</span></a> -->
+                        </li>
+                    </if>
+                    <if condition="$_SESSION.a eq 1 or $_SESSION.missalesprojectbudget_importThree">
+                        <li>工程环节导入(未导入)&nbsp;
+                            <!-- <a class="tbinput" href="__APP__/MisSalesProjectBudget/importThree/projectid/{$projectid}" rel="MisSalesProjectBudgetimportThree" target="dialog" mask="true"><span>导入</span></a> -->
+                        </li>
+                    </if>
+                        <li>总表产出</li>
+                </ul>
+                <div class="divider-content"></div>
+            </if>
+        </div>
+    </div>
+</div>

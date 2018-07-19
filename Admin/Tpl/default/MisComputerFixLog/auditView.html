@@ -1,0 +1,98 @@
+<div class="page">
+	<div class="pageContent aduit-view">
+	<form method="post" action="__URL__/auditProcess/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,refreshtabsAudit);" enctype="multipart/form-data">
+		<input type="hidden" name="id" value="{$vo['id']}" />
+		<input type="hidden" name="pid" value="{$vo['ptmptid']}">
+		<input type="hidden" name="ostatus" value="{$vo['ostatus']}">
+		<input type="hidden" name="refreshtabs[type]" value="navtab">
+		<input type="hidden" name="backprocess" value="流程回退">
+		<input type="hidden" name="auditprocess" value="流程审核">
+		<input type="hidden" name="endprocess" value="流程结束">
+		<input type="hidden" name="alreadyAuditUser" value="{$vo['alreadyAuditUser']}">
+		<input type="hidden" name="auditUser" value="{$vo['auditUser']}">
+        <input type="hidden" name="doinfo" />
+		<input type="hidden" name="multi_lookup_reset">
+        <div class="pageFormContent applecloth" layoutH="56">
+			<div class="keepContentCenter form-affix-content">
+						<H2 class="contentTitle contentTitle_center form-affix-title">
+							电脑维修记录{:W('ShowAdvices',array('id'=>$vo['id']))}
+						</H2>
+				<img class="right" style="position: absolute; z-index: 100;right:20%;" <if condition="$dotype eq 1">src="__PUBLIC__/Images/stamp-done.png"<elseif condition="$dotype eq 2"/>src="__PUBLIC__/Images/stamp-doing.png"<elseif condition="$dotype eq 0"/>src="__PUBLIC__/Images/stamp-donot.png"</if>/>
+			<fieldset>
+				<legend class="fieldset_legend_toggle side-catalog-text">
+				<b>报修信息</b>
+				</legend>
+					<div class="tml-row">
+					{:W('ShowOrderno',array(0,'mis_computer_fix_log',$vo['orderno']))}
+						<div class="tml-form-col">
+							<label>{$fields["falut_type"]}:</label>
+							<input type="text" readonly="readonly" value="{$vo.falut_type|getSelectByName='computerfault',###}"/>
+						</div>
+						<div class="clear"></div>
+						<div class="tml-form-col">
+							<label>紧急程度</label>
+							<input type="text" readonly="readonly"
+								<if condition="$vo.level eq 1">value="不急"</if>
+								<if condition="$vo.level eq 2">value="急"</if>
+								<if condition="$vo.level eq 3">value="非常急"</if>
+							/>
+						</div>
+					</div>
+					<div class="tml-form-row">
+						<label>故障描述:</label>
+						<textarea rows="2" readonly="readonly">{$vo['fault_cause']}</textarea>
+					</div>
+					<div class="tml-row">
+						<div class="tml-form-col">
+							<label>报修人:</label>
+							<input type="text" readonly="readonly" value="{$vo['report_name']|getFieldBy='id','name','mis_hr_personnel_person_info'}" />
+						</div>
+						<div class="tml-form-col">
+							<label>报修时间:</label>
+							<input type="text" readonly="readonly" value="{$vo['createtime']|transtime}" />
+						</div>
+					</div>
+					</fieldset>
+					<fieldset>
+						<legend class="fieldset_legend_toggle side-catalog-text">
+							<b>处理记录</b>
+						</legend>
+						<div class="tml-row">
+							<div class="tml-form-col">
+								<label>{$fields["fixed"]}:</label>
+								<input type="text" readonly="readonly"
+									<if condition="$vo.fixed eq 1">value="修复"</if>
+									<if condition="$vo.fixed eq 2">value="未修复"</if>
+									<if condition="$vo.fixed eq 3">value="报废"</if>
+									<if condition="$vo.fixed eq 4">value="另约维修"</if>
+									<if condition="$vo.fixed eq 5">value="报告状态"</if>
+									<if condition="$vo.fixed eq 6">value="验证测试"</if>
+									<if condition="$vo.fixed eq 7">value="其它"</if>
+								/>
+							</div>
+						</div>
+						<div class="tml-form-row">
+							<label>故障原因:</label>
+							<textarea cols="50" rows="2" readonly="readonly" name="fault_describe" >{$vo.fault_describe}</textarea>
+						</div>
+						<div class="tml-form-row">
+							<label>{$fields["solution"]}:</label>
+							<textarea rows="3" readonly="readonly" name="solution">{$vo.solution}</textarea>
+						</div>
+						<div class="tml-row">
+							<div class="tml-form-col">
+								<label>{$fields["fix_man"]}:</label>
+								<input type="text" readonly="readonly" name="fix_man" value="{$vo.fix_man}">
+							</div>
+							<div class="tml-form-col">
+								<label>检修日期:</label>
+								<input type="text" readonly="readonly" name="fix_time" value="{$vo.fix_time|transTime}">
+							</div>
+						</div>
+				</fieldset>
+				</div>
+			</div>
+			{:W('ShowAction')}
+		</form>
+	</div>
+</div>

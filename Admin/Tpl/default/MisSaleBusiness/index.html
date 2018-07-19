@@ -1,0 +1,26 @@
+<script type="text/javascript">
+<!--
+$(function(){
+    //为左侧栏目导航点击后修改选中状态@nbmxkj 20141009 1629
+    nbm_getfouce();
+});
+//-->
+</script>
+<div class="pageContent">
+{:W("ShowToLevelMenu")}
+	<div class="treeleft" layoutH="40">
+		<div class="work_statement">商机库</div>
+        <div class="tml_bar_nav">
+            <ul class="bar_nav">   
+                <li class="active"><a target="ajax" rel="MisSaleBusiness_jbsx" href="__APP__/MisSaleBusiness/index/jump/jump" >全部商机</a></li>
+                 <li><a target="ajax" rel="MisSaleBusiness_jbsx" href="__APP__/MisSaleBusiness/index/businessstatus/1/jump/jump" >未分派</a></li>
+                 <li><a target="ajax" rel="MisSaleBusiness_jbsx" href="__APP__/MisSaleBusiness/index/businessstatus/2/jump/jump" >已分派</a></li>
+                 <li><a target="ajax" rel="MisSaleBusiness_jbsx" href="__APP__/MisSaleBusiness/index/businessstatus/4/jump/jump" >转项目</a></li>
+                 <li><a target="ajax" rel="MisSaleBusiness_jbsx" href="__APP__/MisSaleBusiness/index/businessstatus/5/jump/jump" >转储备</a></li>
+            </ul>
+        </div>
+	</div>
+	<div id="MisSaleBusiness_jbsx" class="unitBox treeright">
+		<include file="indexview"/>
+	</div>
+</div>

@@ -1,0 +1,199 @@
+<script type="text/javascript">
+$(document).ready(function() {
+	$(".proimage").colorbox({rel:'proimage', slideshow:true,maxWidth:700,maxHeight:700 });
+	$(".editProPic li").hover(
+		function () {
+			$(this).children("a.btnDel").css("display","block");
+		},
+		function () {
+			$(this).children("a.btnDel").css("display","none");
+		}
+	);
+});
+</script>
+<style>
+	.center_box{
+		width:900px;
+		border:2px solid #dddddd;
+		margin:0 auto;
+		padding:15px;
+		text-align: center;
+		background-attachment: scroll;
+		background-clip: border-box;
+		background-color: transparent;
+		background-image: url("http://images.apple.com/v/ipad/c/images/overview_divider_down.jpg");
+		background-origin: padding-box;
+		background-position:center top;
+		background-repeat: no-repeat;
+		background-color:#fff;
+	}
+	.info_div{
+		background-attachment: scroll;
+		background-clip: border-box;
+		background-color: transparent;
+		background-image: url("http://images.apple.com/v/ipad/c/images/overview_divider_down.jpg");
+		background-origin: padding-box;
+		background-position:center top;
+		background-repeat: no-repeat;
+		background-color:#fff;
+		border: 1px solid #f8f8f6;
+		padding-bottom: 5px;
+	}
+	.info_div_header_pic_div{
+		margin:0 auto;
+		text-align: center;
+		width:152px;
+		height:115;
+		padding:1px;
+		padding-top:2px;
+		border:1px solid silver;
+		margin-top:5px;
+	}
+	.info_div_header{
+		padding:0;
+		margin:0;
+		width: 800px;
+		height: auto;
+		margin:0 auto;
+		text-align: center;
+	}
+	
+	.info_div_body{
+		margin:0 auto;
+		text-align: center;
+		width:700px;
+		margin-top:5px;
+		padding:2px;
+		border: 1px solid silver;
+	}
+	.info_div_header_left{
+		float:left;
+		margin-top:30px;
+		width:300px;
+	}
+	.info_div_header_left span{
+		display:inline-block;
+		margin-top:10px;
+		width:300px;
+	}
+	.info_div_header_right{
+		float:right;
+		margin-top:30px;
+		width: 300px;
+	}
+	.info_div_header_right span{
+		display:inline-block;
+		margin-top:10px;
+		width:300px;
+	}
+	.info_div_body_div{
+		margin:1px;
+		padding: 2px;
+		text-align: left;
+		color: #868686;
+		
+	}
+
+	.info_div_body_div span{
+		padding:2px;
+		display: block;
+		width: 210px;
+		float:left;
+		margin-right:10px;
+		margin-bottom:1px;
+		border: 1px solid #eaeaea;
+		color: #868686;
+	}
+	.info_div_body_div span b{
+		display: inline-block;
+		width:70px;
+		color: #15776f;
+	}
+	.info_div_body_div b{
+		color:#990000;
+	}
+	.panel_float_left h1{
+		text-align: left;
+	}
+	.background_mark3{
+		z-index:10000;
+ 		position: absolute;
+		width:150px;
+		height:100px;
+		float:right;
+		margin-left:630px;
+		margin-top:-30px;
+		background: url("__PUBLIC__/Images/mark/approve_car.png") no-repeat top right;		
+	}
+	.background_mark0{
+		display: none;
+	}
+</style>
+
+<div class="pageContent"  selector="h1" layoutH="20" >
+	<div class="center_box">
+		<volist id="volistid" name="volist">    <!-- 条件循环开始 -->
+		
+			<div class="panel panel_float_left" defH="210" >
+			
+				<h1>{$volistid['name']} -- {$volistid['carno']}</h1>
+				
+				<div style="background-color:white;">
+
+					<!-- 数据区 -->
+					<div class="info_div">
+						<div class="info_div_header">
+							<div class="info_div_header_left">
+								<span><b>{$volistid['departurePlace']}</b></span>
+								<span>发车时间:{$volistid['departureTime']|default=''|transTime='Y-m-d H:i'}</span>
+							</div>
+							<div  class="info_div_header_right">
+								<span><b>{$volistid['arrivePlace']}</b></span>
+
+								<span>预计用时：
+									<?php 
+										$getResult=  abs($volistid['planReturnTime']-$volistid['departureTime']);
+										$getHours = round($getResult/3600);
+										echo $getHours;
+									?>
+								</span>
+							</div>
+							<!-- 图片区 -->
+							<div class="ulist editProPic info_div_header_pic_div">
+								<if condition="$volistid['pic']"> 
+									<ul>
+											<li>
+												<a  class="proimage" title="image{$key}" href="{$p[path]}"><img class="vo" src="/Public/{$volistid['pic']}" style="width:150px;height:auto;" /></a> 
+											</li>
+									</ul>
+								<else /> 
+									<a  class="proimage" title="image{$key}" href="{$noPicPath}/404.jpg"><img class="vo" src="{$noPicPath}/404.jpg" style="width:150px;height:auto;" /></a>
+								</if>
+							</div>
+							<!-- 图片区 -->
+							<div class="clear"></div>
+						</div>
+						
+						<div class="info_div_body">
+							<div class="background_mark{$volistid['auditState']}"></div>		<!-- 批复图片	 -->
+							<div class="info_div_body_div">
+								<span><b>申&nbsp;请&nbsp;人:</b>{$volistid['usename']}</span>
+								<span><b>乘   客:</b> {$volistid['passengerNo']}人</span>
+								<span><b>司&nbsp;&nbsp;&nbsp;&nbsp;机:</b>{$volistid['driverMark']}</span>
+								<span><b>申请部门:</b>{$volistid['departmentID']|getFieldBy=###,'id','name','mis_system_department'}</span>
+								<span><b>余   位:</b>{$volistid['bearno']-$volistid['passengerNo']}人</span>
+								<span><b>返回时间:</b>{$volistid['planReturnTime']|default=''|transTime='Y-m-d H:i'}</span>
+								<div class="clear"></div>
+							</div>
+							<div class="info_div_body_div"><b>用途</b>： 组织调查，用户需求。{$volistid['reason']}</div>
+							<div class="clear"></div>
+						</div>
+					</div>
+					<!-- 数据区 -->
+				</div>
+			</div>
+			<div class="clear"></div>
+		</volist>
+		<div class="clear"></div>
+	</div>
+</div>

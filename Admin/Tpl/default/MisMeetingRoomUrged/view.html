@@ -1,0 +1,44 @@
+<script>
+//	警告用户,如果将一个父级修改为子级,那么它将会丢失其下面的子级
+/*  function comfirt(obj){
+		var va = $(obj).val();
+		//选择的子级
+		if(va == 1){
+			$("#hiddx").show();
+			alertMsg.confirm("将一个父级修改为子级,那么它将丢失它的所有子级!", {
+				okCall: function(){
+			
+				}
+			});
+		}
+		if(va == 0){
+			$("#hiddx").hide();
+		}
+	}  */
+</script>
+	<div class="page">
+		<div class="pageContent">
+			<form method="post" action="__URL__/update/navTabId/__MODULE__" class="pageForm required-validate"  onsubmit="return validateCallback(this, dialogAjaxDone)">
+				<input type="hidden" name="id" value="{$vo['id']}" />
+				<input type="hidden" name="jump" value="1"/>
+				<div class="pageFormContent" layoutH="58">
+					<div class="tml-row">
+                        <div class="tml-form-col">
+                            <label>名&nbsp;&nbsp;&nbsp;&nbsp;称：</label><input type="text" name="name" class="required readonly" value="{$vo['name']}">
+                        </div>
+                         <div class="tml-form-col">
+                            <label>标&nbsp;&nbsp;&nbsp;&nbsp;示：</label><input type="text" name="key" class="required"  value="{$vo['key']}" />
+                        </div>
+                    </div>
+                    <div class="tml-form-row">
+							<div class="tml-help-show"><font color="red">*&nbsp;标示是指唯一确定该物品的属性,一般以英文.如:table,desk,ball.</font></div>
+					</div>
+                     <div class="tml-form-row">
+						<label>备注：</label>
+						<textarea name="mark"  class="textInput" >{$vo['mark']}</textarea>
+	                 </div>
+				</div>
+				{:W('ShowAction',array('data'=>$vo))}
+			</form>
+		</div>
+	</div>

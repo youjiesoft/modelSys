@@ -1,0 +1,503 @@
+<script>
+    var $box= navTab.getCurrentPanel();
+    var ftypelistjson={$ftypelistjson};
+    var v=$box.find("input[name='typeid']").val();
+    var selectedmodel= ftypelistjson[v];
+    var $firsttr=$box.find("#orgcertifmas_edit tr.defaulttr:first");
+    var counttr=$box.find("#orgcertifmas_edit tbody tr").length-1;
+    var cur_tr=0;
+    $box.find("#orgcertifmas_edit a.btnDel").bind('click',function(){
+        var fnum=$(this).parents("tr").find("input.fnum").val();
+        $box.find("#orgcertifmas_edit_t input.fsubnum").each(function(){
+            var v=$(this).val();
+            if(v==fnum){
+                $(this).parents("tr").remove();
+            }   
+        });
+        var tj=$box.find("input[name='totalamount']").val();
+        var tj2=$(this).parents("tr").find("input.mastotalsubamount").val();
+        var tj3=comboxMathematicalOperation(tj+"-"+tj2);
+        $box.find("input[name='totalamount']").val(tj3);
+        
+        $(this).parents("tr").remove();
+        return false;
+    });
+    $box.find("#orgcertifmas_edit a.btnAdd").bind('click',function(){
+        if(selectedmodel==""){
+            alert("请先选择对应类型");
+            return false;
+        }
+        var b=$box.find("#orgcertifmas_edit tbody tr:last");
+        var a=$firsttr.clone(true);
+        a.find(":input").each(function(index){
+            var n=$(this).attr("name");
+            if(n=="fnum"){
+                $(this).val(counttr+1);
+            }else if(n=="ordermasorderno"){
+                $(this).attr("checkfor",selectedmodel);
+            }
+            n=n+"arr["+counttr+"]";
+            $(this).attr("name",n);
+        });
+        counttr++;
+        cur_tr=counttr;
+        a.insertAfter(b);
+        $box.find("#orgcertifmas_edit tr.defaulttr").css("display","");
+        $box.find("#orgcertifmas_edit tr.defaulttr:first").css("display","none");
+
+        $box.find("#orgcertifmas_edit tr").not(":first").each(function(){
+            var cur_tr2=$(this).find("input.fnum").val();
+            /*if(cur_tr2==counttr){
+                $(this).find("select").each(function(){
+                    var $refCombox=$(this).parents("div.combox:first");
+                    var s=$(this).clone();
+                    s.insertAfter($refCombox);
+                    $refCombox.remove();
+                    $(s).trigger("change").combox();
+                });
+            }*/
+            $box.find("#orgcertifmas_edit_t input.fsubnum").each(function(){
+                var v=$(this).val();
+                if(v!=cur_tr2){
+                    $(this).parents("tr").css("display","none");
+                }else{
+                    $(this).parents("tr").css("display","");
+                }   
+            });
+        });
+        $("#orgcertifmas_edit").cssTable();
+    });
+    
+    $box.find("#orgcertifmas_edit tr").not(":first").bind('click',function(){
+        var cur_tr=$(this).find("input.fnum").val();
+        $box.find("#orgcertifmas_edit_t input.fsubnum").each(function(){
+            var v=$(this).val();
+            if(v!=cur_tr){
+                $(this).parents("tr").css("display","none");
+            }else{
+                $(this).parents("tr").css("display","");
+            }   
+        });
+    });
+    
+    
+    var $barfirsttr=$box.find("#orgcertifmas_edit_t tr.defaulttr:first");
+    var countbartr=$box.find("#orgcertifmas_edit_t tbody tr td a.btnDel").length-1;
+    $box.find("#orgcertifmas_edit_t a.btnDel").bind('click',function(){
+        $(this).parents("tr").remove();
+        return false;
+    });
+    $box.find("#orgcertifmas_edit_t a.btnAdd").bind('click',function(){
+        if(cur_tr==0){
+            alert("请先添加分录");
+            return false;
+        }
+        var b=$box.find("#orgcertifmas_edit_t tbody tr:last");
+        var a=$barfirsttr.clone(true);
+        a.find(":input").each(function(index){
+            var n=$(this).attr("name");
+            if(n=="fsubnum"){
+                $(this).val(counttr);
+            }
+            n=n+"arr["+countbartr+"]";
+            $(this).attr("name",n);
+            
+        });
+        countbartr++;
+        a.insertAfter(b);
+        
+        $box.find("#orgcertifmas_edit_t input.fsubnum").each(function(){
+            var v=$(this).val();
+            if(v!=cur_tr){
+                $(this).parents("tr").css("display","none");
+            }else{
+                $(this).parents("tr").css("display","");
+            }
+        });
+        
+    });
+    /*$box.find("select[name='typeid']").change(function(){
+        var v=$(this).val();
+        selectedmodel = ftypelistjson[v];
+        if(selectedmodel){
+            $box.find("#orgcertifmas_edit tr.defaulttr").not(":first").remove();
+            $box.find("#orgcertifmas_edit tr.defaulttr input.checkByInput").attr("checkfor",selectedmodel);
+        }
+    });*/
+    
+    function countsubamounttitle(json,obj){
+        url="__URL__/lookupCountAmounttitle";
+        $.ajax({ url:url,data:{moduelname:selectedmodel,id:json.id},dataType:'json',type:'post',
+            success:function(data){
+                if(data){
+                    $box.find("#orgcertifmas_edit_t input.fsubnum").each(function(){
+                        var v=$(this).val();
+                        if(v==cur_tr){
+                            $(this).parents("tr").remove();
+                        }
+                    });                 
+                    var t=$box.find("input[name='totalamount']").val();
+                    t=Number(t.replace(/,/g,""));
+                    var t2=0;
+                    var t_str="0";
+                    var t2_str="0";
+                    t_str+="+"+t;
+                    for(i=0;i<data.length;i++){
+                        var b=$box.find("#orgcertifmas_edit_t tbody tr:last");
+                        var a=$barfirsttr.clone(true);
+                        a.find(":input").each(function(index){
+                            var n=$(this).attr("name");
+                            if(n=="fsubnum"){
+                                $(this).val(counttr);
+                            }else if(n=="fsubamount"){
+                                $(this).val(FormatN(data[i]["totalamount"]));
+                                t_str+="+"+data[i]["totalamount"];
+                                t2_str+="+"+data[i]["totalamount"];
+                                //t = comboxMathematicalOperation(t+"+"+data[i]["totalamount"],6);
+                                //t2= comboxMathematicalOperation(t2+"+"+data[i]["totalamount"],6);
+                            }else if(n=="fsubnumshow"){
+                                $(this).val((i+1));
+                            }else if(n=="fsummarysub"){
+                                $(this).val(data[i]["accountname"]);
+                            }else if(n=="accountid"){
+                                $(this).val(data[i]["accountid"]);
+                            }else if(n=="unitname"){
+                                $(this).val(data[i]["unitname"]);
+                            }
+                            n=n+"arr["+countbartr+"]";
+                            $(this).attr("name",n);
+                        });
+                        countbartr++;
+                        a.insertAfter(b);
+                        $box.find("#orgcertifmas_edit_t input.fsubnum").each(function(){
+                            var v=$(this).val();
+                            if(v!=cur_tr){
+                                $(this).parents("tr").css("display","none");
+                            }else{
+                                $(this).parents("tr").css("display","");
+                            }
+                        });
+                    }
+                    t=comboxMathematicalOperation(t_str,6);
+                    t2=comboxMathematicalOperation(t2_str,6);
+                    $box.find("input[name='totalamount']").val(FormatN(t));
+                    $(obj).parents("tr").find("input.mastotalsubamount").val(FormatN(t2)); 
+                }
+            },
+            error:DWZ.ajaxError
+        });
+    }
+    
+    var depurl="__URL__/comboxGetUser";
+    choose_userbydeptid(depurl,"navTab"); 
+    function ischeck_edit(ob,obj,object){
+        $isadvance=$('#'+ob).val();
+        if($isadvance=='0'){
+            $('#'+obj).attr({"disabled":true});
+            $('#'+object).attr({"disabled":true});
+            $('#'+obj).css({"backgroundColor":"#F6F6F6"});
+            $('#'+object).css({"backgroundColor":"#F6F6F6"});
+        }else{
+            $('#'+obj).attr({"disabled":false});
+            $('#'+object).attr({"disabled":false});
+            $('#'+obj).css({"backgroundColor":"#ffffff"});
+            $('#'+object).css({"backgroundColor":"#ffffff"});
+        }
+    }
+    $(function(){
+         $isadvance='{$vo.isadvance}';
+         if($isadvance=='0'){
+            $('#advanceunit_input_edit').attr({"disabled":true});
+            $('#advance_input_edit').attr({"disabled":true});
+            $('#advanceunit_input_edit').css({"backgroundColor":"#F6F6F6"});
+            $('#advance_input_edit').css({"backgroundColor":"#F6F6F6"});
+        }else{
+            $('#advanceunit_input_edit').attr({"disabled":false});
+            $('#advance_input_edit').attr({"disabled":false});
+            $('#advanceunit_input_edit').css({"backgroundColor":"#ffffff"});
+            $('#advance_input_edit').css({"backgroundColor":"#ffffff"});
+        }
+        $isbalance='{$vo.isbalance}';
+        if($isadvance=='0'){
+            $('#balanceid_input_edit').attr({"disabled":true});
+            $('#balamount_input_edit').attr({"disabled":true});
+            $('#balanceid_input_edit').css({"backgroundColor":"#F6F6F6"});
+            $('#balamount_input_edit').css({"backgroundColor":"#F6F6F6"});
+        }else{
+            $('#balanceid_input_edit').attr({"disabled":false});
+            $('#balamount_input_edit').attr({"disabled":false});
+            $('#balanceid_input_edit').css({"backgroundColor":"#ffffff"});
+            $('#balamount_input_edit').css({"backgroundColor":"#ffffff"});
+        }
+    });
+</script>
+<include file="Public:pagerForm" />
+<div class="page">
+    <div class="pageContent">
+        <form method="post" action="__URL__/update/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,navTabAjaxDone);">
+            <div class="pageFormContent" layoutH="56">
+                <div class="keepContentCenter {$auditImgClass}">
+                    <H2 class="contentTitle contentTitle_center">支出证明{:W('ShowAdvices',array('id'=>$vo['id']))}
+                    	{:W('ShowOrderno',array(0,'mis_finance_orgcertif_mas',$vo['orderno']))}
+                    </H2>
+                    <fieldset>
+                        <legend class="fieldset_legend_toggle">
+                            <b>基本信息1</b>
+                        </legend> 
+                        <p>
+                            <label>{$fields["projectid"]}:</label>
+                            <input type="text" checkfor="MisSalesProject" value="{$vo['projectid']|getFieldby='id','name','mis_sales_project'}" class="checkByInput" insert="id" show="name" readonly="readonly" value="">
+                            <input type="hidden" readonly="readonly"  name="projectid" value="{$vo['projectid']}">
+                        </p>
+                        
+                        <p>
+                            <label>制单人：</label>
+                            <input type="text" value="{$vo['deptid']|getFieldBy='id','name','MisSystemDepartment'}" size="12" insert="id" show="name" readonly="readonly">
+                            <input type="hidden" readonly="readonly"  name="deptid" value="{$vo['deptid']}">
+                            <!-- <select class="combox dep_obj" name="deptid" >
+                                <option value="">请选择部门</option>
+                                <volist id="vod" name="deplist">
+                                    <option value="{$key}" <if condition="($key eq $vo['deptid'])">selected</if>>{$vod}</option>
+                                </volist>
+                            </select> -->
+                            <input type="text" value="{$vo['userid']|getFieldBy='id','name','User'}" size="8" insert="id" show="name" readonly="readonly">
+                            <input type="hidden" readonly="readonly"  name="userid" value="{$vo['userid']}">
+                            <!-- <select class="combox user_obj required" name="userid" >
+                                <option value="">请选择专家</option>
+                                <volist id="vou" name="useridlist">
+                                    <option value="{$key}" <if condition="($key eq $vo['userid'])">selected</if>>{$vou}</option>
+                                </volist>
+                            </select> -->           
+                            
+                        </p>
+                        
+                        <p>
+                            <label>{$fields["handledate"]}:</label>
+                            <input type="text"  class="" readonly="readonly"  name="handledate" value="{$vo['handledate']|transTime}">
+                        </p>
+                        <p>
+                            <label>{$fields["bankname"]}:</label>
+                            <input type="text" value="{$vo['bankname']}" readonly="readonly">
+                            <!-- <select name="bankname" class="combox required">
+                                <option value="" >--请选择开户行--</option>
+                                <volist name="bktype" id="bk">
+                                    <option value="{$bk}" <eq name="vo.bankname" value="$bk">selected</eq>>{$bk}</option>
+                                </volist>
+                            </select> -->
+                        </p>
+                        <p>
+                            <label>供应商编号</label>
+                            <input type="text" name="suppliercode" readonly="readonly" class=" textInput" value="{$vo['supplierid']|getFieldBy='id','code','MisPurchaseSupplier'}" >
+                        </p>
+                        <p>
+                            <label>供应商名称</label>
+                            <input type="text" name="suppliername" readonly="readonly" class=" textInput" value="{$vo['supplierid']|getFieldBy='id','name','MisPurchaseSupplier'}" >
+                        </p>
+                        <p>
+                            <label>{$fields["bankaccount"]}:</label>
+                            
+                            <input type="text" readonly="readonly" class="creditcard" name="bankaccount" value="{$vo['bankaccount']}">
+                        </p>
+                        
+                        <p>
+                            <label>{$fields["typeid"]}:</label>
+                            <input name="typeid" value="{$vo.typeid}" type="hidden" />
+                            <input type="text" value="{$vo.typeid|getFieldBy='id','name','mis_finance_order_types'}" readonly="readonly">
+                            <!-- <select class="combox required" disabled="disabled">
+                                <option value="" >--请选择类型--</option>
+                                <volist name="ftypelist" id="voftype">
+                                    <option value="{$key}" <eq name="vo.typeid" value="$key">selected</eq> >{$voftype}</option>
+                                </volist>
+                            </select> -->
+                        </p>
+                  </fieldset>   
+                        <!-- 4-27加的 -->
+                 <fieldset>
+                        <legend class="fieldset_legend_toggle">
+                            <b>基本信息2</b>
+                        </legend>
+                        <p>
+                            <label>是否预付款:</label>
+                            <select name="isadvance"   id="isadvance_edit" onchange="ischeck_edit('isadvance_edit','advanceunit_input_edit','advance_input_edit')">
+                                <option value="1" <if condition="$vo.isadvance eq 1 ">selected="selected"</if> >是</option>
+                                <option value="0" <if condition="$vo.isadvance eq 0 ">selected="selected"</if>  >否</option>
+                            </select>
+                        </p>
+                        <p>
+                            <label>是否冲账:</label>
+                            <select name="isbalance" id="isbalance_edit" onchange="ischeck_edit('isbalance_edit','balanceid_input_edit','balamount_input_edit')">
+                                <option value="1" <if condition="$vo.isbalance eq 1">selected="selected"</if> >是</option>
+                                <option value="0" <if condition="$vo.isbalance eq 0">selected="selected"</if> >否</option>
+                            </select>
+                        </p>
+                        <p>
+                            <label>预付款单位：</label>
+                            <input type="text" readonly="readonly" class="" id='advanceunit_input_edit' name="advanceunit" value="{$vo['advanceunit']}">
+                        </p>
+                         <p>
+                            <label>冲账人：</label>
+                            <input type="text" readonly="readonly" checkfor="user" id="balanceid_input_edit"  class="checkByInput textInput valid focus" insert="id" show="name" value="{$vo['balanceid']|getFieldby='id','name','User'}" >
+                            <input name="balanceid"    type="hidden" value="{$vo['balanceid']}" />
+                      
+                        </p>
+                        <p>
+                            <label>预付款金额:</label>
+                            <input type="text" readonly="readonly" onblur="FormatNumber(this);"  id='advance_input_edit' name="advance" value="{$vo['advance']|getDigits}">
+                        </p>
+                        <p>
+                            <label>冲账金额:</label>
+                            <input type="text" readonly="readonly" onblur="FormatNumber(this);" id="balamount_input_edit" name="balamount" value="{$vo['balamount']|getDigits}">
+                        </p>
+                        <p>
+                            <label>{$fields["totalamount"]}:</label>
+                            <input  type="text" required="required" name="totalamount" readonly="readonly" value="{$totalamout}">
+                        </p>
+                        
+                    </fieldset>
+                    <fieldset>
+                        <legend class="fieldset_legend_toggle">
+                            <b>发票信息</b>
+                        </legend>
+                        <p>
+                            <label>开票单位:</label>
+                            <input type="text" readonly="readonly" class="" name="openticketunit" value="{$vo['openticketunit']}">
+                        </p>
+                        <p>
+                            <label>发票内容：</label>
+                            <input type="text" readonly="readonly" class="" name="invocontent" value="{$vo['invocontent']}">
+                        </p>
+                        <p>
+                            <label>发票张数:</label>
+                            <input type="text" readonly="readonly"  onblur="FormatNumber(this);" name="attachmentsum" value="{$vo['attachmentsum']|getDigits}">
+                        </p>
+                        <p>
+                            <label>发票金额：</label>
+                            <input type="text" readonly="readonly"  onblur="FormatNumber(this);" name="invoamount" value="{$vo['invoamount']|getDigits}">
+                        </p>
+                    </fieldset>
+                    <fieldset>
+                        <legend class="fieldset_legend_toggle">
+                            <b>单据列表</b>
+                        </legend>
+                        <table cellspacing="0" id="orgcertifmas_edit"  width="100%" border="1"  bordercolor="#B8D0D6" style="border-collapse:collapse;margin:0 auto; text-align: center">               
+                            <thead>
+                                <tr>
+                                    <th><strong class="auto_w_h_text">{$fields["fnum"]}</strong></th>
+                                    <th><strong class="auto_w_h_text">对应类型-单号</strong></th>
+                                     
+                                    <th><strong class="auto_w_h_text">{$fields["totalamount"]}</strong></th>
+                                    <th width="28"></th>
+                                </tr>
+    
+                            </thead>
+                            <tbody>
+                                <tr class="defaulttr" style="display:none;">
+                                    <td class="auto_w_h"><input type="text" readonly="readonly" class="fnum" name="fnum"/></td>
+                                    
+                                    <td class="auto_w_h">
+                                        <input class="checkByInput" readonly="readonly" name="ordermasorderno" type="text" checkfor="" insert="id" show="orderno" callback="countsubamounttitle" />
+                                        <input name="ordermasid" type="hidden" />
+                                    </td>
+                                     
+                                    <td class="auto_w_h"><input type="text" readonly="readonly" class="mastotalsubamount" value="" name="mastotalsubamount"/></td>
+                                    
+                                    <td><a href="javascript:;" class="btnDel"><strong>移除</strong></a></td>
+                                </tr>
+                                
+                                <volist id="mas" name="maslist" key="keymas">
+                                <tr class="defaulttr"> 
+                                    <td class="auto_w_h">
+                                        <input type="hidden" value="{$mas.id}" readonly="readonly" name="subidarr[{$keymas-1}]"/>
+                                        <input type="text" value="{$keymas}" readonly="readonly" class="fnum" name="fnumarr[{$keymas-1}]"/>
+                                    </td>
+                                    <td class="auto_w_h">
+                                        <input value="{$mas['ordermasorderno']}" readonly="readonly" type="text" />
+                                        <input name="ordermasidarr[{$keymas-1}]" value="{$mas['ordermasid']}" type="hidden" />
+                                    </td>
+                                    <td class="auto_w_h">
+                                        <input type="text" class="mastotalsubamount" readonly="readonly" name="mastotalsubamountarr[{$keymas-1}]" value="{$totalamout|getDigits}" /></td>
+                                    <td></td>
+                                </tr>
+                                </volist>
+                                
+                            </tbody>
+                        </table>
+                        
+                    </fieldset>
+                    
+                    <fieldset>
+                        <legend class="fieldset_legend_toggle">
+                            <b>单据支出明细</b>
+                        </legend>
+                         <table cellspacing="0" id="orgcertifmas_edit_t"  width="100%" border="1"  bordercolor="#B8D0D6" style="border-collapse:collapse;margin:0 auto; text-align: center">
+                            <thead>
+                                <tr>
+                                    <th><strong class="auto_w_h_text">分号</strong></th>
+                                    <th><strong class="auto_w_h_text">单位名称</strong></th>
+                                    <th><strong class="auto_w_h_text">摘要</strong></th>
+                                    <th><strong class="auto_w_h_text">金额</strong></th>
+                                    <th width="28"><a style="display:none;" href="javascript:;" class="btnAdd" title=""></a></th>
+                                </tr>
+    
+                            </thead>
+                            <tbody>
+                                <tr class="defaulttr" style="display:none;">
+                                    <td class="auto_w_h">
+                                        <input type="hidden" readonly="readonly" name="supplierid"/>
+                                        <input type="hidden" readonly="readonly"  class="fsubnum" name="fsubnum"/>
+                                        <input type="text" readonly="readonly" name="fsubnumshow"/>
+                                    </td>
+                                    <td class="auto_w_h">
+                                        <input type="text" readonly="readonly" name="unitname"/>
+                                    </td>
+                                    <td class="auto_w_h">
+                                        <input type="hidden" name="accountid"/>
+                                        <input type="text" readonly="readonly" name="fsummarysub"/>
+                                    </td>
+                                    <td class="auto_w_h"><input type="text" readonly="readonly" name="fsubamount[]" /><a href="javascript:;" class="btnDel" style="display:none;"></a></td>
+                                    <td></td>
+                                </tr>
+                                <!-- <?php dump($maslist);?> -->
+                                
+                                <volist id="masa" name="maslist" key="key2">
+                                    <volist id="sublistinfo" name="masa.sublist">
+                                        <tr class="defaulttr">
+                                            <td class="auto_w_h">
+                                                <input type="hidden" value="{$sublistinfo.id}" readonly="readonly" name="masidarr[{$key}]"/>
+                                                <input type="hidden" readonly="readonly" class="fsubnum" name="fsubnumarr[{$key}]" value="{$key2}"  />
+                                                <input type="text" readonly="readonly" name="fsubnumshowarr[{$key}]" value="{$sublistinfo['keynum']}" />
+                                            </td>
+                                            <td class="auto_w_h">
+                                                <input type="text" readonly="readonly" value="{$sublistinfo['unitname']}" name="unitnamearr[{$key}]"/>
+                                            </td>
+                                            <td class="auto_w_h">
+                                                <input type="hidden" name="accountid"/>
+                                                <input type="text" readonly="readonly" value="{$sublistinfo['summary']}" name="fsummaryarr[{$key}]" />
+                                            </td>
+                                            <td class="auto_w_h">
+                                                <input type="text" readonly="readonly"  value="{$sublistinfo['totalamount']}" name="fsubamountarr[{$key}]"  />
+                                                <a href="javascript:;" class="btnDel" style="display:none;"></a></td>
+                                            <td></td>
+                                        </tr>
+                                    </volist>
+                                </volist>
+                            </tbody>
+                        </table>
+                       
+                    </fieldset> 
+                </div>
+               
+            </div>
+            <div class="formBar">
+                <ul>
+                    <if condition="$_SESSION.a eq 1 or $_SESSION.misfinanceorgcertifmas_startprocess">   
+                    <if condition="$vo.auditState elt 0">
+                    <li><div class="buttonActive"><div class="buttonContent"><button type="button" onclick="StartProcess(this.form,'__MODULE__');">{$Think.lang.startprocess}</button></div></div></li>
+                    </if>
+                </if>
+                    <li><div class="button"><div class="buttonContent"><button type="button" class="close">{$Think.lang.close}</button></div></div></li>
+                </ul>
+            </div>
+    </form>
+    </div>
+</div>

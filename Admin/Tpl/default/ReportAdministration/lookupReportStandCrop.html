@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>现存量查询</title>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/jqGrid/themes/redmond/jquery-ui-1.8.2.custom.css" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/jqGrid/css/ui.jqgrid.css" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/jqGrid/css/redmond/jquery-ui-1.8.2.custom.css" />
+<script src="__PUBLIC__/Js/jquery-1.7.1.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Js/jquery.textSearch-1.0.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Js/jqGrid/js/i18n/grid.locale-en.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Js/jqGrid/js/jquery.jqGrid.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Js/report_forms.js" type="text/javascript"></script>
+<script>
+$(function(){
+	var h = $(window).height()-200;
+	$("#jsonmaplookupreportstandcrop").jqGrid({
+		url:"__URL__/lookupReportStandCrop{$suburl}",
+		mtype: "POST",
+		postData:{listtype:1},
+		datatype: "json",
+		colNames:{$colNames},
+		colModel: [
+		    {name:'standid',index:'standid',align:'center',hidden:true,
+                cellattr: function(rowId, tv, rawObject, cm, rdata) {
+                    return "id='standid" + rowId + "'";
+                }
+            },
+            {name:'standwarehouseno',index:'standwarehouseno',align:'center' ,
+                cellattr: function(rowId, tv, rawObject, cm, rdata) {
+                    return "id='standwarehouseno" + rowId + "'";
+                }		
+            },
+            {name:'standwarehousename',index:'standwarehousename',align:'center',  
+                cellattr: function(rowId, tv, rawObject, cm, rdata) {
+                    return "id='standwarehousename" + rowId + "'";
+                }		
+            },
+            {name:'standprono',index:'standprono',align:'center',
+                cellattr: function(rowId, tv, rawObject, cm, rdata) {
+                    return "id='standprono" + rowId + "'";
+                }		
+            },
+            {name:'standproname',index:'standproname',align:'center',
+                cellattr: function(rowId, tv, rawObject, cm, rdata) {
+                    return "id='standproname" + rowId + "'";
+                }		
+            },
+            {name:'standprodsize',index:'standprodsize',align:'center',
+                cellattr: function(rowId, tv, rawObject, cm, rdata) {
+                    return "id='standprodsize" + rowId + "'";
+                }		
+            },
+            {name:'standtypecode',index:'standtypecode',align:'center',
+                cellattr: function(rowId, tv, rawObject, cm, rdata) {
+                    return "id='standtypecode" + rowId + "'";
+                }		
+            },
+            {name:'standtypename',index:'standtypename',align:'center',
+                cellattr: function(rowId, tv, rawObject, cm, rdata) {
+                    return "id='standtypename" + rowId + "'";
+                }		
+            },
+            {name:'standunitid',index:'standunitid',align:'center',
+                cellattr: function(rowId, tv, rawObject, cm, rdata) {
+                    return "id='standunitid" + rowId + "'";
+                }		
+            },
+		{name:'standqty',index:'standqty',align:'center', sortable:false},
+		{name:'standqtycount',index:'standqtycount',align:'standqtycount'},
+		{name:'standintoqtycount',index:'standintoqtycount',align:'center',sortable:false},
+		{name:'standoutoqtycount',index:'standoutoqtycount',align:'center', sortable:false},
+		{name:'standallqtycount',index:'standallqtycount',align:'center', sortable:false}
+		],
+		rowNum:50,
+		scroll:true,
+		pager: '#pjmaplookupreportstandcrop',
+		sortname: 'standid',
+		//autowidth: true,
+		viewrecords: true,
+		sortorder: "asc",
+		altRows : true,
+		rownumbers: true,
+		height: h,
+		gridComplete: function() {
+            var gridName = "jsonmaplookupreportstandcrop";
+            //cellColor(gridName, 'standid');
+            //Merger(gridName, 'standwarehouseno','standprono');
+            //Merger(gridName, 'standprono','standprono');
+            //Merger(gridName, 'standprodsize','standprono');
+            //Merger(gridName, 'standproname','standprono');
+            //Merger(gridName, 'standtypecode','standprono');
+            //Merger(gridName, 'standtypename','standprono');
+            //Merger(gridName, 'standunitid','standprono');
+            //Merger(gridName, 'standwarehousename','standprono');
+		}
+	});
+});
+</script>
+</head>
+<body style="font-size:12px;">
+<div class="pageContent" layoutH="0">
+    <div style=" width:95%; margin:0 auto; overflow:hidden;">
+		<button type="button" onclick="lookupfunc_exportExcel('__APP__','jsonmaplookupreportstandcrop','{$reporttype}',1,'{$suburl}')">导出EXCEL</button>
+        <button type="button" onclick="lookupfunc_exportExcel('__APP__','jsonmaplookupreportstandcrop','{$reporttype}',2,'{$suburl}')">导出PDF</button>
+	</div>
+	<div class="clear"></div>
+	<br/>
+    <div style=" width:95%; margin:0 auto;">
+        <table id="jsonmaplookupreportstandcrop"></table>
+        <div id="pjmaplookupreportstandcrop"></div>
+    </div>
+</div>
+</body>
+</html>

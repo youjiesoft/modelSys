@@ -1,0 +1,70 @@
+<div class="page">
+	<div class="pageContent">
+	<form method="post" action="__URL__/update/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+		<input type="hidden" name="user_id" value="<?php echo $_SESSION[C('USER_AUTH_KEY')] ?>">
+		<input type="hidden" name="id" value="{$vo.id}" >
+		<input type="hidden" name="ajax" value="1">
+		<div class="pageFormContent" layoutH="58">
+			<div class="unit">
+				<label>{$fields["crfrom"]}：</label>
+				<select name="crfrom" class="combox">
+	                <option selected value="">&mdash;&mdash;选择&mdash;&mdash;</option>
+	                 <volist id="vlist" name="vlist">
+	                 <if condition="$vo.crfrom eq $vlist1['id']">
+	                 <option value="{$vlist['id']}" selected="selected">{$vlist['code']}{$vlist['name']}</option>
+	                <else />
+	                  <option value="{$vlist['id']}">{$vlist['code']}{$vlist['name']}</option>
+	                     </if>
+	                 </volist>
+                  </select>
+			</div>
+			<div class="unit">
+				<label>{$fields["crto"]}：</label>
+				<select name="crto" class="combox">
+                <option selected value="">&mdash;&mdash;选择&mdash;&mdash;</option>
+                 <volist id="vlist1" name="vlist1">
+                 <if condition="$vo.crto eq $vlist1['id']">
+                 <option value="{$vlist1['id']}" selected="selected">{$vlist1['code']}{$vlist1['name']}</option>
+                <else />
+                  <option value="{$vlist1['id']}">{$vlist1['code']}{$vlist1['name']}</option>
+                    </if>
+                 </volist>
+                 </select>
+			</div>
+
+
+			<div class="unit">
+				<label>{$fields["ecrate"]}：</label>
+				<input type="text" name="ecrate" value="{$vo.ecrate}" class="required number" maxlength="10" />
+			</div>
+		    <div class="unit">
+				<label>{$fields["calmothod"]}：</label>
+				<select name="calmothod" class="combox">
+						<option value="1" <if condition='$vo[calmothod] eq 1' >selected</if> >原币*汇率=本位币</option>
+						<option value="2" <if condition='$vo[calmothod] eq 2' >selected</if> >原币/汇率=本位币</option>
+				</select>
+			</div>
+			<div class="unit" style="width:500px;">
+				<label>{$fields["convdate"]}：</label>
+                <input type="text"  name="convdate" onfocus="WdatePicker()" class="tml-border-r0 Wdate required" value="{$vo.convdate|transTime}" />
+                <span class="input-addon input-addon-calendar"></span>
+			</div>
+			<div class="unit" style="width:500px;">
+				<label>{$fields["remark"]}：</label>
+				<textarea  name="remark" maxlength="100" cols="40" rows="2">{$vo.remark}</textarea>
+			</div>
+
+		</div>
+		<div class="formBar">
+			<ul>
+			<if condition="$_SESSION.a eq 1 or $_SESSION.misfinancerate_update">
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">{$Think.lang.save}</button></div></div></li>
+			</if>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">{$Think.lang.close}</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+
+	</div>
+</div>
+

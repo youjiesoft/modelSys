@@ -1,0 +1,36 @@
+<style>
+.tml-form-row label.tmp_label {
+	margin-left:0px;
+	width: 120px;
+	float: none;
+	font: 14px/30px "Microsoft Yahei", "微软雅黑", sans-serif;
+}
+.tml-form-row label.tmp_label:hover {
+	color:#006699;
+}
+</style>
+<div class="page">
+  <div class="pageContent">
+    <form method="post" action="__URL__/insert/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+      <input type="hidden" name="callbackType" value="closeCurrent" />
+      {:W('HiddenInput')}
+      <div class="pageFormContent applecloth anchorsToolBarParent" layoutH="40">
+        <div class="keepContentCenter form-affix-content">
+          <div class="contentTitle contentTitle_center form-affix-title">项目模板添加</div>
+          <div class="tml-row"> 
+            <!-- text组件 start -->
+            <div class="tml-form-col ">
+              <label>{$fields["name"]}:</label>
+              <input type="text"  name="name" class="required textInput enterIndex" value="">
+            </div>
+            <div class="tml-form-col ">
+              <label>{$fields["remark"]}:</label>
+              <input type="text" name="remark" class="  ">
+            </div>
+            <!-- text组件 end --></div>
+          <!-- 组件遍历完成 --> 
+          {:W('ShowAction')} </div>
+      </div>
+    </form>
+  </div>
+</div>

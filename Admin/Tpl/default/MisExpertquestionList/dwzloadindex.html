@@ -1,0 +1,111 @@
+<script>
+//首页页面的    关闭问题
+function CloseQuestionAdd($this){
+	var $parent = $($this).closest(".xyqa-main-item");
+    var value = $parent.find('.closeTo');
+   
+    if(value.is(":hidden")){
+    	value.show();
+    	$($this).text('取消关闭');
+    }else{
+    	value.hide();
+    	$($this).text('关闭问题');
+    }
+}
+//首页页面的    提交关闭问题表单
+function CloseQuestionCallback($form){
+	var $box = $($form);
+	var textarea = $box.find("textarea").val();
+	if(textarea.length < 1){
+		//$box.find("textarea").after("<span style='color:red'>请您输入文字内容</span>"); refresh
+		alertMsg.error("<span style='color:red'>请您输入文字内容</span>");
+		return false;
+	}
+	return validateCallback($form,navTabAjaxDone);
+}
+</script>
+<volist id="vo" name="list">
+<div class="xyqa-main-item">
+	<h2>
+		<span class="xyqa-favoriting" style="color:skyblue;" title="删除">
+			<input type="checkbox" name="id" value="{$vo['id']}" />
+		</span>
+		<span class="xyqa-title"><a href="__URL__/view/id/{$vo['id']}" target="navTab" title="{$vo['title']}" rel="__MODULE__look">{$vo['title']}</a></span>
+	</h2>
+	<div class="xyqa-view clearfix">
+		<div class="xyqa-voting">
+			<div>
+				<if condition="$vo.picture">
+					<img src="__PUBLIC__/Uploads/{$vo.picture}" style="width: 59px;height:59px;"/>
+				<else/>
+					<img src="__PUBLIC__/Images/xyimages/xyheader_image.jpg" alt="暂无图片" style="width: 59px;height:59px;"/>
+				</if>
+			</div>
+		</div>
+		<div class="xyqa-view-main" >
+			<if condition="$vo['expertid']"><div class="xyqa-view-content" style="text-indent: 2em;Line-height:20px;"><b>{$vo['expert']}&nbsp;&nbsp; 专家&nbsp;&nbsp;解答</b></div></if>
+			<div class="xyqa-view-content" style="text-indent: 2em;Line-height:20px;">{$vo['content']}</div>
+			
+			<if condition="$vo['closedbyid']">
+					<div class="qa-q-view-closed">
+						<font style="color:red;">关闭说明：&nbsp;&nbsp;</font>
+						<span class="qa-q-view-closed-content">
+							{$vo['closedbycontent']}
+						</span>
+					</div>
+					</if>
+			<div class="clearfix">
+				<div class="xyqa-q-view-buttons" >
+					<if condition="$vo['closedbyid']">
+						<if condition="$_SESSION.a eq 1 or ($_SESSION.misexpertquestionlist_showquestion  and $_SESSION.authId eq $vo['createid']) || ($_SESSION.misexpertquestionlist_showquestion)">
+							<input type="submit" onmouseout="this.className='qa-form-light-button qa-form-light-button-reshow';" onmouseover="this.className='qa-form-light-hover qa-form-light-hover-reshow';" class="qa-form-light-button qa-form-light-button-reshow" title="" value="显示" name="q_doreshow"  onclick="return parent.questionshow('{$vo['id']}');">
+						</if>
+					<else />
+					<if condition="$_SESSION.a eq 1 || ($_SESSION.misexpertquestionlist_edit and $_SESSION.authId eq $vo['createid']) || ($_SESSION.misexpertquestionlist_edit)">
+						<a class="xyqa-form-light-button xyqa-form-light-button-edit" target="dialog" rel="__MODULE__edit" title="编辑" width="670" height="580" mask="true" href="__URL__/edit/id/{$vo['id']}">编辑</a></if>
+					<if condition="$_SESSION.a eq 1 || ($_SESSION.misexpertquestionlist_closequestion and $_SESSION.authId eq $vo['createid']) || ($_SESSION.misexpertquestionlist_closequestion)">
+					&nbsp;&nbsp;
+					<a class="xyqa-form-light-button xyqa-form-light-button-close" onclick="CloseQuestionAdd(this);" style="line-height:24px;"><span>关闭问题</span></a>
+					<!-- <input type="submit" onmouseout="this.className='xyqa-form-light-button xyqa-form-light-button-close';" onmouseover="this.className='xyqa-form-light-hover xyqa-form-light-hover-close';" class="xyqa-form-light-button xyqa-form-light-button-close" title="关闭问题，不接受任何回答" value="关闭"  onclick="return parent.questionclose('{$vo['id']}');">-->
+					</if> 
+					<if condition="$_SESSION.a eq 1 or $_SESSION.misexpertquestionlist_reply">
+					&nbsp;&nbsp;
+					<a class="" href="__URL__/view/id/{$vo['id']}" target="navTab" title="{$vo['title']}" rel="__MODULE__look">
+						<span class="xyqa-form-light-button" >回答({$vo['count']})</span>
+					</a>
+					</if>
+					
+					</if>
+					&nbsp;<input type="hidden" value="" name="qa_click">
+				</div>
+				<span class="xyqa-q-view-avatar-meta">
+					<span class="xyqa-q-view-meta">
+						<span class="xyqa-q-view-what">发布时间:</span>
+						<span class="xyqa-q-view-when">
+							<span class="xyqa-q-view-when-data">
+								<span class="xypublished">{$vo['createtime']|timeDiff=###}</span>
+							</span>
+						</span>&nbsp;&nbsp;
+						<span class="xyqa-q-view-where">
+							<span class="xyqa-q-view-where-pad">分类:</span>
+							<span class="xyqa-q-view-where-data">
+								<a class="xyqa-category-link proRel qa-nav-cat-link" href="javascript:" style="cursor:pointer;" onclick="return parent.questionalink('{$vo['categoryid']}','所有问题');">{$vo['typename']}</a>
+							</span>
+						</span>&nbsp;&nbsp;
+						<span class="xyqa-q-view-who">
+							<span class="xyqa-q-view-who-pad">作者:</span>
+							<span class="xyqa-q-view-who-data">
+								<a class="xyqa-user-link" href="javascript:" style="cursor:pointer;" onclick="return parent.expertquestionlistuser('{$vo['createid']}','所有问题');">{$vo['name']}</a>
+							</span>
+						</span>
+					</span>
+				</span>
+				<br/>
+				<div style="display:none;" class="closeTo left">
+					<include file="closequestion"/>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</volist>

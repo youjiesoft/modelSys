@@ -1,0 +1,173 @@
+<script>
+	$(function(){
+		navTab.getCurrentPanel().find('.additem').additem();
+	});
+</script>
+<div class="edit-form MisPurchaseSupplierTextInput">
+	<div>
+		<div class="clearfix xyTab">
+			<div class="xyTabHeaderRe">
+				<ul class="xyTabHeaderUl clearfix">
+					<li class="xyTabList xyTabListCu">
+						<a href="#0" onclick="xy.changeTab(this,event)">基本信息</a> 
+					</li>
+					<li class="xyTabList">
+						<a href="#1" onclick="xy.changeTab(this,event)">客户资料</a>
+					</li>
+					<li class="xyTabList">
+						<a href="#2" onclick="xy.changeTab(this,event);loadUrlTo_rel('linkUserindex','__URL__/lookupLinkTel/id/{$vosoft.id}');">联系人信息</a>
+					</li>
+					<li class="xyTabList">
+						<a href="#3" onclick="xy.changeTab(this,event);loadUrlTo_rel('linkstatusindex','__URL__/lookupBusiness/id/{$vosoft.id}');">经营状况</a>
+					</li>
+					<li class="xyTabList">
+						<a href="#4" onclick="xy.changeTab(this,event);loadUrlTo_rel('linkTrack','__URL__/lookupTrack/category/1/id/{$vosoft.id}');">企业服务跟踪</a>
+					</li>
+				</ul>
+			</div>
+			<form method="post" action="__APP__/MisSalesCustomer/update/rel/misSalesCustomerTreeBox" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+				<div>
+				<input type="hidden" name="refreshtabs[byid]" value="1">
+				<input type="hidden" name="deptindex" value="1">
+				<input type="hidden" name="id" value="{$vosoft.id}">
+				<!-- 基本信息 -->
+				<div <if condition='$vosoft["lossstatus"] eq 2'> class="xyTabContent xyTabContentCu" <else /> class="xyTabContent xyTabContentCu" </if> >
+					<div style="height: 188px; overflow: auto; position: relative;">
+						<if condition='$vosoft["lossstatus"] eq 2'>
+							<div class="stamp-brain-drain"></div>
+						</if>
+						<div class="tml-row pt5">
+							<div class="tml-form-col">
+								<label> {$fields["code"]}： </label>
+								<input type="text" name="code" readonly="readonly" <if condition="$vosoft.id">value="{$vosoft['code']}" <else /> <if condition='$writable eq 0'> readonly="readonly"</if> value="{$code}"</if> />
+							</div>
+							<div class="tml-form-col">
+								<label>企业名称：</label>
+								<input type="text" name="enterprisename" value="{$vosoft.enterprisename}"/>
+							</div>
+							<div class="tml-form-col">
+								<label>注册时间：</label>
+								<div class="tml-input-append">
+									<input type="text" name="registertime" class="Wdate js-wdate" value="{$vosoft.registertime|transtime}"/>
+									<a href="javascript:;" class="input-addon input-addon-calendar js-inputCheckDate">选择</a>
+								</div>
+							</div>
+							<div class="tml-form-col">
+								<label>注册金额：</label>
+								<div class="tml-input-append">
+									<input class="number TextMagnifier-money textInput valid" type="text" onblur="FormatNumber(this);" name="registermoney" value="{$vosoft.registermoney|getDigits}">
+									<span class="input-addon-unit" title="元">元</span>
+								</div>
+							</div>
+							<div class="tml-form-col">
+								<label>企业职工数：</label>
+								<input type="text" name="staffnum" value="{$vosoft.staffnum}"/>
+							</div>
+							<if condition='$fields["intype"]'>
+								<div class="tml-form-col">
+									<label> {$fields["intype"]}： </label>
+									<div class="tml-input-append">
+									<select name="intype" class="combox additem" aurls="__URL__/lookupAddSelectValue/model/MisSalesCustomerIndustry" atitle="行业新增" laywidth="700" layheight="200">
+									{:getDataBaseByHtml('mis_sales_customer_industry',array('selected'=>$vosoft['intype']))}
+									</select>
+									</div>
+								</div>
+							</if>
+							<div class="tml-form-col">
+								<label title="企业产品/企业服务">企业产品/企业服务：</label>
+								<input type="text"  name="enterprisemessage" value="{$vosoft['enterprisemessage']}" />
+							</div>
+							<if condition='$fields["typeid"]'>
+								<div class="tml-form-col">
+									<label> {$fields["typeid"]}： </label>
+									<div class="tml-input-append">
+										<select name="typeid" class="combox additem" onchange="onChangeCode(this);" aurls="__APP__/MisSalesCustomertype/lookupAddSelectValue/model/MisSalesCustomertype" atitle="快捷添加{$fields["typeid"]}" laywidth="700" layheight="200">
+											{:getDataBaseByHtml('mis_sales_customertype',array('selected'=>$vosoft['typeid']))}
+										</select>
+									</div>
+								</div>
+							</if>
+							<div class="tml-form-col">
+								<label>所属区县：</label>
+								<input type="text" name="county" value="{$vosoft.county}"/>
+							</div>
+							<div class="tml-form-col">
+								<label>企业地址：</label>
+								<input type="text" name="enterpriseaddress" value="{$vosoft.enterpriseaddress}"/>
+							</div>
+							<div class="tml-form-col">
+								<label>客户来源：</label>
+								<input type="text" name="clientsource" value="{$vosoft.clientsource}"/>
+							</div>
+							<if condition='$vosoft["lossstatus"] eq 2'>
+								<if condition='$fields["lossstatus"]'>
+									<div class="tml-form-col">
+										<label> {$fields["lossstatus"]}： </label><!-- 客户状态 -->
+										<select name="lossstatus" class="combox">
+											{:getSelectByHtml('customervitalityid','select',$vosoft['lossstatus'])}
+										</select>
+									</div>
+								</if>
+							</if>
+							<if condition='$vosoft["lossstatus"] eq 2'>
+								<if condition='$fields["losscause"]'>
+								<div class="tml-form-col">
+									<label> {$fields["losscause"]}： </label>
+									<input name="losscause" type="text" value="{$vosoft['losscause']}">
+								</div>
+								</if>
+							</if>
+						</div>
+					</div>
+					<div class="formBar">
+						<ul>
+							<li>
+								<button class="tml-btn tml-btn-primary" type="submit">{$Think.lang.save}</button>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="xyTabContent">
+					<div style="height: 188px; overflow: auto; position: relative;">
+						<div class="tml-form-row">
+							<label>上传附件：</label>
+							<input id="swfupload_missalecustomer_lookupedit" type="file" uploader="true" auto="true" name="MisSalesCustomerfile" formData="{ uploadpath:'MisSalesCustomer' }" />
+						</div>
+						<!--此处为上传列表-->
+						<div class="tml-form-row">
+							<label>&nbsp;</label>
+							<span id="swfupload_missalecustomer_lookupedit-queue" class="info uploadify_queue">
+								<if condition="$attarry">
+								<volist name="attarry" id="att">
+									<div class="uploadify-queue-item">
+										<div class="cancel">
+											<a class="dellink" href="__URL__/lookupdelatt/id/{$att['id']}" rel="{$att['id']}" target="ajaxTodo" callback="mis_swf_upload_del" callbackdata="swfupload_missalecustomer_lookupedit-queue">X</a>
+										</div>
+										<span class="fileName">
+											<a href="__PUBLIC__/Uploads/{$att.attached}" target="_blank">{$att['upname']}</a>
+										</span>
+										<span class="data"> - 已经传</span>
+										<div class="uploadify-progress">
+											<div class="uploadify-progress-bar" style="width: 100%;"></div>
+										</div>
+									</div>
+								</volist>
+								</if>
+							</span>
+						</div>
+					</div>
+					<div class="formBar">
+						<ul>
+							<li>
+								<button class="tml-btn tml-btn-primary" type="submit">{$Think.lang.save}</button>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="xyTabContent" id="linkUserindex"></div>
+		<div class="xyTabContent" id="linkstatusindex"></div>
+		<div class="xyTabContent" id="linkTrack"></div>
+	</div>
+</div>

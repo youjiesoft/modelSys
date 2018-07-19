@@ -1,0 +1,71 @@
+<script type="text/javascript">
+	//检查用户的选择分类层级
+/*  function comfirtypee(obj){
+		var va = $(obj).val();
+		//选择的子级
+		if(va == 1){
+			$("#hiddee").show();
+			alertMsg.confirm("将一个父级修改为子级,那么它将丢失它的所有子级!", {
+				okCall: function(){
+			
+				}
+			});
+		}
+		if(va == 0){
+			$("#hiddee").hide();
+		}
+	} */ 
+</script>
+<include file="Public:pagerForm" />
+	<div class="page">
+		<div class="pageContent">
+			<form method="post" <if condition="!$top">action="__URL__/update/rel/misexpertquestiontype"<else/>action="__URL__/update/navTabId/__MODULE__"</if> class="pageForm required-validate" onsubmit="return validateCallback(this,dialogAjaxDone);">
+				<input type="hidden" name="id" value="{$vo['id']}" />
+				<div class="pageFormContent" layoutH="58">
+                    <div class="tml-row">
+                        <div class="tml-form-col">
+                            <label>编&nbsp;&nbsp;&nbsp;&nbsp;码：</label><input  type="text" name="code" class="required"  value="{$vo.code}" <if condition='$writable eq 0'> readonly="readonly" </if> value="{$code}">
+                        </div>
+                        <div class="tml-form-col">
+                            <label>名&nbsp;&nbsp;&nbsp;&nbsp;称：</label><input type="text" name="name" class="required" value="{$vo.name}">
+                        </div>
+                    </div>
+					 <div class="tml-row">
+					  <if condition="!$top">
+	                        <div class="tml-form-col" id="sel">
+	                            <label>所属父类：</label>
+	                            <select  name="pid" class="combox" >
+	                            		<volist name="toptypelist" id="topl">
+	                                   	 	<option value="{$topl['id']}" <if condition="$topl['id'] eq $vo['pid']">selected="selected"</if> >{$topl['name']}</option>
+	                                    </volist>
+	                            </select>
+	                        </div>
+	                  </if>
+                     <if condition="$top">
+	                        <div class="tml-form-col" id="sel">
+	                           <label>分类等级：</label><input type="text" name="" class="required readonly" value="父级">
+	                        </div>
+                      </if>
+                      <!--   <if condition="$top">
+	                     	<div class="tml-form-col" id="hiddee" style="display:none;">
+	                            <label>选择父类：</label>
+	                            <select  name="pids" class="combox">
+	                                    <volist name="toptypelist" id="vax">
+	                                		<option value="{$vax['id']}">{$vax['name']}</option>
+	                          			</volist>
+	                            </select>
+	                        </div>
+                        </if> -->
+                    </div>
+				</div>
+				{:W('ShowAction',array('data'=>$vo))}
+				<!-- <div class="formBar tml-text-c">
+					<if condition="$_SESSION.a eq 1 or $_SESSION.misknowledgetype_update">
+						<button class="tml-btn tml-btn-blue tml-mr10" type="submit">{$Think.lang.save}</button>
+					</if>
+						<button type="button" class="tml-btn tml-btn-white close">{$Think.lang.close}</button>
+				</div> -->
+			</form>
+		</div>
+	</div>
+</div>

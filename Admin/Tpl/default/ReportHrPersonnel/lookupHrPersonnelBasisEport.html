@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>人事基本信息报表</title>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/jqGrid/themes/redmond/jquery-ui-1.8.2.custom.css" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/jqGrid/css/ui.jqgrid.css" />
+<link rel="stylesheet" type="text/css" 	href="__PUBLIC__/Js/jqGrid/css/redmond/jquery-ui-1.8.2.custom.css" />
+<script src="__PUBLIC__/Js/jquery-1.7.1.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Js/jquery.textSearch-1.0.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Js/jqGrid/js/i18n/grid.locale-en.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Js/jqGrid/js/jquery.jqGrid.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Js/report_forms.js" type="text/javascript"></script>
+<script>
+$(function(){
+	var h = $(window).height()-200;
+	$("#jsonlookuphrPersonnelBasisEport").jqGrid({
+		url:"__URL__/lookuphrPersonnelBasisEport{$suburl}",
+		mtype: "POST",
+		postData:{listtype:1},
+		datatype: "json",
+		colNames:{$colNames},
+		colModel:[
+		          //45个字段
+		          {name:'id',index:'id',align:'center',hidden:true,
+		      		cellattr: function(rowId, tv, rawObject, cm, rdata) {
+		              	return "id='id" + rowId + "'";
+		         	 }},
+		       	{name:'orderno',index:'orderno',align:'center'},
+		       	{name:'sex',index:'sex',align:'center'},
+		       	{name:'workkind',index:'workkind',align:'center'},
+		       	{name:'itemid',index:'itemid',align:'center'},
+		       	{name:'name',index:'name',align:'center'},
+		       	{name:'deptid',index:'deptid',align:'center'},
+		       	{name:'dutyname',index:'dutyname',align:'center'},
+		       	{name:'dutylevelid',index:'dutylevelid',align:'center'},
+		       	{name:'indate',index:'indate',align:'center'},
+		       	{name:'transferprobationdate',index:'transferprobationdate',align:'center'},
+		       	{name:'transferdate',index:'transferdate',align:'center'},
+		       	{name:'positivestatus',index:'positivestatus',align:'center'},
+		       	{name:'leavedate',index:'leavedate',align:'center'},
+		       	{name:'staffcheck',index:'staffcheck',align:'center'},
+		       	{name:'working',index:'working',align:'center'},
+		       	{name:'school',index:'school',align:'center'},
+		       	{name:'chinaid',index:'chinaid',align:'center'},
+		       	{name:'phone',index:'phone',align:'center'},
+		       	{name:'mis_hr_personnel_education_info_school',index:'mis_hr_personnel_education_info_school',align:'center'},
+		       	{name:'mis_hr_personnel_education_info_skillAndCertificate',index:'mis_hr_personnel_education_info_skillAndCertificate',align:'center'},
+		       	{name:'mis_hr_personnel_education_info_startDate',index:'mis_hr_personnel_education_info_startDate',align:'center'},
+		       	{name:'mis_hr_personnel_education_info_finishDate',index:'mis_hr_personnel_education_info_finishDate',align:'center'},
+		       	{name:'mis_hr_personnel_experience_info_company',index:'mis_hr_personnel_experience_info_company',align:'center'},
+		       	{name:'mis_hr_personnel_experience_info_positio n',index:'mis_hr_personnel_experience_info_position',align:'center'},
+		       	{name:'mis_hr_personnel_experience_info_telephone',index:'mis_hr_personnel_experience_info_telephone',align:'center'},
+		       	{name:'mis_hr_personnel_experience_info_startdate',index:'mis_hr_personnel_experience_info_startdate',align:'center'},
+		       	{name:'mis_hr_personnel_experience_info_finishdate',index:'mis_hr_personnel_experience_info_finishdate',align:'center'},
+		       	{name:'mis_hr_personnel_family_info_relation',index:'mis_hr_personnel_family_info_relation',align:'center'},
+		       	{name:'mis_hr_personnel_family_info_name',index:'mis_hr_personnel_family_info_name',align:'center'},
+		       	{name:'mis_hr_personnel_family_info_company',index:'mis_hr_personnel_family_info_company',align:'center'},
+		       	{name:'mis_hr_personnel_family_info_telephone',index:'mis_hr_personnel_family_info_telephone',align:'center'},
+		       	{name:'mis_hr_personnel_introducer_info_name',index:'mis_hr_personnel_introducer_info_name',align:'center'},
+		       	{name:'mis_hr_personnel_introducer_info_relation',index:'leavemis_hr_personnel_introducer_info_relationstatus',align:'center'},
+		       	{name:'mis_hr_personnel_introducer_info_telephone',index:'mis_hr_personnel_introducer_info_telephone',align:'center',hidden:true},
+		       	{name:'mis_hr_personnel_project_records_projectid',index:'mis_hr_personnel_project_records_projectid',align:'center'},
+		       	{name:'mis_hr_personnel_project_records_projectname',index:'mis_hr_personnel_project_records_projectname',align:'center'},
+		       	{name:'mis_hr_personnel_project_records_pjposition',index:'mis_hr_personnel_project_records_pjposition',align:'center'},
+		       	{name:'mis_hr_personnel_project_records_begindate',index:'mis_hr_personnel_project_records_begindate',align:'center'},
+		       	{name:'mis_hr_personnel_project_records_enddate',index:'mis_hr_personnel_project_records_enddate',align:'center'},
+		       	{name:'mis_hr_personnel_project_records_iscondition',index:'mis_hr_personnel_project_records_iscondition',align:'center'},
+		       	{name:'mis_hr_personnel_project_records_remark',index:'mis_hr_personnel_project_records_remark',align:'center'},
+		       	{name:'mis_hr_personnel_person_contract_agencyperson',index:'mis_hr_personnel_person_contract_agencyperson',align:'center'},
+		       	{name:'mis_hr_personnel_person_contract_signdate',index:'mis_hr_personnel_person_contract_signdate',align:'center'},
+		       	{name:'mis_hr_personnel_person_contract_enddate',index:'mis_hr_personnel_person_contract_enddate',align:'center'},
+		       	{name:'mis_hr_personnel_person_contract_remark',index:'mis_hr_personnel_person_contract_remark',align:'center'}
+		         	 
+		         	          ],
+	 	rowNum:20,
+       	scroll:true,
+       	pager: '#pjmaplookuphrPersonnelBasisEport',
+    	sortname: 'id',
+        viewrecords: true,
+        sortorder: "asc",
+        altRows : true,
+        rownumbers: true,
+        height: h,
+        gridComplete: function() {
+       	   var gridName = "jsonlookuphrPersonnelBasisEport";
+       	      Merger(gridName, 'name','perid');
+       	   	  Merger(gridName, 'deptname','perid');
+       	      Merger(gridName, 'dutyname','perid');
+       	      Merger(gridName, 'indate','perid');
+               }
+	});
+});
+
+</script>
+</head>
+<body style="font-size: 12px;">
+	<div class="pageContent" layoutH="0">
+		<div style="width: 95%; margin: 0 auto; overflow: hidden;">
+			<button type="button"
+				onclick="lookupfunc_exportExcel('__APP__','jsonlookuphrPersonnelBasisEport','{$reporttype}',1,'{$suburl}')">导出EXCEL</button>
+		</div>
+		<div class="clear"></div>
+		<br />
+		<div style="width: 95%; margin: 0 auto;">
+			<table id="jsonlookuphrPersonnelBasisEport"></table>
+			<div id="pjmaplookuphrPersonnelBasisEport"></div>
+		</div>
+	</div>
+</body>
+</html>

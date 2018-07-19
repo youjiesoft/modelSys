@@ -1,0 +1,53 @@
+<div class="page">
+	<div class="pageContent">
+			<div class="pageFormContent applecloth" layoutH="56">
+			<div class="keepContentCenter {$auditImgClass}">
+				<H2 class="contentTitle contentTitle_center">采购申请单详情
+					<span class="auto_code">
+                        <b>No. </b>
+						<!--可以输入的就去掉两个readonly 同时改xycodedata_read为xycodedata_write-->
+						<input type="text" name="orderno" value="{$vo.orderno}" <if condition='$writable eq 0'> readonly="readonly" class="xycodedata_read" <else/> class="xycodedata_write required alphanumeric" </if> />
+                    </span>
+				</H2>
+				<fieldset>
+					<legend class="fieldset_legend_toggle">
+						<b>基本信息</b>
+					</legend>
+					<p>
+						<label>订单类型：</label>
+						<input type="text"  readonly="readonly"  value="{$vo.typeid|getfieldby='id','name','mis_order_types'}" />
+					</p>
+					<p>
+						<label>需求日期：</label>
+						<input type="text" readonly="readonly" value="{$vo.dmdate|transTime}" />
+					</p>
+					<p>
+						<label>税金组：</label>
+						<input type="text" value="{$vo.taxid|getFieldBy='id','name','MisTaxGroup'}" readonly="readonly"/>
+					</p>
+					<p>
+						<label>是否含税：</label>
+						<input type="text" <if condition="$vo.istax eq 1">value="是"<else/> value="否"</if> readonly="readonly"/>
+					</p>
+					<p>
+						<label>未税总价：</label>
+						<input type="text" value="{$vo.ioamount}" readonly="readonly"/>
+					</p>
+					<p>
+						<label>含税总价：</label>
+						<input type="text" value="{$vo.oamount}" readonly="readonly"/>
+					</p>
+					<p>
+						<label>申请理由：</label>
+						<input type="text" value="{$vo.apreason}" readonly="readonly"/>
+					</p>
+				</fieldset>
+				</div>
+			</div>
+			<div class="formBar">
+				<ul>
+					<li><div class="button"><div class="buttonContent"><button type="button" class="close">{$Think.lang.close}</button></div></div></li>
+				</ul>
+			</div>
+	</div>
+</div>

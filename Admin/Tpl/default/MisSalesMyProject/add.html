@@ -1,0 +1,409 @@
+<script>
+    /**
+     * 商机所属人的ajax
+     */
+    function sjGetUser(json){
+        $.ajax({
+            type: "post",
+            url: "__URL__/lookupuserajax",
+            dataType: "json",
+            data:{userid:json.userid},
+            global:false,
+            success: function (data) {
+                $('#sjuserid').val(data);
+            }
+        });
+    }
+    var varbox = navTab.getCurrentPanel();
+    $(function(){
+        varbox.find(".js-missalesmyproject select").each(function(){
+            var selval=$(this).attr("name");
+            if(selval=="typeid"||selval=="zt"||selval=="hy"||selval=="cyl"){
+                $(this).on("change",function(){
+                    var zdval = varbox.find("input[name='zddeptid']").val();
+                    var typeid = $("select[name='typeid']",varbox).val();
+                    var zt = $("select[name='zt']",varbox).val();
+                    var hy = $("select[name='hy']",varbox).val();
+                    var cyl = $("select[name='cyl']",varbox).val();
+                    $.ajax({
+                        type: "post",
+                        url: "__URL__/lookupshowproline",
+                        dataType: "json",
+                        data:{chanpinxian:typeid,zhuti:zt,xingye:hy,chanyelian:cyl,zd:zdval},
+                        success: function (data) {
+                            if(isNullorEmpty(data.name)){
+                                var html ='';
+                                html +=' <div class="fieldset_show_box field_fieldset18">';
+                                html +=' <legend class="fieldset_legend_toggle side-catalog-text side-catalog-firstanchor">';
+                                html +=' <a name="MisAutoGmc_add_MisAutoGmc_fieldset18"></a><b>'+data['name']+'</b>';
+                                html +=' <div class="tml_style_line tml_sl4 tml_slb_blue"></div>';
+                                html +=' </legend>';
+                                html +=' </div>';
+                                var required="";
+                                if(data.volist){
+                                    $.each(data.volist,function(i,v){
+                                        if(v){
+                                            html += '<div class="fieldsetjs_show_box">';
+                                            $.each(v , function( key , val ){
+                                                if(val.id == 0){
+                                                    html += '<div class="col_1_1 form_group_lay ">';
+                                                    html += '<label class="label_new">'+val['name']+':</label>';
+                                                    html += '<input type="text" class="input_new textInput '+val['org']+'.deptname"  value="'+val.deptjinlichain+'">';
+                                                    html += '</div>';
+                                                }else{
+                                                    required = "";
+                                                    if(v.shifubixu=='是'){
+                                                        required="required";
+                                                    }
+                                                    html += '<div class="col_1_1 form_group_lay ">';
+                                                    html += '<label class="label_new">'+val['name']+':</label>';
+                                                    html += '<div class="tml-input-lookup">';
+                                                    //不变变量
+                                                    html += '<input type="hidden" name="prolineorderno[]" value="'+val.orderno+'">';
+                                                    html += '<input type="hidden" name="shifuzidongfenpei[]" value="'+val.shifuzidongfenpei+'">';
+                                                    html += '<input type="hidden" name="suoshujiaose[]" value="'+val.suoshujiaose+'">';
+
+                                                    html += '<input type="hidden" name="field[]" value="'+val.duiyingxiangmuziduan+'">';
+                                                    html += '<input type="hidden" name="leibie[]" value="'+val.leibie+'">';
+
+                                                    html += '<input type="hidden" name="jianyirenyuan[]"   value="'+val.zhixingren+'">';
+
+                                                    html += '<input type="hidden" class="'+val['org']+'.deptid" name="deptment[]" value="'+val.deptid+'">';
+                                                    html += '<input type="text" readonly="readonly" name="temp['+val.id+']" class=" '+required+' '+val['org']+'.username input_new half_angle_input" value="'+val.deptjinlichain+'"/>';
+                                                    html += '<input type="hidden" class="'+val['org']+'.userid" name="deptjinli[]" value="'+val.deptjinli+'"/>';
+
+                                                    html += '<a class="icon_elm mid_icon_elm icon-plus checkUser" href="javascript:;" data="'+val['org']+';username,username;userid,userid;deptid,deptid;deptname,deptname"></a>';
+                                                    html += '<a title="清空信息" class="icon_elm icon-trash"  href="javascript:void(0);" onclick="clearOrg(\''+val['org']+'\');"></a>';
+                                                    html += '</div>';
+                                                    html += '</div>';
+                                                }
+                                            });
+                                            html +='<div class="clear"></div>';
+                                            html +='</div>';
+                                        }
+                                    })
+                                }
+                                var ht = $(html).initUI();
+                                $("div.addshowproline").html(ht);
+                            }else{
+                                $("div.addshowproline").html('');
+                            }
+
+                        }
+                    });
+                })
+            }
+        })
+    })
+    $(".js-missalesmyproject select[name='typeid']",varbox).change();
+
+    function getProjectName(){
+        var typeName=$("#myprojecttypeid option:selected").text();
+        var customername=$('input[name="customername"]',varbox).val();
+        if(typeName && customername){
+            $('input[name="name"]',varbox).val(customername+'('+typeName+')');
+        }
+    }
+    $("#abcde").change(function(){
+        getProjectXiangguanxiangmuID();
+    });
+    function getProjectXiangguanxiangmuID(){
+        var zijibianhao = $('input[name="ordernoid"]').val();
+        var a = "lookupchoice=55bda6ac65efc0b86c96335d6525caff&conditions=_string,kehumingchen in('"+zijibianhao+"'";
+        $.ajax({
+            url:"__URL__/lookupkufubianhaos",
+            data:{'kufubianhao':zijibianhao},
+            type:'post',
+            dataType:'json',
+            async:true,
+            success:function(data){
+                var paramArr = new Array();
+                for(var i in data){
+                    paramArr.push(data[i]['kehubianma']);
+                }
+                a += paramArr.length ? "#'"+paramArr.join("'#'")+"'" :'';
+                a += ");";
+                $('.getparam').attr('param',a);
+            }
+        });
+		/* $.post("__URL__/lookupkufubianhaos", {'kufubianhao':zijibianhao},
+		 function(data){
+		 data = $.parseJSON(data);
+		 var paramArr = new Array();
+		 for(var i in data){
+		 paramArr.push(data[i]['kehubianma']);
+		 }
+		 a = paramArr.join(',');
+		 }); */
+
+    }
+</script>
+<div class="page">
+	<div class="pageContent">
+		<form method="post" <if condition="$rel eq 'MisSalesProjectRel'">action="__URL__/insert/navTabId/__MODULE__"<else/> action="__URL__/insert/rel/{$rel}"</if> class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+		<input type="hidden" name="callbackType" value="closeCurrent" />
+		<input type="hidden" name="bid" value="{$vo['bid']}" />
+		<input type="hidden" name="operateid" value="1" />
+		{:W('HiddenInput')}
+		<div class="pageFormContent applecloth anchorsToolBarParent" layoutH="40">
+			<div class="new_version_page js-missalesmyproject">
+				<div class="new_version_page_header pageFormContent ">
+					项目基本信息
+				</div>
+				<div class="new_version_page_content">
+					{:W('ShowOrderno',array(4,'mis_auto_kimpu',$vo['orderno'],array('contentcls'=>'col_1_3 form_group_lay field_orderno', 'inputcls'=>'class="input_new " ','title'=>$fields["orderno"])))}
+					<!-- lookup组件 start -->
+					<div class="col_1_3 form_group_lay field_customerid ">
+						<label class="label_new">{$fields["customerid"]}:</label>
+						<input class="orgDBC1859.orderno  orgDBC18591.kehumingchen" callback="lookup_counter_check" lpkey="3fb030ff85b3af6d0008c264caacf3df" lpfor="orgDBC1859.kehumingchen" lpself="orderno" lporder="kehumingchen"  type="hidden" name="ordernoid" value="" />
+						<div class="tml-input-lookup">
+							<input id="abcde"  callback="lookup_counter_check" lpkey="3fb030ff85b3af6d0008c264caacf3df" lpfor="orgDBC1859.orderno" lpself="kehumingchen" lporder="kehumingchen" type="text"   onchange="getProjectName()" class="orgDBC1859.kehumingchen  input_new half_angle_input required" name="customername" autocomplete="off" readonly="readonly"  value="{$vo['customerid']|getFieldBy='orderno','kehumingchen','mis_auto_banmo'}" />
+							<input type="hidden" lpkey2="abcde" callback="lookup_counter_check" lpkey="3fb030ff85b3af6d0008c264caacf3df" lpfor="orgDBC1859.kehumingchen" lpself="orderno" lporder="kehumingchen"  class="orgDBC1859.orderno orgDBC18591.kehumingchen" name="customerid" value="{$vo['customerid']}"  />
+							<a class="icon_elm mid_icon_elm icon-plus"
+							   name="kefuname"
+							   param="lookupchoice=3fb030ff85b3af6d0008c264caacf3df&conditions=;"
+							   href="__URL__/lookupGenerals"
+							   lookupGroup="orgDBC1859"
+							></a>
+							<!-- condition={"ud":"dushidushidushidushi","id":"dushidushidushidushi"}
+                            newconditions="ud in('') and id=''"  -->
+							<a title="清空信息" class="icon_elm icon-trash"  href="javascript:void(0);" onclick="clearOrg('orgDBC1859');"></a>
+						</div>
+					</div>
+					<!-- lookup组件 end -->
+					<!-- select组件 start -->
+					<div class="col_1_3 form_group_lay ">
+						<label class="label_new">{$fields["typeid"]}:</label>
+						<select id="myprojecttypeid" name="typeid"  onchange="getProjectName()" class="select2 select_elm required">
+							<option value="">--请选择--</option>
+							<volist name="typelist" id="tylst">
+								<option <if condition="$vo['intentiontypesid'] eq $tylst['orderno']">checked="checked"</if> value="{$tylst['orderno']}">{$tylst['name']}</option>
+							</volist>
+						</select>
+					</div>
+					<!-- select组件 start -->
+					<div class="col_1_3 form_group_lay">
+						<label class="label_new">{$fields["name"]}:</label>
+						<input type="text"  name="name" class="input_new required " value="{$vo.name}">
+					</div>
+					<div class="col_1_1 form_group_lay field_zt ">
+						<label class="label_new">{$fields["zt"]}:</label>
+						{:W('ShowSelect',array($vo['zt'],array('orgDBC1859.zhuti orgDBC18591.zhuti required',array('type'=>'table',array('readonly'=>'','targevent'=>'','actionName'=>'MisAutoEbm','names'=>'zt','defaultcheckitem'=>'','defaultval'=>'','defaulttext'=>'--请选择--','table'=>'mis_sale_client_type', 'id'=>'orderno','name'=>'name','conditions'=>'','parentid'=>'','mulit'=>'','isnextend'=>'','treeheight'=>'','treewidth'=>'','key'=>'','isedit'=>'1')))))}
+					</div>
+					<!-- select组件 end -->
+					<!-- select组件 start -->
+					<div class="col_1_1 form_group_lay field_hy combox_tree" >
+						<label class="label_new">{$fields["hy"]}:</label>
+						{:W('ShowSelect',array($vo['hy'],array('orgDBC1859.xifenpinlei orgDBC18591.xifenpinlei readonly required',array('type'=>'table',array('readonly'=>'1','targevent'=>'','actionName'=>'MisSalesMyProject','names'=>'hy','defaultcheckitem'=>'','defaultval'=>'','defaulttext'=>'--请选择--','table'=>'mis_sale_profession', 'id'=>'orderno','name'=>'name','conditions'=>'','parentid'=>'parentid','mulit'=>'0','isnextend'=>'1','treeheight'=>'','treewidth'=>'','key'=>'','isedit'=>'1','showtype'=>'0')))))}
+					</div>
+					<!-- select组件 end -->
+
+					<!-- select组件 start -->
+					<div class="col_1_1 form_group_lay field_cyl ">
+						<label class="label_new">{$fields["cyl"]}:</label>
+						{:W('ShowSelect',array($vo['cyl'],array('orgDBC1859.xingye orgDBC18591.xingye required',array('type'=>'table',array('readonly'=>'','targevent'=>'','actionName'=>'MisAutoEbm','names'=>'cyl','defaultcheckitem'=>'','defaultval'=>'','defaulttext'=>'--请选择--','table'=>'mis_sale_industry', 'id'=>'orderno','name'=>'name','conditions'=>'','parentid'=>'','mulit'=>'','isnextend'=>'','treeheight'=>'','treewidth'=>'','key'=>'','isedit'=>'1')))))}
+					</div>
+					<div class="col_1_1 form_group_lay field_kehuleixing" original="{$vo['kehuleixing']}" category="select" style="">
+						<label class="label_new">客户类型:</label>
+						{:W('ShowSelect',
+						array(
+						$vo['kehuleixing'],
+						array(
+						' required',
+						array(
+						'type'=>('KHLX'==''?'table':'selectlist'),
+						array(
+						'key'=>'KHLX',
+						'readonly'=>'1',
+						'targevent'=>'',
+						'actionName'=>'MisAutoPvb',
+						'names'=>'kehuleixing',
+						'defaultcheckitem'=>'',
+						'defaultval'=>'',
+						'defaulttext'=>'--请选择--',
+						'table'=>'',
+						'id'=>'',
+						'name'=>'' ,
+						'conditions'=>'',
+						'parentid'=>'',
+						'mulit'=>'',
+						'isnextend'=>'',
+						'treeheight'=>'',
+						'treewidth'=>'',
+						'isedit'=>'1',
+						'showtype'=>'',
+						'defaultcheckitem'=>''
+						)
+						)
+						)
+						)
+						)
+						}
+					</div>
+					<!-- select组件 end -->
+					<!-- select组件 start -->
+					<div class="col_1_1 form_group_lay field_zhutileixing combox_tree" >
+						<label class="label_new">{$fields["zhutileixing"]}:</label>
+						{:W('ShowSelect',array($vo['zhutileixing'],array('orgDBC1859.zhutileixing required',array('type'=>'table',array('readonly'=>'1','targevent'=>'','actionName'=>'MisSalesMyProject','names'=>'zhutileixing','defaultcheckitem'=>'','defaultval'=>'','defaulttext'=>'--请选择--','table'=>'mis_auto_xalsb', 'id'=>'orderno','name'=>'name','conditions'=>'','parentid'=>'parentid','mulit'=>'0','isnextend'=>'1','treeheight'=>'200','treewidth'=>'300','key'=>'','isedit'=>'1','showtype'=>'0')))))}
+					</div>
+					<div class="col_1_1 form_group_lay field_xiangmuleixing " >
+						<label class="label_new">{$fields["xiangmuleixing"]}:</label>
+
+						{:W('ShowSelect',array($vo['xiangmuleixing'],array(' required ',array('type'=>'table',array('readonly'=>'1','targevent'=>'','actionName'=>'MisSalesMyProject','names'=>'xiangmuleixing','defaultcheckitem'=>'','defaultval'=>'','defaulttext'=>'--请选择--','table'=>'mis_auto_ocqwl', 'id'=>'orderno','name'=>'name','conditions'=>'','parentid'=>'','mulit'=>'','isnextend'=>'','treeheight'=>'','treewidth'=>'','key'=>'','isedit'=>'1','showtype'=>'0')))))}
+					</div>
+					<!-- select组件 end -->
+					<div class="col_1_1 form_group_lay ">
+						<label class="label_new">{$fields["sjid"]}:</label>
+						<div class="tml-input-lookup">
+							<input type="text" name="sjid" callback="sjGetUser" readonly="readonly" class="input_new half_angle_input ORG1.orderno" autocomplete="on" value="{$vo['sjid']}">
+							<a class="icon_elm mid_icon_elm icon-plus" param="field=id,orderno,userid,clientname&model=MisSaleBusiness&newconditions=(status=('1') and businessstatus in ('1','2'))" href="__URL__/lookupGeneral" lookupGroup="ORG1" ></a>
+							<a title="清空信息" class="icon_elm icon-trash"  href="javascript:void(0);" onclick="clearOrg('ORG1');"></a>
+						</div>
+					</div>
+					<!-- text组件 start -->
+					<div class="col_1_1 form_group_lay ">
+						<label class="label_new">{$fields["sjuserid"]}:</label>
+						<!-- <input type="text" id="sjuserid"  readonly="readonly" class="input_new" value="{$vo['sjuserid']|getFieldBy='id','name','user'}">
+                        <input type="hidden"  class=" ORG1.userid" name="sjuserid" check_key="userid"  value="{$vo['sjuserid']}"> -->
+						<div class="tml-input-lookup">
+							<input  type="text" class="orgDBC18591.orderno   input_new half_angle_input " name="" autocomplete="off" readonly="readonly"  value="{$vo['sjuserid']}" />
+							<input type="hidden"   class="orgDBC18591.orderno " name="sjuserid" value="{$vo['sjuserid']}"  />
+							<a class="icon_elm mid_icon_elm icon-plus"
+							   name="kefuname"
+							   param="lookupchoice=ae10cef17fa18c33c4d7d4a710b53ab5&conditions=;"
+							   href="__URL__/lookupGenerals"
+							   lookupGroup="orgDBC18591"
+							></a>
+							<!-- condition={"ud":"dushidushidushidushi","id":"dushidushidushidushi"}
+                            newconditions="ud in('') and id=''"  -->
+							<a title="清空信息" class="icon_elm icon-trash"  href="javascript:void(0);" onclick="clearOrg('orgDBC1859');"></a>
+						</div>
+					</div>
+					<!-- text组件 end -->
+					<!-- text组件 start -->
+					<!-- <div class="col_1_3 form_group_lay ">
+                        <label class="label_new">{$fields["projectcode"]}:</label>
+                        <div class="tml-input-lookup">
+                            <input class="orgDBA16654.xiangmubianma   input_new half_angle_input   textInput enterIndex" readonly="readonly" autocomplete="off" value="" type="text">
+                            <input class="orgDBA16654.xiangmubianma " name="projectcode" value="" type="hidden">
+                            <a class="icon_elm mid_icon_elm icon-plus" syscondition="" newconditions="" condition="" param="lookupchoice=d61567d9afb0d5705dad47fa28d2b7c6&amp;newconditions=" href="__URL__/lookupGenerals" lookupgroup="orgDBA16654"></a>
+                            <a title="清空信息" class="icon_elm icon-trash" href="javascript:void(0);" onclick="clearOrg('orgDBA16654');"></a>
+                        </div>
+                    </div> -->
+					<div class="col_1_3 form_group_lay">
+						<label class="label_new">{$fields["canzhaoprojectcode"]}:</label>
+						<div class="tml-input-lookup">
+							<input class="orgDBA16655.xiangmubianma   input_new half_angle_input   textInput enterIndex"  readonly="readonly" autocomplete="off" value="" type="text">
+							<input class="orgDBA16655.xiangmubianma " name="canzhaoprojectcode" value="" type="hidden">
+							<a  class="icon_elm mid_icon_elm icon-plus getparam" syscondition="" newconditions="" condition="" param="lookupchoice=55bda6ac65efc0b86c96335d6525caff&conditions=_string,kehumingchen = -1" href="__URL__/lookupGenerals" lookupgroup="orgDBA16655"></a>
+							<a title="清空信息" class="icon_elm icon-trash" href="javascript:void(0);" onclick="clearOrg('orgDBA16655');"></a>
+						</div>
+					</div>
+					<!-- text组件 end -->
+
+					<!-- text组件 start -->
+					<div class="col_1_1 form_group_lay field_shenqingqixian " ><div class="tml-input-unit">
+						<label class="label_new">{$fields["shenqingqixian"]}:</label>
+						<input   type="text"  name="shenqingqixian" class="orgDBC18591.daikuanqixian input_new  half_angle_input input_new  required" value="{$vo['shenqingqixian']|unitExchange=###,month,month,2}"><span class="icon_elm icon_unit" title="个月">个月</span></div>
+					</div>
+					<!-- text组件 end -->
+					<!-- text组件 start -->
+					<div class="col_1_1 form_group_lay field_shenqingjine " ><div class="tml-input-unit">
+						<label class="label_new">{$fields["shenqingjine"]}:</label>
+						<input   type="text"  name="shenqingjine" class=" input_new  half_angle_input input_new orgDBC18591.shenqingdanbaoedu  required" value="{$vo['shenqingjine']|unitExchange=###,yuan,wan,2}"><span class="icon_elm icon_unit" title="万元">万元</span></div>
+					</div>
+					<!-- text组件 end -->
+					<!-- select组件 start -->
+					<div class="col_1_3 form_group_lay field_daikuanyongtu combox_tree" >
+						<label class="label_new">{$fields["daikuanyongtu"]}:</label>
+						{:W('ShowSelect',array($vo['daikuanyongtu'],array('readonly required orgDBC18591.daikuanyongtu',array('type'=>'table',array('readonly'=>'1','targevent'=>'','actionName'=>'MisSalesMyProject','names'=>'daikuanyongtu','defaultcheckitem'=>'','defaultval'=>'','defaulttext'=>'','table'=>'mis_auto_hgwtp', 'id'=>'orderno','name'=>'name','conditions'=>'','parentid'=>'parentid','mulit'=>'0','isnextend'=>'1','treeheight'=>'','treewidth'=>'','key'=>'','isedit'=>'1','showtype'=>'0')))))}
+					</div>
+					<!-- 下拉框组件 -->
+
+					<div class="col_1_2 form_group_lay field_fengxiandj" original="{$vo['fengxiandj']}" category="select" style="">
+						<label class="label_new">{$fields["fengxiandj"]}:</label>
+						{:W('ShowSelect',
+						array(
+
+						$vo['fengxiandj'],
+
+						array(
+
+						'required orgDBA16655.fengxiandengji',
+
+						array(
+
+						'type'=>(''==''?'table':'selectlist'),
+
+						array(
+
+						'key'=>'',
+
+						'readonly'=>'1',
+
+						'targevent'=>'',
+
+						'actionName'=>'MisAutoRcu',
+
+						'names'=>'fengxiandj',
+
+						'defaultcheckitem'=>'',
+
+						'defaultval'=>'',
+
+						'defaulttext'=>'',
+
+						'table'=>'mis_auto_dwodg',
+
+						'id'=>'orderno',
+
+						'name'=>'' ,
+
+						'conditions'=>'',
+
+						'parentid'=>'',
+
+						'mulit'=>'',
+
+						'isnextend'=>'',
+
+						'treeheight'=>'',
+
+						'treewidth'=>'',
+
+						'isedit'=>'1',
+
+						'showtype'=>'',
+
+						'defaultcheckitem'=>''
+
+						)
+
+						)
+
+						)
+
+						)
+
+						)
+						}
+					</div>
+					<!-- select组件 end -->
+					<!-- textarea组件 start -->
+					<div class="col_1_7 form_group_lay field_rongzifangan " >
+						<label class="label_new">{$fields["rongzifangan"]}:</label>
+						<textarea  cols="100" rows="4" class="  text_area" name="rongzifangan">{$vo['rongzifangan']}</textarea>
+					</div>
+					<div class="addshowproline">
+
+					</div>
+					<!-- textarea组件 end -->
+					<!-- 选人组件 end -->
+				</div>
+				<!-- 组件遍历完成 -->
+				{:W('ShowAction')}
+			</div>
+		</div>
+		</form>
+	</div>
+</div>

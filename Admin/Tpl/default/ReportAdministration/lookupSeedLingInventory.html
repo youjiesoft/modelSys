@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>苗木库存表</title>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/jqGrid/themes/redmond/jquery-ui-1.8.2.custom.css" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/jqGrid/css/ui.jqgrid.css" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/jqGrid/css/redmond/jquery-ui-1.8.2.custom.css" />
+<script src="__PUBLIC__/Js/jquery-1.7.1.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Js/jquery.textSearch-1.0.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Js/jqGrid/js/i18n/grid.locale-en.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Js/jqGrid/js/jquery.jqGrid.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Js/report_forms.js" type="text/javascript"></script>
+<script>
+$(function(){
+	var h = $(window).height()-200;
+	$("#jsonmaplookupseedlinginventory").jqGrid({
+		url:"__URL__/lookupSeedLingInventory{$suburl}",
+		mtype: "POST",
+		postData:{listtype:1},
+		datatype: "json",
+		colNames:{$colNames},
+		colModel: [
+			{ name: 'invid', index: 'invid', align: 'center',hidden:true,
+				cellattr: function(rowId, tv, rawObject, cm, rdata) {
+					return 'id=\'invid' + rowId + "\'";
+				}
+			},
+			{ name: 'invproductcode', index: 'invproductcode', align: 'center'},
+            { name: 'invproductname', index: 'invproductname', align: 'center'},
+			{ name: 'invprotypename', index: 'invprotypename', align: 'center'},
+            { name: 'invdbhheight', index: 'invdbhheight', align: 'center'},
+            { name: 'invheight', index: 'invheight', align: 'center'},
+            { name: 'invpoleheight', index: 'invpoleheight', align: 'center'},
+            { name: 'invcanopy', index: 'invcanopy', align: 'center'},
+			{ name: 'invprodindex', index: 'invprodindex', align: 'center'},
+			{ name: 'invqty', index: 'invqty',width: 80, align: 'center'},
+			{ name: 'invunit', index: 'invunit',width: 80, align: 'center'},
+            { name: 'invsamedbhheightqty', index: 'invsamedbhheightqty',width: 80, align: 'center',sortable:false,
+                cellattr: function(rowId, tv, rawObject, cm, rdata) {
+                    return 'id=\'invsamedbhheightqty' + rowId + "\'";
+                }
+            },
+			{ name: 'invsameqty', index: 'invsameqty',width: 80, align: 'center',sortable:false,
+                cellattr: function(rowId, tv, rawObject, cm, rdata) {
+                    return 'id=\'invsameqty' + rowId + "\'";
+                }
+            }
+		],
+		rowNum:50,
+		pager: '#pjmaplookupseedlinginventory',
+		sortname: 'invid',
+		//autowidth: true,
+		viewrecords: true,
+		sortorder: "asc",
+		scroll:true,
+		altRows : true,
+		rownumbers: true,
+		height: h,
+		gridComplete: function() {
+			var gridName = "jsonmaplookupseedlinginventory";
+			//作色
+			//cellColor(gridName, 'invid');
+            Merger(gridName, 'invsamedbhheightqty','invdbhheight');
+			Merger(gridName, 'invsameqty','invproductname');
+		}
+	});
+});
+</script>
+</head>
+<body style="font-size:12px;">
+<div class="pageContent" layoutH="0">
+    <div style=" width:95%; margin:0 auto; overflow:hidden;">
+		<button type="button" onclick="lookupfunc_exportExcel('__APP__','jsonmaplookupseedlinginventory','{$reporttype}',1,'{$suburl}')">导出EXCEL</button>
+        <button type="button" onclick="lookupfunc_exportExcel('__APP__','jsonmaplookupseedlinginventory','{$reporttype}',2,'{$suburl}')">导出PDF</button>
+	</div>
+	<div class="clear"></div>
+	<br/>
+    <div style=" width:95%; margin:0 auto;">
+        <table id="jsonmaplookupseedlinginventory"></table>
+        <div id="pjmaplookupseedlinginventory"></div>
+    </div>
+</div>
+</body>
+</html>

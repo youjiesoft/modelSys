@@ -1,0 +1,64 @@
+<div class="page">
+	<div class="pageContent">
+		<div class="pageFormContent" layoutH="55">
+			<fieldset class="{$invoicelist['financestatus']|excelTplselected ='0: ,1:has-received,2:has-destroyed'}" style="padding-left:20px;border: 1px solid #CCCCCC;">
+				<legend class="fieldset_legend_toggle">
+					<b>{$makeinvoicetype}&nbsp;({$invoicelist['financestatus']|excelTplselected ='0:未收款,1:已收款,2:已作废'})</b>
+				</legend>
+				<p>
+					<span class="fontGray">名称：{$invoicelist['customername']}</span>
+				</p>
+				<if condition="$invoicelist.objmodelname eq 'MisBusinessContractCivilianBlasting' || $invoicelist.objmodelname eq 'MisBusinessReceiptNote'">
+					<p>
+						<span class="fontGray">二级单位：{$invoicelist['subunit']}</span>
+					</p>
+				</if>
+				<p>
+					<span class="fontGray">金额(￥)：{$invoicelist['amount']|getDigits}</span>
+				</p>
+				<if condition="$invoicelist.type eq 2">
+					<p>
+						<span class="fontGray">纳税人识别号：{$invoicelist['taxno']}</span>
+					</p>
+					<p>
+						<span class="fontGray">地址：{$invoicelist['address']}</span>
+					</p>
+					<p>
+						<span class="fontGray">电话：{$invoicelist['tel']}</span>
+					</p>
+					<p>
+						<span class="fontGray">开户行：{$invoicelist['bankname']}</span>
+					</p>
+					<p>
+						<span class="fontGray">账号：{$invoicelist['bankaccount']}</span>
+					</p>
+				</if>
+				<p>
+					<span class="fontGray">所属部门：{:getSelectByName('customertype',$invoicelist['depttype'])}</span>
+				</p>
+				<p>
+					<span class="fontGray">开票时间：{$invoicelist['createtime']|transTime}</span>
+				</p>
+				<if condition="$invoicelist['effectdate']">
+					<p>
+						<span class="fontGray">合同开始时间：{$invoicelist['effectdate']|transTime}</span>
+					</p>
+					<p>
+						<span class="fontGray">合同结束时间：{$invoicelist['expirydate']|transTime}</span>
+					</p>
+					<p>
+						<span class="fontGray">当前开票时间段：{$invoicelist['invoicebegintime']|transTime}~{$invoicelist['invoiceendtime']|transTime}</span>
+					</p>
+					<p>
+						<span class="fontGray">开票剩余次数：{$invoicelist['surinvoicenum']}</span>
+					</p>
+				</if>
+				</fieldset>
+			</div>
+			<div class="formBar">
+                <ul>
+                    <li><div class="button"><div class="buttonContent"><button type="button" class="close">{$Think.lang.close}</button></div></div></li>
+                </ul>
+            </div>
+	</div>
+</div>

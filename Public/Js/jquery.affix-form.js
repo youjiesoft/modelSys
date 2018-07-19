@@ -1,0 +1,1 @@
+!function(f){f.fn.affixFormTitle=function(){return this.each(function(){function a(){var f=n.scrollTop();f>=15?s.hasClass("affix")||(s.addClass("affix"),i.addClass("affix")):(s.removeClass("affix"),i.removeClass("affix"))}var i=f(this),s=i.find(".form-affix-title"),n=i.closest(".pageFormContent");n.on("scroll",function(){a()})})}}(jQuery);

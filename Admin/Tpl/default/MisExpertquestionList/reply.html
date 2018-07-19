@@ -1,0 +1,16 @@
+<form method="post" action="__URL__/insert/navTabId/MisExpertquestionListlook" class="pageForm required-validate" onsubmit="return CloseQuestionCallbacklook(this);">
+	<input type="hidden" name="iseditor" value="1">
+	<input type="hidden" name="type" value="A">
+	<input type="hidden" name="parentid" value="{$vo['id']}">
+	<div class="pageFormContent">
+		<div class="unit">
+			<b>回复内容</b>
+			<textarea class="editor" name="content" tools="simple" style="width:423px;height:160px" ></textarea>
+		</div>
+		<div class="unit ">
+			<if condition="$_SESSION.a eq 1 or $_SESSION.misexpertquestionlist_insert">
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">提交回答</button></div></div></li>
+			</if>
+		</div>
+	</div>
+</form>

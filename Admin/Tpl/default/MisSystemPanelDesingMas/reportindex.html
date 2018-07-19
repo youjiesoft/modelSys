@@ -1,0 +1,81 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+	<script type="text/javascript" src="jquery.min.js">  </script>
+	<!--<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/1.6.4/jquery.min.js">  </script>-->
+	<script type="text/javascript">
+        function cjkEncode(text) {
+            if (text == null) {
+                return "";
+            }
+            var newText = "";
+            for (var i = 0; i < text.length; i++) {
+                var code = text.charCodeAt (i);
+                if (code >= 128 || code == 91 || code == 93) {
+                    newText += "[" + code.toString(16) + "]";
+                } else {
+                    newText += text.charAt(i);
+                }
+            }
+            return newText;
+        }
+        function loginFR() {
+            var username =cjkEncode(document.getElementById("username").value);
+            var password =cjkEncode(document.getElementById("password").value);
+            var f = document.getElementById("loginForm");
+            jQuery.ajax({
+                url:"http://192.168.10.42:37799/WebReport/ReportServer?op=fs_load&cmd=logino",//µ¥µãµÇÂ¼µÄ±¨±í·þÎñÆ÷
+                dataType:"jsonp",//¿çÓò²ÉÓÃjsonp·½Ê½
+                data:{"fr_username":username,"fr_password":password},
+                jsonp:"callback",
+                timeout:10000,//³¬Ê±Ê±¼ä£¨µ¥Î»£ººÁÃë£©
+                success:function(data) {
+                    if (data.status === "success") {
+                        alert("success");
+                        window.location.href="http://192.168.10.42:37799/WebReport/ReportServer?op=fs";
+                        //µÇÂ¼³É¹¦
+                    } else if (data.status === "fail"){
+                        alert("登陆失败");           //µÇÂ¼Ê§°Ü£¨ÓÃ»§Ãû»òÃÜÂë´íÎó£©
+                    }
+                },
+                error:function(){
+                    alert("链接超时");// µÇÂ¼Ê§°Ü£¨³¬Ê±»ò·þÎñÆ÷ÆäËû´íÎó£©
+                }
+            });
+        }
+        $(function () {
+            var username =cjkEncode("{$Think.session.username}");
+            var password =cjkEncode("{$Think.session.password}");
+//            console.log(password);
+//            var f = document.getElementById("loginForm");
+            jQuery.ajax({
+                url:"http://192.168.10.42:37799/WebReport/ReportServer?op=fs_load&cmd=sso",//µ¥µãµÇÂ¼µÄ±¨±í·þÎñÆ÷
+                dataType:"jsonp",//¿çÓò²ÉÓÃjsonp·½Ê½
+                data:{"fr_username":username,"fr_password":password},
+                jsonp:"callback",
+                timeout:10000,//³¬Ê±Ê±¼ä£¨µ¥Î»£ººÁÃë£©
+                success:function(data) {
+                    if (data.status === "success") {
+                        $("#myIfram").attr('src',"http://192.168.10.42:37799/WebReport/ReportServer?op=fs");
+                        //µÇÂ¼³É¹¦
+                    } else if (data.status === "fail"){
+                        alert("登陆失败");           //µÇÂ¼Ê§°Ü£¨ÓÃ»§Ãû»òÃÜÂë´íÎó£©
+                    }
+                },
+                error:function(){
+                    alert("链接超时");// µÇÂ¼Ê§°Ü£¨³¬Ê±»ò·þÎñÆ÷ÆäËû´íÎó£©
+                }
+            });
+        })
+	</script>
+<body>
+<div class="pageContent" layoutH="36">
+
+	<!-- <a target="_blank" href="http://1.62.154.90:37799/WebReport/ReportServer?op=fr_bi&amp;cmd=bi_init&amp;id=24&amp;openFromShare=true&amp;systemManager=true&amp;createBy=-999" class="design_more" title="{$sublist.name}">¸ü¶à</a>  -->
+	<iframe id="myIfram" frameborder="0" src="http://192.168.10.42:37799/WebReport/ReportServer?op=fr_bi&amp;cmd=bi_init&amp;id=25&amp;openFromShare=true&amp;systemManager=true&amp;createBy=-999" allowtransparency="true" scrolling="yes" style="width: 100%; height:100%;">
+
+	</iframe>
+
+</div>
+</body>
+</html>

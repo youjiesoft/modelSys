@@ -1,0 +1,119 @@
+<div class="page">
+	<div class="pageContent">
+	<form method="post" action="__URL__/update/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,navTabAjaxDone)">
+		<input type="hidden" name="id" value="{$vo.id}" />
+		<div class="pageFormContent applecloth" layoutH="80">
+			<div class="keepContentCenter">
+				<H2 class="contentTitle contentTitle_center">财务信息</H2>
+			
+	            <table width="100%" border="0" cellspacing="0" id="getBankAccountpage" >
+	              <tr>
+	                <td><div class="unit"><label>{$fields["account"]}：</label>
+	                <input type="text" name="account" class="digits" maxlength="20" value="{$vo['account']}"/></div></td>
+	                <td><div class="unit"><label>{$fields["invoicid"]}：</label>
+			            <input name="dwz.org.invoicid" value="{$vo['invoicid']}" type="hidden"/>
+	                    <input type="text" lookupgroup="org"  name="dwz.org.name" class="textInput" autocomplete="off"   value="{$vo['invoicid']|getFieldBy='id','name','MisSalesCustomer'}">
+	                    <a lookupgroup="org" href="__URL__/lookup/id/{$vo.id}" class="input-addon input-addon-addon input-addon-add">查找带回</a>
+		                </div>
+		           </td>
+	              </tr>
+			      <tr>
+	                <td><div class="unit"><label>{$fields["taxpayer"]}：</label>
+	                <input type="text" name="taxpayer"  maxlength="20" value="{$vo['taxpayer']}"/></div></td>
+	                <td><div class="unit"><label>{$fields["taxno"]}：</label>
+	                <input type="text" name="taxno" class="digits" maxlength="20" value="{$vo['taxno']}"/></div></td>
+	              </tr>
+	
+			      <tr>
+	                <td><div class="unit"><label>{$fields["paymentid"]}：</label>
+					<select name="paymentid" class="combox">
+					<option selected value="">&mdash;&mdash;选择&mdash;&mdash;</option>
+					<volist id="pt" name="paytype">
+					    <option value="{$pt['id']}" <if condition="$vo.paymentid eq $pt['id']"> selected</if> >{$pt['name']}</option>
+					</volist>
+					</select>
+				    </div></td>
+				    <td><div class="unit"><label>{$fields["paymethod"]}：</label>
+					<select name="paymethod" class="combox">
+					<option selected value="">&mdash;&mdash;选择&mdash;&mdash;</option>
+					<volist id="pm" name="paymethod">
+					    <option value="{$pm['id']}" <if condition="$vo.paymethod eq $pm['id']"> selected</if> >{$pm['name']}</option>
+					</volist>
+					</select>
+	                </div></td>
+	               </tr>
+			      <tr>
+	                <td><div class="unit"><label>{$fields["curid"]}：</label>
+					<select name="curid" class="combox">
+					<option selected value="">&mdash;&mdash;选择&mdash;&mdash;</option>
+					<volist id="mt" name="moneytype">
+					    <option value="{$mt['id']}" <if condition="$vo.curid eq $mt['id']"> selected</if> >{$mt['name']}</option>
+					</volist>
+					</select>
+	                </div></td>
+	
+	                <td><div class="unit"><label>{$fields["taxid"]}：</label>
+	                <select name="taxid" class="combox">
+					<option selected value="">&mdash;&mdash;选择&mdash;&mdash;</option>
+					<volist id="st" name="sjtype">
+						 <option value="{$st['id']}" <if condition="$vo.taxid eq $st['id']"> selected</if> >{$st['name']}</option>
+					</volist>
+					</select>
+				    </div></td>
+	              </tr>
+	
+	              <tr>
+	                <td><div class="unit"><label>{$fields["credit"]}：</label>
+	                                            <input type="text" name="credit"  maxlength="20" value="{$vo['credit']}"/>
+					    <span class="info"><input type="checkbox" name="usecredit" value="1" <eq name="vo.usecredit" value="1" >checked="checked"</eq> />启用信用额度</span></div></td>
+	                <td><div class="unit"><label>{$fields["amount"]}：</label>
+	                                            <input type="text" name="amount"  maxlength="20" value="{$vo['amount']}"/>
+	                    <span class="info"><input type="checkbox" name="credituse" value="1" <eq name="vo.credituse" value="1" >checked="checked"</eq> />强制信用额度</span></div></td>
+	              </tr>
+				<tr>
+					<td><div class="unit"><label>{$fields["bankid"]}：</label>
+						<select class="combox update_account" name="bankid" onchange="changesaleBank(this.value)">
+							<option value="">&mdash;&mdash;选择&mdash;&mdash;</option>
+							<volist id="bt" name="bktype">
+								 <option value="{$bt['id']}" <if condition="$vo.bankid eq $bt['id']"> selected</if> >{$bt['name']}</option>
+							</volist>
+						</select></div>
+					</td>
+					<td><div class="unit"><label>{$fields["bank"]}：</label>
+						<input type="hidden" class="textInput" id="custmerbankvalue" name="dwz.org.bank" value="{$vo.bank}">
+						<input type="text" class="textInput" id="custmerbankcodevalue" readonly="readonly"  name="dwz.org.code" value="{$vo.bank|getFieldBy='id','code','mis_finance_bank_account'}">
+	                    <a class="btnLook lookup" href="__URL__/lookupBank/navTabId/__MODULE__" lookupgroup="org">查找带回</a>
+	                    <span class="info">查询银行账户</span>
+					</td>
+				</tr>
+				<tr>
+	              	<td colspan="2">
+	              		<label>财务备注：</label>
+	              		<textarea  name="financeremark" maxlength="200" cols="40" rows="2">{$vo['financeremark']}</textarea>
+	              	</td>
+	              </tr>
+	            </table>
+	            <script>
+	            	//查找范围
+					function changesaleBank(element){
+						$("#custmerbankvalue").val("");
+					  	$("#custmerbankcodevalue").val("");
+					  	$.ajax({type:'POST',dataType:"json",url:"__URL__/setActiveCookie",cache:false,data:{'__MODULE__edit':element},
+						success:function(json){if (json.statusCode != DWZ.statusCode.ok){error:DWZ.ajaxError;}},
+						error:DWZ.ajaxError});
+					}
+				</script>
+			</div>
+        </div>
+		<div class="formBar">
+			<ul>
+			<if condition="$_SESSION.a eq 1 or $_SESSION.missalescustomerfinance_update">
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">{$Think.lang.save}</button></div></div></li>
+			</if>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">{$Think.lang.close}</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+
+	</div>
+</div>

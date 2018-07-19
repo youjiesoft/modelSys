@@ -1,0 +1,90 @@
+<script>
+var grossamount='{$grossamount}';
+$(document).ready(function() {
+	var ret = $.numberRecover({number:grossamount,dw:['分','角','元','拾','佰','仟','万','十','百','千','亿']});
+	$("#amountDXView").html(ret);
+})
+</script>
+<div class="page">
+	<div class="pageContent dialog-default">
+		<form method="post" action="__URL__/update/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,dialogAjaxDone);">
+		<input type="hidden" name="id" id="id" value="{$vo['id']}" />
+		<input type="hidden" name="dotype" value="流程启动" />
+		<input type="hidden" name="ostatus" value="{$vo.ostatus}" /> 
+		<input type="hidden" name="refreshtabs[closeall]" value="1" />
+		<H2 class="contentTitle contentTitle_center">费用报销
+			{:W('ShowOrderno',array(0,'mis_finance_expenses_mas',$vo['orderno']))}
+		</H2>
+		<div class="pageFormContent applecloth " layoutH="101">
+			<div class="tml-row">
+				<div class="tml-form-col">
+          			<label>报销时间：</label>
+          			<div class="tml-input-append">
+						<input type="text" readonly="readonly" value="{$vo.createtime|transTime}">
+						<a href="javascript:;" class="input-addon input-addon-calendar">选择</a>
+					</div>
+          		</div>
+          		<div class="tml-form-col">
+          			<label>报销人：</label>
+          			<input type="text" readonly="readonly" value="{$vo.createid|getfieldby='id','name','user'}"/>
+          		</div>
+          		<div class="tml-form-col">
+					<label>付款方式：</label>
+					<select name="paymethodid" class="combox" >
+						{:getSelectByHtml('expensespaymethod','select',$vo['paymethodid'])}
+					</select>
+				</div>
+				<div class="tml-form-col">
+					<label>费用归属：</label>
+					<select name="deptid" class="combox">
+						<volist name="deptlist" id="dvo">
+							<option <if condition="$dvo.id eq $vo.deptid">selected</if> value="{$dvo.id}">{$dvo.name}</option>
+						</volist>
+					</select>
+				</div>
+			</div>
+			<div class="dialog-box">
+			<table class="data-table" cellspacing="0" id="misfinanceexpensesmas_ex_add" width="100%">
+				<thead>
+					<tr bgcolor="#ecf1f2" style="height:30px;">
+						<td style="width:30px;"><strong>序号</strong></td>
+                           <td style="width:100px;"><strong>费用类</strong></td>
+                           <td><strong>内容</strong></td>
+                           <td style="width:65px;"><strong>金额</strong></td>
+					</tr>
+				</thead>
+				<tbody>
+					<volist id="subvolist" name="sublist">
+						<tr style="height:30px;">
+							<td><input type="text" class="gangwei_d xytdinput" name="arr_nd[]" value="{$key+1}" readonly/></td>
+							<td>
+								<select name="arr_typeid[]" class="readonly combox">
+								<option selected value="">&mdash;&mdash;选择&mdash;&mdash;</option>
+								<volist id="vot" name="TypesList">
+									<option <if condition="$subvolist['typeid'] eq $vot.id">selected</if> value="{$vot.id}">{$vot.name}</option>
+								</volist>
+							</select>
+							</td>
+							<td><input type="text" class="gangwei_d xytdinput" name="arr_content[]" value="{$subvolist['content']}" /></td>
+							<td><input type="text" class="gangwei_d xytdinput" onblur="editmfem_getApamount();" name="arr_apamount[]" value="{$subvolist['amount']|getDigits}" /></td>
+						</tr>
+					</volist>
+					<tr style="height:30px;" id="misfinanceexpensesmas_tr_edit">
+						<td>
+                       		<input type="text" class="gangwei_d xytdinput" readonly="readonly" value="合计"/>
+                       	</td>
+                       	<td colspan="2" style="text-align: center;color:red;">
+                       		<span id="amountDXView"></span>
+                       	</td>
+                       	<td>
+                       		<input type="text" name="grossamount" readonly="readonly" class="gangwei_d xytdinput" value="{$grossamount|getDigits}" id="amountEdit" />
+                       	</td>
+					</tr>
+				</tbody>
+			</table>
+			</div>
+		</div>
+			{:W('ShowAction')}
+		</form>
+	</div>
+</div>

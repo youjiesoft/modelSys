@@ -1,0 +1,117 @@
+	<div class="page">
+		<div class="pageContent">
+			<form method="post" action="__URL__/update/navTabId/__MODULE__" class="pageForm -validate" onsubmit="return validateCallback(this,dialogAjaxDone);">
+			<input type="hidden" name="id" value="{$vo['id']}" />
+			<input type="hidden" name="dotype" value="流程启动" />
+			<input type="hidden" name="ostatus" value="{$vo['ostatus']}" />
+			<input  type="hidden" name="applyUser" size="18" class="" value="{$vo['applyUser']}">
+			<div class="pageFormContent " layoutH="40">
+			<div class="contentTitle contentTitle_center">派车申请{:W('ShowAdvices',array('id'=>$vo['id']))}</div>
+			<div class="tml-row">
+	                <if condition='$fields["createid"]'>
+						<div class="tml-form-col">
+							<label> {$fields["createid"]}： </label>
+		                    <input  type="text" name="createid" class="" value="{$vo['createid']}">
+						</div>
+	                </if>
+	                <if condition='$fields["usename"]'>
+						<div class="tml-form-col">
+						    <label> {$fields["usename"]}： </label>
+						    <input type="text" name="usename" readonly="readonly" size="18" class="" value="{$vo['usename']}" >
+						</div>
+	                </if>
+	                <if condition='$fields["departmentID"]'>
+						<div class="tml-form-col">	
+							<label> {$fields["departmentID"]}： </label>
+							<input name="departmentID" readonly="readonly" size="18" value="{$vo['departmentID']|getFieldBy='id','name','MisSystemDepartment'}"  type="text"class="readonly textInput" />
+						</div>
+	                </if>
+	                <if condition='$fields["departurePlace"]'>
+						<div class="tml-form-col">	
+							<label> {$fields["departurePlace"]}： </label>
+							<input  type="text" readonly="readonly" name="departurePlace" size="18" class="" value="{$vo['departurePlace']}">
+						</div>
+	                </if>
+	                <if condition='$fields["arrivePlace"]'>
+						<div class="tml-form-col">
+							<label> {$fields["arrivePlace"]}： </label>
+							<input  type="text" readonly="readonly" name="arrivePlace" size="18" class=""  value="{$vo['arrivePlace']}">
+						</div>
+	                </if>
+	                <if condition='$fields["occupy"]'>
+						<div class="tml-form-col">
+						    <label> {$fields["occupy"]}： </label>
+							<if condition="$vo.occupy eq '1'"><input type="text"  readonly="readonly" name="occupy"  size="18" value="一天"></if>
+							<if condition="$vo.occupy eq '2'"><input type="text"  readonly="readonly" name="occupy"  size="18" value="上午"></if>
+							<if condition="$vo.occupy eq '3'"><input type="text"  readonly="readonly" name="occupy"  size="18" value="下午"></if>
+							<if condition="$vo.occupy eq '4'"><input type="text"  readonly="readonly" name="occupy"  size="18" value="多天"></if>
+						</div>
+	                </if>
+	                <if condition='$fields["cartype"]'>
+						<div class="tml-form-col">
+							<label> {$fields["cartype"]}： </label>
+							<input name="cartype" readonly="readonly" size="18" value="{$vo['cartype']|getFieldby='id','name','mis_vehicle_type'}"  type="text"class="readonly textInput" />
+						</div>
+	                </if>
+	                <if condition='$fields["departureTime"]'>
+						<div class="tml-form-col">
+							<label> {$fields["departureTime"]}： </label>
+							<input type="text"  size="18" readonly="readonly"  name="departureTime" format="yyyy-MM-dd HH:mm" value="{$vo['departureTime']|transTime='Y-m-d H:i'}">
+						</div>
+	                </if>
+		                <div class="tml-form-col">
+							<label> {$fields["carID"]}： </label>
+							<input readonly="readonly" size="18" value="{$vo['carID']|getFieldBy='id','carno','mis_system_car'}"  type="text"class="readonly textInput" />
+						</div>
+					<if condition='$fields["planReturnTime"]'>
+						<div class="tml-form-col">
+							<label> {$fields["planReturnTime"]}： </label>
+							<input type="text"  size="18" readonly="readonly"  name="planReturnTime" format="yyyy-MM-dd HH:mm" value="{$vo['planReturnTime']|transTime='Y-m-d H:i'}">
+						</div>
+	                </if>
+	                 <if condition='$fields["expectRestitutionTime"]'>
+							<div class="tml-form-col">
+								<label>{$fields["expectRestitutionTime"]}： </label>
+								<input type="text" class="date required" size="18" readonly="readonly" name="expectRestitutionTime"  format="yyyy-MM-dd HH:mm" value="{$vo['expectRestitutionTime']|transTime='Y-m-d H:i'}">
+							</div>
+		             </if>
+	                <if condition='$fields["yuetongcard"]'>
+						<div class="tml-form-col">
+						    <label> {$fields["yuetongcard"]}： </label>
+						    <input type="text"  readonly="readonly" size="18" name="yuetongcard" <if condition="$vo.yuetongcard eq '1'">value="需要"<else />value="不需要"</if>>
+						</div>
+	                </if>
+	                <if condition='$fields["mileage"]'>
+					   <div class="tml-form-col">
+							<label> {$fields["mileage"]}： </label>
+							<input type="text" name="mileage" size="18" readonly="readonly" class="textInput" value="{$vo.mileage}">
+						</div>
+	                </if>
+	             </div>
+                <if condition='$fields["passengerpersonname"]'>
+					<div class="tml-form-row">
+						<label> {$fields["passengerpersonname"]}： </label>
+						<textarea name="passengerpersonname" class="" readonly="readonly">{$vo.passengerpersonname}</textarea>
+					</div>
+                </if>
+                <if condition='$fields["reason"]'>
+					<div class="tml-form-row">
+						<label> {$fields["reason"]}： </label>
+						<textarea  name="reason" readonly="readonly" class="">{$vo['reason']}</textarea>
+					</div>
+                </if>
+                <if condition='$fields["remark"]'>
+					<div class="tml-form-row">
+						<label> {$fields["remark"]}： </label>
+						<textarea  name="remark" readonly="readonly">{$vo['remark']}</textarea>
+					</div>
+                </if>
+			</div>
+			<div class="formBar">
+				<ul>
+					<li><button type="button" class="close tml-btn">{$Think.lang.close}</button></li>
+				</ul>
+			</div>
+		</form>
+	</div>
+</div>

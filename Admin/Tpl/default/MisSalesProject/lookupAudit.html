@@ -1,0 +1,53 @@
+<form id="pagerForm" action="__URL__/lookupAudit/rel/{$rel}" method="post">
+    <input type="hidden" name="pageNum" value="1"/>
+    <input type="hidden" name="orderField" value="{$order}" />
+    <input type="hidden" name="orderDirection" value="{$sort}" />
+    <input type="hidden" name="projectid" value="{$projectid}" />
+    <input type="hidden" name="modelname" value="{$modelname}" />
+    <input type="hidden" name="stepType" value="{$stepType}" />
+</form>
+<div class="pageContent">
+    <table class="table" width="100%" layoutH="124">
+        <thead ename="{$ename}">
+            <tr>
+                <th>序号</th>
+                <th>名称/文号</th>
+                <th>关联项目</th>
+                <th>发起人</th>
+                <th>发起时间</th>
+            </tr>
+        </thead>
+        <tbody>
+            <volist id="vo" name="list">
+                <tr
+                <if condition="$stepType eq 1">
+                    title="{$vo.tablename|getConfigTypeList}-审核"
+                    ondblclick='ondblclick_navTab(this,"__APP__/{$vo.tablename}","__APP__/{$vo.tablename}/auditEdit/id/{$vo.tableid}");'
+                <else/>
+                    title="{$vo.tablename|getConfigTypeList}-查看"
+                    ondblclick='ondblclick_navTab(this,"__APP__/{$vo.tablename}","__APP__/{$vo.tablename}/auditView/id/{$vo.tableid}");'
+                </if>
+                >
+                    <td><?php echo $key+1; ?></td>
+                    <if condition="$stepType eq 1">
+                    <td><a class="tml-icon-text" href="__APP__/{$vo.tablename}/auditEdit/id/{$vo.tableid}" rel="__APP__/{$vo.tablename}" title="{$vo.tablename|getConfigTypeList}-审核" target="navTab" >{$vo.tablename|getConfigTypeList}&nbsp;<STRONG>[{$vo.orderno}]</STRONG></a></td>
+                    <td>{$projectid|getFieldBy='id','name','mis_sales_project'}</td>
+                    <td>{$vo.createid|getFieldBy='id','name','user'}</td>
+                    <else/>
+                    <td><a class="tml-icon-text" href="__APP__/{$vo.tablename}/auditView/id/{$vo.tableid}" rel="__APP__/{$vo.tablename}" title="{$vo.tablename|getConfigTypeList}-查看" target="navTab" >{$vo.tablename|getConfigTypeList}&nbsp;<STRONG>[{$vo.orderno}]</STRONG></a></td>
+                    <td>{$projectid|getFieldBy='id','name','mis_sales_project'}</td>
+                    <td>{$vo.createid|getFieldBy='id','name','user'}</td>
+                    </if>
+                     
+                     <td>{$vo.createtime|transTime='Y-m-d H:i'}</td>
+                </tr>
+            </volist>
+        </tbody>
+    </table>
+    <div class="panelBar panelPageBar">
+       <div class="pages">
+           <span>共{$totalCount}条</span>
+       </div>
+       <div class="pagination" rel="{$rel}" targetType="navTab" totalCount="{$totalCount}" numPerPage="{$numPerPage}" pageNumShown="10" currentPage="{$currentPage}"></div>
+    </div>
+</div>

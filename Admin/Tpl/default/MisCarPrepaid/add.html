@@ -1,0 +1,69 @@
+<script>
+//查找带会。格式化金额
+function miscarprepaid_callback_update(json,textInpout){
+	var $box = $.pdialog.getCurrent();
+	//alert(FormatN(json.oil_balance));
+	$box.find("input[name='oil_balance']").val(FormatN(json.oil_balance));
+}
+</script>
+<div class="page">
+	<div class="pageContent">
+		<form method="post" action="__URL__/insert/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,dialogAjaxDone);">
+			<div class="pageFormContent " layoutH="58">
+				<input type="hidden" name="business_type" value="0">
+				<div class="tml-row">
+					<if condition='$fields["oil_id"]'>
+						<div class="tml-form-col">
+							<label >{$fields["oil_id"]}:</label>
+							<input type="text" class="checkByInput" callback="miscarprepaid_callback_update" map="array('status'=>'1')"  fields="array('id'=>'0','oil_id'=>'油卡ID','oil_balance'=>'余额');" show="oil_id" checkfor="MisCarCardBind" name="oil_id" autocomplete="off" />
+						</div>
+					</if>
+					<if condition='$fields["oil_balance"]'>
+						<div class="tml-form-col ">
+							<label >{$fields["oil_balance"]}:</label>
+							<input type="text" name="oil_balance" readonly="readonly" check_key="oil_balance" value="0.00" />
+						</div>
+					</if>
+					<if condition='$fields["amount"]'>
+						<div class="tml-form-col ">
+							<label >{$fields["amount"]}:</label>
+							<input type="text" name="amount" class="required" value="0.00" onblur="FormatNumber(this);" />
+						</div>
+					</if>
+					<if condition='$fields["add_time"]'>
+						<div class="tml-form-col ">
+							<div class="tml-input-append">
+								<label >{$fields["add_time"]}:</label>
+								<input type="text"  value="{$Think.server.REQUEST_TIME|transTime='Y-m-d H:i'}"  class="Wdate required" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})" name="add_time" size="17" />
+								<span class="input-addon input-addon-calendar"></span>
+							</div>
+						</div>
+					</if>
+				</div>
+					<if condition='$fields["address"]'>
+						<div class="tml-form-row">
+							<label >{$fields["address"]}:</label>
+							<textarea name="address">{$vo['address']}</textarea>
+						</div>
+					</if>
+					<if condition='$fields["remark"]'>
+						<div class="tml-form-row">
+							<label >{$fields["remark"]}:</label>
+							<textarea  name="remark">{$vo['remark']}</textarea>
+						</div>
+					</if>
+				<div class="tml-row">	
+					<div class="tml-form-col ">
+						<label >制单时间:</label>
+						<input type="text" readonly="readonly" value="{$Think.server.REQUEST_TIME|transTime}" />
+					</div>
+					<div class="tml-form-col ">
+						<label >制单人:</label>
+						<input type="text" readonly="readonly" value="{$uid|getFieldBy='id','name','user'}" />
+					</div>
+				</div>
+			</div>
+			{:W('ShowAction')}
+		</form>
+	</div>
+</div>

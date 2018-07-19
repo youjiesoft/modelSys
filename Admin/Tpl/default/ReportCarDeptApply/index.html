@@ -1,0 +1,26 @@
+<script>
+function ReportCarDeptApply_timeStatistics(){
+	var $box=navTab.getCurrentPanel();
+	var $time=$box.find("input[name='year']").val();
+	$box.find("#ReportCarDeptApply_chart").loadUrl("__URL__/lookupCarDeptApply/year/"+$time,{},function(){
+		$box.find("[layoutH]").layoutH();});
+}
+</script>
+<div class="pageContent tml-bg-white" layoutH="0">
+	<div class="">
+		<h2 class="contentTitle contentTitle_center">部门申请用车次数</h2>
+		<div class="tml-text-c">
+			<fieldset>
+					<label>请选择汇总月份：</label>
+						<input type="text" name="year"
+							onfocus="WdatePicker({skin:'whyGreen',dateFmt:'yyyy年 MM月',maxDate:'%y',minDate:'1970'})"
+							value="{$time}" class="Wdate required" />
+						<span class="tml-icon tml-icon-calendar ml5 mr5"></span>
+						<button class="tml-btn tml-btn-primary" onclick="ReportCarDeptApply_timeStatistics()" type="button">统计</button>
+			</fieldset>
+		</div>
+		<div id="ReportCarDeptApply_chart">
+			<include file="lookupCarDeptApply" />
+		</div>
+	</div>
+</div>

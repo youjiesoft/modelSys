@@ -1,0 +1,43 @@
+
+{~$classNodeSettingArr =getModelClassByNodeSetting('MisSalesMyProject','edit')}
+{~$appendPageContentArr =getBindTabsContent('MisSalesMyProject',$vo,'edit','',$main)}
+{~$formautosetting = setFormControllAutoCreteAppend('MisSalesMyProject' ,'edit' ,$main , 'update',$vo,A('MisSalesMyProject')->rebuildSetting())}
+{$appendPageContentArr[1]}
+<div class="page">
+	<div class="pageContent">
+		<div class="pageFormContent applecloth anchorsToolBarParen"
+			<if condition="!$_REQUEST['main'] or $_REQUEST['main'] eq MODULE_NAME">
+			<if condition="!$_REQUEST['bindaname']"> layoutH="40"</if> </if>
+			>
+			<div class="new_version_page ">
+				<form id="MisSalesMyProject_edit"
+					{$appendPageContentArr[5]} {$formautosetting[3]}  method="post" action="__APP__/MisSalesMyProject/{$formautosetting[2]}/navTabId/__MODULE__{$formautosetting[4]}" class="pageForm required-validate"	 
+					onsubmit="<if condition="$formautosetting[5]">{$formautosetting[5]}<else/>{$appendPageContentArr[0]}</if>">
+					<a class='xyz_anchornavi_top' name='MisSalesMyProject_edit_top'></a> 
+					<input type="hidden" name="callbackType" value="closeCurrent" />
+					{:W('HiddenInput',$vo)} 
+					<input type="hidden" name="id" value="{$vo['id']}" />
+					<input type="hidden" name="masid" value="{$vo['id']}" /> 
+					{$formautosetting[1]}
+					<if condition="$_GET['viewtype'] neq 'view'&& !$_GET['main'] ">
+					<div class="new_version_page_header pageFormContent ">
+						<span class="left tml-ml20 ">我的项目</span>
+						{:W('ShowRightToolBar',array('edit','MisSalesMyProject',$vo))}
+						{:W('ShowAnchorNavi',array('MisSalesMyProject', 'edit',$main))}
+						{$formautosetting[0]}
+					</div>
+					</if>
+					<div class="new_version_page_content">
+						
+						{:W('ShowOrderno',array(4,'mis_auto_kimpu',$vo['orderno'],array('contentcls'=>'col_1_3 form_group_lay field_orderno',	'inputcls'=>'class="input_new "','title'=>$fields["orderno"],'isshow'=>1)))}
+							
+						#controll#
+						<if condition="!$appendPageContentArr[4]">{:W('ShowAction',array('data'=>$vo))}</if>
+					</div>
+				</form>
+				{$appendPageContentArr[2]}
+				{$appendPageContentArr[3]}
+			</div>
+		</div>
+	</div>
+</div>

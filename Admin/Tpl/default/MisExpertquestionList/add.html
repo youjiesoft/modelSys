@@ -1,0 +1,87 @@
+<include file="Public:pagerForm" />
+<script>
+function questionaddajaxback(json){
+	dialogAjaxDone(json);
+	if (json.statusCode == DWZ.statusCode.ok) {
+		navTab.reloadFlag("__MODULE__view");
+	}
+}
+function changeExpertquestiontype(obj) {
+	var bepart = $(obj).val();
+	var $ref = $("#expertquestionptypeedit");
+	$.ajax({
+		type : 'POST',
+		dataType : "json",
+		url : "__URL__/lookupgetexpertquestiontype",
+		cache : false,
+		data : {
+			bepart : bepart
+		},
+		success : function(json) {
+			var html = '';
+			if(json){
+				$.each(json, function(i) {
+					if (json[i] && json[i].length > 1) {
+						html += '<option value="'+json[i][0]+'">' + json[i][1]
+								+ '</option>';
+					}
+				});
+			}
+			var $refCombox = $ref.parents("div.combox:first");
+			$ref.html(html).insertAfter($refCombox);
+			$refCombox.remove();
+			$ref.trigger("change").combox();
+		},
+		error : DWZ.ajaxError
+	})
+};
+</script> 
+	<div class="page">
+		<div class="pageContent">
+			<form method="post" action="__URL__/insert/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,dialogAjaxDone);">
+				<input type="hidden" name="iseditor" value="1">
+				<input type="hidden" name="type" value="{$type}">
+				<input type="hidden" name="parentid" value="{$parentid}">
+				<input type="hidden" name="views" value="1">
+				<input type="hidden" name="sourcetype" value="{$sourcetype}">
+				<input type="hidden" name="sourceid" value="{$sourceid}">
+				<div class="pageFormContent xyEmployee" layoutH="58">
+					<div class="tml-form-row">
+						<label>标&nbsp;&nbsp;&nbsp;&nbsp;题：</label>
+						<input type="text" style="width:480px" name="title" class="required" value="{$vo['title']}">
+					</div>
+					<div class="tml-form-row">
+						<label>详&nbsp;&nbsp;&nbsp;&nbsp;细：</label>
+						<textarea class="ueditor" name="content" style="width:490px;height:150px"></textarea>
+					</div>
+					<div class="tml-form-row">
+						<label>咨询专家：</label>
+						<input type="text" class="readonly org.name" readonly="readonly">
+						<a class="input-addon input-addon-userplus " href="__URL__/lookup" lookupgroup="org"  >查找带回</a>
+						<input type="hidden" name="expertid" class="readonly  org.userid" value="0">
+					</div>
+					<div class="tml-form-row">
+						<label>分&nbsp;&nbsp;&nbsp;&nbsp;类：</label>
+						<select name="typeid" class="combox required" onchange="changeExpertquestiontype(this)">
+							<volist name="typelist" id="vozw">
+								<option value="{$vozw['id']}">{$vozw['name']}</option>
+							</volist>
+						</select>
+						<select name="categoryid" class="combox required" id="expertquestionptypeedit">
+							<volist name="ptypelist" id="ptype">
+							<option value="{$ptype['id']}" >{$ptype['name']}</option>
+							</volist>
+						</select>
+					</div>
+					{:W('ShowUpload')}
+			</div>
+			{:W('ShowAction')}
+			<!-- <div class="formBar tml-text-c">
+				<if condition="$_SESSION.a eq 1 or $_SESSION.misexpertquestionlist_insert">
+					<button class="tml-btn tml-btn-blue tml-mr10" type="submit">{$Think.lang.save}</button>
+				</if>
+				<button type="button" class="tml-btn tml-btn-white close">{$Think.lang.close}</button>
+			</div> -->
+		</form>
+	</div>
+</div>

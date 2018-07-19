@@ -1,0 +1,136 @@
+<script type="text/javascript">
+$(function(){
+	var $box=navTab.getCurrentPanel();
+	
+	$('.nbmaccordion' , $box).nbmaccordion();
+});
+</script>
+
+<div class="page unitBox general_page">
+	<div class="pageContent">
+		<div class="general_tree_left treeleft">
+			<!-- left accordion -->
+
+            <!--  参数说明：* @parame spread 全关全开控制，默认0：全关 @parame selecter 打开指定项下标。默认-1， @parame open 展开的样式效果 @parame close 关闭样式效果 -->
+			<div class="nbmaccordion"  data-option="close:icon-double-angle-down;open:icon-double-angle-up" layouth="40">
+				<volist name="data" id="v1" key="i">
+						<div title="{$v1.name}">
+							<ul>
+								<volist name="v1['sub']" id="v2">
+									<li>
+										<a href="__URL__/lookupGetWork/formid/{$v2.form_id}" title="{$v2.form_name}" rel="missalesprojectleft_ajax" target="ajax">
+											<span>
+												{$v2.form_name}
+											</span>
+										</a>
+									</li>
+								</volist>
+							</ul>
+						</div>
+				</volist>
+			</div>
+			<!-- left end -->	
+		</div>
+	<!-- ***************************************************** -->
+		<div id="missalesprojectleft_ajax" class="unitBox treeright">
+			<div class="pageContent"   style="overflow: auto;">
+					<div class="xypc">
+						<div id="xywrap" class="xywrap clearfix" layouth="60">
+	                           <div class="general_wrap">
+	                               <div class="general_wrap_top">
+	                                   <div class="fast_nav_header">
+	                                       <span class="fnh_left left">快速发起工作</span>
+	                                       <ul class="fnh_right right">
+	                                           <li><a href="#"><span class="icon-plus"></span> 添加</a></li>
+	                                           <li><a href="#"><span class="icon-cog"></span> 设置</a></li>
+	                                       </ul>
+	                                   </div>
+	                                   <div class="fast_nav_content">
+	                                       <ul class="fnc_ul">
+	                                           <li><a href="#"><span class="icon-link"></span> 工作报告</a></li>
+	                                           <li><a href="#"><span class="icon-screenshot"></span> 外出申请</a></li>
+	                                           <li><a href="#"><span class="icon-pencil"></span> 请假申请</a></li>
+	                                           <li><a href="#"><span class="icon-pencil"></span> 借款申请</a></li>
+	                                           <li><a href="#"><span class="icon-pencil"></span> 报销申请</a></li>
+	                                           <li><a href="#"><span class="icon-pencil"></span> 出差申请</a></li>
+	                                           <li><a href="#"><span class="icon-pencil"></span> 办公用品申请</a></li>
+	                                           <li><a href="#"><span class="icon-pencil"></span> 用车申请</a></li>
+	                                           <li><a href="#"><span class="icon-pencil"></span> 离职申请</a></li>
+	                                           <li><a href="#"><span class="icon-pencil"></span> 转正申请</a></li>
+	                                           <li><a href="#"><span class="icon-pencil"></span> 盖章</a></li>
+	                                       </ul>
+	                                       <div class="clear"></div>
+	                                   </div>
+	                               </div>
+	                               <div class="general_wrap_bottom">
+	                                   <ul class="tab_nav_trends">
+	                                       <li class="active">工作跟踪 · 6</li>
+	                                       <li>工作处理 · 12</li>
+	                                   </ul>
+	                                   <div class="check_info_content">
+	                                       <div class="trends_body wait_read">
+	                                           <a href="#">
+	                                               <span class="tml-mr5 icon icon-eye-open"></span>
+	                                               <span class="trends_man">杨常林：</span>
+	                                               <span class="trends_act">已查看</span>
+	                                               <span class="trends_title">【关于本周工作进度和难度报告】</span>
+	                                               <span class="tml-mr10 trends_time right">09-12 13:30</span>
+	                                           </a>
+	                                       </div>
+	                                       <div class="trends_body wait_read">
+	                                           <a href="#">
+	                                               <span class="tml-mr5 icon icon-legal"></span>
+	                                               <span class=" trends_man">钱部长：</span>
+	                                               <span class=" trends_act">已审核</span>
+	                                               <span class=" trends_title">【关于本周工作进度和难度报告】</span>
+	                                               <span class="tml-mr10 trends_time right">09-12 13:30</span>
+	                                           </a>
+	                                       </div>
+	                                       <div class="trends_body wait_read">
+	                                           <a href="#">
+	                                               <span class="tml-mr5 icon icon-legal"></span>
+	                                               <span class="trends_man">钱部长：</span>
+	                                               <span class="trends_act">已审核</span>
+	                                               <span class="trends_title">【关于本周工作进度和难度报告】</span>
+	                                               <span class="tml-mr10 trends_time right">09-12 13:30</span>
+	                                           </a>
+	                                       </div>
+	                                       <div class="trends_body wait_read">
+	                                           <a href="#">
+	                                               <span class="tml-mr5 icon icon-comment-alt"></span>
+	                                               <span class="trends_man">钱部长：</span>
+	                                               <span class="trends_act">评论了</span>
+	                                               <span class="trends_title">【关于本周工作进度和难度报告】</span>
+	                                               <span class="tml-mr10 trends_time right">09-12 13:30</span>
+	                                           </a>
+	                                       </div>
+	                                       <div class="trends_body wait_read">
+	                                           <a href="#">
+	                                               <span class="tml-mr5 icon icon-plus"></span>
+	                                               <span class="trends_man">张海平：</span>
+	                                               <span class="trends_act">接受了</span>
+	                                               <span class="trends_title">【**借款申请】</span>
+	                                               <span class="tml-mr10 trends_time right">09-12 13:30</span>
+	                                           </a>
+	                                       </div>
+	                                       <div class="trends_body wait_read">
+	                                           <a href="#">
+	                                               <span class="tml-mr5 icon icon-plus"></span>
+	                                               <span class="trends_man">张海平：</span>
+	                                               <span class="trends_act">创建了工作报告</span>
+	                                               <span class="trends_title">【关于本周工作进度和难度报告】</span>
+	                                               <span class="tml-mr10 trends_time right">09-12 13:30</span>
+	                                           </a>
+	                                       </div>
+	                                       <div class="flat_down"><span class="icon-double-angle-down"></span></div>
+	                                   </div>
+	                               </div>
+	                           </div>
+						</div>
+					</div>
+				</div>
+		</div>
+	<!-- end -->
+	</div>
+</div>
+

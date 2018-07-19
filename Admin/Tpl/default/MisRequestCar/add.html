@@ -1,0 +1,117 @@
+<script>
+	//当查询条件变时， 那么，将控制不同模询输入框显示与隐     name="departureTime"     name="planReturnTime"
+	$("#occupy_misrequestcar_add") .change(
+		function() {
+			var v = $(this).val();
+			if (v == "1") {
+				$("input[name='departureTime']").val("{$Think.server.REQUEST_TIME|date='Y-m-d',###} 08:30");
+				$("input[name='planReturnTime']").val("{$Think.server.REQUEST_TIME|date='Y-m-d',###} 20:30");
+			} else if (v == "2") {
+				$("input[name='departureTime']").val("{$Think.server.REQUEST_TIME|date='Y-m-d',###} 08:30");
+				$("input[name='planReturnTime']").val("{$Think.server.REQUEST_TIME|date='Y-m-d',###} 12:00");
+
+			} else if (v == "4") {
+				$("input[name='departureTime']").val("{$Think.server.REQUEST_TIME|date='Y-m-d',###} 08:30");
+				$("input[name='planReturnTime']").val("");
+
+			} else {
+				$("input[name='departureTime']").val("{$Think.server.REQUEST_TIME|date='Y-m-d',###} 12:00");
+				$("input[name='planReturnTime']").val("{$Think.server.REQUEST_TIME|date='Y-m-d',###} 20:30");
+			}
+		});
+</script>
+<div class="page">
+	<div class="pageContent">
+		<form method="post" action="__URL__/insert/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,dialogAjaxDone);">
+			<input type="hidden" name="dotype" value="流程新建" />
+			<input type="hidden" name="applyUser" value="{$Think.session.loginUserName}"><!-- 申请人 -->
+			<input type="hidden" name="beforeInsert" value="1" /> <!-- 新增启动流程需要 -->
+			<div class="pageFormContent applecloth anchorsToolBarParent" layoutH="40" >
+				<div class="keepContentCenter form-affix-content">
+					<div class="contentTitle contentTitle_center form-affix-title">派车申请
+				
+			</div>
+			<div class="tml-row">
+			{:W('ShowOrderno',array(1,'mis_request_car'))}
+					<div class="tml-form-col">
+						<label> {$fields["usename"]}： </label>
+						<input type="text" name="usename" size="18" value="{$username}" class="checkByInput" map="array('working'=>1);" insert="id" show="name" checkfor="MisHrPersonnelManagement" iswrite="true" readonly="readonly">
+					</div>
+					<div class="tml-form-col">
+						<label> {$fields["departmentID"]}： </label>
+						<input type="text"  size="18" value="{$deptid|getFieldBy='id','name','mis_system_department'}" class="checkByInput"  readonly="readonly">
+						<input type="hidden" name="departmentID"  value="{$deptid}" class="checkByInput" >
+						
+						<!-- <select name="departmentID" class="combox required" check_key="deptname" >
+							<volist name="departmentIDlist" id="vodepartmentID">
+							<option value="{$vodepartmentID['id']}" <if condition="$deptid eq $vodepartmentID['id']">selected="selected"</if>>
+								{$vodepartmentID['name']}</option>
+							</volist>
+						</select> -->
+					</div>
+					<div class="tml-form-col">
+						<label>{$fields["departurePlace"]}： </label>
+						<input type="text" name="departurePlace" size="18" class="required" value="总部">
+					</div>
+					<div class="tml-form-col">
+						<label>{$fields["arrivePlace"]}： </label>
+						<input type="text" name="arrivePlace" size="18" class="required">
+					</div>
+					<div class="tml-form-col">
+						<label>{$fields["occupy"]}：</label>
+						<select name="occupy" class="combox required" id="occupy_misrequestcar_add">
+							<option value="">请选择点用区间 </option>
+							<option value="1">一天</option>
+							<option value="2">上午</option>
+							<option value="3">下午</option>
+							<option value="4">多天</option>
+						</select>
+					</div>
+					<div class='clear'></div>
+					<div class='clear'></div>
+					<div class="tml-form-col">
+						<label> {$fields["cartype"]}： </label>
+						<select class="combox" name="cartype">
+                           <volist name="CarTypeList" id="type">
+                           		<option value="{$type['id']}">{$type['name']}</option>
+                           </volist>
+	                     </select>
+					</div>
+					<div class="tml-form-col">
+						<label>{$fields["departureTime"]}： </label>
+						<div class="tml-input-append">
+						   	<input type="text" class="Wdate js-wdate required" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})" value="{$Think.server.REQUEST_TIME|date='Y-m-d H:m',###}" name="departureTime" />
+						   	<a href="javascript:;" class="input-addon input-addon-calendar js-inputCheckDate">选择</a>
+						</div>
+					</div>
+					<div class="tml-form-col">
+						<label>{$fields["expectRestitutionTime"]}： </label>
+						<div class="tml-input-append">
+						   	<input type="text" class="Wdate js-wdate required" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})" value="{$time}" name="expectRestitutionTime" />
+						   	<a href="javascript:;" class="input-addon input-addon-calendar js-inputCheckDate">选择</a>
+						</div>
+					</div>
+          </div>   
+					<div class="tml-form-row">
+						<label>{$fields["passengerpersonname"]}：</label>
+						<textarea name="passengerpersonname" class="required"></textarea>
+					</div>
+					<div class="tml-form-row">
+						<label>{$fields["reason"]}： </label>
+						<textarea name="reason" class="required"></textarea>
+					</div>
+					<div class="tml-form-row">
+						<label> {$fields["remark"]}：</label>
+						<textarea name="remark"></textarea>
+					</div>
+                  <div class="showFormFlow">
+	                {:W('ShowFormFlow')}<!-- 流程管理 -->
+	                </div>
+	                {:W('ShowNotify')}
+                			{:W('ShowAction')}
+                			</div>
+                			</div>
+		</form>
+		</div>
+	</div>
+</div>

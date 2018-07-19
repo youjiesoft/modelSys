@@ -1,0 +1,93 @@
+<script>
+$(document).ready(function(){
+	$(this).find("[layoutH]").layoutH();  //加载后，把内容区自适应高
+});
+function miscaraddoilinfo_cal_update(){
+	var $box =$.pdialog.getCurrent();
+	//单价
+	var price=$box.find("input[name='price']").val();
+	//总金额 
+	var amount=$box.find("input[name='amount']").val();
+	price = Number(price.replace(/,/g,""));
+	amount = Number(amount.replace(/,/g,""));
+	if(price != 0){
+		//计算出加油量
+		var oil_number = comboxMathematicalOperation(amount+"/"+price);
+		//毫升
+		$box.find("input[name='oil_number']").val(FormatN(oil_number));
+	}
+}
+//查找带会。格式化金额
+function miscaraddoilinfo_callback_update(json,textInpout){
+	var $box =$.pdialog.getCurrent();
+	$box.find("input[name='oil_balance']").val(FormatN(json.oil_balance));
+}
+function miscaraddoilinfo_select_update(obj){
+	var $box =$.pdialog.getCurrent();
+	//判断是圈钱还是加油
+	var business_type=$box.find("select.pay_type option:selected").val();
+	$box.find("input[name='oil_balance']").val("0.00");
+	$box.find("input[name='oil_id']").val("");
+	//如果是显示的现金
+	 var posi = $(obj).val();
+	//posi = 0  表示的是使用现金支付
+	if(posi == 0){
+		$box.find("input[name='oil_id']").val("");
+		$box.find("input[name='oil_balance']").val("");
+		$box.find("input[name='oil_id']").parent().hide();
+		$box.find("input[name='oil_id']").parent().hide();
+	}else{
+		$box.find("input[name='oil_id']").val("");
+		$box.find("input[name='oil_balance']").val("");
+		$box.find("input[name='oil_id']").parent().show();
+		$box.find("input[name='oil_id']").parent().show();
+	}
+}
+</script>
+<form id="pagerForm" action="__URL__/index" method="post">
+	<input type="hidden" name="pageNum" value="1"/>
+	<input type="hidden" name="orderField" value="{$order}" />
+	<input type="hidden" name="orderDirection" value="{$sort}" />
+	<input type="hidden" name="numPerPage" value="{$numPerPage}" />
+</form>
+<div class="pageContent tml-bg-white">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<volist name="toolbarextension" id="toolb">
+					<li>{$toolb['html']}</li>
+			</volist>
+		</ul>
+		<form rel="pagerForm" <if condition="$carid">onsubmit="return divSearch(this,'add_oil_model_car');"<else/> onsubmit="return navTabSearch(this);"</if> action="__URL__/index" method="post">
+			<input type="hidden" name="carid" value="{$carid}" />
+			<div class="searchBar">
+				<table class="searchContent">
+					<tr>
+						<include file="Public:quickSearchCondition" />
+						<if condition="$_SESSION.a eq 1 or $_SESSION.miscaraddoilinfo_exportbysearchhtml ">
+						<td><button  class="xyOutput" type="button" onclick="exportBysearch(this.form,'__URL__/index','__URL__/exportBysearchHtml');">导出</button></td>
+					    </if>
+					</tr>
+				</table>
+			</div>
+		</form>
+	</div>
+	<table class="table" width="100%"  <notempty  name="carid">layoutH="103"<else />layoutH="68"</notempty >>
+		<thead ename="{$ename}">
+			<tr>
+				<th width='24'>序号</th>
+				<volist id="vo" name="detailList">
+					<if condition="$vo[shows] eq 1"><th <if condition="$vo[widths]">width="{$vo[widths]}"</if><if condition="$vo[sorts]"> <if condition="$carid">rel="add_oil_model_car"</if> orderField="{$vo[sortname]}" class="{$sort}"</if>>{$vo[showname]}</th></if>	<!--类型-->
+				</volist>
+			</tr>
+		</thead>
+		<tbody>
+			<include file="dwzloadindex" />
+		</tbody>
+	</table>
+	<div class="panelBar panelPageBar">
+		<div class="pages">
+			<span>共{$totalCount}条</span>
+		</div>
+		<div class="pagination" <if condition="$carid">rel="add_oil_model_car" <else/>  targetType="navTab"</if> totalCount="{$totalCount}" numPerPage="{$numPerPage}" pageNumShown="10" currentPage="{$currentPage}"></div>
+	</div>
+</div>

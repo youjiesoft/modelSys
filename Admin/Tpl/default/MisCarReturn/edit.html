@@ -1,0 +1,85 @@
+<script>
+var $box=$.pdialog.getCurrent();
+$("input:[name='totalKM']",$box).blur(function(){
+	var currntVal=$("input:[name='totalKM']",$box).val();
+	var oldVal=$("input:[name='tempTotalKM']",$box).val();
+	currntVal =Number(currntVal.replace(/,/g,""));
+	oldVal =Number(oldVal.replace(/,/g,""));
+	var reslutValue = currntVal-oldVal;
+	if(reslutValue<0){
+		alertMsg.error("总里程数必须大于车辆原始里程"); 
+		return false;
+	}
+	$("input:[name='runKM']",$box).val(FormatN(reslutValue));
+});
+
+$("input:[name='keepTimeTrue']",$box).focus(function(){
+	var obj=$(this);
+	var endtime=$("input:[name='returnTime']",$box).val();  //2012-12-12 00:00
+	var begintime=$("input:[name='tempReturnTime']",$box).val();
+	$.ajax({
+		type:'POST',
+		url:"__URL__/lookupgethours",
+		data:{sdate:begintime,edate:endtime},
+		cache:false,
+		success:function(d){
+			$(obj).val(d);
+		}
+	});
+});
+
+</script>
+<div class="page">
+	<div class="pageContent">
+		<form method="post" action="__URL__/update/rel/miscarreturn" class="pageForm required-validate" onsubmit="return validateCallback(this,dialogAjaxDone);">
+			<input type="hidden" name="id" value="{$vo['id']}" />
+			<input type="hidden" name="callbackType" value="closeCurrent">
+			<div class="pageFormContent " layoutH="55">
+				<div class="tml-row">
+					<div class="tml-form-col">
+						<label>  用车人:</label>
+						<div class="tml-input-append">
+					        <input type="hidden" class="readonly org.roid" name="roid" readonly="readonly" value="{$vo['roid']}" >
+					        <input type="text" class="required readonly org.name" name="usename" readonly="readonly" size="16" value="{$vo['roid']|getFieldBy=###,'id','applyUser','MisRequestCar'}" >
+					        <a class="input-addon input-addon-add" href="__URL__/lookup" lookupGroup="org">用车人选择</a>
+						</div>
+					</div>
+					<div class="tml-form-col">
+						<label>车辆名称：</label>
+						<input  type="text" name="carName" value="{$vo['carID']|getFieldBy=###,'id','name','MisSystemCar'}" class="org.carName">
+						<input type="hidden" name="carID" value="{$vo['carID']}" class="org.carID"/>
+					</div>
+					<div class="tml-form-col">
+						<label>当前总里程：</label>
+						<input  type="text" name="totalKM" class="required" readonly="readonly" value="{$vo['totalKM']|getDigits}" onblur="FormatNumber(this);">
+						<input type="hidden" name="tempTotalKM" class="org.tempTotalKM"  value="{$vo['tempTotalKM']}" />
+					</div>
+					<div class="tml-form-col">
+						<label>本次使用里程：</label>
+						<input  type="text" name="runKM" class="readonly required" readonly="readonly" value="{$vo['runKM']|getDigits}">
+					</div>
+					<div class="tml-form-col">
+							<label>返回时间：</label>
+							<div class="tml-input-append">
+		                        <input type="text"  name="returnTime" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})" class="Wdate required" value="{$vo['returnTime']|transTime='Y-m-d H:i'}"/>
+		                        <span class="input-addon input-addon-calendar"></span>
+								<input type="hidden" name="tempReturnTime" class="org.tempReturnTime" value="{$vo['tempReturnTime']}" />
+							</div>
+					</div>
+					<div class="tml-form-col">
+							<label>实际使用时长：</label><input  type="text" name="keepTimeTrue" class="" value="{$vo['keepTimeTrue']}">
+					</div>
+				</div>
+				<div class="tml-form-row">
+					<label>实际行程：</label>
+					<textarea  name="trueJourney" >{$vo['trueJourney']}</textarea>
+				</div>
+				<div class="tml-form-row">
+					<label>有/无异常：</label>
+					<textarea  name="helthStatus">{$vo['helthStatus']}无</textarea>
+				</div>
+			</div>
+            {:W('ShowAction',array('data'=>$vo))}
+	</form>
+	</div>
+</div>

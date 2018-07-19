@@ -1,0 +1,258 @@
+<style type="text/css">
+    .att-top{
+        border:1px solid red;
+        display: inline-block;
+        width:100%;
+        margin-left:100px;
+    }
+    .rules-l-btn{
+        display: inline-block;
+        border: 1px solid #d8d8d8;
+        height: 30px;
+        line-height: 30px;
+        border-radius: 4px;
+        outline: none;
+        margin-bottom: 10px;
+        padding:0 10px;
+        cursor: pointer;
+    }
+    #attr_par_ul{border:1px solid #d8d8d8;margin: 10px 10px;float:left;}
+    #attr_par_ul li{ line-height:30px;border-top: 1px solid #d8d8d8;padding:0 20px;}
+    #attr_par_ul li div{ display: inline-block;width:80%;}
+    #attr_par_ul li .attr_check_par{
+        border-radius: 4px;
+        text-align: center;
+        color: #fff;
+        background: #03a9f4;
+        padding: 3px 6px;
+        margin-right: 5px;
+        cursor: pointer;
+    }
+</style>
+<script type="text/javascript">
+    //将form中的值转换为键值对。
+    function getFormJson(frm) {
+        var o = {};
+        var a = $(frm).serializeArray();
+        $.each(a, function () {
+            if (o[this.name] !== undefined) {
+                if (!o[this.name].push) {
+                    o[this.name] = [o[this.name]];
+                }
+                o[this.name].push(this.value || '');
+            } else {
+                o[this.name] = this.value || '';
+            }
+        });
+
+        return o;
+    }
+    (function ($) {
+        $.fn.extend({
+            insertAtCaret: function (myValue) {
+                var $t = $(this)[0];
+                if (document.selection) {
+                    this.focus();
+                    sel = document.selection.createRange();
+                    sel.text = myValue;
+                    this.focus();
+                } else
+                if ($t.selectionStart || $t.selectionStart == '0')
+                {
+                    var startPos = $t.selectionStart;
+                    var endPos = $t.selectionEnd;
+                    var scrollTop = $t.scrollTop;
+                    $t.value = $t.value.substring(0, startPos) + myValue + $t.value.substring(endPos,$t.value.length);
+                    this.focus();
+                    $t.selectionStart = startPos + myValue.length;
+                    $t.selectionEnd = startPos + myValue.length;
+                    $t.scrollTop = scrollTop;
+                } else {
+                    this.value += myValue;
+                    this.focus();
+                }
+            }
+        })
+    })(jQuery) ;
+    $(function() {
+        var zNodes = {$tree};
+        var setting = {
+            view: {
+                showLine: true,
+                selectedMulti: false,
+                fontCss: getFontCss
+            },
+            data: {
+                simpleData: {
+                    enable: true
+                }
+            },
+            callback: {
+                onClick: function(e,treeId,treeNode) {
+                    var treeObj=$.fn.zTree.getZTreeObj("attruelssql");
+                    nodes = treeObj.getSelectedNodes(true);
+                    var cls=$("#attval_focus", $("#{$formname}")).val();
+                    if(cls&&nodes[0]['tableinfo']) {
+                        $("#" +cls, $("#{$formname}")).insertAtCaret(nodes[0]['tableinfo']);
+                    }
+                }
+            }
+        };
+        $.fn.zTree.init($("#attruelssql"), setting, zNodes);
+        var treeObj = $.fn.zTree.getZTreeObj("attruelssql");
+        var valid='{$check}';
+        var nodes = treeObj.getNodesByParam("id", valid, null);
+        treeObj.selectNode(nodes[0]);
+
+        //两个文本获取焦点事件
+        $("#att_res", $("#{$formname}")).on('focus',function(){
+            $("#attval_focus", $("#{$formname}")).val($(this).attr('name'));
+        });
+        $("#att_where", $("#{$formname}")).on('focus',function(){
+            $("#attval_focus", $("#{$formname}")).val($(this).attr('name'));
+        });
+
+        //符号点击事件
+        $(".add_result_ul li span",$("#{$formname}")).on('click',function(){
+            var sym=$(this).data('sym');
+            var cls=$("#attval_focus", $("#{$formname}")).val();
+            if(sym&&cls){
+                $("#"+cls,$("#{$formname}")).insertAtCaret(sym);
+            }
+        });
+
+        //选择下级控件
+        $(".rules-l-btn", $("#{$formname}")).on('click', function () {
+            var dtype = $(this).data("type");
+//            var foc=$("#attval_focus", $("#{$formname}")).val();
+            var formname = '{$formname}';
+            if (dtype) {
+                if (dtype == 'control') {
+                    var title = "字段值选择";
+                    var rel = formname + "_atr";
+                    options = {width: 360, height: 260, mask: true};
+                    options.param = {myform: formname + "_atr", parentform: formname, parentctr: 'att_where'};
+                    var url = "__URL__/controlval";
+                    DWZ.debug(url);
+                    $.pdialog.open(url, rel, title, options);
+                }
+                if (dtype == 'api') {
+                    var title = "接口设置";
+                    var rel = formname + "_atr";
+                    options = {width: 900, height: 500, max: true, mask: true};
+                    options.param = {myform: formname + "_atr", parentform: formname, parentctr: 'att_where'};
+                    var url = "__URL__/apival";
+                    DWZ.debug(url);
+                    $.pdialog.open(url, rel, title, options);
+                }
+                if (dtype == 'sp') {
+                    var title = "存储过程设置";
+                    var rel = formname + "_atr";
+                    options = {width: 900, height: 500, max: true, mask: true};
+                    options.param = {myform: formname + "_atr", parentform: formname, parentctr: 'att_where'};
+                    var url = "__URL__/spval";
+                    DWZ.debug(url);
+                    $.pdialog.open(url, rel, title, options);
+                }
+                if (dtype == 'att') {
+                    var title = "跨表取数";
+                    var rel = formname + "_atr";
+                    options = {width: 900, height: 500, max: true, mask: true};
+                    options.param = {myform: formname + "_atr", parentform: formname, parentctr: 'att_where'};
+                    var url = "__URL__/attval";
+                    DWZ.debug(url);
+                    $.pdialog.open(url, rel, title, options);
+                }
+            }
+        });
+        $("#save_atr",$("#{$formname}")).on("click",function(){
+            var res=$("#att_res",$("#{$formname}")).val();
+            var where=$("#att_where",$("#{$formname}")).val();
+            if(res){
+                $("#{$parentform} #{$parentctr}").val(res);
+                $("#{$parentform} #{$parentctr1}").val(where);
+                $.pdialog.close('{$formname}');
+            }else{
+                alertMsg.error('请填写返回信息');
+                return false;
+            }
+        });
+        //选择参数
+        $(".attr_check_par",$("#{$formname}")).on('click',function(){
+            var par_name=$(this).data('key');
+            $("#att_where",$("#{$formname}")).insertAtCaret(par_name);
+        });
+    });
+</script>
+<div class="page">
+    <div class="pageContent">
+        <form method="post" id="{$formname}" action="__URL__/setatr" class="pageForm required-validate">
+            <div class="pageFormContent" layoutH="40">
+                <ul id="attr_par_ul" style="display: block;width:90%">
+                    <li><div style="font-size:16px;font-weight: bold;">可选参数 </div></li>
+                    <foreach name="pars" item="par">
+                        <li>
+                            <div>{$par['content']}</div>
+                            <a class="attr_check_par" data-key="{$par['name']}">选择</a>
+                        </li>
+                    </foreach>
+                </ul>
+                <div class="treeleft listtree" >
+                    <!--<div class="close">-->
+                        <!--<div class="clearfix p5">-->
+                            <!--<a class="rules-l-btn" data-type="control"><span>控件值</span></a>-->
+                            <!--<a class="rules-l-btn" data-type="api"><span>接口值</span></a>-->
+                            <!--<a class="rules-l-btn" data-type="sp"><span>存储过程</span></a>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <div class="close">
+                        <div class="clearfix p5">
+                            <div class="member_searcher">
+                                <input class="add_key left" id="attruelssqlNodeKeys"  type="text" placeholder="请输入查找词" name=""/>
+                                <button class="btn_member icon-search right" onclick="SearchZTreeNode('attruelssql','attruelssqlNodeKeys')" type="button"></button>
+                            </div>
+                        </div>
+                        <ul id="attruelssql" class="ztree" layoutH="118"></ul>
+                    </div>
+                </div>
+                <div id="MisSystemIntercalateMasBox" class="unitBox treeright arc_right">
+                    <div class="add_result_center">
+                        <ul class="add_result_ul">
+                            <li><span data-sym="+"> + </span></li>
+                            <li><span data-sym="-"> - </span></li>
+                            <li><span data-sym="*"> * </span></li>
+                            <li><span data-sym="/"> / </span></li>
+                            <li><span data-sym="()"> ()</span></li>
+                            <li><span data-sym="=="> == </span></li>
+                            <li><span data-sym="="> = </span></li>
+                            <li><span data-sym="&&"> && </span></li>
+                            <li><span data-sym="||">||</span></li>
+                            <li><span data-sym=">"> > </span></li>
+                            <li><span data-sym=">="> >= </span></li>
+                            <li><span data-sym="<"> < </span></li>
+                            <li><span data-sym="<="> <= </span></li>
+                            <li><span data-sym="<>"> <> </span></li>
+                        </ul>
+                    </div>
+                    <div class="add_result_right">
+                        <input type="hidden" id="attval_focus" name="attval_focus" value=""/>
+                        <span>返回信息</span>
+                        <div>
+                            <textarea class="att_res" id="att_res" name="att_res" style="height:200px;"></textarea>
+                        </div>
+                        <span>查询条件</span>
+                        <div>
+                            <textarea class="att_where" id="att_where" name="att_where" style="height:50px;"></textarea>
+                        </div>
+                    </div>
+                    <div class="formBar">
+                        <ul>
+                            <li><button type="button" id="save_atr" class="tml_formBar_btn tml_formBar_btn_blue enterIndex">保存</button></li>
+                            <li><button onclick="javascript:$.pdialog.close('{$formname}');" class="tml_formBar_btn tml_formBar_btn_red enterIndex" type="button">关闭</button></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

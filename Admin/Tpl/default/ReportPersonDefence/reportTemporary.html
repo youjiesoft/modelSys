@@ -1,0 +1,95 @@
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/jqGrid/themes/redmond/jquery-ui-1.8.2.custom.css" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/jqGrid/css/ui.jqgrid.css" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/jqGrid/css/redmond/jquery-ui-1.8.2.custom.css" />
+<script src="__PUBLIC__/Js/jquery.textSearch-1.0.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Js/jqGrid/js/i18n/grid.locale-en.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Js/jqGrid/js/jquery.jqGrid.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Js/report_forms.js" type="text/javascript"></script>
+<script>
+	$(document).ready(function(){
+		var h = $(window).height()-200; 
+	    $("#jsonmaplookupreporttemporary").jqGrid({
+	    	url:"__URL__/lookupReportTemporary/collhandledate/{$time}",
+	    	mtype: "POST",
+	    	postData:{listtype:1},
+	    	datatype: "json",
+	    	colNames:{$colNames},
+	     	colModel:[
+	     	    		{name:'fbid',index:'fbid',align:'center',hidden:true},
+	     	    		{name:'customername',index:'customername',align:'center'},
+	     	    		{name:'customtypename',index:'customtypename',align:'center',sortable:false},
+	     	    		{name:'address',index:'address',align:'center'},
+	     	    		{name:'temporaryname',index:'temporaryname',align:'center',sortable:false},
+	     	    		{name:'linkman',index:'linkman',align:'center'},
+	     	    		{name:'linkmantel',index:'linkmantel',align:'center'},
+	     	    		{name:'onceservedate',index:'onceservedate',align:'center',sortable:false},
+	     	    		{name:'contractdate',index:'contractdate' ,align:'center',width:'400px',sortable:false},
+	     	    		{name:'sumservicecharge',index:'sumservicecharge',align:'center',formatter:'number',summaryType:'sum',summaryTpl:'a ：{0} ',formatoptions:{thousandsSeparator: ','}},
+	     	    		{name:'accreditpenum',index:'accreditpenum',align:'center',summaryType:'sum',formatter:'number', formatoptions:{thousandsSeparator: ','}},
+	     	    		{name:'realityaccreditpenum',index:'realityaccreditpenum',summaryType:'sum',align:'center',formatter:'integer', formatoptions:{thousandsSeparator: ','}},
+	     	    		{name:'remark',index:'remark',align:'center'}
+	     	       	 ],
+	     	pager: '#pjmaplookupreporttemporary',
+	    	rowNum:50,
+	       	rowList:[50,100,200],
+	       	viewrecords: true, //是否显示行数 
+	    	sortname: 'fbid',
+	     	autowidth: true,
+	        sortorder: "asc",
+	        altRows : true,
+	        rownumbers: true,
+	        footerrow: true,
+	        height: h,
+	        gridComplete: function(){
+	        	 var rowNum = parseInt($(this).getGridParam('records'),10);
+	        	 var rowNum = parseInt($(this).getGridParam('records'),10);
+	             if(rowNum > 0){
+	            	 $(".ui-jqgrid-sdiv").show();
+	        	 var sumservicecharge  = jQuery(this).getCol('sumservicecharge',false,'sum');
+	        	 var accreditpenum  = jQuery(this).getCol('accreditpenum',false,'sum');
+	        	 var realityaccreditpenum  = jQuery(this).getCol('realityaccreditpenum',false,'sum');
+	        	 $(this).footerData("set",{customername:"合计",sumservicecharge:sumservicecharge,accreditpenum:accreditpenum,
+	        		 realityaccreditpenum:realityaccreditpenum
+	               });
+	             }else{
+	            	 $(".ui-jqgrid-sdiv").hide();
+	             }
+	        },
+	        userDataOnFooter: true
+	    });
+	});
+</script>
+<div class="pageContent applecloth" layoutH="0">
+	<div class="pageHeader">
+		<h2 class="contentTitle contentTitle_center">临时勤务合同</h2>
+		<div id="generalreportTemporary" style="margin: 0 auto;width:300px;">
+			<fieldset>
+				<div class="xyformunit">
+					<label>请选择汇总月份：</label>
+					<span class="xyInputWithUnit">
+						<input type="text"  name="collhandledate" onfocus="WdatePicker({skin:'whyGreen',dateFmt:'yyyy年 MM月 '})" value="{$time}" class="tml-border-r0 Wdate required"  />
+						<span class="input-addon input-addon-calendar"></span>
+					</span>
+				</div>
+			</fieldset>
+			<div class="buttonActive tml-mr5">
+				<div class="buttonContent">
+					<button name="showgrid"  onclick="reportReloadGrid_doSearch('collhandledate','jsonmaplookupreporttemporary','__URL__/lookupReportTemporary/collhandledate/','lookupreporttemporary_exportExcel','lookupreporttemporary_exportPDF','reportTemporary')"  >检索</button>
+				</div>
+			</div>
+			<div class="button tml-mr5"><div class="buttonContent">
+				<button type="button" id="lookupreporttemporary_exportExcel" onclick="lookupfunc_exportExcel('__APP__','jsonmaplookupreporttemporary','reportTemporary',1,'/collhandledate/{$time}')">导出EXCEL</button>
+			</div></div>
+			<div class="button"><div class="buttonContent">
+				<button type="button" id="lookupreporttemporary_exportPDF" onclick="lookupfunc_exportExcel('__APP__','jsonmaplookupreporttemporary','reportTemporary',2,'/collhandledate/{$time}')">导出PDF</button>
+			</div></div>
+		</div>
+		<div class="clear"></div>
+		<div id="lookupreporttemporarydiv" style="width: 95%; margin: 0 auto;">
+			<div style="width: 95%; margin: 0 auto;">
+				<table id="jsonmaplookupreporttemporary"></table>
+				<div id="pjmaplookupreporttemporary"></div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,20 @@
+<div class="page">
+	<div class="pageContent">
+	<form method="post" action="__APP__/MisSaleBusinessSource/update/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+			<input type="hidden" name="callbackType" value="closeCurrent" />
+			<input type="hidden" name="id" value="{$vo['id']}" />
+			<div class="pageFormContent" layoutH="48">
+				<div class="tml-row">
+					{:W('ShowOrderno',array(1,'mis_sale_business_source'))}
+					<div class="tml-form-col ">
+						<label>{$fields["name"]}:</label>
+						<input type="text"  name="name" class="required  " value="{$vo['name']}">
+						
+					</div>
+					
+				</div>	
+			</div>	
+			{:W('ShowAction',array('data'=>$vo))}
+	</form>
+	</div>
+</div>

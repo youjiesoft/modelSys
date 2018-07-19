@@ -1,0 +1,170 @@
+<link href="__PUBLIC__/Css/question/qa-styles.css" rel="stylesheet" type="text/css" />
+<style>
+div.qa-a-selection input.qa-a-unselect-button:hover{background-position: 0 -50px;}
+div.qa-a-selection input.qa-a-select-button:hover{background-position: 0 -100px;}
+div.qa-a-list-item {min-height: auto;}
+div.qa-q-view-buttons {margin-top:auto;}
+</style>
+	<div class="page">
+		<div class="pageContent">
+			<div class="qa-main-shadow">
+				<div class="qa-context clearfix">
+					<div class="qa-context-search">
+						<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="__URL__/lookupview/id/{$vo['id']}" method="post">
+							<div>
+								<label>搜索</label>
+								<span class="qa-context-search-wrap">
+									<input class="qa-context-search-txt" type="text" name="lookname" value="{$lookname}"/>
+									<input class="qa-context-search-button" type="submit" value="" />
+								</span>
+							</div>
+						</form>
+					</div>
+					<div class="qa-context-newfile">
+						<a onclick="return parent.knowledgemanage();" target="navTab" title="发表文章"><span>发表文章</span></a>
+					</div>
+				</div>
+				<div class="qa-main-wrapper clearfix">
+					<div class="qa-sidepanel">
+						<div class="qa-nav-cat">
+							<ul class="qa-nav-cat-list qa-nav-cat-list-1">
+								<li class="qa-nav-cat-item qa-nav-cat-all">
+									<a class="qa-nav-cat-link" href="./index.php">所有分类</a>
+								</li>
+								<volist name="typeidlist" id="t">
+									<li class="qa-nav-cat-item">
+									<a class="qa-nav-cat-link" title="{$t['name']}" style="cursor:pointer;" onclick="return parent.knowledgelistalink('{$t['id']}','文章列表');" >{$t["name"]}</a>
+									<span class="qa-nav-cat-note"></span>
+									</li>
+								</volist>
+							</ul>
+							<div class="qa-nav-cat-clear">
+							</div>
+						</div>
+					</div>
+					
+					<div class="qa-main <if condition="$vo['closedbyid']"> qa-main-hidden</if> ">
+						<div class="qa-main-q-wrap">
+							<form action="" method="POST">
+								<h1><span style="color:skyblue;" class="qa-favoriting">{$levels[$vo["levels"]]}</span>
+									<span class="entry-title">{$vo["title"]}</span>
+								</h1>
+								<div class="divider"></div>
+							</form>
+							<form name="q_page_form" action="" method="POST">
+								<input type="hidden" value="" name="qa_click">
+							</form>
+							<div id="q2" class="qa-q-view  <if condition="$vo['closedbyid']">qa-q-view-hidden</if>  hentry question">
+								<div class="qa-voting qa-voting-net">
+									<if condition="$vo.picture">
+										<img src="__PUBLIC__/Uploads/{$vo.picture}" style="width: 59px;height:59px;"/>
+									<else/>
+										<img src="__PUBLIC__/Images/xyimages/xyheader_image.jpg" alt="暂无图片" style="width: 59px;height:59px;"/>
+									</if>
+									<div class="qa-vote-clear"></div>
+								</div>
+								<div class="qa-q-view-main">
+									<form action="__URL__/xx/" method="POST">
+										<div class="qa-q-view-content">
+											<div class="entry-content">{$vo["content"]}</div>
+											<volist name="attarry" id="att">
+												<span class="qa-q-view-avatar-meta">附件{$key+1}： <a target="_blank" href='__PUBLIC__/{$att["attached"]}'>{$att["upname"]}</a></span><br />
+											</volist>
+										</div>
+										<div class="clearfix">
+											<div class="qa-q-view-buttons">
+												<if condition="$_SESSION.a eq 1 or $_SESSION.misknowledgelist_knowledgedo">
+													<input type="submit" onmouseout="this.className='qa-form-light-button qa-form-light-button-flag';" onmouseover="this.className='qa-form-light-hover qa-form-light-hover-flag';" class="qa-form-light-button qa-form-light-button-flag" title="推广操作" value="推广操作" onclick="return parent.openknowleddo('{$vo['id']}');"></if>
+											&nbsp;	
+												<if condition="$_SESSION.a eq 1 or $_SESSION.misknowledgelist_conments">
+													<input type="submit" onmouseout="this.className='qa-form-light-button qa-form-light-button-answer';" onmouseover="this.className='qa-form-light-hover qa-form-light-hover-answer';" class="qa-form-light-button qa-form-light-button-answer" title="评论此文章" value="评论" onclick="return parent.openknowledgeconments('{$vo['id']}');" ></if>
+												<input type="hidden" value="" name="qa_click">
+											</div>
+											<span class="qa-q-view-avatar-meta">
+												<span class="qa-q-view-meta">&nbsp;&nbsp;
+													<span class="qa-q-view-what">发布时间:</span>
+													<span class="qa-q-view-when">
+														<span class="qa-q-view-when-data">
+															<span class="published">{$vo['createtime']|timeDiff=###}</span>
+														</span>
+													</span>&nbsp;&nbsp;&nbsp;
+													<span class="qa-q-view-where">
+														<span class="qa-q-view-where-pad">分类:</span>
+														<span class="qa-q-view-where-data">
+															<a class="qa-category-link" title="{$vo['typename']}" style="cursor:pointer;" onclick="return parent.knowledgelistalink('{$vo['categoryid']}','文章列表');" >
+																{$vo['typename']}
+															</a>
+														</span>
+													</span>&nbsp;&nbsp;&nbsp;
+													<span class="qa-q-view-who">
+														<span class="qa-q-view-who-pad">作者:</span>
+														<span class="qa-q-view-who-data">
+															<span class="vcard author">
+																<a class="qa-user-link url nickname" title="{$vo['name']}" style="cursor:pointer;" onclick="return parent.knowledgelistuser('{$vo['createid']}','文章列表');">{$vo['name']}</a>
+															</span>
+														</span>
+													</span>
+												</span>
+											</span>
+										</div>
+									</form>
+									<div class="qa-c-form">
+									</div> <!-- END qa-c-form -->
+								</div> <!-- END qa-q-view-main -->
+								<div class="qa-q-view-clear">
+								</div>
+							</div> <!-- END qa-q-view -->
+							
+							<h2><span id="a_list_title">共 {$count}个评论</span></h2>
+							<div class="qa-a-arrow"></div>
+						</div>
+						<div id="a_list" class="qa-a-list">
+							<volist name="conments" id="alist">
+							<div class="qa-a-list-item-wrap">
+								<div class="qa-a-list-item hentry answer <if condition="$alist['id'] eq $vo['selchildid']">answer-selected qa-a-list-item-selected</if>">
+									<div  class="qa-voting qa-voting-net">
+										<if condition="$vo.picture">
+												<img src="__PUBLIC__/Uploads/{$vo.picture}" style="width: 59px;height:59px;"/>
+											<else/>
+												<img src="__PUBLIC__/Images/xyimages/xyheader_image.jpg" alt="暂无图片" style="width: 59px;height:59px;"/>
+											</if>
+										<div class="qa-vote-clear">
+										</div>
+									</div> 
+									<div class="qa-a-item-main">
+										<div class="qa-a-item-selected">
+											<div class="qa-a-item-content">
+												<div class="entry-content">{$alist['content']}</div>
+											</div>
+											<span class="qa-a-item-avatar-meta">
+												<span class="qa-a-item-meta">
+													<a class="qa-a-item-what" href="#">已评论</a>&nbsp;&nbsp;&nbsp;
+													<span class="qa-a-item-when">
+														<span class="qa-a-item-when-data"><span class="published">{$alist['createtime']|timeDiff=###,2}</span></span>
+													</span>&nbsp;&nbsp;&nbsp;
+													<span class="qa-a-item-who">
+														<span class="qa-a-item-who-pad">作者:</span>
+														<span class="qa-a-item-who-data"><span class="vcard author">
+															<a class="qa-user-link url nickname" title="{$vo['name']}" style="cursor:pointer;" onclick="return parent.knowledgelistuser('{$vo['createid']}','文章列表');">
+																{$vo['name']}
+															</a>
+															</span></span>&nbsp;&nbsp;
+															<span class="qa-a-item-who-points">
+															<span class="qa-a-item-who-points-pad">(</span><span class="qa-a-item-who-points-data">{$alist['createid']|getFieldby=###,'id','score','user'}</span><span class="qa-a-item-who-points-pad"> 积分)</span>
+														</span>
+													</span>
+												</span>
+											</span>
+										</div>
+									</div> <!-- END qa-a-item-main -->
+									<div class="qa-a-item-clear">
+									</div>
+								</div> <!-- END qa-a-list-item -->
+							</div><!-- END qa-a-list-item-wrap -->
+							</volist>
+						</div> <!-- END qa-a-list -->
+					</div> <!-- END qa-main -->
+				</div> <!-- END main-wrapper -->
+			</div>
+		</div> 
+	</div>

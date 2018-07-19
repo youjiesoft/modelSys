@@ -1,0 +1,71 @@
+<form id="pagerForm" action="__URL__/lookupmanage" method="post">
+	<input type="hidden" name="pageNum" value="1" />
+	<input type="hidden" name="orderField" value="{$order}" />
+	<input type="hidden" name="orderDirection" value="{$sort}" />
+</form>
+<div class="panelBar" style="border-top:1px solid #95B8E7;">
+<form rel="pagerForm" onSubmit="return  divSearch(this, 'documentOutAudit_right');" action="__URL__/lookupmanage" method="post">
+	<input type="hidden" name="jump" value="1"/>
+   <div class="searchBar">
+       <table class="searchContent">
+			<tr>
+				<td>
+					<input type="text"  class="keyword" name="keyword"  value="{$keyword}" />
+				</td>
+				<td>
+					<select class="combox searchby" name="searchby" >
+						<volist name="searchbylist" id="sb">
+							 <option value="{$sb.id}"  <if condition="$searchby eq $sb.id"> selected="selected"</if> > {$sb.val} </option>
+						</volist>
+					</select>
+				</td>
+				<td>
+					<button class="xySearch" type="submit">{$Think.lang.subsearch}</button>
+				</td>
+				<td>
+					<button class="xyBack" type="button" multLookup="userid" warn="请选择用户">选择带回</button>
+				</td>
+			</tr>
+		</table>
+    </div>
+</form>
+</div>
+<div class="">
+	<table class="table" width="99%" layoutH="146">
+		<thead>
+			<tr>
+				<th width="20"><input type="checkbox" class="checkboxCtrl" group="userid" /></th>
+				<th width="20">ID</th>
+				<th>员工编号</th>
+				<th>员工姓名</th>
+				<th>部门</th>
+				<th>职级</th>
+				<th>职务</th>
+				<th>入职时间</th>
+				<th>查找带回</th>
+			</tr>
+		</thead>
+		<tbody class="tbodylist">
+			<volist id="vo" name="list">
+				<tr>
+					<td><input type="checkbox" name="userid" value="{ userid:'{$vo.id}', name:'{$vo.name}'}"/></td>
+					<td>{$vo['id']}</td>
+					<td>{$vo['orderno']}</td>
+					<td>{$vo['name']}</td>
+					<td>{$vo['deptname']}</td>
+					<td>{$vo['dutyname']}</td>
+					<td>{$vo['worktype']|getFieldBy='id','name','mis_hr_job_info'}</td>
+					<td>{$vo['indate']|transTime}</td>
+					<td>
+						<a class="btnSelect"  href="javascript:$.bringBack({ userid:'{$vo.id}', name:'{$vo.name}'})" title="查找带回">选择</a>
+					</td>
+				</tr>
+			</volist>
+		</table>
+	<div class="panelBar panelPageBar" style="border-bottom:none;">
+		<div class="pages">
+			<span>共{$totalCount}条</span>
+		</div>
+		<div class="pagination" rel="documentOutAudit_right" targetType="dialog" totalCount="{$totalCount}" numPerPage="{$numPerPage}" pageNumShown="10" currentPage="{$currentPage}"></div>
+	</div>
+</div>

@@ -1,0 +1,336 @@
+<div class="page">
+	<div class="pageContent">
+		<form method="post" action="__URL__/update/rel/missystemcar" class="pageForm required-validate" onsubmit="return validateCallback(this,navTabAjaxDone);">
+			<input type="hidden" name="id" value="{$vo['id']}" />
+			<input type="hidden" name="callbackType" value="closeCurrent"/>
+			<input type="hidden" name="refreshtabs[data]" value="1">
+			<div class="pageFormContent applecloth" layoutH="55">
+				<div class="keepContentCenter  clearfix">
+				<fieldset>
+					<legend class="fieldset_legend_toggle">一、基本信息</legend>
+					<div class="tml-row">
+						<if condition='$fields["name"]'>
+						<div class="tml-form-col">
+							<label> {$fields["name"]}： </label>
+							<input type="text" name="name" value="{$vo.name}"  class="required" >
+						</div>
+						</if>
+						 <if condition='$fields["carno"]'>
+	                    <div class="tml-form-col">
+	                        <label>{$fields["carno"]}：</label>
+	                        <input type="text" name="carno" value="{$vo.carno}" class="required textInput" />
+	                    </div>
+	                    </if>
+						<if condition='$fields["employeeID"]'>
+							<div class="tml-form-col">
+								<label>{$fields["employeeID"]}: </label>
+								<div class="tml-input-append">
+								<input type="text" class="readonly org.name tml-find-num"  value="{$vo.employeeID|getFieldBy='id','name','mis_hr_personnel_person_info'}" readonly="readonly" >
+								<a class="input-addon input-addon-addon input-addon-add" param="field=id,name&model=MisHrBasicEmployee&conditions=working,1" href="__URL__/lookupGeneral" lookupGroup="org">查找带回</a>
+								<input type="hidden" name="employeeID" value="{$vo.employeeID}" class="readonly  org.id">
+								</div>
+							</div>
+						</if>
+						<if condition='$fields["departmentID"]'>
+						<div class="tml-form-col">
+							<label>{$fields["departmentID"]}： </label>
+							<select name="departmentID" value="{$vo.departmentID}" class="combox">
+								{$depthtml}
+							</select>
+						</div>
+						</if>
+	                    <if condition='$fields["carcolor"]'>
+	                    <div class="tml-form-col">
+	                        <label>{$fields["carcolor"]}：</label>
+	                        <select class="combox" name="carcolor">
+	                            {:getSelectByHtml('carcolour','select',$vo['carcolor'])}
+	                        </select>
+	                    </div>
+	                    </if>
+	                    <if condition='$fields["transportnumber"]'>
+	                    <div class="tml-form-col">
+	                        <label>{$fields["transportnumber"]}：</label>
+	                        <input type="text" name="transportnumber" value="{$vo.transportnumber}" class=" textInput" />
+	                    </div>
+	                    </if>
+	                    <if condition='$fields["transportreleasedate"]'>
+	                    <div class="tml-form-col">
+	                        <label>{$fields["transportreleasedate"]}:</label>
+	                        <span class="xyInputWithUnit">
+	                            <input type="text" name="transportreleasedate" value="{$vo.transportreleasedate|transtime}" class="Wdate" onfocus="WdatePicker()" size="17"/>
+	                            <span class="input-addon input-addon-calendar"></span>
+	                        </span>
+	                    </div>
+	                    </if>
+	                   <if condition='$fields["drivingregistrationdate"]'>
+	                    <div class="tml-form-col">
+	                        <label>{$fields["drivingregistrationdate"]}:</label>
+	                        <span class="xyInputWithUnit">
+	                            <input type="text" name="drivingregistrationdate" value="{$vo.drivingregistrationdate|transtime}" class="Wdate" onfocus="WdatePicker()" size="17"/>
+	                            <span class="input-addon input-addon-calendar"></span>
+	                        </span>
+	                    </div>
+	                    </if>
+	                   	<if condition='$fields["drivingreleasedate"]'>
+	                    <div class="tml-form-col">
+	                        <label>{$fields["drivingreleasedate"]}:</label>
+	                        <span class="xyInputWithUnit">
+	                            <input type="text" name="drivingreleasedate" value="{$vo.drivingreleasedate|transtime}" class="Wdate" onfocus="WdatePicker()" size="17"/>
+	                            <span class="input-addon input-addon-calendar"></span>
+	                        </span>
+	                    </div>
+	                    </if>
+	                    <if condition='$fields["cartype"]'>
+	                    <!-- 
+		                    <div class="tml-form-col">
+		                        <label>{$fields["cartype"]}：</label>
+		                        <select class="combox" name="cartype">
+		                            {:getSelectByHtml('cartype','select',$vo['cartype'])}
+		                        </select>
+		                    </div>
+		                  -->
+		                    <div class="tml-form-col">
+		                        <label>{$fields["cartype"]}：</label>
+		                        <select class="combox" name="cartype">
+		                           <volist name="TypeList" id="type">
+		                           		<option value="{$type['id']}" <if condition="$vo['cartype'] eq $type['id']">selected="selected"</if>>{$type['name']}</option>
+		                           </volist>
+		                        </select>
+		                    </div>
+	                    </if>
+	                    <if condition='$fields["labeltype"]'>
+	                    <div class="tml-form-col">
+	                        <label>{$fields["labeltype"]}：</label>
+	                        <input type="text" name="labeltype" value="{$vo.labeltype}" class=" textInput" />
+	                    </div>
+	                    </if>
+	                    <if condition='$fields["vehicleidentificationnumber"]'>
+	                    <div class="tml-form-col">
+	                        <label>{$fields["vehicleidentificationnumber"]}：</label>
+	                        <input type="text" name="vehicleidentificationnumber" value="{$vo.vehicleidentificationnumber}" class=" textInput" />
+	                    </div>
+	                    </if>
+	                    <if condition='$fields["carnature"]'>
+	                    <div class="tml-form-col">
+	                        <label>{$fields["carnature"]}：</label>
+	                        <select class="combox" name="carnature">
+	                            {:getSelectByHtml('carsource','select',$vo['carnature'])}
+	                        </select>
+	                    </div>
+	                    </if>
+	                    <if condition='$fields["engineno"]'>
+	                    <div class="tml-form-col">
+	                        <label>{$fields["engineno"]}:</label>
+	                        <input type="text" name="engineno" value="{$vo.engineno}" class=" textInput" />
+	                    </div>
+	                    </if>
+	                    <if condition='$fields["enginetype"]'>
+	                    <div class="tml-form-col">
+	                        <label>{$fields["enginetype"]}:</label>
+	                        <input type="text" name="enginetype" value="{$vo.enginetype}" class=" textInput" />
+	                    </div>
+	                    </if>
+	                    <if condition='$fields["fueltype"]'>
+	                    <div class="tml-form-col">
+	                        <label>{$fields["fueltype"]}:</label>
+	                        <select class="combox" name="fueltype">
+	                            {:getSelectByHtml('fueltype','select',$vo['fueltype'])}
+	                        </select>
+	                    </div>
+	                    </if>
+	                    <if condition='$fields["displacement"]'>
+	                    <div class="tml-form-col">
+	                        <label>{$fields["displacement"]}:</label>
+	                        <input type="text" name="displacement" value="{$vo.displacement}" class=" textInput" />
+	                    </div>
+	                    </if>
+	                    <if condition='$fields["factoryname"]'>
+	                    <div class="tml-form-col">
+	                        <label>{$fields["factoryname"]}:</label>
+	                        <input type="text" name="factoryname" value="{$vo.factoryname}" class=" textInput" />
+	                    </div>
+	                    </if>
+	                    <if condition='$fields["turntotype"]'>
+	                    <div class="tml-form-col">
+	                        <label>{$fields["turntotype"]}:</label>
+	                        <input type="text" name="turntotype" value="{$vo.turntotype}" class=" textInput" />
+	                    </div>
+	                    </if>
+	                    <if condition='$fields["wheeltrack"]'>
+	                    <div class="tml-form-col">
+	                        <label>{$fields["wheeltrack"]}:</label>
+	                        <input type="text" name="wheeltrack" value="{$vo.wheeltrack}" class=" textInput" />
+	                    </div>
+	                    </if>
+	                    <if condition='$fields["tiresize"]'>
+	                    <div class="tml-form-col">
+	                        <label>{$fields["tiresize"]}:</label>
+	                        <input type="text" name="tiresize" value="{$vo.tiresize}" class=" textInput" />
+	                    </div>
+	                    </if>
+	                    <if condition='$fields["steelspringnumber"]'>
+	                    <div class="tml-form-col">
+	                        <label>{$fields["steelspringnumber"]}:</label>
+	                        <input type="text" name="steelspringnumber" value="{$vo.steelspringnumber}" class=" textInput" />
+	                    </div>
+	                    </if>
+	                    <if condition='$fields["wheelbase"]'>
+	                    <div class="tml-form-col">
+	                        <label>{$fields["wheelbase"]}:</label>
+	                        <input type="text" name="wheelbase" value="{$vo.wheelbase}" class=" textInput" />
+	                    </div>
+	                    </if>
+	                    <if condition='$fields["axlenumber"]'>
+	                    <div class="tml-form-col">
+	                        <label>{$fields["axlenumber"]}:</label>
+	                        <input type="text" name="axlenumber" value="{$vo.axlenumber}" class=" textInput" />
+	                    </div>
+	                    </if>
+	                    <if condition='$fields["overalldimensions"]'>
+	                    <div class="tml-form-col">
+	                        <label>{$fields["overalldimensions"]}:</label>
+	                        <input type="text" name="overalldimensions" value="{$vo.overalldimensions}" class=" textInput" />
+	                    </div>
+	                    </if>
+	                    <if condition='$fields["containersize"]'>
+	                    <div class="tml-form-col">
+	                        <label>{$fields["containersize"]}:</label>
+	                        <input type="text" name="containersize" value="{$vo.containersize}" class=" textInput" />
+	                    </div>
+	                    </if>
+	                    <if condition='$fields["totalmass"]'>
+	                    <div class="tml-form-col">
+	                        <label>{$fields["totalmass"]}:</label>
+	                        <input type="text" name="totalmass" value="{$vo.totalmass}" class=" textInput" />
+	                    </div>
+	                    </if>
+	                    <if condition='$fields["vouchtotalmass"]'>
+	                    <div class="tml-form-col">
+	                        <label>{$fields["vouchtotalmass"]}:</label>
+	                        <input type="text" name="vouchtotalmass" value="{$vo.vouchtotalmass}" class=" textInput" />
+	                    </div>
+	                    </if>
+	                    <if condition='$fields["bearno"]'>
+	                    <div class="tml-form-col">
+	                        <label>{$fields["bearno"]}:</label>
+	                        <input type="text" name="bearno" value="{$vo.bearno}" class=" textInput" />
+	                    </div>
+	                    </if>
+	                    <if condition='$fields["quasitractiontotalmass"]'>
+	                    <div class="tml-form-col">
+	                        <label>{$fields["quasitractiontotalmass"]}:</label>
+	                        <input type="text" name="quasitractiontotalmass" value="{$vo.quasitractiontotalmass}" class=" textInput" />
+	                    </div>
+	                    </if>
+	                    <if condition='$fields["cabseats"]'>
+	                    <div class="tml-form-col">
+	                        <label>{$fields["cabseats"]}:</label>
+	                        <input type="text" name="cabseats" value="{$vo.cabseats}" class=" textInput" />
+	                    </div>
+	                    </if>
+	                    <if condition='$fields["madedate"]'>
+	                    <div class="tml-form-col">
+	                        <label>{$fields["madedate"]}:</label>
+	                        <span class="xyInputWithUnit">
+	                            <input type="text" name="madedate" value="{$vo.madedate|transtime}" class="Wdate" onfocus="WdatePicker()" size="17"/>
+	                            <span class="input-addon input-addon-calendar"></span>
+	                        </span>
+	                    </div>
+	                    </if>
+	                    <if condition='$fields["airconditioningtype"]'>
+	                    <div class="tml-form-col">
+	                        <label>{$fields["airconditioningtype"]}:</label>
+	                        <select class="combox" name="airconditioningtype">
+	                            {:getSelectByHtml('airconditioningsystem','select',$vo['airconditioningtype'])}
+	                        </select>
+	                    </div>
+	                    </if>
+	                    <if condition='$fields["suspensiontype"]'>
+	                    <div class="tml-form-col">
+	                        <label>{$fields["suspensiontype"]}:</label>
+	                        <input type="text" name="suspensiontype" value="{$vo.suspensiontype}" class=" textInput" />
+	                    </div>
+	                    </if>
+	                    <if condition='$fields["explosionbrake"]'>
+	                    <div class="tml-form-col">
+	                        <label>{$fields["explosionbrake"]}:</label>
+	                        <select class="combox" name="explosionbrake">
+	                            {:getSelectByHtml('abs','select',$vo['explosionbrake'])}
+	                        </select>
+	                    </div>
+	                    </if>
+	                    <if condition='$fields["drivingrecord"]'>
+	                    <div class="tml-form-col">
+	                        <label>{$fields["drivingrecord"]}:</label>
+	                        <input type="text" name="drivingrecord" value="{$vo.drivingrecord}" class=" textInput" />
+	                    </div>
+	                    </if>
+	                    <if condition='$fields["taximeter"]'>
+	                    <div class="tml-form-col">
+	                        <label>{$fields["taximeter"]}:</label>
+	                        <input type="text" name="taximeter" value="{$vo.taximeter}" class=" textInput" />
+	                    </div>
+	                    </if>
+	                    <if condition='$fields["marklampnumber"]'>
+	                    <div class="tml-form-col">
+	                        <label>{$fields["marklampnumber"]}:</label>
+	                        <input type="text" name="marklampnumber" value="{$vo.marklampnumber}" class=" textInput" />
+	                    </div>
+	                    </if>
+	                    <if condition='$fields["oilID"]'>
+	                    <div class="tml-form-col">
+	                        <label>{$fields["oilID"]}:</label>
+	                        <input type="text" name="oilID" value="{$vo.oilID}" class=" textInput" />
+	                    </div>
+	                    </if>
+	                    <if condition='$fields["oilAmount"]'>
+	                    <div class="tml-form-col">
+	                        <label>{$fields["oilAmount"]}:</label>
+	                        <input type="text" name="oilAmount" value="{$vo.oilAmount|getDigits}" class="required textInput" />
+	                    </div>
+	                    </if>
+	                    <if condition='$fields["oilBalance"]'>
+	                    <div class="tml-form-col">
+	                        <label>{$fields["oilBalance"]}:</label>
+	                        <input type="text" name="oilBalance" value="{$vo.oilBalance|getDigits}" class="required textInput" />
+	                    </div>
+	                    </if>
+	                    <if condition='$fields["totalKM"]'>
+	                    <div class="tml-form-col">
+	                        <label>{$fields["totalKM"]}:</label>
+	                        <input type="text" name="totalKM" value="{$vo.totalKM|getDigits}" class="required textInput" />
+	                    </div>
+	                    </if>
+	                    <if condition='$fields["telephone"]'>
+	                    <div class="tml-form-col">
+	                        <label>{$fields["telephone"]}:</label>
+	                        <input type="text" name="telephone" value="{$vo.telephone}" class=" textInput" />
+	                    </div>
+	                    </if>
+	                    <if condition='$fields["carbelong"]'>
+	                    <div class="tml-form-col">
+	                        <label>{$fields["carbelong"]}:</label>
+	                        <select class="combox" name="carbelong">
+	                            {:getSelectByHtml('carbelong','select',$vo['carbelong'])}
+	                        </select>
+	                    </div>
+	                    </if>
+	                </div>
+                    <if condition='$fields["remark"]'>
+                    <div class="tml-form-row">
+					<label>{$fields["remark"]}：</label>
+					<textarea name="remark">{$vo.remark}</textarea>
+					</div>
+					</if>
+				</fieldset>
+				<fieldset>
+					<legend class="fieldset_legend_toggle">二、附件信息</legend>
+					<!-- 附件信息 -->
+					{:W('ShowUpload',$attarry)}
+			</fieldset>
+			</div>
+			</div>
+			{:W('ShowAction',array('data'=>$vo))}
+		</form>
+	</div>
+</div>

@@ -1,0 +1,88 @@
+<form id="pagerForm" action="__URL__/lookupTrack/category/{$category}/id/{$id}" method="post">
+	<input type="hidden" name="pageNum" value="1"/>
+	<input type="hidden" name="orderField" value="{$order}" />
+	<input type="hidden" name="orderDirection" value="{$sort}" />
+	<input type="hidden" name="id" value="{$vo2.customerid}" />
+</form>
+<div class="panelBar">
+   <ul class="toolBar"> 
+	   <if condition="$_SESSION.a eq 1 or $_SESSION.missalescustomertrack_add">
+		   <li><a class="add js-add tml-btn tml_look_btn tml_mp"  href="__APP__/MisSalesCustomerTrack/add/category/{$category}/customerid/{$id}" target="navTab" rel="MisSalesCustomerTrackadd" title="跟踪服务_新增" ><span><span class="icon icon-plus icon_lrp"></span>{$Think.lang.add}</span></a></li>
+	   </if>
+	   <if condition="$_SESSION.a eq 1 or $_SESSION.missalescustomertrack_edit">
+		   <li><a class="edit tml-btn tml_look_btn tml_mp" href="__APP__/MisSalesCustomerTrack/edit/id/{siddd_node}" rel="MisSalesCustomerTrackedit" target="navTab"  title="跟踪服务_修改"><span><span class="icon icon-edit icon_lrp"></span>{$Think.lang.edit}</span></a></li>
+	   </if>
+	   <if condition="$_SESSION.a eq 1 or $_SESSION.missalescustomertrack_delete">
+		   <li><a title="确实要删除这些记录吗?" target="ajaxTodo"  href="__APP__/MisSalesCustomerTrack/delete/id/{siddd_node}/rel/linkUserindex" class="delete js-delete tml-btn tml_look_btn tml_mp"><span><span class="icon icon-trash icon_lrp"></span>{$Think.lang.del}</span></a></li>
+	   </if>
+   </ul>
+   <form rel="pagerForm" onsubmit="return divSearch(this, 'linkTrack')" action="__URL__/lookupTrack/category/{$category}/id/{$id}" method="post">
+		<input type="hidden" name="id" value="{$vo2.customerid}" />
+		<div class="searchBar">
+			<table class="searchContent">
+				<tr>
+					<td>
+						<volist id="qsl" name="quickSearchList">
+						<if condition="$qsl['quickname'] eq $quicksearchby">
+						<div class="__MODULE__{$qsl['quickname']} __MODULE__quickSearch">{$qsl['html']}</div>
+						<else />
+						<div class="__MODULE__{$qsl['quickname']} __MODULE__quickSearch" style="display: none;">{$qsl['html']}</div>
+						</if> 
+						</volist>
+					</td>
+					<td>
+						<select class="combox" name="quicksearchby" onchange="quickSearchChange(this,'__MODULE__')">
+							<volist id="qsl" name="quickSearchList">
+								<option value="{$qsl['quickname']}"
+									<eq name="quicksearchby" value="$qsl['quickname']">selected</eq>>{$qsl['showname']}
+								</option>
+							</volist>
+						</select>
+						<input type="hidden" name="time" value="{$time}" />
+					</td>
+					<td>
+						<button class="xySearch" type="submit">{$Think.lang.subsearch}</button>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</form>
+</div>
+<div class="layoutBox" style="height:155px;">
+<table class="table" width="100%">
+	<thead>
+		<tr>
+			<th width="22">序号</th>
+			<volist id="vo" name="detailList">
+				<if condition="$vo[shows] eq 1"><th <if condition="$vo[widths]">width="{$vo[widths]}"</if><if condition="$vo[sorts]"> rel="linkTrack" orderField="{$vo[sortname]}" class="{$sort}"</if>>{$vo[showname]}</th></if>	<!--类型-->
+			</volist>
+		</tr>
+	</thead>
+	<tbody>
+		<volist id="vot" name="list" key="key2">
+			<tr target="siddd_node" rel="{$vot['id']}">
+				<td class="tml-first-td">{$numPerPage*($currentPage-1)+$key+1}</td>
+				<volist id="vo1" name="detailList">
+					<if condition="$vo1[shows] eq 1">
+						<td width="{$vo1[widths]}">
+							<if condition="count($vo1['func']) gt 0">
+								<volist name="vo1.func" id="nam">
+									<if condition="!empty($vo1['extention_html_start'][$key])">{$vo1['extention_html_start'][$key]}</if>
+										{:getConfigFunction($vot[$vo1['name']],$nam,$vo1['funcdata'][$key],$list[$key2-1])}
+									<if condition="!empty($vo1['extention_html_end'][$key])">{$vo1['extention_html_end'][$key]}</if>
+								</volist>
+							<else />
+								{$vot[$vo1['name']]}
+							</if>
+						</td>
+					</if>
+				</volist>
+			</tr>
+		</volist>
+	</tbody>
+</table>
+</div>
+<div class="panelBar panelPageBar" style="border-bottom:none;">
+	<div class="pages"><span>共{$totalCount}条</span></div>
+	<div class="pagination" rel="linkTrack" totalCount="{$totalCount}" numPerPage="{$numPerPage}" pageNumShown="10" currentPage="{$currentPage}"></div>
+</div>

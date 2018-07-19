@@ -1,0 +1,179 @@
+<style>
+.tml-table-bordered th, .tml-table-bordered td{border:1px solid #e5e5e5;}
+.tml-table-red th, .tml-table-red td{border-color:red;font-weight:700;font-family:"楷体_GB2312";}
+.tml-table-red .textInput{background:none;border:none;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box;width:100%;*width:95%;}
+.tml-table-red textarea{resize:none;}
+</style>
+<div class="page">
+	<div class="pageContent">
+		<form method="post" action="__URL__/auditProcess/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,refreshtabsAudit);">
+	    <input type="hidden" name="id" value="{$vo['id']}" />
+		<input type="hidden" name="pid" value="{$vo['ptmptid']}">
+		<input type="hidden" name="ostatus" value="{$vo['ostatus']}">
+		<input type="hidden" name="refreshtabs[type]" value="navtab">
+		<input type="hidden" name="backprocess" value="流程回退">
+		<input type="hidden" name="auditprocess" value="流程审核">
+		<input type="hidden" name="endprocess" value="流程结束">
+		<input type="hidden" name="alreadyAuditUser" value="{$vo['alreadyAuditUser']}"><!-- 已审核人ID组 -->
+		<input type="hidden" name="auditUser" value="{$vo['auditUser']}"><!-- 全部审核用户清单 -->
+		<input type="hidden" name="doinfo" /><!-- 隐藏 审核意见，在duditDialog.html中被JS赋值-->
+		<input type="hidden" name="jq" value="{$jq}"/><!-- 加签标志 -->
+		<input type="hidden" name="useridArr" value=""/><!-- 加签审核用户 -->
+		
+	    	<div class="pageFormContent applecloth" layoutH="56">
+				<div class="keepContentCenter" style="color:red;font-size:14px;">
+					<H2 class="contentTitle contentTitle_center"  style="border:none;font-size:26px;font-family:方正大标宋简体">
+						重庆市长寿区保安服务有限责任公司发文拟稿笺
+					</H2>
+					<table class="tml-table tml-table-bordered grid-100 tml-table-w tml-table-red">
+						<tr>
+							<td class="tml-text-c">文（期）号</td>
+							<td colspan="3">
+								<input type="text" name="orderno" readonly="readonly" value="{$vo.orderno}" />
+							</td>
+							<td>密级</td>
+							<td>
+								<input type="text"  readonly="readonly" value="{$vo.secrecylevel}" />
+							</td>
+							<td>缓急</td>
+							<td>
+								<input type="text"  readonly="readonly" value="{$vo.priorities}" />
+							</td>
+						</tr>
+						<volist name="arr" id="arrlist">
+							<tr>
+								<td class="tml-text-c">{$arrlist.name}：</td>
+								<td colspan="7">
+									<table width="100%">
+										<tr>
+											<volist name="arrlist.nextarr" id="ldvo">
+												<td width="{$arrlist.bl}%" height="100">
+													<div style="height:100%;position:relative;">
+														{$ldvo.doinfo}
+														<div style="bottom:0;position:absolute;right:0;">
+															<div class="tml-text-r">{$ldvo.userid|getFieldBy='id','name','user'}</div>
+															<div class="tml-text-r">{$ldvo.dotime|transTime}</div>
+														</div>
+													</div>
+												</td>
+											</volist>
+										</tr>
+									</table>
+								</td>
+							</tr>
+						</volist>
+						<tr>
+							<td>拟稿单位</td>
+							<td>
+								<input class="" type="text" readonly="readonly" name="draftunit" value="{$vo.draftunit}"/>
+							</td>
+							<td>拟稿</td>
+							<td>
+								<input readonly="readonly" type="text" show="name" value="{$vo.draftemployeeId|getFieldBy='id','name','mis_hr_personnel_person_info'}"/>
+							</td>
+							<td>核稿</td>
+							<td>
+								<input readonly="readonly" type="text" show="name" value="{$vo.nuclearemployeeId|getFieldBy='id','name','mis_hr_personnel_person_info'}"/>
+							</td>
+							<td>份数</td>
+							<td>
+								<input class="" readonly="readonly" type="text" name="copynum" value="{$vo.copynum}"/>
+							</td>
+						</tr>
+						<tr>
+							<td>标题：</td>
+							<td colspan="7">
+								<input class="" readonly="readonly" type="text" name="title" value="{$vo.title}"/>
+							</td>
+						</tr>
+						<tr>
+							<td>附件</td>
+							<td colspan="7">
+								<input id="swfupload_misofficialdocumentoutaudit_auditedit" type="file" uploader="true" name="misofficialdocumentout_add_file" formData="{ uploadpath:'MisOfficialdocumentOut' }" />
+								<input type="image" onclick="$('#swfupload_misofficialdocumentoutaudit_auditedit').uploadify('upload','*');return false;" src="__PUBLIC__/uploadify/upload2.png">
+								<dl class="nowrap">
+									<!--此处为上传列表-->
+									<dt>
+										<label>&nbsp;</label>
+									</dt>
+									<dd>
+										<span id="swfupload_misofficialdocumentoutaudit_auditedit-queue" class="info uploadify_queue">
+											<if condition="$attarry"> 
+											<volist name="attarry" id="att">
+												<div class="uploadify-queue-item" style="width:400px;">
+													<div class="cancel">
+														<a class="dellink" href="__URL__/lookupdelatt/id/{$att['id']}" rel="{$att['id']}" target="ajaxTodo" callback="mis_swf_upload_del" callbackdata="swfupload_misbusinesscontractcityalarm_edit-queue">X</a>
+													</div>
+													<span class="fileName">
+														<a href="__URL__/misFileManageDownload/path/{$att['name']}/rename/{$att['upname']}" target="_blank">{$att['upname']}</a>
+													</span>
+													<span class="data"> - 已经传</span>
+													<a class="tml-btn tml-btn-small tml-btn-green tml-ml5" href="__URL__/lookupDocumentCollateAtta/t/0/id/{$att['id']}" title="文件归档" target="dialog"><span class="icon icon-file"></span> 归档</a>
+													<a class="tml-btn tml-btn-small tml-btn-green tml-ml5" style="cursor:pointer;" rel="__URL__/playSWF/name/{$att.name}/filename/{$att.upname}" onclick="openNewWindowsDisplayFile(this)"><span class="icon icon-file"></span> 在线查看</a>
+													<div class="uploadify-progress">
+														<div class="uploadify-progress-bar" style="width: 100%;"></div>
+													</div>
+												</div>
+											</volist> 
+											</if>
+										</span>
+									</dd>
+								</dl>
+							</td>
+						</tr>
+						<tr>
+							<td>报送：</td>
+							<td colspan="7">
+								<input class="" readonly="readonly" type="text" name="reportsend" value="{$vo.reportsend}"/>
+							</td>
+						</tr>
+						<tr>
+							<td>抄送：</td>
+							<td colspan="7">
+								<input class="" readonly="readonly" type="text" name="copysend" value="{$vo.copysend}"/>
+							</td>
+						</tr>
+					</table>
+					<table class="tml-table-w tml-table-red">
+						<tr>
+							<td>承办人：</td>
+							<td>
+								<input readonly="readonly" type="text" name="employename" show="name" value="{$vo.undertakeempId|getFieldBy='id','name','mis_hr_personnel_person_info'}"/>
+							</td>
+							<td>电话：</td>
+							<td>
+								<input type="text" class="" readonly="readonly" name="phone" value="{$vo.phone}"/>
+							</td>
+							<td>邮箱：</td>
+							<td>
+								<input type="text" class="" readonly="readonly" name="eamil" value="{$vo.eamil}"/>
+							</td>
+					</table>
+				</div>
+	        </div>
+			<div class="formBar">
+				<ul>
+						<li>
+							<div class="buttonActive">
+								<div class="buttonContent">
+									<if condition="$jq eq 1">
+										<button type="button" onclick="openAuditJqDialog();">通过</button>
+										<else/>
+										<button type="button" onclick="openAuditDialog();">通过</button>
+									</if>
+								</div>
+							</div>
+						</li>
+						<li>
+							<div class="buttonActive">
+								<div class="buttonContent">
+									<button type="button" onclick="openBackDialog('__MODULE__')">{$Think.lang.backprocess}</button>
+	                            </div>
+							</div>
+						</li>
+					<li><div class="button"><div class="buttonContent"><button type="button" class="close">{$Think.lang.close}</button></div></div></li>
+				</ul>
+				</div>
+		</form>
+	</div>
+</div>

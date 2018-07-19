@@ -1,0 +1,47 @@
+<form id="pagerForm" action="__URL__" method="post">
+	<input type="hidden" name="pageNum" value="1"/>
+	<input type="hidden" name="orderField" value="{$order}" />
+	<input type="hidden" name="orderDirection" value="{$sort}" />
+</form>
+
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<if condition="$_SESSION.a eq 1 or $_SESSION.systemconfignumber_add "><li><a class="add tml-btn tml_look_btn tml_mp" href="__URL__/add" rel="__MODULE__add" target="dialog"  mask="true" width="670" height="320"><span><span class="icon icon-plus icon_lrp"></span>{$Think.lang.add}</span></a></li></if>
+			<volist name="toolbarextension" id="toolb">
+				<if condition="$_SESSION.a eq 1 or $toolb['ifcheck'] eq 0 or ($toolb['ifcheck'] eq 1 and !empty($toolb['permisname']) and $_SESSION[$toolb['permisname']])">
+					<li>{$toolb['html']}</li>
+				</if>
+			</volist>
+		</ul>
+	</div>
+	<table class="table" width="100%" layoutH="146">
+		<thead>
+		<tr>
+            <th>分类标识</th>
+			<th>分类名称</th>
+            <th>模型名称</th>
+            <th>状态</th>
+			<th>操作</th>
+		</tr>
+		</thead>
+		<tbody>
+		<volist id="vo" name="list">
+			<tr target="sid_node" rel="{$vo['id']}">
+				<td>{$vo['type']}</td>
+				<td>{$vo['typename']}</td>
+                <td>{$vo['modelname']}</td>
+                <td>{$vo['status']|getStatus}</td>
+				<td>{$vo['status']|showStatus=$vo['id']}</td>
+			</tr>
+		</volist>
+		</tbody>
+	</table>
+
+	<div class="panelBar panelPageBar">
+		<div class="pages">
+			<span>共{$totalCount}条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="{$totalCount}" numPerPage="{$numPerPage}" pageNumShown="10" currentPage="{$currentPage}"></div>
+	</div>
+</div>

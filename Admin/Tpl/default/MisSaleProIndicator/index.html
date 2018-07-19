@@ -1,0 +1,87 @@
+<form id="pagerForm" action="__URL__" method="post">
+	<input type="hidden" name="pageNum" value="1"/>
+	<input type="hidden" name="orderField" value="{$order}" />
+	<input type="hidden" name="orderDirection" value="{$sort}" /><input type="hidden" name="dwzpageNum" value="1"/>
+	<input type="hidden" name="numPerPage" value="{$numPerPage}" />
+</form>
+    <div class="pageContent">
+    
+	    <div class="panelBar">
+	    <ul class="toolBar">
+			<!-- <if condition="$_SESSION.a eq 1 or $_SESSION.misproductunit_add ">
+				<li>
+					<a class="add" href="__URL__/add" title="设备单位_新增" rel="__MODULE__add" target="dialog" height="280" width="680" mask="true">
+						<span>新增</span>
+					</a> 
+				</li>
+			</if> -->
+			<volist name="toolbarextension" id="toolb">
+				<if condition="$_SESSION.a eq 1 or $toolb['ifcheck'] eq 0 or ($toolb['ifcheck'] eq 1 and !empty($toolb['permisname']) and $_SESSION[$toolb['permisname']]) eq 1">
+					<li>{$toolb['html']}</li>
+				</if>
+			</volist>
+		</ul>
+		<form rel="pagerForm" onsubmit="return navTabSearch(this);" action="__URL__/index" method="post">
+			<div class="searchBar">
+				<table class="searchContent">
+					<tr>
+						<include file="Public:quickSearchCondition" />
+						<if condition="$_SESSION.a eq 1 or $_SESSION.mishrinvitereform_exportbysearchhtml ">
+						<td><button class="xyOutput" type="button" onclick="exportBysearch(this.form,'__URL__/index','__URL__/exportBysearchHtml');">导出</button></td>
+					    </if>
+					</tr>
+				</table>
+			</div>
+		</form>
+	    </div>
+	    <table class="table" width="100%" layoutH="146">
+		<thead ename="{$ename}">
+			<tr>
+				<th width="25">序号</th>
+				<volist id="vo" name="detailList">
+					<if condition="$vo[shows] eq 1"><th <if condition="$vo[widths]">width="{$vo[widths]}"</if><if condition="$vo[sorts]">orderField="{$vo[sortname]}" class="{$sort}"</if>>{$vo[showname]}</th></if>	<!--类型-->
+				</volist>
+			</tr>
+		</thead>
+		<tbody>
+			<include file="dwzloadindex" />
+		</tbody>
+	</table>
+	    <!--  <table class="table" width="100%"  >
+		<thead>
+			<tr>
+				<th width="25"><input type="checkbox" class="checkboxCtrl" group="id" /></th>
+				<th>排序</th>
+				<th>行业名</th>
+				<th>产业链名</th>
+				<th>指标编码</th>
+				<th>指标名称</th>
+				<th>备注</th>
+				<th>状态</th>
+				<th width="150">{$Think.lang.action}</th>
+			</tr>
+		</thead>
+		
+		<tbody>
+		    <volist id="vos" name="list">
+			<tr target="sid" rel="{$vos['id']}" onclick="onTrClickCheckbox(this,'id'	)">
+				<td><input type="checkbox" name="id" value="{$vos['id']}" /></td>
+				<td>{$vos.sort}</td>
+				<td>{$vos.pname}</td>
+				<td>{$vos.iuname}</td>
+				<td>{$vos.orderno}</td>
+				<td>{$vos.name}</td>
+				<td>{$vos.remark}</td>
+				<td>{$vos.status}</td>
+				<td>{$vos['status']|showRelStatus=$vos['id'],'misproductypeBox'}</td>
+			</tr>
+		</volist>
+		</tbody>
+	</table> -->
+	<div class="panelBar panelPageBar">
+		<div class="pages">
+			<span>共{$totalCount}条</span>
+		</div>
+		<div class="pagination" targetType="navTab" totalCount="{$totalCount}" numPerPage="{$numPerPage}" pageNumShown="10" currentPage="{$currentPage}"></div>
+	</div>
+    </div>

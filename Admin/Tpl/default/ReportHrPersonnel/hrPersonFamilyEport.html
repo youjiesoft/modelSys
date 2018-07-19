@@ -1,0 +1,57 @@
+<div class="pageFormContent applecloth" layoutH="0">
+	<div class="keepContentCenter clearfix">
+		<h2 class="contentTitle contentTitle_center">家庭成员报表</h2>
+		<div id="hrPersonFamilyEport_doSearch">
+			<FIELDSET>
+			<div class="xyformunit">
+					<label>姓名：</label>
+					<input type="text" name="name" />
+				</div>
+				<div class="xyformunit">
+					<label>部门：</label>
+					<input type="text" name="deptname" class="checkByInput" map="array('status'=>1);" fields="array('id'=>'0','code'=>'部门编号','name'=>'部门名称');" checkfor="mis_system_department" show="name"/>
+				</div>
+				<div class="xyformunit">
+					<label>职务：</label>
+					<input type="text" name="dutyname" class="textInput"/>
+				</div>
+				<div class="clear"></div>
+				<div class="">
+					<label>入职日期：</label>
+					<span class="xyInputWithUnit">
+					<input type="text"  name="indate" yearstart="-40" yearend="1" onfocus="WdatePicker()" class="tml-border-r0 Wdate" />
+					<span class="input-addon input-addon-calendar"></span>
+					</span><span class="xyInputTo">至</span>
+					<span class="xyInputWithUnit">
+					 <input  type="text"  name="leavedate"  yearstart="-40" yearend="1" onfocus="WdatePicker()" class="tml-border-r0 Wdate" />
+					<span class="input-addon input-addon-calendar"></span>
+					 </span>
+				</div>
+					<div class="clear"></div>
+				<div class="xyformunit">
+					<label>家属姓名：</label>
+					<input type="text" name="mis_hr_personnel_family_info_name" class="textInput"/>
+				</div>
+				<div class="xyformunit">
+					<label>家属关系：</label>
+					<input type="text" name="mis_hr_personnel_family_info_relation" class="textInput"/>
+				</div>
+				<div class="xyformunit">
+					<label>家属工作单位：</label>
+					<input type="text" name="mis_hr_personnel_family_info_company" class="textInput"/>
+				</div>
+					<div class="xyformunit">
+					<label>家属联系电话：</label>
+					<input type="text" name="mis_hr_personnel_family_info_telephone" />
+				</div>
+			</FIELDSET>
+		</div>
+		<div class="export_new">
+			<div class="buttonActive">
+				<div class="buttonContent">
+					<button name="showgrid" onclick="show_doSearch('hrPersonFamilyEport_doSearch','__URL__/lookupHrPersonFamilyEport','{$result}')">检索</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

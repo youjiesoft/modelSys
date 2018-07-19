@@ -1,0 +1,106 @@
+<script type="text/javascript">
+    //将form中的值转换为键值对。
+    function getFormJson(frm) {
+        var o = {};
+        var a = $(frm).serializeArray();
+        $.each(a, function () {
+            if (o[this.name] !== undefined) {
+                if (!o[this.name].push) {
+                    o[this.name] = [o[this.name]];
+                }
+                o[this.name].push(this.value || '');
+            } else {
+                o[this.name] = this.value || '';
+            }
+        });
+
+        return o;
+    }
+    (function ($) {
+        $.fn.extend({
+            insertAtCaret: function (myValue) {
+                var $t = $(this)[0];
+                if (document.selection) {
+                    this.focus();
+                    sel = document.selection.createRange();
+                    sel.text = myValue;
+                    this.focus();
+                } else
+                if ($t.selectionStart || $t.selectionStart == '0')
+                {
+                    var startPos = $t.selectionStart;
+                    var endPos = $t.selectionEnd;
+                    var scrollTop = $t.scrollTop;
+                    $t.value = $t.value.substring(0, startPos) + myValue + $t.value.substring(endPos,$t.value.length);
+                    this.focus();
+                    $t.selectionStart = startPos + myValue.length;
+                    $t.selectionEnd = startPos + myValue.length;
+                    $t.scrollTop = scrollTop;
+                } else {
+                    this.value += myValue;
+                    this.focus();
+                }
+            }
+        })
+    })(jQuery) ;
+    $(function(){
+        //保存值到父级窗口控件
+        $("#save_ctr",$("#{$formname}")).on('click',function(){
+            var frm=$("#{$formname}");
+            $(this).attr("disabled",true);
+            var dataPara = getFormJson(frm);
+            $.ajax({
+                url: frm.attr('action'),
+                type: frm.attr('method'),
+                data: dataPara,
+                success: function(data){
+                    $("#save_ctr",$("#{$formname}")).attr("disabled",false);
+                    var res=eval("("+data+")");
+                    if(res.status==1){
+                        var li=$("#"+res.data.name,$("#{$parentform}"));
+                        var html="";
+                        if(li.length<=0){
+                            html+='<li id="'+res.data.name+'">';
+                        }
+                        html+='<div>《控件值》代码：'+res.data.name+' 字段：'+res.data.rules[2]+'['+res.data.rules[1]+']';
+                        html+='<input type="hidden" name="pars[]" value="'+res.data.name+'"/>';
+                        html+='</div>';
+                        html+='<a class="check_par" data-key="'+res.data.name+'" onclick="check_par(this)">选择</a>';
+                        html+='<a class="edit_par" onclick="edit_par(\''+res.data.name+'\',\''+res.data.type+'\')">修改</a>';
+                        html+='<a class="del_par" onclick="remove_par(this,\''+res.data.name+'\')">移除</a>';
+                        if(li.length<=0){
+                            html+='</li>';
+                            $("#{$parentform} #{$parentctr}").append(html);
+                        }else{
+                            li.html(html);
+                        }
+                        $.pdialog.close('{$formname}');
+                    }else {
+                        alertMsg.error(res.message);
+                    }
+                }
+            });
+        });
+    });
+</script>
+<div class="page">
+    <div class="pageContent">
+        <form method="post" id="{$formname}" action="__URL__/setcontrval" class="pageForm required-validate">
+            <input type="hidden" name="formname" value="{$formname}"/>
+            <input type="hidden" name="par_name" value="{$par_name}"/>
+        <div class="list_group_lay">
+        <select class="select2 list_select2" name="control">
+            <volist name="kqzp" id="kqz">
+                <option value="{$kqz.category}|{$kqz.fieldname}|{$kqz.title}" <if condition="$ct_name and $ct_name eq $kqz.fieldname">selected="selected"</if>>{$kqz.title}</option>
+            </volist>
+        </select>
+        </div>
+        <div class="formBar">
+            <ul>
+                <li><button id="save_ctr" type="button" class="tml_formBar_btn tml_formBar_btn_blue enterIndex">保存</button></li>
+                <li><button onclick="javascript:$.pdialog.close('{$formname}');" class="tml_formBar_btn tml_formBar_btn_red enterIndex" type="button">关闭</button></li>
+            </ul>
+        </div>
+        </form>
+    </div>
+</div>

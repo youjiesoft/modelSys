@@ -1,0 +1,76 @@
+<?php 
+return array(
+	'0' => array(
+		'name' => 'name',
+		'showname' => '指标名称',
+		'shows' => '1',
+		'widths' => '',
+		'sorts' => '0',
+		'models' => '',
+		'sortname' => 'name',
+		'sortnum' => '1',
+		'searchField' => 'mis_sale_basic_indicator.name',
+		'conditions' => '',
+		'type' => 'text',
+		'issearch' => '1',
+		'isallsearch' => '1',
+		'searchsortnum' => '0',
+	),
+	'1' => array(
+		'name' => 'orderno',
+		'showname' => '指标编码',
+		'shows' => '1',
+		'widths' => '',
+		'sorts' => '0',
+		'models' => '',
+		'sortname' => 'orderno',
+		'sortnum' => '1',
+		'searchField' => 'mis_sale_basic_indicator.orderno',
+		'conditions' => '',
+		'type' => 'text',
+		'issearch' => '1',
+		'isallsearch' => '1',
+		'searchsortnum' => '0',
+	),
+	'2' => array(
+		'name' => 'remark',
+		'showname' => '备注',
+		'shows' => '1',
+		'widths' => '',
+		'sorts' => '0',
+		'models' => '',
+		'sortname' => 'remark',
+		'sortnum' => '1',
+		'searchField' => 'mis_sale_basic_indicator.remark',
+		'conditions' => '',
+		'type' => 'text',
+		'issearch' => '1',
+		'isallsearch' => '1',
+		'searchsortnum' => '0',
+	),
+	'3' => array(
+		'name' => 'action',
+		'showname' => '操作',
+		'shows' => '1',
+		'widths' => '',
+		'sorts' => '0',
+		'models' => '',
+		'sortname' => 'status',
+		'func' => array(
+			'0' => array(
+				'0' => 'showStatus',
+			),
+		),
+		'funcdata' => array(
+			'0' => array(
+				'0' => array(
+					'0' => '#status#',
+					'1' => '#id#',
+				),
+			),
+		),
+		'sortnum' => '2',
+	),
+);
+
+?>

@@ -1,0 +1,147 @@
+<style>
+.border-right{border-right:1px solid #bbb;border-radius: 0 4px 4px 0;}
+.dialog .tml-form-col .tml-input-append2 .textInput{width: 130px;}
+</style>
+<div class="page">
+	<div class="pageContent">
+	<form method="post" action="__URL__/insert/rel/missalesprojectleft_ajax" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+			<input type="hidden" name="callbackType" value="closeCurrent" />
+			<input type="hidden" name="rwid" value="{$list['id']}">
+			<input type="hidden" name="projectid" value="{$list['projectid']}">
+			<input type="hidden" name="supcategory" value="{$list['supcategory']}">
+			<input type="hidden" name="category" value="{$list['category']}">
+			<input type="hidden" name="parentid" value="{$list['parentid']}">
+			<input type="hidden" name="outlinelevel" value="{$list['outlinelevel']}">
+			<div class="pageFormContent" layoutH="48">
+				<div class="tml-row">
+					{:W('ShowOrderno',array(1,'mis_system_flow_form'))}
+					<div class="tml-form-col ">
+						<label>任务名称:</label>
+						<input type="text"  name="name" class="required" value="">
+					</div>
+					<div class="tml-form-col">
+						<label>工作日:</label>
+						<div class="tml-input-append">
+							<input  type="text" name="days" class="number required" value="">
+							<span class="input-addon-unit" title="天">天</span>
+						</div>
+					</div>
+					<div class="tml-form-col ">
+						<label>前置任务:</label>
+						<select name="tasktype" class="combox">
+							<option  value="1">前置任务</option>
+							<option  value="2">后置任务</option>
+							<option  value="3">普通任务</option>
+						</select>
+					</div>
+				</div>
+				<div class="tml-row">
+					<div class="tml-form-row " >
+							<label>是否关键任务:</label>
+							{:getControllbyHtml('selectlist',array('type'=>'radio','names'=>'critical','key'=>'debit','selected'=>$vo['critical']))}
+						</div>
+					<div class="tml-form-col " >
+						<label>清单类型:</label>
+						<select  name="formtype" onchange="changeForm(this.value)" class="combox  required">
+						<option value="" selected=selected>请选择</option>
+						{:getControllbyHtml('table',array('type'=>'select','table'=>'mis_system_flow_inventory_type','id'=>'id','name'=>'name','selected'=>2))}
+						</select>
+					</div>
+					<div class="tml-form-col ">
+						<label>对应模板:</label>
+						<div class="tml-input-append2"  style="display:none" id="misprojectflowformobj">
+						<input type="text"   
+							class=" checkByInput  ORG111.name " 
+							checkfor="MisAttachedTemplate" 
+							insert="id" 
+							show="name" 
+							fields="array(&#39;name&#39;=&gt;&#39;模块名&#39;,&#39;remark&#39;=&gt;&#39;备注&#39;,&#39;id&#39;=&gt;&#39;0&#39;);"  
+							autocomplete="on" 
+							value="">
+							<input type="hidden" class="ORG111.id" id="formobj_rfj"  name="formobj" value=""/>
+							<a class="input-addon input-addon-addon input-addon-add" param="field=id,name,remark&model=MisAttachedTemplate&conditions=" href="__URL__/lookupGeneral" lookupGroup="ORG111" >{$fields["formobj"]}</a>
+							<a title="清空信息" class="input-addon input-addon-recycle"  href="javascript:void(0);" onclick="clearOrg('ORG111');"></a>
+						</div>
+						<div class="tml-input-append2" id="misprojectflowformobj1">
+						 <input type="text"   
+							class=" checkByInput  ORG4.title " 
+							checkfor="Node" 
+							insert="name" 
+							show="title" 
+							newconditions="(status=('1') and level=('3') and isprojectwork=('1'))"
+							fields="array(&#39;name&#39;=&gt;&#39;模块名&#39;,&#39;title&#39;=&gt;&#39;名称&#39;,&#39;id&#39;=&gt;&#39;0&#39;);"  
+							autocomplete="on" 
+							value="">
+							<input type="hidden" class="ORG4.name" id="formobj_rdj" name="formobj" value=""/>
+							<a class="input-addon input-addon-addon input-addon-add" param="field=name,title&model=Node&conditions=status,1;level,3;isprojectwork,1&filterfield=icon,type,pid,group_id,showmenu,toolshow,sort,remark,category" href="__URL__/lookupGeneral" lookupGroup="ORG4" >{$fields["formobj"]}</a>
+							<a title="清空信息" class="input-addon input-addon-recycle"  href="javascript:void(0);" onclick="clearOrg('ORG4');"></a>
+					</div>
+					</div>
+				</div>	
+					<div class="tml-form-row">
+						<label>分派人:</label>
+						<div class="tml-input-append2">
+							<ul class="addressee left checkTo" id="alloterid" style="width:80%;">
+							  <li class="addresseeText">
+                                  <input type="text" style="float: left;" style="width:300px;" class="checkByInput addresseeTextInput" 
+									fileds=""
+									inputName="alloterid"
+									chainname="allotname"
+									show=""
+									tabindex="1"
+									autocomplete="off"
+                                    callback="addresseeInput"
+									/>
+                                  </li>
+                                </ul>
+							<a class="input-addon input-addon-addon input-addon-userplus checkUser" href="javascript:;" ulid="alloterid" data="allotname,username,text;alloterid,userid,hidden,1" width="800" height="800">查找带回</a>&nbsp;
+							<a class="input-addon input-addon-recycle" href="javascript:;" onclick="clearreceverMismessage('1','Mismessage_add');" title="清空接收用户"></a>
+						
+						</div>
+					</div>
+					<div class="tml-form-row ">
+						<label>执行人:</label>
+						<div class="tml-input-append2">
+						<ul class="addressee left checkTo" id="executorid" style="width:80%;">
+							  <li class="addresseeText">
+                                  <input type="text" style="float: left;" width="300px;" class="checkByInput addresseeTextInput"
+									fileds=""
+									inputName="executorid"
+									chainname="executorname"
+									show=""
+									tabindex="1"
+									autocomplete="off"
+                                    callback="addresseeInput"
+									/>
+                                  </li>
+                                </ul>
+							<a class="input-addon input-addon-addon input-addon-userplus checkUser" href="javascript:;" ulid="executorid" data="executorname,username,text;executorid,userid,hidden,1" width="800" height="800">查找带回</a>&nbsp;
+							<a class="input-addon input-addon-recycle" href="javascript:;" onclick="clearOrg('1','Mismessage_add');" title="清空接收用户"></a>
+						</div>
+					</div>
+			</div>			
+		{:W('ShowAction')}
+	</form>
+	</div>
+</div>
+<script>
+function changeForm(val){
+	 if(val==1){
+		  document.getElementById('misprojectflowformobj').style.display = "";
+	      document.getElementById('misprojectflowformobj1').style.display = "none";
+	      $('#formobj_rdj').removeAttr("name");
+	      $('#formobj_rfj').attr("name", "formobj");
+	      
+	}else{
+		 document.getElementById('misprojectflowformobj1').style.display = "";
+	      document.getElementById('misprojectflowformobj').style.display = "none";
+	      $('#formobj_rfj').removeAttr("name");
+	      $('#formobj_rdj').attr("name", "formobj");
+	} 
+}
+
+function clearOrgname(name,classname){
+	clearOrg(name);
+	$('div.'+classname).html('');
+}
+</script>

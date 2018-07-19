@@ -1,0 +1,87 @@
+<script>
+$(function(){
+	var $refBox=$("#misfinanceexpensestype_treegrid_height").parents("div.layoutBox:first");
+	var iRefH=$refBox.height();
+	var iLayoutH=parseInt($("#misfinanceexpensestype_treegrid_height").attr("layoutH"));
+	var height=iRefH-iLayoutH>50?iRefH-iLayoutH:50;
+	height = height-26;
+	var topicjson={$topicjson};
+	grid = jQuery("#misfinanceexpensestype_treegrid2");
+	grid.jqGrid({
+	   datastr: topicjson,
+	   datatype: "jsonstring",
+	   height: height,
+	   autowidth: true,
+	   colNames: ["id","类型编码","类型名称","上级类型","科目编码","科目名称","备注"],
+	   colModel: [
+	       {name: "id",key:true,align:'left',hidden:true},
+	       {name: "code", editable:true ,align:'left', resizable: false},
+	       {name: "name", editable:true ,resizable: false},
+	       {name: "parentname", editable:true, align:'left', resizable: false},
+	       {name: "accountid", editable:true, align:'left', resizable: false},
+	       {name: "accountname", editable:true,align:'left', resizable: false},
+	       {name: "remark", editable:true , align:'left',resizable: false}
+	   ],
+	   treeGrid: true,
+	   treeGridModel: "adjacency",
+	   ExpandColumn: "name",
+	   treeIcons: {leaf:'ui-icon-document-b'},
+	   rowNum: 10000,
+	   jsonReader: {
+	       repeatitems: false,
+	       root: "response"
+	   },
+	   onSelectRow: function(id){ 
+		   $(".edit").attr('href','__URL__/edit/id/'+id);
+		   $(".delete").attr('href','__URL__/delete/id/'+id+'/navTabId/__MODULE__');
+		}
+	});
+});
+window.onresize = function(){
+	var $refBox=$("#misfinanceexpensestype_treegrid_height").parents("div.layoutBox:first");
+	var iRefH=$refBox.height();
+	var iLayoutH=parseInt($("#misfinanceexpensestype_treegrid_height").attr("layoutH"));
+	var height=iRefH-iLayoutH>50?iRefH-iLayoutH:50;
+	height = height-26;
+	var pw = $("#misfinanceexpensestype_treegrid_height").innerWidth();
+	$("#misfinanceexpensestype_treegrid2").jqGrid('setGridWidth', pw).jqGrid('setGridHeight', height); 
+};
+</script>
+<div>
+<div class="panelBar">
+	<ul class="toolBar">
+	<if condition="$_SESSION.a eq 1 or $_SESSION.misfinanceexpensestype_add ">
+		<li>
+			<a class="add" href="__URL__/add" target="dialog" height="420" width="660" rel="__MODULE__add" title="新增产品">
+				<span>{$Think.lang.add}</span>
+			</a>
+		</li>
+	</if>
+	 <if condition="$_SESSION.a eq 1 or $_SESSION.misfinanceexpensestype_delete ">
+		<li>
+			<a title="确定要删除此分类吗?" target="ajaxTodo" href="__URL__/delete/id/{$vo['id']}/navTabId/__MODULE__" class="delete"><span>删除此分类</span></a>
+			</a>
+		</li>
+	</if>
+	<if condition="$_SESSION.a eq 1 or $_SESSION.misfinanceexpensestype_edit ">
+		<li>
+		<a class="edit" href="__URL__/edit/id/{sid}" rel="__MODULE__edit" title="编辑产品" target="dialog" height="420" width="660" mask="true" warn="请选择记录">
+				<span>{$Think.lang.change}</span>
+			</a>
+		</li>
+	</if>
+	</ul>
+	<form id="pagerForm" onsubmit="return navTabSearch(this);" action="__URL__/index" method="post">
+		<div class="searchBar">
+			<table class="searchContent">
+				<tr>
+					<include file="Public:quickSearchCondition" />
+				</tr>
+			</table>
+		</div>
+	</form>
+</div>
+<div class="pageContent" id="misfinanceexpensestype_treegrid_height" layoutH="30">
+	<table id="misfinanceexpensestype_treegrid2"></table>
+</div>
+</div>

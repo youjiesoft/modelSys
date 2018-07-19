@@ -1,0 +1,191 @@
+<div class="page">
+	<div class="pageContent">
+		<form method="post" action="__URL__/update/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,navTabAjaxDone);">
+			<div class="pageFormContent applecloth" layoutH="40">
+				<div class="keepContentCenter form-affix-content">
+				<div class="contentTitle contentTitle_center form-affix-title">借款申请单
+					{:W('ShowOrderno',array(0,'mis_finance_borrowmas',$vo['orderno']))}
+				</div>
+                <div class="inside_pages_btn_group">
+                    <ul class="pages_btn_group">
+                        <li>
+                            <a href="#">
+                                <span class="icon-plus"></span>
+                                <span class="inside_pages_btn_word">新增</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="icon-edit"></span>
+                                <span class="inside_pages_btn_word">修改</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="icon-trash"></span>
+                                <span class="inside_pages_btn_word">删除</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="icon-bell"></span>
+                                <span class="inside_pages_btn_word">提醒</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="icon-external-link"></span>
+                                <span class="inside_pages_btn_word">撤回</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="icon-print"></span>
+                                <span class="inside_pages_btn_word">打印</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="icon-arrow-up"></span>
+                                <span class="inside_pages_btn_word">顶部</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <fieldset class="side-catalog-anchor">
+                    <legend class="fieldset_legend_toggle side-catalog-text side-catalog-firstanchor">
+                        <b>申请信息</b>
+                        <div class="tml_style_line tml_sl4 tml_slb_blue"></div>
+                    </legend>
+                    <table class="data-table" width="100%" cellspacing="0" style="line-height:32px;" >
+                        <tbody class="list_table">
+                            <tr class="list_table_header">
+                                <td class="cell_left" width="12%">借款人：</td>
+                                <td class="cell_right" width="21%">{$vo.createid|getFieldBy='id','name','user'}</td>
+                                <td class="cell_left" width="12%">申请时间：</td>
+                                <td class="cell_right" width="21%">{$vo.createtime|transTime}</td>
+                                <td class="cell_left" width="12%">所属部门：</td>
+                                <td class="cell_right" width="21%">{$vo.departmentid|getFieldBy='id','name','mis_system_department'}</td>
+                            </tr>
+                            <tr>
+                                <td class="cell_left">岗位：</td>
+                                <td class="cell_right">{$vo.createid|getfieldby='id','duty_id','user'|getfieldby='id','name','mis_system_duty'}</td>
+                                <td class="cell_left">借款金额：</td>
+                                <td class="cell_right tml_total_money">{$vo.borrowmoney|getDigits}元</td>
+                                <td class="cell_left">需求时间：</td>
+                                <td class="cell_right">{$vo.needtime|transTime}</td>
+                            </tr>
+                            <tr>
+                                <td class="cell_left">付款方式：</td>
+                                <td class="cell_right">{$vo['paymethodid']|getFieldBy='id','name','mis_payment_method'}</td>
+                                <td class="cell_left">收款人：</td>
+                                <td class="cell_right">{$vo.receiver}</td>
+                                <td class="cell_left">开户银行：</td>
+                                <td class="cell_right">{$vo.bankname}</td>
+                            </tr>
+                            <tr>
+                                <td class="cell_left">银行账号：</td>
+                                <td class="cell_right">{$vo.bankaccount}</td>
+                                <td class="cell_left"></td>
+                                <td class="cell_right"></td>
+                                <td class="cell_left"></td>
+                                <td class="cell_right"></td>
+                            </tr>
+                            <tr>
+                                <td class="cell_left">用途说明：</td>
+                                <td class="cell_line_right" colspan="5"><span>{$vo.useexplain}</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br />
+                </fieldset>
+				{:W('ShowUploadView',$attarry)}<!-- 审核页面和查看页面的附件查看 -->
+				{:W('ShowFormFlowView',$vo)}
+				<!-- <fieldset class="side-catalog-anchor">
+					<legend class="fieldset_legend_toggle side-catalog-text side-catalog-firstanchor">
+						<b>知会人员</b>
+                        <div class="tml_style_line tml_sl4 tml_slb_blue"></div>
+					</legend>
+                    <div class="check_info">
+                        <div class="check_flow_path">
+                            <div class="per_box">
+                                <img width="45" src="/systemui/Public/css/tmlstyle/img/photo/photo.jpg" alt=""/>
+                                <span>钱同事</span>
+                            </div>
+                            <div class="per_box">
+                                <img width="45" src="/systemui/Public/css/tmlstyle/img/photo/photo.jpg" alt=""/>
+                                <span>孙同事</span>
+                            </div>
+                            <div class="per_box">
+                                <img width="45" src="/systemui/Public/css/tmlstyle/img/photo/photo.jpg" alt=""/>
+                                <span>张同事</span>
+                            </div>
+                            <div class="per_box">
+                                <img width="45" src="/systemui/Public/css/tmlstyle/img/photo/photo.jpg" alt=""/>
+                                <span>李同事</span>
+                            </div>
+                            <div class="per_box">
+                                <img width="45" src="/systemui/Public/css/tmlstyle/img/photo/photo.jpg" alt=""/>
+                                <span>王同事</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                    <div class="check_info_content">
+                        <div class="file_name">动态</div>
+                        <div class="tml_style_line tml_slb_red"></div>
+                        <div class="trends_body">
+                            <span class="tml-mr5 time_color icon-comment-alt"></span>
+                            <span class="time_color">杨同事：</span>
+                            <span class="time_color">已查看</span>
+                            <span class="tml-mr10 time_color right">2014-09-02 13:30</span>
+                        </div>
+                        <div class="trends_body">
+                            <span class="tml-mr5 time_color icon-comment-alt"></span>
+                            <span class="time_color">李同事：</span>
+                            <span class="time_color">这里是不是缺少资料呀？</span>
+                            <span class="tml-mr10 time_color right">2014-09-02 13:30</span>
+                        </div>
+                        <div class="trends_body">
+                            <span class="tml-mr5 time_color icon-comment-alt"></span>
+                            <span class="time_color">王同事：</span>
+                            <span class="time_color">已查看</span>
+                            <span class="tml-mr10 time_color right">2014-09-02 13:30</span>
+                        </div>
+                    </div>
+				</fieldset>
+                <fieldset class="side-catalog-anchor">
+                    <legend class="fieldset_legend_toggle side-catalog-text side-catalog-firstanchor">
+                        <b>执行情况</b>
+                        <div class="tml_style_line tml_sl4 tml_slb_blue"></div>
+                    </legend>
+                    <div class="check_body">
+                        <div class="check_body_left left">
+                            <img width="45" src="/systemui/Public/css/tmlstyle/img/photo/photo.jpg">
+                        </div>
+                        <div class="check_body_right left">
+                            <div class="">
+                                <span class="tml-mr5 author_color">张财务</span>
+                                <span class="tml-mr5 time_color">2014-09-02</span>
+                            </div>
+                            <div class="check_content">处理中…</div>
+                        </div>
+                    </div><div class="check_body">
+                        <div class="check_body_left left">
+                            <img width="45" src="/systemui/Public/css/tmlstyle/img/photo/photo.jpg">
+                        </div>
+                        <div class="check_body_right left">
+                            <div class="">
+                                <span class="tml-mr5 author_color">张财务</span>
+                                <span class="tml-mr5 time_color">2014-09-02</span>
+                            </div>
+                            <div class="check_content">已执行付款</div>
+                        </div>
+                    </div>
+				</fieldset> -->
+				{:W('ShowAction',array('data'=>$vo))}
+			</div>
+			</div>
+		</form>
+	</div>
+</div>

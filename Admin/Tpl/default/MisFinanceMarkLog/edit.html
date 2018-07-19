@@ -1,0 +1,80 @@
+<div class="pageContent">
+	<form method="post" action="__URL__/update/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,dialogAjaxDone);">
+		<input type="hidden" name="id" value="{$vo.id}">
+		<input type="hidden" name="dotype" value="流程启动" />
+		<input type="hidden" name="ostatus" value="{$vo.ostatus}" /> 
+		<input type="hidden" name="refreshtabs[closeall]" value="1" />
+		<input type="hidden" class="selectaudituser.mangid" name="audit_option_user" value="" callback="auditOpion" />
+		<a class="btnLook" style="display: none;" id="auditselectoption" rel="lookupSelectAuditOption" href="__URL__/lookupSelectAuditOption/modulename_auditoption/__MODULE__/audittype/dialog" lookupGroup="selectaudituser">选择下一步审核人</a>
+		<div class="contentTitle contentTitle_center">盖章申请<if condition="$vo.auditState eq -1">{:W('ShowAdvices',array('id'=>$vo['id']))}</if> 
+		</div>
+		<div class="pageFormContent " layoutH="115">
+			<div class="tml-row">
+			{:W('ShowOrderno',array(1,'mis_finance_mark_log',$vo['orderno']))}
+				<div class="tml-form-col">
+					<label>{$fields["master_mark"]}:</label>
+					<select name="master_mark"  class="combox ">
+					<option value="0" selected>请选择</option>
+						<volist name="mainlist" id = "vat">
+							<option  value="{$vat['id']}"<if condition="$vat['id'] eq $vo['master_mark']">selected="selected"</if>>{$vat['name']}</option>
+						</volist>
+						<!-- <option <if condition="$vo['master_mark'] eq 1">selected</if> value="1">股份私章</option>
+						<option <if condition="$vo['master_mark'] eq 2">selected</if> value="2">股份财务章</option>
+						<option <if condition="$vo['master_mark'] eq 3">selected</if> value="3">设计私章</option>
+						<option <if condition="$vo['master_mark'] eq 4">selected</if> value="4">设计财务章</option>
+						<option <if condition="$vo['master_mark'] eq 5">selected</if> value="5">冯总私章</option>
+						<option <if condition="$vo['master_mark'] eq 6">selected</if> value="6">苗木财务章</option>
+						<option <if condition="$vo['master_mark'] eq 7">selected</if> value="7">苗木私章</option> -->
+					</select>
+				</div>
+				<div class="clear"></div>
+				<div class="tml-form-col">
+					<label>{$fields["category"]}：</label>
+					<select name="category"  class="combox ">
+					<option value="0" selected>请选择</option>
+						<volist name="auxlist" id="list">
+							<option value="{$list.id}" <if condition="$list.id eq $vo.category">selected="selected"</if>>{$list.name}</option>
+						</volist>
+					</select>
+				</div>
+				<div class="tml-form-col">
+					<label>份&nbsp;&nbsp;&nbsp;&nbsp;数：</label>
+					<div class="tml-input-append">
+						<input  type="text" name="unit" class="digits" size="5"  value="{$vo['unit']}">
+						<span class="input-addon-unit  " title="份">份</span>
+					</div>
+				</div>	
+				<div class="tml-form-col">
+					<label>{$fields["log_time"]}：</label>
+					<div class="tml-input-append">
+					<input type="text" class="Wdate required js-wdate" name="log_time" size="17" value="{$vo['log_time']|date='Y-m-d',###}">
+					<a href="javascript:;" class="input-addon input-addon-calendar js-inputCheckDate">选择</a>
+					</div>
+				</div>
+			</div>
+			<div class="tml-form-row">
+				<label>{$fields["content"]}：</label>
+				<input type="text" name="content" class="required" value="{$vo['content']}" size="30" />
+			</div>
+			<div class="tml-form-row">
+				<label>备&nbsp;&nbsp;&nbsp;&nbsp;注：</label>
+				<textarea cols="80" rows="3" name="remark">{$vo['remark']}</textarea>
+			</div>
+			<div class="tml-row">
+				<div class="tml-form-col">
+					<label>申&nbsp;请&nbsp;人：</label>
+					<input type="text" readonly="readonly" value="{$vo.createid|getFieldBy='id','name','user'}" />
+				</div>
+				<div class="tml-form-col">
+					<label>申请时间：</label>
+					<input type="text" readonly="readonly" value="{$vo.createtime|transTime}" />
+				</div>
+				<!-- <div class="tml-form-col">
+					<label>申请部门：</label>
+					<input type="text" readonly="readonly" value="{$time|transTime}" />
+				</div> -->
+			</div>
+		</div>
+		 {:W('ShowAction',array('data'=>$vo))}
+	</form>
+</div>

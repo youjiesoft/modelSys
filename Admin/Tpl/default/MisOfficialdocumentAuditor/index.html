@@ -1,0 +1,95 @@
+<script>
+$('.checkTo').click(function(){
+    $(this).find("input").focus();
+ });
+function clearreceverMismessage(number,ulId){
+     $("#"+ulId).empty();
+     var $string = '<li class="addresseeText"><input autofocus="autofocus" type="text" checkfor="MisMessage" callback="MisOfficialdocumentAuditor_callback" show="name" class="checkByInput addresseeTextInput" inputName="'+ulId+'" tabindex="1" autocomplete="off"></li>';
+    $('#'+ulId).append($string);
+    $('#'+ulId).find('input').focus();
+}
+function workstateSet_addpeople(id,name,step){
+	var $strHtml = appendUserHtml(step,step,id,name);
+	 $("#"+step).children().last().before($strHtml);
+	 $("#"+step).find('input').focus();
+};
+function workstateSet_selectinto(step){
+ 	var id;
+ 	var name;
+ 	$(".tbodylist").find("input[type='checkbox']").each(function(){
+ 		if($(this).attr("checked")=='checked'){
+ 			id = $(this).attr("userid");
+ 			name = $(this).attr("username");
+ 			workstateSet_addpeople(id,name,step);
+ 		}
+ 	});
+ }
+ 
+function MisOfficialdocumentAuditor_callback(json,obj){
+	var $ulId = obj.parents('td:first');
+    var $inputName = obj.attr('inputName');//获取需要插入到数据库id值
+    var isTrue = true;
+    var $id = json.id;
+    var $name = json.name;
+    $ulId.find("input[name='"+$inputName+"[]']").each(function(){
+        if($(this).val() == $id) {
+            isTrue = false;
+        }
+    });
+    var $str = "";
+    if(isTrue){
+        $str += "<li>";
+        $str += "<input type='hidden' name='"+$inputName+"[]' value='"+$id+"'/>";
+        $str += "<span>"+$name+"</span>";
+        $str += "<a class='delAddressee' title='删除' onclick='this.parentNode.parentNode.removeChild(this.parentNode);' href='javascript:;'>x</a>";
+        $str += "</li>";
+        obj.val("");
+        obj.focus();
+        obj.parent().before($str);
+    }else {
+        obj.val("");
+    }
+}
+</script>
+<div class="pageContent">
+    <div class="panelBar"></div>
+    <div class="page">
+		<div class="pageContent" layoutH="0">
+		<form method="post" action="__URL__/update/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,navTabAjaxDone);">
+			<div class="keepContentCenter" style="margin:auto; width:700px;">
+				<table class="tml-table-w tml-table">
+					<volist name="list" id="vo">
+						<tr>
+							<td>{$vo.doinfo}<input type="hidden" name="id[]" value="{$vo.id}"/></td>
+							<td>
+								<ul style="min-height:26px;border:1px #ccc solid;height:50px;background-color:#ddd;width:82%;" id="lookupAuditor{$vo.id}" class="addressee left checkTo">
+									<volist name="vo.userlist" id="ulist">
+										<li>
+			                                <input type="hidden" name="lookupAuditor{$vo.id}[]" value="{$ulist.id}"/>
+			                                <span>{$ulist.name}</span>
+			                                <a  class="delAddressee" title='删除该功能' onclick='this.parentNode.parentNode.removeChild(this.parentNode);' href='javascript:;'>x</a>
+		                                </li>
+									</volist>
+									<li class="addresseeText">
+										<input autofocus="autofocus" type="text" checkfor="MisMessage" callback="MisOfficialdocumentAuditor_callback" show="name" class="checkByInput addresseeTextInput" inputName="lookupAuditor{$vo.id}" tabindex="1" autocomplete="off">
+									</li>
+								</ul>
+								<a href="__APP__/MisWorkStatementSet/lookupmanage/step/lookupAuditor{$vo.id}" lookupgroup="org1" class="input-addon input-addon-add">查找带回</a>&nbsp;
+								<a onclick="clearreceverMismessage('1','lookupAuditor{$vo.id}');" href="javascript:;">
+								<img src="/esproject/Public/Images/clear_field.gif" title="清空接收用户"></a>
+							</td>
+						</tr>
+					</volist>
+					<tr>
+						<td colspan="2">
+							<div style="margin:auto;width:50px;">
+								<button class="tml-btn tml-btn-primary" type="submit">保存</button>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</form>
+		</div>
+	</div>
+</div>

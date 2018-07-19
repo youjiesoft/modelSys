@@ -1,0 +1,73 @@
+<style>
+.userul{margin-left: 50px;}
+.userul >li{float:left;width:100px;}
+</style>
+<script>
+function nowchecked(id){
+	var ifture = false;
+	$("#"+id+" input").each(function(i) {
+		if(i==0) {
+			if($(this).attr("checked")) {
+				ifture = true;
+			}
+		} else {
+			if(ifture){
+				$(this).attr("checked", true);
+			} else {
+				$(this).attr("checked", false);
+			}
+		}
+
+    });
+}
+function subCheck(id){
+	var allTrue = false;
+	$("#"+id+" input").each(function(i) {
+		if(i>0){
+			allTrue += $(this).attr("checked");
+		}
+    });
+    if(allTrue){
+    	$("#"+id+" .parentCls").attr("checked", true);
+    }else{
+    	$("#"+id+" .parentCls").attr("checked", false);
+    }
+}
+</script>
+<div class="pageContent">
+	<form method="post" action="__APP__/ProcessInfo/accredit/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+        <input type="hidden" class="textInput" name="pid" value="{$vo.pid}"/>
+	<input type="hidden" class="textInput" name="id" value="{$vo.id}"/>
+        <input type="hidden" class="textInput" name="tid" value="{$vo.tid}"/>
+        <input type="hidden" class="textInput" name="step" value="0"/>
+        <div class="pageFormContent" layoutH="80">
+            <div class="unit">
+            	<label>节点授权：</label>
+            </div>
+            <div id="processuser" >
+                <div style="clear:both"></div>
+                <div class="testDiv">
+                {$str}
+                </div>
+            </div>
+			<div class="unit">
+				<label>备注：</label>
+				<textarea name="remark" class="textInput"  minlength="2" maxlength="100" rows="2" cols="40">{$vo.remark}</textarea>
+			</div>
+		</div>
+		<div class="formBar">
+			<ul>
+			<if condition="$_SESSION.a eq 1 or $_SESSION.processInfo_accredit">
+				<li><div  style="float: left;margin-top: 5px;height: 25px;"><input type="radio" <eq value="0" name="vo.parallel"> checked="checked" </eq> value="0" name="parallel" /></div><span> 非并行</span></li>
+				<if condition="$pre gt 0">
+				<li><div  style="float: left;margin-top: 5px;height: 25px;"><input type="radio" <eq value="1" name="vo.parallel"> checked="checked" </eq> value="1" name="parallel" /></div><span> 向前并行</span></li>
+				</if>
+				<if condition="$next gt 0">
+				<li><div  style="float: left;margin-top: 5px;height: 25px;"><input type="radio" <eq value="2" name="vo.parallel"> checked="checked" </eq> value="2" name="parallel" /></div><span> 向后并行</span></li>
+				</if>
+				<li><button class="tml-btn tml-btn-primary" type="submit">{$Think.lang.save}</button></li>
+			</if>
+			</ul>
+		</div>
+	</form>
+</div>

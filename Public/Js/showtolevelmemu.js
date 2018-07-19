@@ -1,0 +1,1 @@
+$(function(){var t=navTab.getCurrentPanel();$(".nbmaccordion",t).nbmaccordion(),$("a.menu_tag").toggle(function(){$("div.nbmaccordionFloat").animate({width:"200px"},"slow")},function(){$("div.nbmaccordionFloat").animate({width:"0px"},"slow")});var a=$(".navTab-tab").find("li.selected a:first").attr("title");$("div.work_statement",t).html(a)});

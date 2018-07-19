@@ -1,0 +1,22 @@
+<script>
+$(function(){
+	var $box=navTab.getCurrentPanel();
+	var url = "__URL__/lookupCarDeptApplyChart/year/{$year}";
+	var swf = 'StackedColumn3D';
+	chart("__PUBLIC__/Charts/"+swf+".swf","ReportCarDeptApplyChart",url,"1200", "400");
+	$box.find('#ReportCarDeptApply').selectButton().change(function(){
+		var swf = $(this).val();
+		chart("__PUBLIC__/Charts/"+swf+".swf","ReportCarDeptApplyChart",url,"1200", "400");
+	});
+});
+</script>
+<div class="clearfix" style="margin: 10px auto; width: 1200px">
+	<select name="select" id="ReportCarDeptApply" class="">
+		<option value="StackedColumn2D">2D柱图</option>
+		<option value="StackedColumn3D" selected="selected">3D柱图</option>
+	</select>
+	<div class="tml-c-red" style="margin: 10px auto;" >
+		<p>【横坐标为车辆，纵坐标为次数(次)】</p>
+	</div>
+</div>
+<div id="ReportCarDeptApplyChart" style="margin: 0 auto; width: 1200px"></div>

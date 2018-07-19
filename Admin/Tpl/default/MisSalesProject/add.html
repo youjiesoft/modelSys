@@ -1,0 +1,283 @@
+<div class="page">
+	<div class="pageContent">
+	<form method="post" action="__URL__/insert/navTabId/__MODULE__" class="pageForm required-validate" enctype="multipart/form-data" onsubmit="return validateCallback(this,navTabAjaxDone);">
+		<input type="hidden" name="callbackType" value="closeCurrent">
+		<div class="pageFormContent applecloth anchorsToolBarParent" layoutH="40" >
+			<div class="keepContentCenter form-affix-content">
+				<div class="contentTitle contentTitle_center form-affix-title">项目初始化</div>
+				<fieldset class="side-catalog-anchor">
+					<div class="tml-row">
+						<div class="tml-form-col">
+							<label>{$fields["code"]}：</label>
+							<input type="text" class="required" name="code" value="{$code}" />
+						</div>
+                        <div class="tml-form-col">
+                            <label>{$fields["name"]}：</label>
+                            <input type="text" class="required" name="name" value="" />
+                        </div>
+					<!-- <div class="tml-form-row">
+					    <label>合同名称：</label>
+					    合同编码
+						<div class="tml-input-find">
+							<input type="text" class="checkByInput org.orderno tml-find-num" callback="getPactCheckVal" map="array('auditState'=>3,'status'=>1,'ischange'=>0);" name="htorderno" show='orderno' insert='id' checkfor='MisPactCheck' autocomplete='off'/>
+							<input type="hidden" class="org.id" name="prcnoid" />
+							<a class="input-addon input-addon-addon input-addon-userplus projectlookup" param="field=id,orderno,name,projectid,pterms,camount,projecttype,startdate,enddate,workperiod,siteid,contracttype,daddr,businesstype,area&model=MisPactCheck&conditions=auditState,3;status,1;ischange,0" href="__URL__/lookupGeneral" lookupGroup="org">项目选择</a>
+							合同名称
+							<input name="htname" check_key="othername" type="text" class="textInput org.name tml-find-name" readonly="readonly" />
+							<a class="input-addon input-addon-recycle" href="javascript:;" onclick="clearInput('htorderno,sacnoid,htname');" title="清空项目信息"></a>
+						</div>
+					</div> -->
+						<div class="tml-form-col ">
+							<label>客户主体:</label>
+							<div class="tml-input-append2">
+								<input type="text" class="ORG1.orderno required" autocomplete="off" readonly="readonly" value="" />
+								<input type="hidden" class="ORG1.id" id="custtypeid" name="custtypeid" value=""  />
+								<a class="input-addon input-addon-addon input-addon-add" param="field=id,orderno&model=MisSaleClientType&conditions=status,1" href="__URL__/lookupGeneral" lookupGroup="ORG1" >客户主体</a>
+								<a title="清空信息" class="input-addon input-addon-recycle"  href="javascript:void(0);" onclick="clearOrg('ORG1');"></a>
+							</div>
+						</div>
+						<div class="tml-form-col ">
+							<label>行业主体:</label>
+							<div class="tml-input-append2">
+								<input type="text" class="ORG2.orderno required" autocomplete="off" readonly="readonly" value="" />
+								<input type="hidden" class="ORG2.id" id="hyid"  name="hyid" value=""  />
+								<a class="input-addon input-addon-addon input-addon-add" param="field=id,orderno&model=MisSaleProfession&conditions=status,1" href="__URL__/lookupGeneral" lookupGroup="ORG2" >行业主体</a>
+								<a title="清空信息" class="input-addon input-addon-recycle"  href="javascript:void(0);" onclick="clearOrg('ORG2');"></a>
+							</div>
+						</div>
+						<div class="tml-form-col ">
+							<label>产业链主体:</label>
+							<div class="tml-input-append2">
+								<input type="text" class="ORG3.orderno required" autocomplete="off" readonly="readonly" value="" />
+								<input type="hidden" class="ORG3.id" id="cylid" name="cylid" value=""  />
+								<a class="input-addon input-addon-addon input-addon-add" param="field=id,orderno&model=MisSaleIndustry&conditions=status,1" href="__URL__/lookupGeneral" lookupGroup="ORG3" >产业链主体</a>
+								<a title="清空信息" class="input-addon input-addon-recycle"  href="javascript:void(0);" onclick="clearOrg('ORG3');"></a>
+							</div>
+						</div>
+						<div class="tml-form-col ">
+							<label>商机名称:</label>
+							<div class="tml-input-append2">
+								<input type="text" class="ORG4.clientname required" autocomplete="off" readonly="readonly" value="" />
+								<input type="hidden" class="ORG4.id" id="bid" name="bid" value=""  />
+								<a class="input-addon input-addon-addon input-addon-add" param="field=id,clientname,customertypeid,professionid,industryid&model=MisSaleBusiness&conditions=status,1" href="__URL__/lookupGeneral" lookupGroup="ORG4" >商机</a>
+								<a title="清空信息" class="input-addon input-addon-recycle"  href="javascript:void(0);" onclick="clearOrg('ORG4');"></a>
+							</div>
+						</div>
+						<!-- <div class="tml-form-col">
+							<label>{$fields["helpcode"]}：</label>
+							<input type="text" name="helpcode" value="{$vo.helpcode}" />
+						</div> -->																
+						<div class="tml-form-col">
+							<label>{$fields["typeid"]}：</label>
+                            <select name="typeid" class="combox org.projecttype required" check_key="projecttype">
+								<option value="">&mdash;&mdash;选择&mdash;&mdash;</option>
+								{:getDataBaseByHtml('mis_system_flow_type',array('conditions'=>'outlinelevel = 1'))}
+							</select>
+						</div>
+						<div class="tml-form-col">
+								<label>主调：</label>
+								<div class="tml-input-append">
+								<input type="hidden"  class="org1.mangid selectuser.zdid" value="{$MisHrBasicEmployeeList.id}" name="zdid"/>
+								<input type="text" readonly="readonly" callback="changeworkage" class="selectuser.hrname1 required tml-find-num"  name="zdname" value="{$MisHrBasicEmployeeList.name}"/>
+								 	<a class="input-addon input-addon-addon input-addon-userplus checkUser" href="javascript:;"   data="selectuser;hrname1,username;zdid,personid;deptname;deptid;dutyid;dutyname;worktypename;worktype;mobile;chinaid;indate;" width="800" height="800">查找带回</a>&nbsp;
+							</div>
+						</div>
+						<div class="tml-form-col">
+								<label>辅调：</label>
+								<div class="tml-input-append">
+								<input type="hidden"  class="org2.mangid selectuser.fdid" value="{$MisHrBasicEmployeeList.id}" name="fdid"/>
+								<input type="text" readonly="readonly" callback="changeworkage" class="selectuser.hrname2 required tml-find-num"  name="fdname" value="{$MisHrBasicEmployeeList.name}"/>
+								 	<a class="input-addon input-addon-addon input-addon-userplus checkUser" href="javascript:;"   data="selectuser;hrname2,username;fdid,personid;deptname;deptid;dutyid;dutyname;worktypename;worktype;mobile;chinaid;indate;" width="800" height="800">查找带回</a>&nbsp;
+							</div>
+						</div>						
+						<!--<div class="tml-form-col">-->
+							<!--<label>{$fields["contracttype"]}：</label>-->
+								<!--<select name="contracttype" class="combox org.contracttype" check_key="contracttype">-->
+									<!--<option value="园建">园建</option>-->
+									<!--<option value="绿化">绿化</option>-->
+									<!--<option value="养护">养护</option>-->
+									<!--<option value="综合">综合</option>-->
+									<!--<option value="其它">其它</option>-->
+								<!--</select>-->
+						<!--</div>-->
+						<!--<div class="tml-form-col">-->
+							<!--<label>{$fields["businesstype"]}：</label>-->
+							<!--<select name="businesstype" class="combox org.businesstype" check_key="businesstype">-->
+								<!--<option value="500万内">500万内</option>-->
+								<!--<option value="500-1000万">500-1000万</option>-->
+								<!--<option value="1000-2000万">1000-2000万</option>-->
+								<!--<option value="2000万以上">2000万以上</option>-->
+							<!--</select>-->
+						<!--</div>-->
+						<!--<div class="tml-form-col">-->
+							<!--<label>{$fields["bail"]}：</label>-->
+								<!--<div class="tml-input-append">-->
+									<!--<input type="text" name="bail" class="TextMagnifier-money" value="{$vo.bail}" onblur="FormatNumber(this)"/>-->
+									<!--<span class="input-addon-unit" title="元">元</span>-->
+								<!--</div>-->
+						<!--</div>-->
+						<!--<div class="tml-form-col">-->
+							<!--<label>{$fields["area"]}：</label>-->
+							<!--<input type="text" name="area" value="{$vo.area}"/>-->
+						<!--</div>-->
+						<!--<div class="tml-form-col">-->
+							<!--<label>{$fields["offertype"]}：</label>-->
+							<!--<select name="offertype" class="combox">-->
+								<!--<volist name="odlist" id="olist">-->
+									<!--<option value="{$key}">{$olist}</option>-->
+								<!--</volist>-->
+							<!--</select>-->
+						<!--</div>-->
+						<!--<div class="tml-form-col">-->
+							<!--<label>{$fields["address"]}：</label>-->
+							<!--<input type="text" name="address" class="org.daddr" value="{$vo.address}" />-->
+						<!--</div>-->
+						<!--<div class="tml-form-col">-->
+							<!--<label>{$fields["businessditch"]}：</label>-->
+								<!--<select name="businessditch" class="combox">-->
+									<!--<option value="邀请">邀请</option>-->
+									<!--<option value="介绍">介绍</option>-->
+									<!--<option value="公开招标">公开招标</option>-->
+								<!--</select>-->
+						<!--</div>-->
+						<!--<div class="tml-form-col">-->
+							<!--<label>{$fields["prinunit"]}：</label>-->
+							<!--<input type="text" name="prinunit" value="{$vo.prinunit}" />-->
+						<!--</div>-->
+						<!--<div class="tml-form-col">-->
+							<!--<label>{$fields["selectway"]}：</label>-->
+							<!--<input type="text" name="selectway" value="{$vo.selectway}" />-->
+						<!--</div>-->
+						<!--&lt;!&ndash; <div class="tml-form-col">-->
+							<!--<label>{$fields["siteid"]}:</label>-->
+							<!--<input type="text" class="checkByInput" checkfor="misSalesSite" />-->
+							<!--<input type="hidden" name="siteid" />-->
+						<!--</div>	 &ndash;&gt;		-->
+						<!--<div class="tml-form-col">-->
+							<!--<label>{$fields["siteid"]}：</label>-->
+							<!--<select name="siteid" class="combox org.siteid" check_key="siteid">-->
+								<!--<option selected value="">&mdash;&mdash;选择&mdash;&mdash;</option>-->
+								<!--{:getDataBaseByHtml('MisSalesSite')}-->
+						   <!--</select>-->
+						<!--</div>													-->
+						<!--<div class="tml-form-col">-->
+							<!--<label>{$fields["companyid"]}:</label>-->
+							<!--<select name="companyid" class="combox">-->
+								<!--<option selected value="">&mdash;&mdash;选择&mdash;&mdash;</option>-->
+								<!--{:getDataBaseByHtml('mis_system_company')}-->
+						   <!--</select>-->
+						<!--</div>-->
+					</div>
+				</fieldset>
+				<!--<fieldset class="side-catalog-anchor">-->
+					<!--<legend class="fieldset_legend_toggle side-catalog-text">-->
+						<!--<b>合同信息</b>-->
+						<!--<div class="tml_style_line tml_sl4 tml_slb_blue"></div>-->
+					<!--</legend>-->
+					<!--<div class="tml-row">-->
+						<!--<div class="tml-form-col">-->
+							<!--<label>{$fields["principalcost"]}：</label>-->
+							<!--<div class="tml-input-append">-->
+							<!--<input type="text" name="principalcost" class="TextMagnifier-money" value="{$vo.principalcost}" onblur="FormatNumber(this)"/>-->
+							<!--<span class="input-addon-unit" title="元">元</span>-->
+							<!--</div>-->
+						<!--</div>-->
+						<!--<div class="tml-form-col">-->
+							<!--<label>{$fields["limittime"]}：</label>-->
+							<!--<div class="tml-input-append">-->
+							<!--<input type="text" name="limittime" class="org.workperiod" check_key="otherworkperiod" value="{$vo.limittime}" />-->
+							<!--<span class="input-addon-unit" title="天">天</span>-->
+							<!--</div>-->
+						<!--</div>-->
+						<!--<div class="tml-form-col">-->
+							<!--<label>{$fields["startdate"]}：</label>-->
+							<!--<div class="tml-input-append">-->
+								<!--<input class="Wdate js-wdate" type="text" value="{$time|transTime}" name="startdate">-->
+								<!--<a href="javascript:;" class="input-addon input-addon-calendar js-inputCheckDate">选择</a>-->
+							<!--</div>-->
+						<!--</div>-->
+						<!--<div class="tml-form-col">-->
+							<!--<label>{$fields["enddate"]}：</label>-->
+							<!--<div class="tml-input-append">-->
+								<!--<input class="Wdate js-wdate" type="text" value="{$time|transTime}" name="enddate">-->
+								<!--<a href="javascript:;" class="input-addon input-addon-calendar js-inputCheckDate">选择</a>-->
+							<!--</div>-->
+						<!--</div>-->
+					<!--</div>-->
+					<!--<div class="tml-form-row">-->
+						<!--<label>{$fields["paycondition"]}：</label>-->
+						<!--<textarea name="paycondition" rows="2" class="org.pterms" check_key="otherpterms">{$vo.paycondition}</textarea>-->
+					<!--</div>-->
+				<!--</fieldset>-->
+                <!--<fieldset class="side-catalog-anchor">-->
+					<!--<legend class="fieldset_legend_toggle side-catalog-firstanchor side-catalog-text">-->
+						<!--<b>第二步完善项目概况</b>-->
+						<!--<div class="tml_style_line tml_sl4 tml_slb_blue"></div>-->
+					<!--</legend>-->
+					<!--<div class="tml-row">-->
+						<!--<div class="tml-form-col">-->
+							<!--<label>{$fields["jsdw"]}：</label>-->
+							<!--<input type="text" name="jsdw" value="{$vo.jsdw}" />-->
+						<!--</div>-->
+						<!--<div class="tml-form-col">-->
+							<!--<label>{$fields["zbdw"]}：</label>-->
+							<!--<input type="text" name="zbdw" value="{$vo.zbdw}" />-->
+						<!--</div>-->
+						<!--<div class="tml-form-col">-->
+							<!--<label>{$fields["sjdw"]}：</label>-->
+							<!--<input type="text" name="sjdw" value="{$vo.sjdw}" />-->
+						<!--</div>-->
+						<!--<div class="tml-form-col">-->
+							<!--<label>{$fields["jldw"]}：</label>-->
+							<!--<input type="text" name="jldw" value="{$vo.jldw}" />-->
+						<!--</div>-->
+						<!--<div class="tml-form-col">-->
+						    <!--<div class="tml-input-append">-->
+							<!--<label>{$fields["tprofrate"]}：</label>-->
+							<!--<input type="text" name="tprofrate" value="{$vo.tprofrate|getDigits}" />-->
+							<!--<span class="input-addon-unit">%</span>-->
+							<!--</div>-->
+						<!--</div>-->
+					<!--</div>-->
+				<!--</fieldset>-->
+				<!--<fieldset class="side-catalog-anchor">-->
+					<!--<legend class="fieldset_legend_toggle side-catalog-text">-->
+						<!--<b>主要工程内容及工程量</b>-->
+						<!--<div class="tml_style_line tml_sl4 tml_slb_blue"></div>-->
+					<!--</legend>-->
+					<!--<div class="tml-form-row">-->
+						<!--<label>{$fields["lhgc"]}：</label>-->
+						<!--<textarea name="lhgc" rows="3">{$vo.lhgc}</textarea>-->
+					<!--</div>-->
+					<!--<div class="tml-form-row">-->
+						<!--<label>{$fields["yjgc"]}：</label>-->
+						<!--<textarea name="yjgc" rows="3">{$vo.yjgc}</textarea>-->
+					<!--</div>-->
+					<!--<div class="tml-form-row">-->
+						<!--<label>{$fields["sdgc"]}：</label>-->
+						<!--<textarea name="sdgc" rows="3">{$vo.sdgc}</textarea>-->
+					<!--</div>-->
+				<!--</fieldset>-->
+				<!--<fieldset class="side-catalog-anchor">-->
+					<!--<legend class="fieldset_legend_toggle side-catalog-text">-->
+						<!--<b>工程特点及难点</b>-->
+						<!--<div class="tml_style_line tml_sl4 tml_slb_blue"></div>-->
+					<!--</legend>-->
+					<!--<div class="tml-form-row">-->
+						<!--<label>{$fields["tdnd"]}：</label>-->
+						<!--<textarea name="tdnd" rows="3">{$vo.tdnd}</textarea>-->
+					<!--</div>-->
+				<!--</fieldset>-->
+				<div class="formBar">
+					<ul>
+						<!-- <li><div id="salesprojectnextstep" class="buttonActive"><div class="buttonContent"><button type="button" onclick="projectstep(this);">{$Think.lang.nextstep}</button></div></div></li>
+						<li><div id="salesprojectlaststep" class="buttonDisabled"><div class="buttonContent"><button type="button" onclick="projectlaststep(this);">上一步</button></div></div></li>
+						<li id="salesprojectsave"><div id="salesprojectsave1" class="buttonDisabled"><div class="buttonContent"><button disabled="disabled" type="submit">{$Think.lang.save}</button></div></div></li> -->
+						<li id="salesprojectsave"><button type="submit" class="tml_formBar_btn tml_formBar_btn_blue">{$Think.lang.save}</button></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</form>
+	</div>
+</div>

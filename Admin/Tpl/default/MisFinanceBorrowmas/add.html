@@ -1,0 +1,139 @@
+<script>
+function getselectquota(ob){
+	var $this=$(ob);
+	var $box=navTab.getCurrentPanel();//找到当前窗体
+	var quotaid=$this.val();
+	$.ajax({
+		type : 'post',
+		url : '__URL__/lookupborrowquota',
+		cache : false,
+		dataType : "json",
+		data : {
+			quotaid : quotaid
+		},
+		global:false,
+		success : function(re){
+			$("#borrowquota").val(re);
+		},
+		error : DWZ.ajaxError
+	}); 
+}
+function examinequota(){
+  var $box=navTab.getCurrentPanel();//找到当前窗体
+  if($('select[name="typeid"]').length>0){
+	var quota=$("#borrowquota").val();
+	var borrowmoney=$box.find("input[name='borrowmoney']").val().replaceAll(",",'');
+	borrowmoney=borrowmoney.substr(0, borrowmoney.length-3);
+	if(borrowmoney - quota > 0){
+		alertMsg.error('申请借款金额大于当前类型最大限额：'+quota);
+		$box.find("input[name='borrowmoney']").val("");
+		return false;
+	}
+  }
+}
+function getborrowpaymethodid(ob){
+	var $this=$(ob);
+	var val=$this.val();
+	if(val != 1){
+		$("#borrowpaymethodid").show();
+	}else{
+		$("#borrowpaymethodid").hide();
+	}
+}
+function abcd(obj){
+	var $abc = $("#abcde").val();
+	var url="__URL__/abcd";
+	var option={};
+	option.data={base:$abc};
+	navTab.openTab("abacdd",url,option);
+}
+</script>
+<div class="page">
+	<div class="pageContent">
+		<form method="post" action="__URL__/insert/navTabId/__MODULE__"  class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+			{:W('HiddenInput')}<!-- 作用域为项目管理入库调用模板文件的隐藏input -->
+			<input type="hidden" name="beforeInsert" value="1" /><!-- 新增启动流程在startprocess方法中进行判断 -->
+			<input type="hidden" name="callbackType" value="closeCurrent"><!-- 关闭当前窗口 -->
+			
+			<div class="pageFormContent applecloth anchorsToolBarParent" layoutH="40" >
+				<div class="keepContentCenter form-affix-content">
+					<div class="contentTitle contentTitle_center form-affix-title">
+						借款申请单
+					</div>
+					<fieldset class="side-catalog-anchor">
+					<legend class="fieldset_legend_toggle side-catalog-text side-catalog-firstanchor">
+						<b>基础信息</b>
+                        <div class="tml_style_line tml_sl4 tml_slb_blue"></div>
+					</legend>
+					<div class="tml-row">
+					{:W('ShowOrderno',array(1,'mis_finance_borrowmas'))}
+					    <if condition='$fields["typeid"]'>
+						<div class="tml-form-col">
+							<input type="hidden" id="borrowquota" value=""/>
+							<label>{$fields["typeid"]}：</label>
+							<select name="typeid" class="combox" onchange="getselectquota(this);">
+								<option value="">请选择</option>
+								{:getDataBaseByHtml('MisFinanceBorrowmasType')}
+							</select>
+						</div>
+						</if>
+						<div class="tml-form-col">
+							<label>借款金额：</label>
+							<div class="tml-input-append">
+								<input type="text" name="borrowmoney" onblur="FormatNumber(this);examinequota();" class="number TextMagnifier-money required tml_total_money" value="0.00" />
+								<span class="input-addon-unit" title="元">元</span>
+							</div>
+						</div>
+						<div class="tml-form-col">
+							<label>需求时间：</label>
+							<span class="xyInputWithUnit">
+								<input type="text" class="Wdate js-wdate textInput" name="needtime" value="{$time|transTime}">
+								<a href="javascript:;" class="xyInputWithUnitButton inputDateButton">选择</a>
+							</span>
+						</div>
+						<!--<div class="tml-form-col">-->
+							<!--<label>申请时间：</label>-->
+							<!--<span class="xyInputWithUnit">-->
+								<!--<input type="text" readonly="readonly" value="{$time|transTime}">-->
+								<!--<a href="javascript:;" class="xyInputWithUnitButton inputDateButton">选择</a>-->
+							<!--</span>-->
+						<!--</div>-->
+						<div class="tml-form-col">
+							<label>付款方式：</label>
+							<select name="paymethodid" class="combox required" onchange="getborrowpaymethodid(this);">
+								<option value="">请选择</option>
+								{:getDataBaseByHtml('mis_payment_method')}
+							</select>
+						</div>
+						<div class="clear"></div>
+						<div class="tml-form-col">
+							<label>收款人：</label>
+							<input type="text" name="receiver" />
+						</div>
+						<div id="borrowpaymethodid">
+							<div class="tml-form-col">
+								<label>开户银行：</label>
+								<input type="text" name="bankname" maxlength="50"/>
+							</div>
+							<div class="tml-form-col">
+								<label>银行账号：</label>
+								<input type="text" name="bankaccount" maxlength="20"/>
+							</div>
+						</div>
+					</div>
+					<div class="tml-form-row">
+						<label>用途说明：</label>
+						<textarea name="useexplain"></textarea>
+					</div>
+				</fieldset>
+                	{:W('ShowUpload')}<!-- 上传附件 -->
+	                <div class="showFormFlow">
+	                {:W('ShowFormFlow')}<!-- 流程管理 -->
+	                </div>
+	                {:W('ShowNotify')}
+	                {:W('ShowAction')}
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

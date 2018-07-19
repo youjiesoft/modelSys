@@ -1,0 +1,63 @@
+<div class="pageFormContent applecloth" layoutH="0">
+	<div class="keepContentCenter clearfix">
+		<h2 class="contentTitle contentTitle_center">培训教育经历报表</h2>
+		<div id="hrPersonEducationEport_doSearch">
+			<FIELDSET>
+			<div class="xyformunit">
+					<label>姓名：</label>
+					<input type="text" name="name" />
+				</div>
+				<div class="xyformunit">
+					<label>部门：</label>
+					<input type="text" name="deptname" class="checkByInput"  map="array('status'=>1);" fields="array('id'=>'0','code'=>'部门编号','name'=>'部门名称');" checkfor="mis_system_department" show="name"/>
+				</div>
+				<div class="xyformunit">
+					<label>职务：</label>
+					<input type="text" name="dutyname" class="textInput"/>
+				</div>
+					<div class="clear"></div>
+				<div class="">
+					<label>入职日期：</label>
+					<span class="xyInputWithUnit">
+					<input type="text"  name="indate" yearstart="-40" yearend="1" onfocus="WdatePicker()" class="tml-border-r0 Wdate" />
+					 <span class="input-addon input-addon-calendar"></span>
+					</span><span class="xyInputTo">至</span>
+					<span class="xyInputWithUnit">
+					 <input  type="text"  name="leavedate"  yearstart="-40" yearend="1" onfocus="WdatePicker()" class="tml-border-r0 Wdate" />
+					<span class="input-addon input-addon-calendar"></span>
+					 </span>
+				</div>
+					<div class="clear"></div>
+				<div class="xyformunit">
+					<label>培训机构：</label>
+					<input type="text" name="mis_hr_personnel_education_info_school" class="checkByInput" map="array('status'=>1);" fields="array('id'=>'0','school'=>'培训机构名称');" checkfor="mis_hr_personnel_education_info" iswrite="true" show="school"/>
+				</div>
+				<div class="xyformunit">
+					<label>专业与技能：</label>
+					<input type="text" name="mis_hr_personnel_education_info_skillAndCertificate" class="textInput" />
+				</div>
+				<div class="xyformunit">
+					<label>开始时间：</label>
+						<span class="xyInputWithUnit">
+					<input type="text"  name="mis_hr_personnel_education_info_startDate"  onfocus="WdatePicker()" class="tml-border-r0 Wdate" />
+					 <span class="input-addon input-addon-calendar"></span>
+					 </span>
+				</div>
+				<div class="xyformunit">
+					<label>结束时间：</label>
+					<span class="xyInputWithUnit">
+					<input type="text"  name="mis_hr_personnel_education_info_finishDate" onfocus="WdatePicker()" class="tml-border-r0 Wdate"/>
+					 <span class="input-addon input-addon-calendar"></span>
+					 </span>
+				</div>
+			</FIELDSET>
+		</div>
+		<div class="export_new">
+			<div class="buttonActive">
+				<div class="buttonContent">
+					<button name="showgrid" onclick="show_doSearch('hrPersonEducationEport_doSearch','__URL__/lookupHrPersonEducationEport','{$result}')">检索</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

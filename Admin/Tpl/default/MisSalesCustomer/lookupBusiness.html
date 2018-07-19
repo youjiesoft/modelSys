@@ -1,0 +1,93 @@
+<form id="pagerForm" action="__URL__/lookupBusiness/id/{$id}" method="post">
+	<input type="hidden" name="pageNum" value="1"/>
+	<input type="hidden" name="orderField" value="{$order}" />
+	<input type="hidden" name="orderDirection" value="{$sort}" />
+	<input type="hidden" name="id" value="{$vo2.customerid}" />
+	<input type="hidden" name="refreshsub" value="1" />
+</form>
+<div class="panelBar">
+   <ul class="toolBar"> 
+	   <if condition="$_SESSION.a eq 1 or $_SESSION.missalescustomer_add">
+		   <li><a class="add tml-btn tml_look_btn tml_mp" mask="true" height="500" width="700" href="__URL__/add/manage/1/customerid/{$id}" target="dialog" rel="CrmCustEmployeeadd" title="经营状况_新增" ><span><span class="icon icon-plus icon_lrp"></span>{$Think.lang.add}</span></a></li>
+	   </if>
+	   <if condition="$_SESSION.a eq 1 or $_SESSION.missalescustomer_delete">
+		   <li><a title="确实要删除这些记录吗?" target="ajaxTodo" href="__URL__/delete/manage/1/id/{sidbb_node}/rel/linkstatusindex" class="delete tml-btn tml_look_btn tml_mp"><span><span class="icon icon-trash icon_lrp"></span>{$Think.lang.del}</span></a></li>
+	   </if>
+   </ul>
+   <form rel="pagerForm" onsubmit="return divSearch(this, 'linkstatusindex')" action="__URL__/lookupBusiness/id/{$id}" method="post">
+		<input type="hidden" name="refreshsub" value="1" />
+		<input type="hidden" name="id" value="{$vo2.customerid}" />
+		<div class="searchBar">
+			<table class="searchContent">
+				<tr>
+					<td>
+						<volist id="qsl" name="quickSearchList">
+						<if condition="$qsl['quickname'] eq $quicksearchby">
+						<div class="__MODULE__{$qsl['quickname']} __MODULE__quickSearch">{$qsl['html']}</div>
+						<else />
+						<div class="__MODULE__{$qsl['quickname']} __MODULE__quickSearch" style="display: none;">{$qsl['html']}</div>
+						</if> 
+						</volist>
+					</td>
+					<td>
+						<select class="combox" name="quicksearchby" onchange="quickSearchChange(this,'__MODULE__')">
+							<volist id="qsl" name="quickSearchList">
+								<option value="{$qsl['quickname']}"
+									<eq name="quicksearchby" value="$qsl['quickname']">selected</eq>>{$qsl['showname']}
+								</option>
+							</volist>
+						</select>
+						<input type="hidden" name="time" value="{$time}" />
+					</td>
+					<td>
+						<button class="xySearch" type="submit">{$Think.lang.subsearch}</button>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</form>
+</div>
+<div class="layoutBox" style="height:155px;">
+<table class="table" width="100%">
+    <thead>
+        <tr>
+	      	<th width='24'>序号</th>
+			<!-- <th>名称</th> -->
+			<th>销售收入</th>
+			<th>纳税总额</th>
+			<th>净利润</th>
+			<th>企业总资产</th>
+			<th>存货总额</th>
+			<th>设备总价值</th>
+			<th>应收账款平均账期</th>
+			<th>应收账款余额</th>
+			<!-- <th>放款额度</th>
+			<th>放货时间</th> -->
+			<th>状态</th>
+		</tr>
+    </thead>
+    <tbody>
+        <volist id="vo2" name="list" key="key2">
+            <tr target="sidbb_node" rel="{$vo2['id']}" dwidth="700" dheight="500" title="经营状况_编辑" ondblclick='ondblclick_dialog(this,navTab.getCurrentPanel(),"__URL__/edit/id/{$vo2[id]}/manage/1");'>
+                <td class="tml-first-td">{$numPerPage*($currentPage-1)+$key+1}</td>
+              	<!-- <td>{$vo2['name']}</td> -->
+              	<td>{$vo2['sellprice']|getDigits}</td>
+              	<td>{$vo2['ratepaying']|getDigits}</td>
+              	<td>{$vo2['profit']|getDigits}</td>
+              	<td>{$vo2['qyproperty']|getDigits}</td>
+              	<td>{$vo2['inventory']|getDigits}</td>
+              	<td>{$vo2['facilityprice']|getDigits}</td>
+              	<td>{$vo2['paymentday']}</td>
+              	<td>{$vo2['balance']|getDigits}</td>
+              	<!-- <td>{$vo2['loan']|getDigits}</td>
+              	<td>{$vo2['loandate']|transtime}</td> -->
+              	<td>{$vo2['status']|getStatus}</td>
+            </tr>
+        </volist>
+    </tbody>
+</table>
+</div>
+<div class="panelBar panelPageBar" style="border-bottom:none;">
+	<div class="pages"><span>共{$totalCount}条</span></div>
+	<div class="pagination" rel="linkstatusindex" totalCount="{$totalCount}" numPerPage="{$numPerPage}" pageNumShown="10" currentPage="{$currentPage}"></div>
+</div>

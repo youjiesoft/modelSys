@@ -1,0 +1,28 @@
+<script>
+</script>
+	<div class="page">
+		<div class="pageContent">
+			<form method="post" action="__URL__/update/navTabId/__MODULE__"  class="pageForm required-validate"  onsubmit="return validateCallback(this, dialogAjaxDone)">
+				<input type="hidden" name="id" value="{$vo['id']}" />
+				<input type="hidden" name="jump" value="1"/>
+				<div class="pageFormContent" layoutH="58">
+					<div class="tml-row">
+                        <div class="tml-form-col">
+                            <label>编&nbsp;&nbsp;&nbsp;&nbsp;码：</label><input  type="text" name=orderno class="required readonly"  value="{$vo['orderno']}" <if condition='$writable eq 0'> readonly="readonly" </if> value="{$code}">
+                        </div>
+                        <div class="tml-form-col">
+                            <label>名&nbsp;&nbsp;&nbsp;&nbsp;称：</label><input type="text" name="name" class="required readonly" value="{$vo['name']}">
+                        </div>
+                        <div class="tml-form-col">
+                            <label>可容纳人数：</label><input type="text" name="galleryful" class="required digits readonly" value="{$vo['galleryful']}" >
+                        </div>
+                     </div>
+                     <div class="tml-form-row">
+						<label>备&nbsp;&nbsp;&nbsp;&nbsp;注：</label>
+						<textarea name="remark"  class="textInput" style="width:300px;" >{$vo['remark']}</textarea>
+                     </div>
+				</div>
+				{:W('ShowAction',array('data'=>$vo))}
+			</form>
+		</div>
+	</div>

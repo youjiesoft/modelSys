@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>入库流水账表</title>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/jqGrid/themes/redmond/jquery-ui-1.8.2.custom.css" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/jqGrid/css/ui.jqgrid.css" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Js/jqGrid/css/redmond/jquery-ui-1.8.2.custom.css" />
+<script src="__PUBLIC__/Js/jquery-1.7.1.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Js/jquery.textSearch-1.0.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Js/jqGrid/js/i18n/grid.locale-en.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Js/jqGrid/js/jquery.jqGrid.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/Js/report_forms.js" type="text/javascript"></script>
+<script>
+$(function(){
+	var h = $(window).height()-200;
+	$("#jsonmaplookupreportintoaccount").jqGrid({
+		url:"__URL__/lookupReportIntoAccount{$suburl}",
+		mtype: "POST",
+		postData:{listtype:1},
+		datatype: "json",
+		colNames:{$colNames},
+		colModel: [
+            {name:'masid',index:'masid',align:'center',hidden:true,
+                cellattr: function(rowId, tv, rawObject, cm, rdata) {
+                    return "id=\'masid" + rowId + "\'";
+                }
+            },
+			{name:'indate',index:'indate',align:'center'},
+			{name:'inreceiptstype',index:'inreceiptstype',align:'center'},
+			{name:'inreceiptsno',index:'inreceiptsno',align:'center'},
+            {name:'inwarehouse',index:'inwarehouse',align:'center'},
+            {name:'inreceivetype',index:'inreceivetype',align:'center'},
+            {name:'indepname',index:'indepname',align:'center'},
+            {name:'inclerk',index:'inclerk',align:'center'},
+            {name:'insuppname',index:'insuppname',align:'center'},
+            {name:'incustomname',index:'incustomname',align:'center', sortable:false},
+            {name:'inremark',index:'inremark',align:'center',hidden:true},
+            {name:'increatename',index:'increatename',align:'center'},
+            {name:'inupdatename',index:'inupdatename',align:'center',hidden:true},
+            {name:'inupdatetime',index:'inupdatetime',align:'center',hidden:true},
+            {name:'inprodno',index:'inprodno',align:'center'},
+			{name:'inprodname',index:'inprodname',align:'center'},
+			{name:'inprodsize',index:'inprodsize',align:'center'},
+			{name:'primary',index:'primary',sortable:false,align:'center'},
+			{name:'primarycount',index:'primarycount',sortable:false,align:'center'},
+			{name:'inunitid',index:'inunitid',sortable:false,align:'center'},
+			{name:'intoqty',index:'intoqty',align:'center'},
+			{name:'intounitprice',index:'intounitprice',align:'center'},
+			{name:'intoamount',index:'intoamount',align:'center'}
+		],
+		pager: jQuery('#pjmaplookupreportintoaccount'), 
+		rowNum:50,
+		scroll:true,
+		sortname: 'indate',
+		//autowidth: true,
+		viewrecords: true,
+		sortorder: "asc",
+		rownumbers: true,
+		altRows : true,
+		height: h,
+        gridComplete: function() {
+			var gridName = "jsonmaplookupreportintoaccount";
+			cellColor(gridName, 'masid');
+		}
+	});
+});
+</script>
+</head>
+<body style="font-size:12px;">
+<div class="pageContent" layoutH="0">
+    <div style="width:95%; margin:0 auto; overflow:hidden;">
+		<button type="button" onclick="lookupfunc_exportExcel('__APP__','jsonmaplookupreportintoaccount','{$reporttype}',1,'{$suburl}')">导出EXCEL</button>
+        <button type="button" onclick="lookupfunc_exportExcel('__APP__','jsonmaplookupreportintoaccount','{$reporttype}',2,'{$suburl}')">导出PDF</button>
+	</div>
+	<div class="clear"></div>
+	<br/>
+    <div style=" width:95%; margin:0 auto;">
+        <table id="jsonmaplookupreportintoaccount"></table>
+        <div id="pjmaplookupreportintoaccount"></div>
+    </div>
+</div>
+</body>
+</html>

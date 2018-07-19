@@ -1,0 +1,29 @@
+<div class="page">
+	<div class="pageContent">
+	<form method="post" class="pageForm required-validate" action="__URL__/update/navTabId/__MODULE__" onsubmit="return validateCallback(this, dialogAjaxDone)">
+	<input type="hidden" name="id" value="{$vo.id}" >
+		<h2 class="contentTitle contentTitle_center">借款类型</h2>
+		<div class="pageFormContent" layoutH="105">
+            <div class="tml-row">
+				<div class="tml-form-col">
+					<label>编码：</label>
+					<input type="text" name="code" class="required" value="{$vo.code}" maxlength="50" />
+				</div>
+				<div class="tml-form-col">
+					<label>名称：</label>
+					<input type="text" name="name" class="required" value="{$vo.name}" maxlength="50" />
+				</div>
+				<div class="tml-form-col">
+					<label>限额：</label>
+					<input type="text" name="quota" class="required" value="{$vo.quota|getDigits}" maxlength="50" />
+				</div>
+				<div class="tml-form-col">
+					<label>冲账周期：</label>
+					<input type="text" name="accountperiod" class="required" value="{$vo.accountperiod}" maxlength="50" />
+				</div>
+			</div>
+		</div>
+		{:W('ShowAction',array('data'=>$vo))}
+	</form>
+		</div>
+</div>

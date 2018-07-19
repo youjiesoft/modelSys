@@ -1,0 +1,100 @@
+<script type="text/javascript">
+function handson(obj) {
+	var bepart = $(obj).val();
+	var $ref = $("#bepartidsx");
+	$.ajax({
+		type : 'POST',
+		dataType : "json",
+		url : "__URL__/lookupgetsontypelist",
+		cache : false,
+		data : {bepart : bepart},
+		success : function(json) {
+			var html = '';
+			$.each(json, function(i) {
+				html += '<option value="'+json[i].id+'">' + json[i].name+ '</option>';
+			});
+			//alert(html);
+			var $refCombox = $ref.parents("div.combox:first");
+			$ref.html(html).insertAfter($refCombox);
+			$refCombox.remove();
+			$ref.trigger("change").combox();
+		},
+		error : DWZ.ajaxError
+	})
+};
+</script>
+<div class="page">
+	<div class="pageContent">
+		<form method="post" action="__URL__/insert/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,navTabAjaxDone);">
+			<input type="hidden" name="dotype" value="流程新建" />
+			<input type="hidden" name="callbackType" value="closeCurrent">
+			<input type="hidden" name="orderno" value="{$orderno}">
+			<input type="hidden" name="beforeInsert" value="1">
+			<input type="hidden" name="refreshtabs[data]" value="1">
+			<input type="hidden" value="1" name="iseditor">
+			<div class="pageFormContent applecloth" layoutH="58">
+				<div class="keepContentCenter form-affix-content">
+					<div class="contentTitle contentTitle_center form-affix-title">文章信息{:W('ShowFlow')}
+                        
+					</div>
+					<fieldset>
+						<legend></legend>
+						{:W('ShowOrderno',array(1,'mis_knowledge_list'))}
+						<div class="tml-form-row">
+							<label>文章标题：</label>
+							<input type="text" name="title" class="required">
+						</div>
+						<div class="tml-form-row">
+							<label>文章内容：</label>
+							<div class="edit-text">
+								<textarea class="ueditor" name="content" style="width:628px;height:300px">{$vo['content']}</textarea>
+							</div>
+						</div>		
+						<div class="tml-form-row">
+						<!-- 二级联动 -->						
+							<span>
+								<if condition="$topTypeList neq null">
+									<label>所属分类：</label>
+									<!-- 顶级分类 -->
+									<select id="topselect" class="combox required" onchange="handson(this);"><!-- 顶级分类的name  去掉  这里只是看用户看一下 -->
+											<volist name="topTypeList" id="toptype">
+													<option value="{$toptype.id}">{$toptype.name}</option>
+											</volist>
+									</select>
+								</if>
+							</span>
+							<span>
+									<!-- 子级分类 -->
+								<select id="bepartidsx" name="categoryid" class="combox required"><!-- 顶级分类的name  去掉  这里只是看用户看一下 -->
+										<volist name="sontypelist" id="vason">
+												<option value="{$vason.id}">{$vason.name}</option>
+										</volist>
+								</select>
+							</span>
+						</div>
+						{:W('ShowUpload')}
+					</fieldset>
+					<fieldset>
+					<div class="tml-row">
+						<div class="tml-form-col">
+							<label>发&nbsp;布&nbsp;&nbsp;人：</label>
+							<span class="xyInputWithUnit">
+							<input type="hidden" style="color:black;" name="createid" value="{$Think.SESSION.loginUserId}"/>
+					   		<input type="text" class="textInput" readonly="readonly" value="{$Think.SESSION.loginUserName}"/>
+							</span>
+						</div>
+						<div class="tml-form-col">
+							<label>发起时间：</label>
+							<span class="xyInputWithUnit">
+					   		 <input type="text" class="textInput" value="{$time|transtime}" readonly="readonly" />
+					   		 <input type="hidden" value="{$time}" name="createtime"/>
+							</span>
+						</div>
+					</div>
+				</fieldset>
+				</div>
+			</div>
+			{:W('ShowAction')}
+		</form>
+	</div>
+</div>

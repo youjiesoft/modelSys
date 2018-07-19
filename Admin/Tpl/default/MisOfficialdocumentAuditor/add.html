@@ -1,0 +1,48 @@
+<script>
+function workstateSet_addpeople(id,name,step){
+	if(step=="MisOfficialdocumentAuditorthree"){
+		var $strHtml = appendUserHtml(step,'userid',id,name);
+	}
+	 $("#"+step).append($strHtml);
+};
+function workstateSet_selectinto(step){
+ 	var id;
+ 	var name;
+ 	$(".tbodylist").find("input[type='checkbox']").each(function(){
+ 		if($(this).attr("checked")=='checked'){
+ 			id = $(this).attr("userid");
+ 			name = $(this).attr("username");
+ 			workstateSet_addpeople(id,name,step);
+ 		}
+ 	});
+ }
+</script>
+<div class="page">
+	<div class="pageContent">
+		<form method="post" action="__URL__/insert/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,dialogAjaxDone);">
+		<input type="hidden" name="callbackType" value="closeCurrent">
+		<input type="hidden" name="typeid" value="1"/>
+		<div class="pageFormContent" layoutH="58">
+			<div class="unit">
+				<label>核稿批示节点名称：</label>
+				<input type="text"  name="doinfo" size="45" value="" />
+			</div>
+			<div>
+                <label>核稿批示节点人员：</label>
+                <ul class="addressee left" id="MisOfficialdocumentAuditorthree" style="background-color: #FFFFFF;border:1px solid #ccc;height:50px;width:320px;"></ul>
+                <a class="input-addon input-addon-addon input-addon-add" href="__APP__/MisWorkStatementSet/lookupmanage/step/MisOfficialdocumentAuditorthree" lookupGroup="org1">查找带回</a>
+            </div>
+			<div class="unit"  style="width:500px;">
+				<label>备注：</label>
+				<textarea name="remark" rows="3" maxlength="200" cols="50"></textarea>
+			</div>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><button type="submit" class="tml-btn tml-btn-primary">{$Think.lang.save}</button></li>
+				<li><button type="button" class="tml-btn close">{$Think.lang.close}</button></li>
+			</ul>
+		</div>
+	</form>
+	</div>
+</div>

@@ -1,0 +1,22 @@
+<form method="post" action="__URL__/update/rel/misSalesCustomerTreeBox" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
+<input type="hidden" name="refreshtabs[byid]" value="1">
+<input type="hidden" name="lossstatus" value="2">
+<input type="hidden" name="id" value="{$_REQUEST['id']}">
+<div class="pageContent">
+	<div class="pageFormContent" layoutH="56">
+		<fieldset>
+			<div class="tml-form-row">
+				<label>流失原因</label>
+				<textarea style="width: 280px; height: 100px" name="losscause" class="required"></textarea>
+			</div>
+		</fieldset>
+	</div>
+	<div class="formBar">
+		<ul>
+			<li>
+				<button class="tml-btn tml-btn-primary" type="submit">确定</button>
+			</li>
+		</ul>
+	</div>
+</div>
+</form>

@@ -1,0 +1,47 @@
+<div class="page">
+	<div class="pageContent">
+		<form method="post" action="__URL__/lookupfileadd/rel/lookupisfile" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+			<input type="hidden" name="masid" value="{$masid}">
+			<input type="hidden" name="step" value="2">
+			<div class="pageFormContent" layoutH="58">
+			    <div class="unit">
+				<!-- 温馨提示:灰色背景文件无归档权限 -->
+			    </div>
+			    <div class="unit">
+					<div class="tml-row">
+				<div class="tml-form-col">
+					<label>资料名称：</label>
+					<input type="text" style="width:300px"   value="" name="name">
+				</div>
+			</div>
+			<div class="tml-row">
+				<div class="tml-form-col">
+					<label>资料分类：</label>
+					{:W('ShowSelect',array($vo['datum'],array('',array('type'=>'table',array('readonly'=>'1','targevent'=>'','actionName'=>'MisSalesMyProject','names'=>'datum','defaultcheckitem'=>'','defaultval'=>'','defaulttext'=>'','table'=>'mis_auto_fkhvh', 'id'=>'id','name'=>'name','conditions'=>'','parentid'=>'parentid','mulit'=>'0','isnextend'=>'1','treeheight'=>'','treewidth'=>'','key'=>'','isedit'=>'1')))))}
+				</div>
+			</div>
+			<div class="tml-form-col">
+				<label>备注：</label>
+				<textarea name="remark" style="width:300px;height:120px;" class="textInput enterIndex valid">{$vo.remark}</textarea>
+			</div>
+			<!-- <div class="tml-row">
+				<div class="tml-form-col">
+					<label>是否归档：</label>
+					<input type="checkbox" value="" name="isfile">
+				</div>
+			</div> -->
+			    </div>
+			</div>
+			<div class="formBar">
+			    <ul>
+				    <li>
+						<button class="tml-btn tml-btn-primary" onclick="documentcollatesubmit(this.form);" type="submit">{$Think.lang.save}</button>
+				    </li>
+					<li>
+					    <button class="tml-btn close" type="button">{$Think.lang.close}</button>
+					</li>
+			    </ul>
+			</div>
+		</form>
+	</div>
+</div>

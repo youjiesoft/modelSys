@@ -1,0 +1,416 @@
+<script type="text/javascript">
+    //将form中的值转换为键值对。
+    function getFormJson(frm) {
+        var o = {};
+        var a = $(frm).serializeArray();
+        $.each(a, function () {
+            if (o[this.name] !== undefined) {
+                if (!o[this.name].push) {
+                    o[this.name] = [o[this.name]];
+                }
+                o[this.name].push(this.value || '');
+            } else {
+                o[this.name] = this.value || '';
+            }
+        });
+
+        return o;
+    }
+    var nbmbind={
+        run : function(){
+            this.add();
+            this.del();
+        },
+        get : function() {
+            var obj = $("#valedit_form");
+            return obj;
+        },
+        del : function(){
+            // 删除行
+            var _this=this;
+            var box = this.get();
+            var delObj = $('a.nbm_bind_del');
+            delObj.die();
+            delObj.live('click',function(){
+                var trObj = box.find('tbody tr');
+                if(trObj.length >=2){
+                    var delinbindaname=$(this).closest('td').find("input[name='delinbindaname']").val();
+                    var _this=$(this).closest('tr');
+                    if(delinbindaname){
+                        //判断当前行是否可以移除
+                        $.ajax({
+                            type: 'POST',
+                            url : "__URL__/lookupChangeField",
+                            data: {delinbindaname:delinbindaname,type:2},
+                            global:false,
+                            dataType:'json',
+                            success:function(list){
+                                if(list!=-1){
+                                    alertMsg.error('当前绑定关系存在子级！');
+                                    return false;
+                                }else{
+                                    //移除添加至隐藏域
+                                    _this.remove();
+                                }
+                            }
+                        });
+                    }else{
+                        //移除添加至隐藏域
+                        $(this).closest('tr').remove();
+                    }
+                }else{
+                    alertMsg.error('只有一行了，不允许删除行');
+                }
+            });
+            //_this.run();
+        },
+        add : function(){
+            var box = this.get();
+            var _this = this;
+            // 每个表单中的添加一行，数据来源于当前对象所在tr的上一个tr。
+            var obj = $('a.nbm_bind_add');
+            obj.die();
+            obj.live("click",function(){
+                var tr = $(this).closest('table').find('tbody:first>tr:last');
+                var index = tr.closest('table').attr('index');
+                try {
+                    index = parseInt(index, 10);
+                } catch(e) {
+                    index = 0;
+                }
+                tr.find('select').select2("destroy");
+                var cloneTr = tr.clone();
+                cloneTr.find('select').val('');
+                cloneTr.find('select').find("option:first").attr('checked',true);
+                tr.find('select').select2();//.change();
+                //清除克隆体的多余数据
+                var bindsort=box.find("input[name^='inbindsort']").length;
+                cloneTr.find("input[name^='inbindsort']").val(parseInt(bindsort)+1);
+                cloneTr.find(':input').each(function() {
+                    var ids = $(this).attr('name');
+                    // 当前组件的name值
+                    if ( typeof (ids) == "string") {
+                        var k;
+                        var curNames = ids.replace(/(\[)+(\d)+(\])/g,  function(va) {
+                            var curIndex = va.match(/\d+/g);
+                            var i = parseInt(curIndex , 10);
+                            var tabIds = '[' + (i + 1)+']';
+                            k=i+1;
+                            return tabIds;
+                        });
+                        $(this).attr('name',curNames);
+                        if($(this).data('name')=='sort'||$(this).data('name')=='res_sort'){
+                            $(this).val(k);
+                        }else{
+                            $(this).val("");
+                        }
+
+                    }
+                    //tr index
+
+                    if ($(this)[0].tagName == "SELECT") {}
+                });
+                cloneTr.find('select').select2().change();
+                tr.after(cloneTr);
+                _this.run();
+
+
+                //此处本来目的是执行一次，但实际上执行了很多次，似乎select[name^='objtype[']时出的问题
+
+
+            });
+
+        }
+    };
+
+    $(function(){
+        //加载
+        nbmbind.run();
+        //给“规则设置”按钮绑上点击事件
+        var box=$("#valedit_form");
+        box.off("click",".rules_add");
+        box.on("click",".rules_add",function(){
+            var sort=$(".ve_rules_sort",$(this).parent('div')).val();
+            var lj_content=$(".lj_content",$(this).parent('div')).val();
+            if(sort!=''&&sort!=undefined&&sort!=null){
+                var title = "规则设置";
+                var rel = "setrules_form";
+                options = {width:900,height:500,max:true,mask:true};
+                options.param={sort:sort,contr:1,rcon:lj_content};
+                var url="__URL__/setrules";
+                DWZ.debug(url);
+                $.pdialog.open(url,rel,title,options);
+            }
+        });
+        //给“规则清除”按钮绑上点击事件
+        box.off("click",".rules_clear");
+        box.on("click",".rules_clear",function(){
+            var sort=$(".ve_rules_sort",$(this).parent('div')).val();
+            if(sort!=''&&sort!=undefined&&sort!=null){
+                var url='__URL__/clearrules';
+                $.post(url,{sort:sort,cty:1},function(data){
+                    if(data.status==1) {
+                        $("input[name='ve_rules["+data.data+"]'",$("#valedit_form")).val('');
+                        $("input[name='ve_par["+data.data+"]'",$("#valedit_form")).val('');
+                        alertMsg.info(data.message);
+                    }else{
+                        alertMsg.error(data.message);
+                    }
+                },'json');
+            }
+        });
+        //结果规则按钮
+        box.off("click",".res_add");
+        box.on("click",".res_add",function(){
+            var sort=$(".ve_res_rules_sort",$(this).parent('div')).val();
+            var jg_content=$(".jg_content",$(this).parent('div')).val();
+            if(sort!=''&&sort!=undefined&&sort!=null) {
+                var title = "规则设置";
+                var rel = "setrules_form";
+                options = {width: 900, height: 500, max: true, mask: true};
+                options.param = {sort: sort, contr: 2,rcon:jg_content};
+                var url = "__URL__/setrules";
+                DWZ.debug(url);
+                $.pdialog.open(url, rel, title, options);
+            }
+        });
+        //给“结果规则清除”按钮绑上点击事件
+        box.off("click",".res_rules_clear");
+        box.on("click",".res_rules_clear",function(){
+            var sort=$(".ve_res_rules_sort",$(this).parent('div')).val();
+            if(sort!=''&&sort!=undefined&&sort!=null){
+                var url='__URL__/clearrules';
+                $.post(url,{sort:sort,cty:2},function(data){
+                    if(data.status==1) {
+                        $("input[name='ve_res_rules["+data.data+"]'",$("#valedit_form")).val('');
+                        $("input[name='ve_res_par["+data.data+"]'",$("#valedit_form")).val('');
+                        alertMsg.info(data.message);
+                    }else{
+                        alertMsg.error(data.message);
+                    }
+                },'json');
+            }
+        });
+        $("#save_val_edit",$("#valedit_form")).on('click',function(){
+            var frm=$("#valedit_form");
+            $(this).attr("disabled",true);
+            var dataPara = getFormJson(frm);
+            $.ajax({
+                url: frm.attr('action'),
+                type: frm.attr('method'),
+                data: dataPara,
+                success: function(data){
+                    $("#save_val_edit",$("#valedit_form")).attr("disabled",false);
+                    var res=eval("("+data+")");
+                    if(res.status==1){
+                        alertMsg.info(res.message);
+                        $.pdialog.closeCurrent();
+                    }else {
+                        alertMsg.error(res.message);
+                    }
+                }
+            });
+        });
+    });
+
+</script>
+
+<div class="page">
+    <div class="pageContent">
+        <form method="post" id="valedit_form" action="__URL__/setvaleditcontroll" class="pageForm required-validate">
+            <input type="hidden" name="propertyid" value="{$propertyid}" />
+            <input type="hidden" name="formid" value="{$formid}" />
+            <div class="pageFormContent" layoutH="40">
+                <div class="new_version_page" style="width:90%;">
+                    <div class="new_version_page_content">
+                        <div class="col_1_2 form_group_lay field_title" >
+                            <label class="label_new">当前字段:</label>
+                            <input type="text" readonly  name="name" class="input_new" value="{$property['title']}">
+                        </div>
+                        <div class="col_1_2 form_group_lay field_sourcemodel">
+                            <label class="label_new">类型:</label>
+                            <select class="select2 list_select2" name="ve_type">
+                                <option value="1" <if condition="$ve_type eq '1'">selected="selected"</if>>值更新</option>
+                                <option value="2" <if condition="$ve_type eq '2'">selected="selected"</if>>漫游</option>
+                            </select>
+                        </div>
+                        <div class="fieldset_show_box">
+                            <legend class="fieldset_legend_toggle side-catalog-text side-catalog-firstanchor">
+                                <a name="MisAutoWxy_fieldset7"></a><b>值更新规则</b>
+                                <div class="tml_style_line tml_sl4 tml_slb_blue"></div>
+                            </legend>
+                        </div>
+                        <div class="fieldsetjs_show_box" >
+                            <div class="into_table_lay border_top_none" layoutH="145">
+                                <table  class="into_table_new nbm_data_table" table_data='{"searching":false,"paging":false,"isYMInfo":false}' id="MisSystemDataControl_add">
+                                    <thead>
+                                    <tr>
+                                        <th style="min-width:30px;max-width:30px;">排序</th>
+                                        <th style="min-width:60px;max-width:60px;">规则</th>
+                                        <th>操作对象</th>
+                                        <th>操作类型</th>
+                                        <th>结果</th>
+                                        <th style="min-width:60px;max-width:60px;">结果规则</th>
+                                        <th>操作</th>
+                                    </tr>
+
+                                    </thead>
+                                    <tbody>
+                                    <if condition="$is_rules eq 1">
+                                        <foreach name="mvers" item="vo" key="ki">
+                                            <tr index='0'>
+                                                <td>
+                                                    <div class="list_group_lay">
+                                                        <div style="display: inline-block;">
+                                                            <input type="text" class="ve_rules_my_sort" name="ve_rules_my_sort[{$ki}]" data-name="my_sort" value="{$vo['my_sort']}" style="width:26px;height:26px;text-align: center;"/>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="list_group_lay">
+                                                        <div style="display: inline-block;">
+                                                            <button type="button" class="rules_add condition_btn condition_add enterIndex"><span class="icon-plus"></span> 设置</button>
+                                                            <!--<a class="rules_clear condition_clear condition_btn" href="javascript:;"><span class="icon-trash"></span> 清除</a>-->
+                                                            <input type="hidden" name="ve_rules_id[{$ki}]" value="{$vo['id']}"/>
+                                                            <input type="hidden" name="ve_rules[{$ki}]" value="{$vo['lj_content']}" class="lj_content"/>
+                                                            <input type="hidden" name="ve_par[{$ki}]" <if condition="$vo['lj_key']">value="{$vo['lj_key']}"</if>/>
+                                                            <input type="hidden" class="ve_rules_sort" name="ve_rules_sort[{$ki}]" data-name="sort" value="{$ki}"/>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <!-- 动作 -->
+                                                <td>
+                                                    <div class="list_group_lay">
+                                                        <select class="select2 list_select2" name="op_obj[{$ki}]">
+                                                            <volist name="kfzp" id="kfz">
+                                                                <option value="{$kfz.category}||{$kfz.fieldname}" <if condition="$kfz.fieldname eq $vo['act_obj_name']">selected="selected"</if>>{$kfz.title}</option>
+                                                            </volist>
+                                                        </select>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="list_group_lay" >
+                                                        <select class="select2 list_select2" name="op_type[{$ki}]">
+                                                            <option value="1" <if condition="$vo['act_type'] eq 1">selected="selected"</if> >写入结果</option>
+                                                            <option value="2" <if condition="$vo['act_type'] eq 2">selected="selected"</if> >浮动框提示</option>
+                                                            <option value="3" <if condition="$vo['act_type'] eq 3">selected="selected"</if> >禁止编辑</option>
+                                                            <option value="4" <if condition="$vo['act_type'] eq 4">selected="selected"</if> >是否显示</option>
+                                                            <option value="5" <if condition="$vo['act_type'] eq 5">selected="selected"</if> >是否必填</option>
+                                                            <option value="6" <if condition="$vo['act_type'] eq 6">selected="selected"</if> >iframe地址修改</option>
+                                                        </select>
+                                                    </div>
+                                                </td>
+                                                <td class="nbm_ceil_form_condtion">
+                                                    <div class="list_group_lay">
+                                                        <select class="select2 list_select2" name="op_res[{$ki}]">
+                                                            <option value="1" <if condition="$vo['is_act'] eq 1">selected="selected"</if>>是</option>
+                                                            <option value="0" <if condition="$vo['is_act'] eq 0">selected="selected"</if>>否</option>
+                                                        </select>
+                                                    </div>
+                                                </td>
+                                                <td class="nbm_ceil_form_condtion">
+                                                    <div class="list_group_lay">
+                                                        <div style="display: inline-block;">
+                                                            <button type="button" class="res_add condition_btn condition_add enterIndex"><span class="icon-plus"></span> 设置</button>
+                                                            <!--<a class="res_rules_clear condition_clear condition_btn" href="javascript:;"><span class="icon-trash"></span> 清除</a>-->
+                                                            <input type="hidden" name="ve_res_rules[{$ki}]" value="{$vo['jg_content']}" class="jg_content"/>
+                                                            <input type="hidden" name="ve_res_par[{$ki}]" <if condition="$vo['jg_key']">value="{$vo['jg_key']}"</if>/>
+                                                            <input type="hidden" name="ve_res_rules_sort[{$ki}]" class="ve_res_rules_sort" data-name="res_sort" value="{$ki}"/>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="list_group_lay">
+                                                        <a class="nbm_bind_add" href="javascript:void(0);">添加</a>&nbsp;
+                                                        <a class="nbm_bind_del" href="javascript:void(0);">移除</a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </foreach>
+                                    <else />
+                                        <tr index='0'>
+                                            <td>
+                                                <div class="list_group_lay">
+                                                    <div style="display: inline-block;">
+                                                        <input type="text" class="ve_rules_my_sort" name="ve_rules_my_sort[{$ki}]" data-name="my_sort" value="{$vo['my_sort']}" style="width:26px;height:26px;text-align: center;"/>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="list_group_lay">
+                                                    <div style="display: inline-block;">
+                                                    <button type="button" class="rules_add condition_btn condition_add enterIndex"><span class="icon-plus"></span> 设置</button>
+                                                    <!--<a class="rules_clear condition_clear condition_btn" href="javascript:;"><span class="icon-trash"></span> 清除</a>-->
+                                                    <input type="hidden" name="ve_rules_id[0]" value=""/>
+                                                    <input type="hidden" name="ve_rules[0]" class="lj_content"/>
+                                                    <input type="hidden" name="ve_par[0]"/>
+                                                    <input type="hidden" class="ve_rules_sort" name="ve_rules_sort[0]" data-name="sort" value="0"/>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <!-- 动作 -->
+                                            <td>
+                                                <div class="list_group_lay">
+                                                    <select class="select2 list_select2" name="op_obj[0]">
+                                                        <volist name="kfzp" id="kfz">
+                                                            <option value="{$kfz.category}||{$kfz.fieldname}">{$kfz.title}</option>
+                                                        </volist>
+                                                    </select>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="list_group_lay" >
+                                                    <select class="select2 list_select2" name="op_type[0]">
+                                                            <option value="1">写入结果</option>
+                                                            <option value="2">浮动框提示</option>
+                                                            <option value="3">禁止编辑</option>
+                                                            <option value="4">是否显示</option>
+                                                            <option value="5">是否必填</option>
+                                                            <option value="6">iframe地址修改</option>
+                                                    </select>
+                                                </div>
+                                            </td>
+                                            <td class="nbm_ceil_form_condtion">
+                                                <div class="list_group_lay">
+                                                    <select class="select2 list_select2" name="op_res[0]">
+                                                            <option value="1">是</option>
+                                                            <option value="0">否</option>
+                                                    </select>
+                                                </div>
+                                            </td>
+                                            <td class="nbm_ceil_form_condtion">
+                                                <div class="list_group_lay">
+                                                    <div style="display: inline-block;">
+                                                        <button type="button" class="res_add condition_btn condition_add enterIndex"><span class="icon-plus"></span> 设置</button>
+                                                        <!--<a class="res_rules_clear condition_clear condition_btn" href="javascript:;"><span class="icon-trash"></span> 清除</a>-->
+                                                        <input type="hidden" name="ve_res_rules[0]" class="jg_content"/>
+                                                        <input type="hidden" name="ve_res_par[0]"/>
+                                                        <input type="hidden" name="ve_res_rules_sort[0]" class="ve_res_rules_sort" data-name="res_sort" value="0"/>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="list_group_lay">
+                                                    <a class="nbm_bind_add" href="javascript:void(0);">添加</a>&nbsp;
+                                                    <a class="nbm_bind_del" href="javascript:void(0);">移除</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </if>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="formBar">
+                <ul>
+                    <li><button type="button" id="save_val_edit" class="tml_formBar_btn tml_formBar_btn_blue enterIndex">保存</button></li>
+                    <li><button onclick="javascript:$.pdialog.closeCurrent();" class="tml_formBar_btn tml_formBar_btn_red enterIndex" type="button">关闭</button></li>
+                </ul>
+            </div>
+        </form>
+    </div>
+</div> 
+	

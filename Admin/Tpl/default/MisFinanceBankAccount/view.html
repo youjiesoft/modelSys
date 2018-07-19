@@ -1,0 +1,55 @@
+<div class="page">
+	<div class="pageContent">
+	<form method="post" action="__URL__/update/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+		<input type="hidden" name="id" value="{$vo.id}" >
+		<div class="pageFormContent" layoutH="58">
+			<div class="unit">
+				<label>{$fields["catalog"]}：</label>
+				<select name="catalog" class="required combox">
+					<option value="1" <eq name="vo.catalog" value="1">selected</eq> >公司</option>
+					<option value="2" <eq name="vo.catalog" value="2">selected</eq>>客户</option>
+					<option value="3" <eq name="vo.catalog" value="3">selected</eq>>供应商</option>
+				</select>
+			</div>
+			<div class="unit">
+				<label>{$fields["code"]}：</label>
+				<input type="text" name="code" value="{$vo['code']}" class="required creditcard" maxlength="19"  />
+			</div>
+			<div class="unit">
+				<label>{$fields["name"]}：</label>
+				<input type="text" name="name" value="{$vo['name']}" maxlength="25" />
+			</div>
+			<div class="unit">
+				<label>{$fields["sname"]}：</label>
+				<input type="text" name="sname" value="{$vo['sname']}" maxlength="15" />
+			</div>
+			<div class="unit">
+				<label>{$fields["amount"]}：</label>
+				<input type="text" class="number"  name="amount" value="{$vo['amount']}" maxlength="18" />
+			</div>
+			<div class="unit">
+				<label>{$fields["bankid"]}：</label>
+				<select name="bankid" class="required combox">
+					<option selected value="">&mdash;&mdash;选择&mdash;&mdash;</option>
+					<volist id="banklist" name="banklist">
+					    <option  value="{$banklist['id']}" <eq name="banklist.id" value="$vo.bankid">selected</eq> >{$banklist['name']}</option>
+					</volist>
+				</select>
+			</div>
+			<div class="unit">
+				<label>{$fields["remark"]}：</label>
+				<textarea  name="remark" cols="30" rows="2" maxlength="100" >{$vo['remark']}</textarea>
+			</div>
+		</div>
+		<div class="formBar">
+			<ul>
+			<if condition="$_SESSION.a eq 1 or $_SESSION.misfinancebankaccount_update">
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">{$Think.lang.save}</button></div></div></li>
+			</if>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">{$Think.lang.close}</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+	</div>
+</div>
+

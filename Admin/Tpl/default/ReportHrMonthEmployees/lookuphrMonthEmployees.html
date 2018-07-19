@@ -1,0 +1,22 @@
+<script>
+$(function(){
+	var $box=navTab.getCurrentPanel();
+	var url = "__URL__/lookuphrMonthEmployeesChart/year/{$year}";
+	var swf = 'MSColumn3D';
+	chart("__PUBLIC__/Charts/"+swf+".swf","ReportHrMonthChart",url,"1200", "500");
+	$box.find('#ReportHrMonthEmployeesChart').selectButton().change(function(){
+		var swf = $(this).val();
+		chart("__PUBLIC__/Charts/"+swf+".swf","ReportHrMonthChart",url,"1200", "500");
+	});
+});
+</script>
+<div class="clearfix" style="margin: 10px auto; width: 1200px">
+	<select name="select" id="ReportHrMonthEmployeesChart" class="">
+		<option value="MSColumn2D">2D柱图</option>
+		<option value="MSColumn3D" selected="selected">3D柱图</option>
+	</select>
+	<div class="tml-c-red" style="margin: 10px auto;" >
+		<p>【横坐标为月份，纵坐标为人数(人)】</p>
+	</div>
+</div>
+<div id="ReportHrMonthChart" style="margin: 0 auto; width: 1200px"></div>

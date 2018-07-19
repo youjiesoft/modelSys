@@ -1,0 +1,264 @@
+<div id="checkfor">
+<style>
+#checkfor{
+	border: 1px solid #95B8E7;
+	position: absolute;
+	background: #fff;
+	text-align: center;
+	z-index: 9999 !important;
+}
+
+#checkfor .current{
+	background: #fbec88;
+}
+#checkfor td{
+	border-right: 1px dotted #ccc;
+	border-bottom: 1px dotted #ccc;
+	cursor: pointer;
+	min-width:70px;
+	padding:4px 2px;
+}
+#checkfor thead{
+	background: #efefef;
+}
+</style>
+<empty name="notfound">
+	<div>
+		<table border="0" cellspacing="0" id="checkForTable">
+			<thead>
+				<tr>
+				<volist name="fields" id="n" key="k">
+					<td <eq name="n" value="0">style="display:none;"</eq>>{$n}</td>
+				</volist>
+				</tr>
+			</thead>
+			<tbody>
+				<volist name="checklist" id="l" key="k">
+					<tr <eq name="k" value="1">class="current"</eq>>
+						<volist name="fields" id="f" key="k2">
+							<td class="{$key}" <eq name="f" value="0">style="display:none;"</eq>>{$l[$key]}</td>
+						</volist>
+					</tr>
+				</volist>
+			</tbody>
+		</table>
+	</div>
+<script>
+;(function(){
+	$('#checkForTable').tableScroll({height:180});
+})();
+checkforDivIsOut = true;
+$(function(){
+
+var show = checkforInput.attr('show');
+var insert = checkforInput.attr('insert');
+
+if(!show){
+	show = 'name';
+}
+if(!insert){
+	insert = 'id';
+}
+
+var other = '{$other}';
+other = $.parseJSON(other);
+if(other && other['no_set_key']){
+	other = null;
+}
+
+var chekcfor = $('#checkfor');
+var real = checkforInput.siblings('input[type="hidden"]');
+var tr = chekcfor.find('tbody tr.current');
+checkforInput.parent().css('zIndex', '10');
+
+var callback = checkforInput.attr('callback');
+if(callback){
+	/*有冲突，所以仅执行一次回调函数*/
+	checkforInput.one('callback', function(event, data){
+		window[callback](data,checkforInput);
+	});
+}
+function evalCallback(data){
+	try{
+		checkforInput.trigger('callback', [data]);
+		checkforInput.unbind('callback');
+	}catch(e){
+	}
+}
+
+$('#checkfor tr').bind('click', function(){
+	setRealData(true);
+	closeCheck();
+	$('#checkfor tr').unbind('click');
+});
+
+checkforInput.unbind('keydown');
+checkforInput.bind('keydown', function(e){
+	e.stopPropagation();
+	var curKey = e.keyCode;
+	//enter
+	if(curKey == 13){
+		closeCheck();
+		e.preventDefault();
+		setRealData(true);
+	//↑
+	}else if(curKey == 38){
+		var prev = tr.prev();
+		if(prev.length > 0){
+			tr.removeClass('current');
+			prev.addClass('current');
+			tr = prev;
+			//setRealData();
+			autoScroll();
+		}
+	//↓
+	}else if(curKey == 40){
+		var next = tr.next();
+		if(next.length > 0){
+			tr.removeClass('current');
+			next.addClass('current');
+			tr = next;
+			//setRealData();
+			autoScroll();
+		}
+	}
+});
+
+//默认插入
+real.val(tr.find('td.'+insert).text());
+checkforInput.unbind('blur');
+checkforInput.bind('blur', inputBlur);
+
+chekcfor.find('tbody tr').mouseover(function(){
+	tr = $(this);
+	tr.addClass('current').siblings('.current').removeClass('current');
+	//setRealData();
+});
+
+//文本框失去焦点时
+function inputBlur(){
+	var theInput = $(this);
+	if(real.val() == ''){
+		theInput.val('');
+		setOther(true, theInput);
+	}else if(checkforDivIsOut){
+		closeCheck();
+		var data = tr.children('td.'+show).text();
+		theInput.val(data);
+		setRealData(true, theInput);
+		theInput.prev('[auto="1"]').val(data);//for IE8
+	}
+}
+
+//键盘滚动设置
+function autoScroll(){
+	var scrollTop = chekcfor.scrollTop();
+	var top = tr.position().top;
+	var hei = chekcfor.height();
+
+	if(top > hei){
+		chekcfor.scrollTop(scrollTop + 60);
+	}else if(top < 0){
+		chekcfor.scrollTop(scrollTop - 60);
+	}
+}
+
+//设置所有相关的值
+/* isConfirm 选择值时的标志 */
+function setRealData(isConfirm, theInput){
+    checkforInput = theInput || checkforInput;
+	var realdata = tr.children('.'+insert).text();
+	var val = tr.children('.'+show).text();
+
+	checkforInput.prev('[auto="1"]').val(val);//for IE8
+	checkforInput.val(val).focus();
+	real.val(realdata);
+
+	/* 假如选择值的同时有回调函数，则执行 */
+	if(isConfirm){
+		other && setOther();
+		if(callback){
+			var tds = tr.children();
+			var count = tds.length;
+			var td, id, data;
+			var callbackData = {show: val, insert: realdata, theInput: checkforInput};
+
+			for(var i=0;i<count;i++){
+				td = $(tds[i]);
+				id = td.attr('class');
+				data = td.text();
+				callbackData[id] = data;
+
+				if(count == i+1){
+					evalCallback(callbackData);
+				}
+			}
+		}
+	}
+}
+
+//设置附带的值
+function setOther(isSetEmpty, theInput){
+	checkforInput = theInput || checkforInput;
+	for(var id in other){
+		var data = isSetEmpty ? '' : tr.children('.'+other[id]).text();
+		searchNearbyNode(checkforInput, id, data);
+	}
+}
+
+function closeCheck(){
+	chekcfor.remove();
+}
+
+});
+</script>
+<else/>
+<script>
+$(function(){
+	var chekcfor = $('#checkfor');
+	var other = '{$other}';
+	other = $.parseJSON(other);
+	if(other && other['no_set_key']){
+		other = null;
+	}
+
+	checkforInput.siblings('input[type="hidden"]').val('');
+
+	checkforInput.unbind('blur');
+	checkforInput.one('blur', function(){
+
+		if(!(checkforInput.attr('iswrite') == 'true')){
+			checkforInput.val('');
+		}
+		for(var id in other){
+			searchNearbyNode(checkforInput, id, '');
+		}
+		chekcfor.remove();
+	});
+});
+</script>
+{$notfound}
+</empty>
+<script>
+//查找最近的ID文本框并赋值
+function searchNearbyNode(theInput, id, data){
+	var parent = theInput.parent();
+	var node = parent.find('*[check_key="'+ id +'"]');
+
+	if(parent.get(0).nodeName == 'FORM' || node.length > 0){
+		node.val(data);
+		if(node.length > 0 && node.get(0).nodeName == "SELECT"){/* 判断是否为select */
+			var name = node.attr('name');
+			var aNode = parent.find('a[name="'+ name +'"]');
+			aNode.text(node.children(':selected').text());
+			var lis = $('#op_'+node.parent().attr('id') + ' li');
+			//console.log(lis)
+			lis.find('.selected').removeClass('selected');
+			lis.find('[value="'+ data +'"]').addClass('selected');
+		}
+	}else{
+		arguments.callee(parent, id, data);
+	}
+}
+</script>
+</div>

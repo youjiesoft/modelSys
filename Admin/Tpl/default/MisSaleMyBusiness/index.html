@@ -1,0 +1,40 @@
+<script type="text/javascript">
+<!--
+$(function(){
+    //为左侧栏目导航点击后修改选中状态@nbmxkj 20141009 1629
+    nbm_getfouce();
+});
+//-->
+</script>
+<div class="pageContent">
+{:W("ShowToLevelMenu")}
+	<div class="treeleft" layoutH="40">
+		<div class="work_statement">我的商机</div>
+        <div class="edit_work_lay">
+            <a class="edit_work_btn" target="navTab" rel="__MODULE__add" href="__APP__/MisSaleMyBusiness/add">新增商机 <span class="icon-pencil"></span></a>
+        </div>
+        <div class="tml_divider"></div>
+        <div class="tml_bar_nav">  
+            <ul class="bar_nav">
+             	<li class="active"><a target="ajax" rel="MisSaleMyBusiness_left" href="__APP__/MisSaleMyBusiness/index/businessstatus/7/jump/jump" >全部商机</a></li>
+                 <li ><a target="ajax" rel="MisSaleMyBusiness_left" href="__APP__/MisSaleMyBusiness/index/businessstatus/9/jump/jump" >我提供的商机</a></li>
+                 <li><a target="ajax" rel="MisSaleMyBusiness_left" href="__APP__/MisSaleMyBusiness/index/businessstatus/3/jump/jump" >待处理</a></li>
+                 <li><a target="ajax" rel="MisSaleMyBusiness_left" href="__APP__/MisSaleMyBusiness/index/businessstatus/8/jump/jump" >转交事宜</a></li>
+                 <li><a target="ajax" rel="MisSaleMyBusiness_left" href="__APP__/MisSaleMyBusiness/index/businessstatus/2/jump/jump" >转交未同意</a></li> 
+                 <li><a target="ajax" rel="MisSaleMyBusiness_left" href="__APP__/MisSaleMyBusiness/index/businessstatus/4/jump/jump" >转项目</a></li>
+                 <li><a target="ajax" rel="MisSaleMyBusiness_left" href="__APP__/MisSaleMyBusiness/index/businessstatus/5/jump/jump" >转储备</a></li>
+            </ul>
+        </div>
+        <div class="tml_divider"></div>
+        <div class="tml_bar_nav">
+            <ul class="bar_nav">
+            	<if condition="$_SESSION[a] || $_SESSION['missalemybusiness_acquire']">
+                <li><a target="ajax" rel="MisSaleMyBusiness_left" href="__APP__/MisSaleMyBusiness/acquire" >获取商机</a></li>
+            	</if>
+            </ul>
+        </div>
+	</div>
+	<div id="MisSaleMyBusiness_left" class="unitBox treeright">
+		<include file="indexview"/>
+	</div>
+</div>

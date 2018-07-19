@@ -1,0 +1,63 @@
+<script>
+function workstateSet_addpeople(id,name,step){
+	if(step=="MisOfficialdocumentAuditorfour"){
+		var $strHtml = appendUserHtml(step,'userid',id,name);
+	}
+	 $("#"+step).append($strHtml);
+};
+function workstateSet_selectinto(step){
+ 	var id;
+ 	var name;
+ 	$(".tbodylist").find("input[type='checkbox']").each(function(){
+ 		if($(this).attr("checked")=='checked'){
+ 			id = $(this).attr("userid");
+ 			name = $(this).attr("username");
+ 			workstateSet_addpeople(id,name,step);
+ 		}
+ 	});
+ }
+</script>
+<div class="page">
+	<div class="pageContent">
+		<form method="post" action="__URL__/update/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,dialogAjaxDone);">
+		<input type="hidden" name="callbackType" value="closeCurrent">
+		<input type="hidden" name="typeid" value="1"/>
+		<input type="hidden" name="id" value="{$vo.id}"/>
+		<div class="pageFormContent" layoutH="58">
+			<div class="unit">
+				<label>核稿批示节点名称：</label>
+				<input type="text"  name="doinfo" size="45" value="{$vo.doinfo}" readonly="readonly"/>
+			</div>
+			<div>
+                <label>核稿批示节点人员：</label>
+                <ul class="addressee left" id="MisOfficialdocumentAuditorfour" style="background-color: #FFFFFF;border:1px solid #ccc;height:50px;width:320px;">
+                	<volist name="userlist" id="uservo">
+                         <li>
+                         <input type='hidden' name="userid[]" value="{$uservo.id}" readonly="readonly"/>
+                         <span>{$uservo.name}</span>
+                         <a  class="delAddressee" title='删除该功能' onclick='this.parentNode.parentNode.removeChild(this.parentNode);' href='javascript:;'>x</a>
+                         </li>
+                     </volist>
+                </ul>
+                <a class="input-addon input-addon-addon input-addon-add" href="__APP__/MisWorkStatementSet/lookupmanage/step/MisOfficialdocumentAuditorfour" lookupGroup="org1">查找带回</a>
+            </div>
+			<div class="unit"  style="width:500px;">
+				<label>备注：</label>
+				<textarea name="remark" rows="3" maxlength="200" cols="50" readonly="readonly">{$vo.remark}</textarea>
+			</div>
+			<div class="unit"  style="width:500px;">
+				<label>状态：</label>
+				<select class="combox" name="status" disabled="disabled">
+					<option value="1">正常</option>
+					<option value="0">禁用</option>
+				</select>
+			</div>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">{$Think.lang.close}</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+	</div>
+</div>

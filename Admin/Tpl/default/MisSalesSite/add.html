@@ -1,0 +1,29 @@
+<div class="page">
+	<div class="pageContent">
+	<form method="post" action="__URL__/insert/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,dialogAjaxDone)">
+		<div class="pageFormContent" layoutH="58">
+			<div class="tml-row">
+				<div class="tml-form-col">
+					<label>{$fields["orderno"]}：</label>
+					<input type="text" name="orderno" class="required alphanumeric" maxlength="40" value="" />
+				</div>
+				<div class="tml-form-col">
+					<label>{$fields["name"]}：</label>
+					<input type="text" name="name" class="required"  value="" />
+				</div>
+			</div>
+			<div class="tml-form-row">
+				<label>{$fields["remark"]}</label>
+				<textarea name="remark" rows="2" maxlength="200"></textarea>
+			</div>
+			{:W('MisSystemOrderno',array(1))}
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><button type="submit" class="tml_formBar_btn tml_formBar_btn_blue">{$Think.lang.save}</button></li>
+			</ul>
+		</div>
+	</form>
+	</div>
+</div>
+

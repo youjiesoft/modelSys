@@ -1,0 +1,39 @@
+<script type="text/javascript">
+	//检查用户的选择分类层级
+ function comfirqtype(obj){
+		var va = $(obj).val();
+		//选择的子级
+		if(va == 2){
+			$("#hidd").show();
+		}
+		if(va == 0){
+			$("#hidd").hide();
+		}
+	} 
+</script>
+<div class="page">
+	<div class="pageContent">
+		<form method="post" action="__URL__/insert/rel/missealofregistration" class="pageForm required-validate" onsubmit="return validateCallback(this,dialogAjaxDone);">
+			<div class="pageFormContent" layoutH="58">
+                   <div class="tml-row">
+					<div class="tml-form-col">
+						<label>主章名称：</label>
+						<input type="text" name="name" class="required" value="">
+					</div>
+                       <div class="tml-form-col" id="sel">
+                           <label>选择类型：</label>
+                           <select  name="typeid" class="combox">
+                            <option value="1" <if condition="$typeid eq 1">selected="selected"</if>>主章</option>
+                            <option value="2" <if condition="$typeid eq 2">selected="selected"</if>>辅章</option>
+                           </select>
+                       </div>
+                   </div>
+                   <div class="tml-form-row">
+                       <label>说&nbsp;&nbsp;&nbsp;&nbsp;明：</label>
+                       <textarea name="remark"></textarea>
+                   </div>
+			</div>
+			{:W('ShowAction')}
+		</form>
+	</div>
+</div>

@@ -1,0 +1,25 @@
+<include file="Public:pagerForm" />
+	<div class="page" align="center">
+		<div class="pageContent">
+			<form method="post" action="__URL__/conments/navTabId/__MODULE__view" class="pageForm required-validate" onsubmit="return validateCallback(this,dialogAjaxDone);">
+				<input type="hidden" value="1" name="iseditor">
+				<input type="hidden" value="1" name="save">
+				<input type="hidden" name="type" value="C">
+				<input type="hidden" name="parentid" value="{$parentid}">
+				<div class="pageFormContent" layoutH="58">
+					<div class="unit">
+					<!-- 	评论内容：-->
+						<textarea class="editor" name="content" style="width:450px;height:160px" tools="simple"></textarea>
+					</div>
+				</div>
+				<div class="formBar">
+					<ul>
+					<if condition="$_SESSION.a eq 1 or $_SESSION.misknowledgelist_conments">
+						<li><div class="buttonActive"><div class="buttonContent"><button type="submit">{$Think.lang.save}</button></div></div></li>
+					</if>
+						<li><div class="button"><div class="buttonContent"><button type="button" class="close">{$Think.lang.close}</button></div></div></li>
+					</ul>
+				</div>
+		</form>
+	</div>
+</div>

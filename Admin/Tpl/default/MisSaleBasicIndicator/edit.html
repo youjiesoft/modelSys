@@ -1,0 +1,26 @@
+		<style>
+		.tml-form-row label.tmp_label{margin-left:0px;width: 120px;float: none;font: 14px/30px "Microsoft Yahei","微软雅黑",sans-serif;}
+		.tml-form-row label.tmp_label:hover{color:#006699;}
+		</style>
+	<div class="page">
+	<div class="pageContent">
+		<form method="post" action="__URL__/update/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return iframeCallback(this, navTabAjaxDone)">
+			<input type="hidden" name="callbackType" value="closeCurrent" />
+			<input type="hidden" name="id" value="{$vo['id']}" />
+			<div class="pageFormContent applecloth anchorsToolBarParent" layoutH="56">
+				<div class="keepContentCenter form-affix-content">
+					<div class="contentTitle contentTitle_center form-affix-title">指标
+					
+		
+					</div><div class="tml-row">
+					{:W('ShowOrderno',array(1,'mis_sale_basic_indicator',$vo['orderno']))}
+							<div class="tml-form-col ">
+								<label>{$fields["name"]}:</label>
+								<input type="text"  name="name" class="required  " value="{$vo['name']}">
+							</div></div>
+				</div>
+			</div>
+		{:W('ShowAction',array('data'=>$vo))}
+		</form>
+	</div>
+	</div>

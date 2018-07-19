@@ -1,0 +1,55 @@
+<script>
+	function refreshtabsA(json) {
+		dialogAjaxDone(json);//json是自动返回的 
+		if (json.statusCode == DWZ.statusCode.ok) {
+			navTab.closeCurrentTab();//关闭当前dialog下面的页面
+		}
+	}
+</script>
+<div class="page">
+	<div class="pageContent">
+	<form method="post" action="__URL__/batchInvoiceToMake/rel/jbsxmisfinaneinvoiceBox" class="pageForm required-validate" onSubmit="return validateCallback(this,refreshtabsA);" enctype="multipart/form-data">
+		<input type="hidden" name="id" value="{$id}">
+		<input type="hidden" name="indexnum" value="{$indexnum}">
+		<input type="hidden" name="refreshtabs[byid]" value="1">
+		<input type="hidden" name="financestatus" value="1" />	 	
+		<div class="pageFormContent " layoutH="58">
+			<h3 class="contentTitle contentTitle_center">收款确认</h3>
+			<div class="tml-form-col">
+				<label>收款金额:</label>
+				<span class="xyInputWithUnit">
+                       <input type="text" name="financeamount"  id="financeamount" value="{$amount}" onblur="FormatNumber(this);" class="textInput"/>
+                       <span class="input-addon-unit" title="元">元</span>
+                </span>
+			</div>
+			<div class="tml-form-col">
+				<label>收款日期:</label>
+					<span class="xyInputWithUnit">
+						<input type="text" name="finamcetime" id="finamcetime" onfocus="WdatePicker()" class="tml-border-r0 Wdate required"  value="{$_SERVER['REQUEST_TIME']|transTime}" />
+						<span class="input-addon input-addon-calendar"></span>
+					</span>
+			</div>
+		</div>
+		<div class="formBar">
+			<ul>
+				<if condition="$_SESSION.a eq 1 or $_SESSION.misfinancebusinessinvoice_batchinvoicetomake">
+					<li>
+						<div class="buttonActive">
+							<div class="buttonContent">
+								<button type="submit"  > 确认收款</button>
+							</div>
+						</div>
+					</li>
+				</if>
+				<li>
+					<div class="button">
+						<div class="buttonContent">
+							<button type="button" class="close">{$Think.lang.close}</button>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</form>
+</div>
+</div>

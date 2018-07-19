@@ -1,0 +1,34 @@
+<script>
+$(document).ready(function(){
+	var zNodes = {$treearr};
+	var setting = {
+			view: {
+               selectedMulti: false,
+               fontCss: getFontCss
+			},
+			data: {
+				simpleData: {
+					enable: true
+				}
+			}
+		};
+	$.fn.zTree.init($("#MisSaleBusinessSourcetree"), setting, zNodes);
+	var zTree = $.fn.zTree.getZTreeObj("MisSaleBusinessSourcetree");
+});
+</script>
+<div class="pageContent">
+	<div class="treeleft">
+		<div class="close">
+			<div class="clearfix p5">
+				<div class="member_searcher">
+					<input class="add_key left" id="MisSaleBusinessSourceSearchNodeKeys"  type="text" placeholder="请输入查找词" name=""/>
+					<button class="btn_member icon-search right" onclick="SearchZTreeNode('MisSaleBusinessSourcetree','MisSaleBusinessSourceSearchNodeKeys')" type="button"></button>
+				</div>
+			</div>
+			<ul id="MisSaleBusinessSourcetree" class="ztree" layoutH="100"></ul>
+		</div>
+	</div>
+	<div id="MisSaleBusinessSourceview" class="unitBox treeright">
+		<include file="indexview"  />
+	</div>
+</div>

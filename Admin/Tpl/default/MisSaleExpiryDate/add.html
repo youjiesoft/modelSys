@@ -1,0 +1,22 @@
+<div class="page">
+	<div class="pageContent">
+	<form method="post" action="__APP__/MisSaleExpiryDate/insert/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+			<input type="hidden" name="callbackType" value="closeCurrent" />
+			<div class="pageFormContent" layoutH="48">
+				<div class="tml-row">
+					{:W('ShowOrderno',array(1,'mis_sale_expiry_date'))}
+					<div class="tml-form-col ">
+						<label>{$fields["name"]}:</label>
+						<div class="tml-input-append">
+							<input type="text"  name="name" class="required number " value="">
+							<span class="input-addon-unit" title="天">天</span>
+						</div>
+						
+					</div>
+				</div>	
+			</div>			
+		{:W('ShowAction')}
+	</form>
+	</div>
+</div>
+	

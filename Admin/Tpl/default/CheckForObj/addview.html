@@ -1,0 +1,79 @@
+<script type="text/javascript">
+$(function(){
+	var item = $('#CheckForObjadd1 a');
+	item.each(function(){
+		$(this).click(function(){
+			if($(this).attr('href')){
+				navTab.closeTab('CheckForObjadd');
+			}			
+		})
+	});
+})
+</script>
+<div class="pageContent">
+	<form method="post" action="__URL__/insert/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+		<input type="hidden" name="model" value="{$model}">
+		<div class="pageFormContent" layoutH="58">
+			<div class="tml-row">
+				<div class="tml-form-col ">
+					<label>标题：</label>
+					<input type="text"  name="title" class="required" value="">
+				</div>
+			</div>
+			<div class="tml-row">
+				<div class="tml-form-col">
+					<label>过滤条件：</label>
+					{:W('ShowAddResult', array('model'=>$model))}
+				</div>
+			</div>
+			<table class="table" width="100%" layoutH="72">
+				<thead>
+					<tr>
+						<th style="font-weight: 700;">英文字段</th>
+						<th style="font-weight: 700;">中文名称</th>
+						<th style="font-weight: 700;">选择列表显示字段</th>
+						<th style="font-weight: 700;">显示字段</th>
+						<th style="font-weight: 700;">储存字段</th>
+						<th style="font-weight: 700;">排序</th>
+					</tr>
+				</thead>
+				<tbody>
+					<volist id="vl" name="list" key="key2">
+						<tr>
+							<td>{$vl.name}</td>
+							<td>{$vl.showname}</td>
+							<td>
+								<input type="checkbox" che='fields' name="fields[{$key}]" value="{$vl.name}">
+								<input type="hidden" name="showname[{$key}]" value="{$vl.showname}">
+							</td>
+							<td>
+								<input type="radio" onclick="clickLimit(this);" name="show_fields" value="{$vl.name}">
+							</td>
+							<if condition="in_array($vl.name,array('id','orderno'))">
+							<td>
+								<input type="radio" onclick="clickLimit(this);" name="hidden_field" value="{$vl.name}" <if condition="$vl.name eq 'id'">checked</if>>
+							</td>
+							<else/>
+							<td><input type="radio" name="hidden_field" onclick="clickLimit(this)" disabled="disabled"  value="{$vl.name}"></td></td>
+							</if>
+							<td><input type="radio" name="sort_condition" value="{$vl.name}"></td>
+						</tr>
+					</volist>
+				</tbody>
+			</table>
+		 {:W('ShowAction')}	
+		</div>
+	</form>
+</div>
+<script type="text/javascript">
+function clickLimit(obj){
+	var node = $(obj).closest('tr').find('input[type="checkbox"][che="fields"]');
+	$.each(node,function(){
+		if($(this).is(':checked')){	
+		}else{
+			alert("显示字段必须在选择列表显示字段中选择");
+			$(obj).attr('checked',false);
+		}
+	})	
+}
+</script>

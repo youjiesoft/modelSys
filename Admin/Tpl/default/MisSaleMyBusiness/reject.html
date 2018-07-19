@@ -1,0 +1,24 @@
+<div class="pageContent">
+		<form method="post" action="__APP__/MisSaleMyBusiness/lookupreject/rel/MisSaleMyBusiness_left" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+		<input type="hidden" name="callbackType" value="closeCurrent" />
+			<input type="hidden" name="id" value="{$vo['id']}" />
+			<input type="hidden" name="allotid" value="{$vo['allotid']}" />
+		<div class="pageFormContent new_version_page_content" layoutH="58">
+							<!-- select组件 start -->
+							<div class="col_1_7 form_group_lay field_jianyirenyuan " >
+									<label class="label_new">不同意理由:</label>
+									<textarea  cols="100" rows="10" class=" text_area" name="quxiaoliyou"></textarea>
+							</div>
+							<!-- text组件 end -->
+						
+		<div class="clear"></div>
+			</div>
+				<div class="formBar">
+					<ul>
+						<li>
+							<button type="submit" class="tml_formBar_btn tml_formBar_btn_blue enterIndex">保存</button>
+						</li>
+					</ul>
+				</div>
+		</form>
+	</div>

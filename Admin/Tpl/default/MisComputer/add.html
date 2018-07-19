@@ -1,0 +1,129 @@
+<div class="page">
+	<div class="pageContent">
+		<form method="post" action="__URL__/insert/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,navTabAjaxDone);">
+			<input type="hidden" name="deptid" value="{$deptid}" />
+			<input type="hidden" name="ajax" value="1">
+			<input type="hidden" name="callbackType" value="closeCurrent">
+			<div class="pageFormContent applecloth anchorsToolBarParent" layoutH="40">
+				<div class="keepContentCenter form-affix-content">
+					<div class="contentTitle contentTitle_center form-affix-title">添加新设备 
+						<span class="auto_code">
+	                        <b>No. </b>
+							<input type="text" name="code" value="{$code}" <if condition='$writable eq 0'> readonly="readonly" class="xycodedata_read" <else/> class="xycodedata_write required alphanumeric" </if> />
+	                    </span>
+					</div>
+					<fieldset class="side-catalog-anchor">
+						<legend class="fieldset_legend_toggle side-catalog-firstanchor side-catalog-text"><b>用户信息</b><div class="tml_style_line tml_sl4 tml_slb_blue"></div></legend>
+						<div class="tml-row">
+							<div class="tml-form-col">
+								<label>{$fields["name"]}:</label><input type="text" name="name" class="required" value="{$vo['name']}">
+							</div>
+							<div class="tml-form-col">
+								<label>{$fields["user_id"]}:</label>
+								<div class="tml-input-append">
+								<input type="hidden" name="user_id" class="selectaudituser.userid" value="" />
+								<input type="text" name="current_name" class="required selectaudituser.name checkByInput" show="name" insert="id" checkfor="MisHrPersonnelPersonInfotwo" autocomplete="off" />
+								<a href="javascript:;" checktype="person" data="selectaudituser;userid,personid;name,username" class="input-addon input-addon-userplus checkUser">选择人员</a>
+								</div>
+							</div>
+							<div class="tml-form-col">
+								<label>{$fields["type"]}:</label>
+								<select name="type"  class="combox required">
+									<option  value="1">台式机</option>
+									<option  value="2">笔记本</option> 
+									<option  value="3">相机</option>
+									<option  value="4">服务器</option>
+									<option  value="5">打印机</option>
+									<option  value="6">网络设备</option>
+									<option  value="7">电话机</option>
+									<option  value="8">其它</option>
+								</select>
+							</div>
+							<div class="tml-form-col">
+								<label>{$fields["department_id"]}:</label>
+								<select name="department_id" class="combox required">
+									<volist name="department_idlist" id="vodepartmentID">
+										<option value="{$vodepartmentID['id']}" <if condition="$vodepartmentID['id'] eq $deptid">selected</if>>
+											{$vodepartmentID['name']}
+										</option>
+									</volist>
+								</select>
+							</div>
+							<div class="tml-form-col">
+								<label>{$fields["principal"]}:</label>
+								<div class="tml-input-append">
+								<input type="hidden" name="principal" class="selectprincipaluser.userid" value="" />
+								<input type="text" name="principal_name" class="required selectprincipaluser.name checkByInput" show="name" insert="id" checkfor="MisHrPersonnelPersonInfotwo" autocomplete="off" />
+								<a href="javascript:;" checktype="person" data="selectprincipaluser;userid,personid;name,username" class="input-addon input-addon-userplus checkUser">选择人员</a>
+								</div>
+							</div>
+							<div class="tml-form-col">
+								<label>{$fields["buy_time"]}:</label>
+								<div class="tml-input-append">
+									<input type="text" class="Wdate required js-wdate" name="buy_time" value="">
+									<a href="javascript:;" class="input-addon input-addon-calendar js-inputCheckDate">选择</a>
+								</div>
+							</div>
+							<div class="tml-form-col">
+								<label>{$fields["price"]}:</label>
+								<div class="tml-input-append">
+								<input type="text" name="price" class="" value="{$vo['price']}">
+								<span class="input-addon-unit" title="元">元</span>
+								</div>
+							</div>
+						</div>
+					</fieldset>
+					<fieldset class="side-catalog-anchor">
+						<legend class="fieldset_legend_toggle side-catalog-text"><b>配件信息</b><div class="tml_style_line tml_sl4 tml_slb_blue"></div></legend>
+						<div class="tml-row">
+							<div class="tml-form-col">
+								<label>{$fields["oem"]}:</label><input type="text" class="" name="oem" value="{$vo['oem']}">
+							</div>
+							<div class="tml-form-col">
+								<label>{$fields["model"]}:</label><input type="text" class="" name="model" value="{$vo['model']}">
+							</div>
+							<div class="tml-form-col">
+								<label>{$fields["os"]}:</label><input type="text"  class=" required"   name="os" value="{$vo['os']}">
+							</div>
+							<div class="tml-form-col">
+								<label>{$fields["mainboard"]}:</label><input type="text"  class=" required"   name="mainboard" value="{$vo['mainboard']}">
+							</div>
+							<div class="tml-form-col">
+								<label>{$fields["cpu"]}:</label><input type="text"  class=" required" name="cpu" value="{$vo['cpu']}">
+							</div>
+							<div class="tml-form-col">
+								<label>{$fields["ram"]}:</label><input type="text" class=" required" name="ram" value="{$vo['ram']}">
+							</div>
+							<div class="tml-form-col">
+								<label>{$fields["hardisk"]}:</label><input type="text" class=" required" name="hardisk" value="{$vo['hardisk']}">
+							</div>
+							<div class="tml-form-col">
+								<label>{$fields["graphics_card"]}:</label><input type="text"  class=" required" name="graphics_card" value="{$vo['graphics_card']}">
+							</div>
+							<div class="tml-form-col">
+								<label>{$fields["modisplay_screen"]}:</label><input type="text" class=" required" name="modisplay_screen" value="{$vo['modisplay_screen']}">
+							</div>
+							<div class="tml-form-col">
+								<label>{$fields["cd_rom"]}:</label><input type="text" class="" name="cd_rom" value="{$vo['cd_rom']}">
+							</div>
+							<div class="tml-form-col">
+								<label>{$fields["network_card"]}:</label><input type="text" class=" required" name="network_card" value="{$vo['network_card']}">
+							</div>
+							<div class="tml-form-col">
+								<label>{$fields["other_hardware"]}:</label><input type="text" class="" name="other_hardware" value="{$vo['other_hardware']}">
+							</div>
+						</div>
+					</fieldset>
+					<fieldset class="side-catalog-anchor">
+						<legend class="fieldset_legend_toggle side-catalog-text"><b>备注</b><div class="tml_style_line tml_sl4 tml_slb_blue"></div></legend>
+						<div class="tml-form-row">
+							<label>{$fields["remark"]}:</label>
+							<textarea rows="2"  name="remark">{$vo['remark']}</textarea>
+						</div>
+					</fieldset>
+			{:W('ShowAction')}
+				</div>
+			</div>
+	</form>
+	</div>
+</div>

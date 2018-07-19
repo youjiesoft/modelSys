@@ -1,0 +1,49 @@
+<div class="page">
+	<div class="pageContent">
+		<form method="post" action="__URL__/insert/rel/card_model_car/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,dialogAjaxDone);">
+			<div class="pageFormContent" layoutH="58">
+				<div class="tml-row">
+	 				<div class="tml-form-col">
+						<label>{$fields["oil_id"]}:</label>
+						<input type="text" name="oil_id" class="required" size="25" />
+					</div>
+					<div class="tml-form-col">
+						<label>{$fields["carid"]}:</label>
+						<div class="tml-input-append">
+		                    <input type="text" class="org.current_name" size="25" name="carname" value="{$carid|getFieldBy=\'id\',\'name\',\'MisSystemCar\'}" readonly="readonly"/>
+							<input type="hidden" class="org.mangid" name="carid" value="{$carid}"/>
+							<a class="input-addon input-addon-add" href="__URL__/lookupmanage" lookupGroup="org">车辆选择</a>
+							<span class="info"></span>
+						</div>
+					</div>
+					<div class="tml-form-col">
+						<label>{$fields["oil_balance"]}:</label>
+						<input  type="text" name="oil_balance" onblur="FormatNumber(this);" size="25">
+					</div>
+					<div class="tml-form-col">
+						<div class="tml-input-append">
+							<label>{$fields["bind_time"]}:</label>
+							<input type="text" class="Wdate" onfocus="WdatePicker()" name="bind_time">
+							<span class="input-addon input-addon-calendar"></span>
+						</div>
+					</div>
+					<div class="tml-form-col">
+						<label>{$fields["type"]}:</label>
+						<select name="type"  class="combox ">
+							<option  value="2">新卡绑定</option>
+							<option  value="1">备用卡</option>
+						</select>
+					</div>
+				</div>
+				<div class="tml-form-row">
+							<div class="tml-help-show"><font color="red">*&nbsp;备用卡可以不用填写车辆名.</font></div>
+				</div>
+					<div class="tml-form-row">
+						<label>{$fields["remark"]}:</label>
+						<textarea  name="remark">{$vo['remark']}</textarea>
+					</div>
+			</div>
+            {:W('ShowAction')}
+	</form>
+	</div>
+</div>

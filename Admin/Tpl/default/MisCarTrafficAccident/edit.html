@@ -1,0 +1,112 @@
+<div class="page">
+	<div class="pageContent">
+	<form method="post" action="__URL__/update/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return iframeCallback(this,navTabAjaxDone);" enctype="multipart/form-data">
+    <input type="hidden" name="callbackType" value="closeCurrent">
+     <input type="hidden" name="id" value="{$vo.id}">
+    	<div class="pageFormContent applecloth" layoutH="55">
+			<div class="keepContentCenter form-affix-content">
+				<H2 class="contentTitle contentTitle_center form-affix-title">交通事故
+				</H2>
+					<fieldset class="zlqk_1">
+						<legend class=fieldset_legend_toggle>
+					    	<b>基本信息</b>
+						</legend>
+					<div class="tml-row">
+						<if condition='$fields["carid"]'>
+						<div class="tml-form-col">
+							<label>{$fields["carid"]}:</label>  
+							<div class="tml-input-append">
+	                    	<input type="text" class="org.carno required tml-find-num" value="{$vo.carid|getFieldBy='id','carno','MisSystemCar'}" readonly="readonly"/>
+							<input type="hidden" class="org.mangid" name="carid" value="{$vo.carid}"/>
+							<a class="input-addon input-addon-add" href="__URL__/lookupmanage" lookupGroup="org">车辆选择</a>
+							</div>
+						</div>
+						</if>
+						<if condition='$fields["accidentdate"]'>
+						<div class="tml-form-col">
+						    <label>{$fields["accidentdate"]}：</label>
+						    <span class="xyInputWithUnit">
+	                        <input type="text" name="accidentdate" onfocus="WdatePicker()" class="Wdate required" value="{$vo.accidentdate|transtime}"/>
+	                        <span class="input-addon input-addon-calendar"></span>
+						    </span>
+						</div>
+						</if>
+					<!-- 	<if condition='$fields["employeeid"]'>
+						<div class="tml-form-col">
+							<label>{$fields["employeeid"]}:</label>
+							<div class="tml-input-append">
+	                    	<input type="text" class="org1.name required tml-find-num" value="{$vo.employeeid|getFieldBy='id','name','mis_hr_personnel_person_info'}" readonly="readonly"/>
+							<input type="hidden" class="org1.id" name="employeeid" value="{$vo.employeeid}" />
+							<a class="input-addon input-addon-userplus" param="field=id,name&model=MisHrBasicEmployeeView&conditions=working,1" href="__URL__/lookupGeneral" lookupGroup="org1">登记人选择</a>
+							</div>
+						</div>
+						</if> -->
+						<if condition='$fields["employeeid"]'>
+							<div class="tml-form-col">
+								<div class="tml-input-append">
+									<label>{$fields["employeeid"]}：</label>
+									<input class="textInput required selectaudituser.name valid" type="text" name="name" value="{$vo.employeeid|getFieldBy='id','name','mis_hr_personnel_person_info'}"  readonly="readonly">
+									<input class="org1.id selectaudituser.userid" type="hidden" value="" name="employeeid">
+									<a class="input-addon input-addon-userplus checkUser" checktype="person" data="selectaudituser;userid,userid;name,username" href="javascript:;">登记人选择</a>
+								</div>
+							</div>
+						</if>
+						<if condition='$fields["directeconomic"]'>
+							 <div class="tml-form-col">
+								 <label>{$fields["directeconomic"]}:</label>
+								 <input type="text" name="directeconomic" onblur="FormatNumber(this);" value="{$vo.directeconomic|getDigits}" class="textInput "/>
+							 </div>
+						</if>
+					</div>
+					<if condition='$fields["accidentcaddr"]'>
+					<div class="tml-form-row">
+						 <label>{$fields["accidentcaddr"]}:</label>
+						 <input type="text" name="accidentcaddr" size="74"  value="{$vo.accidentcaddr}" class="textInput "/>
+					 </div>
+					 </if>
+					 <if condition='$fields["accidentnature"]'>
+						  <div class="tml-form-row">
+						  <label>{$fields["accidentnature"]}:</label>
+						  <textarea cols="40" rows="2"  name="accidentnature">{$vo.accidentnature} </textarea>
+						  </div>
+					 </if>
+					 <if condition='$fields["accidentliability"]'>
+						  <div class="tml-form-row">
+						  <label>{$fields["accidentliability"]}:</label>
+						  <textarea cols="40" rows="2"  name="accidentliability">{$vo.accidentliability} </textarea>
+						  </div>
+					 </if>
+					 <if condition='$fields["accidentcause"]'>
+						  <div class="tml-form-row">
+						  <label>{$fields["accidentcause"]}:</label>
+						  <textarea cols="40" rows="2" name="accidentcause">{$vo.accidentcause} </textarea>
+						  </div>
+					  </if>
+					  <if condition='$fields["vehicledamage"]'>
+						  <div class="tml-form-row">
+						  <label>{$fields["vehicledamage"]}:</label>
+						  <textarea cols="40" rows="2" name="vehicledamage">{$vo.vehicledamage} </textarea>
+						  </div>
+					  </if>
+					</fieldset>
+					<fieldset class="zlqk_1">
+						<legend class=fieldset_legend_toggle>
+					    	<b>页脚</b>
+						</legend>
+						<div class="tml-row">
+							<div class="tml-form-col">
+								<label title="制单人">制单人：</label>
+								<input type="text" readonly="readonly" class="textInput" value="{$vo.createid|getFieldBy='id','name','user'}" />
+							</div>
+							<div class="tml-form-col">
+								<label title="制单时间">制单时间：</label>
+								<input class="textInput" readonly="readonly" value="{$vo.createtime|transTime}" />
+							</div>
+						</div>
+					</fieldset>
+	            </div>
+	        </div>
+            {:W('ShowAction',array('data'=>$vo))}
+		</form>
+	</div>
+</div>

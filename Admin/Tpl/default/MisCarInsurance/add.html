@@ -1,0 +1,57 @@
+<div class="page">
+	<div class="pageContent">
+		<form method="post" action="__URL__/insert/rel/insurance_model_car/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,dialogAjaxDone);">
+			<div class="pageFormContent" layoutH="58">
+				<div class="tml-row">
+					<div class="tml-form-col">
+						<label>{$fields["carid"]}:</label>
+						<div class="tml-input-append">
+		                    <input type="text" class="org.current_name required"  name="carname" value="{$carid|getFieldBy=\'id\',\'name\',\'MisSystemCar\'}" readonly="readonly"/>
+							<input type="hidden" class="org.mangid" name="carid" value="{$carid}"/>
+							<a class="input-addon input-addon-add" href="__URL__/lookupmanage" lookupGroup="org">车辆选择</a> <span class="info"></span>
+						</div>
+					</div>
+					<div class="tml-form-col">
+						<label>{$fields["beneficiary"]}:</label>
+				        <input type="text" class="required checkByInput" fields="array('id'=>'0','name'=>'投保人');"  show="name" checkfor="MisHrBasicEmployee" iswrite="true" name="beneficiary"  >
+					</div>
+					<!-- <div class="tml-form-col">
+						<label>{$fields["company"]}:</label>
+						<input  type="text" name="company" class="checkByInput required" fields="array('id'=>'0','company'=>'公司名称');" show="company" checkfor="MisCarInsurance" iswrite="true">
+					</div> -->
+					<div class="tml-form-col">
+						<label>{$fields["company"]}:</label>
+						<input  type="text" name="company" class="required" show="company" iswrite="true">
+					</div> 
+					<div class="tml-form-col">
+						<label>{$fields["business"]}:</label>
+						<input  type="text" name="business" class="" onblur="FormatNumber(this);">
+					</div>
+					<div class="tml-form-col">
+						<label>{$fields["compulsory"]}:</label>
+						<input  type="text" name="compulsory" class="required" onblur="FormatNumber(this);">
+					</div>
+					<div class="tml-form-col">
+						<label>{$fields["buy_time"]}:</label>
+						<div class="tml-input-append">
+							<input type="text" class="Wdate required" onfocus="WdatePicker()"  name="buy_time" value="">
+							<span class="input-addon input-addon-calendar"></span>
+						</div>
+					</div>
+					<div class="tml-form-col">
+						<label>{$fields["expire_time"]}:</label>
+						<div class="tml-input-append">
+							<input type="text" class="Wdate required" onfocus="WdatePicker()"  name="expire_time" value="">
+							<span class="input-addon input-addon-calendar"></span>
+						</div>
+					</div>
+				</div>
+				<div class="tml-form-row">
+					<label>{$fields["remark"]}:</label>
+					<textarea cols="62" rows="3" name="remark"></textarea>
+				</div>
+			</div>
+            {:W('ShowAction')}
+		</form>
+	</div>
+</div>

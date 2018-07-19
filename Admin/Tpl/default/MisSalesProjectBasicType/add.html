@@ -1,0 +1,60 @@
+<div class="pageContent">
+	<form method="post" action="__URL__/insert/rel/MisProductBasicTypeBox" class="pageForm required-validate" onsubmit="return validateCallback(this,dialogAjaxDone);">
+		<input type="hidden" name="utype" value="{$utype}" />
+		<input type="hidden" name="groupid" value="18">
+		<input type="hidden" name="callbackType" value="closeCurrent">
+		<div class="pageFormContent" layoutH="58">
+			<div class="tml-row">
+				<div class="tml-form-col"><label>{$fields["code"]}：</label>
+				  <input type="text"  name="code" value="{$code}" class="required alphanumeric" <if condition='$writable eq 0'> readonly="readonly" </if>  maxlength="10"/></div>
+				<div class="tml-form-col"><label>{$fields["name"]}：</label>
+				  <input type="text" value="" name="name" class="required" maxlength="25"/></div>
+				<div class="tml-form-col"><label>{$fields["type"]}：</label>
+				  <select name="type" class="required combox">
+					  <volist id="vo" name="list">
+					  	<option value="{$vo['type']}" <eq name="utype" value="$vo['type']"> selected </eq>>{$vo['typename']}</option>
+					  </volist>
+				  </select>
+                </div>
+                <if condition="$_SESSION.a eq 1">
+                <div class="tml-form-col">
+                            <label>{$fields["accountid"]}：</label>
+                            <input type="text" value="" checkfor="MisFinanceAmountTitle" class="checkByInput textInput" name="accountid" show="code" insert="id" maxlength="25"/>
+                            <input type="hidden" value="0" name="accountid">
+                        </div>
+                        <div class="tml-form-col">
+                            <label>{$fields["accountname"]}：</label>
+                            <input  type="text"  check_key="accountname"  class="readonly" value="" />
+                        </div>
+                </if>
+                </div>
+                <div class="tml-row">
+				<div class="tml-form-col"><label>{$fields["tablename"]}：</label>
+				  <input type="text" value="" name="tablename" class="" maxlength="25"/></div>
+                  <span class="tml-form-text">*功能扩展</span>
+                  </div>
+                  <div class="tml-row">
+				<div class="tml-form-col"><label>{$fields["modelname"]}：</label>
+				  <input type="text" value="" name="modelname" class="" maxlength="25"/></div>
+                  <span class="tml-form-text">*功能扩展</span>
+                  </div>
+                  <div class="tml-row">
+				<div class="tml-form-col"><label>{$fields["expand1"]}：</label>
+				  <input type="text" value="" name="expand1" class="" maxlength="25"/></div>
+                  <span class="tml-form-text">*expand1字段，让分类有层级关系</span>
+                  </div>
+				<div class="tml-form-row"><label>{$fields["remark"]}：</label>
+				  <textarea  name="remark" maxlength="100" rows="2"></textarea></div>
+		</div>
+		<div class="formBar">
+			<ul>
+			<if condition="$_SESSION.a eq 1 or $_SESSION.mispurchasebasictype_insert">
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">{$Think.lang.save}</button></div></div></li>
+			</if>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">{$Think.lang.close}</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+</div>
+
+

@@ -1,0 +1,17 @@
+<form method="post" action="__URL__/closequestion/navTabId/MisExpertquestionList" class="pageForm required-validate" onsubmit="return CloseQuestionCallback(this)">
+	<input type="hidden" value="1" name="iseditor">
+	<input type="hidden" value="1" name="save">
+	<input type="hidden" name="type" value="NOTE">
+	<input type="hidden" name="closereason" value="{$vo.id}">
+	<div class="pageFormContent" id="alert_win">
+		<div class="unit">
+			<b>关闭原因</b>
+			<textarea class="editor" tools="mini" name="content" style="width:423px;height:100px"></textarea>
+		</div>
+		<div class="unit ">
+			<if condition="$_SESSION.a eq 1 or $_SESSION.misexpertquestionlist_closequestion">
+			<li><div class="buttonActive"><div class="buttonContent"><button type="submit">发 布</button></div></div></li>
+			</if>
+		</div>
+	</div>
+</form>

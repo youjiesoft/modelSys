@@ -1,0 +1,108 @@
+<script>
+function addmfem_append_Selectlist() {
+	var $box = $.pdialog.getCurrent();
+	var html = '<tr>';
+	html += '<td><input type="text" class="gangwei_d xytdinput"  name="arr_key[]" value="" /></td>';		
+    html += '    <td><input type="text" class="gangwei_d xytdinput" name="arr_val[]" value="" /> </td> ';                               
+    html += '    <td><a href="javascript:;" onclick="addmfem_delete_Selectlist(this);"><strong style="color:red">移除</strong></a></td>';
+	html += '</tr>';
+	var $ht = $(html).initUI();
+	$("#Selectlist_ex_add").append($ht);
+}
+function addmfem_delete_Selectlist(obj) {
+	var $box = $.pdialog.getCurrent();
+	$(obj).parent().parent().remove();
+}
+</script>
+<div class="page">
+	<div class="pageContent">
+	<form method="post" action="__URL__/insert/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+		<div class="pageFormContent" layoutH="58">
+			<div class="tml-row">
+			
+				<div class="tml-form-col">
+					<label>标题：</label>
+					<input type="text" class="required" name="title" value="{$vo['title']}"  />
+				</div>
+				<div class="tml-form-col">
+					<label>查询表：</label>
+					<input type="text" class="required" name="query_table" value="{$vo['fields']}"  />
+				</div>
+				<div class="tml-form-col">
+					<label>显示字段：</label>
+					<input type="text" class="required" name="show_fields" value="{$vo['url']}"  />
+				</div>
+				<div class="tml-form-col">
+					<label>隐藏域字段：</label>
+					<input type="text" class="required" name="hidden_field" value="{$vo['mode']}"  />
+				</div>
+				<div class="tml-form-col">
+					<label>过滤条件：</label>
+					<input type="text" name="filter_condition" value="{$vo['filed']}"  />
+				</div>
+				<div class="tml-form-col">
+					<label>排序条件：</label>
+					<input type="text" name="sort_condition" value="{$vo['val']}"  />
+				</div>
+				<div class="tml-form-col">
+					<label>状态：</label>
+					<select name="status" class="combox">
+						<option value="1">开启</option>
+						<option value="0">禁用</option>
+					</select>
+				</div>
+			
+			
+			
+			
+			
+		<!-- <div class="tml-form-col">
+					<label>标题：</label>
+					<input type="text" class="required" name="title" />
+				</div>
+				<div class="tml-form-col">
+					<label>查找带回字段：</label>
+					<input type="text" class="required" name="fields" /><span>多个字段用英文逗号隔开</span>
+				</div>
+				<div class="tml-form-col">
+					<label>数据请求地址：</label>
+					<input type="text" class="required" name="url" value="lookupGeneral"/>
+				</div>
+				<div class="tml-form-col">
+					<label>Model：</label>
+					<input type="text" class="required" name="mode" />
+				</div>
+				<div class="tml-form-col">
+					<label>指定当前org显示字段：</label>
+					<input type="text" class="required" name="filed" /><span>多个字段用英文逗号隔开</span>
+				</div>
+				<div class="tml-form-col">
+					<label>指定当前org值字段：</label>
+					<input type="text" class="required" name="val" /><span>查找带回的id</span>
+				</div>
+				<div class="tml-form-col">
+					<label>过滤条件：</label>
+					<input type="text" name="condition" />
+				</div>
+				<div class="tml-form-col">
+					<label>状态：</label>
+					<select name="status" class="combox">
+						<option value="1">开启</option>
+						<option value="0">禁用</option>
+					</select>
+				</div> -->	
+			
+			
+			
+			
+				
+				
+			
+			</div>			
+		</div>
+		{:W('ShowAction')}
+	</form>
+
+	</div>
+</div>
+

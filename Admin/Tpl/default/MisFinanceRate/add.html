@@ -1,0 +1,60 @@
+<div class="page">
+	<div class="pageContent">
+
+	<form method="post" action="__URL__/insert/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+		<input type="hidden" name="user_id" value="<?php echo $_SESSION[C('USER_AUTH_KEY')] ?>">
+		<input type="hidden" name="id" value="{$vo.id}" >
+		<input type="hidden" name="ajax" value="1">
+		<div class="pageFormContent" layoutH="58">
+			<div class="unit">
+				<label>{$fields["crfrom"]}：</label>
+				<select name="crfrom" class="combox">
+                  <option selected value="">&mdash;&mdash;选择&mdash;&mdash;</option>
+                  <volist id="vlist" name="vlist">
+                  	<option value="{$vlist['id']}">{$vlist['code']}{$vlist['name']}</option>
+                  </volist>
+                </select>
+			</div>
+			<div class="unit">
+				<label>{$fields["crto"]}：</label>
+				<select name="crto" class="combox">
+                 <option selected value="">&mdash;&mdash;选择&mdash;&mdash;</option>
+                 <volist id="vlist1" name="vlist1">
+                 	<option value="{$vlist1['id']}">{$vlist1['code']}{$vlist1['name']}</option>
+                 </volist>
+                </select>
+			</div>
+			<div class="unit">
+				<label>{$fields["ecrate"]}：</label>
+				<input type="text" name="ecrate" value="" class="required number" maxlength="10"/>
+			</div>
+		    <div class="unit">
+				<label>{$fields["calmothod"]}：</label>
+				<select name="calmothod" class="combox">
+						<option value="1">原币*汇率=本位币</option>
+						<option value="2">原币/汇率=本位币</option>
+				</select>
+			</div>
+			<div class="unit">
+				<label>{$fields["convdate"]}：</label>
+                <input type="text"  name="convdate" onfocus="WdatePicker()" class="tml-border-r0 Wdate required" />
+                <span class="input-addon input-addon-calendar"></span>
+			</div>
+
+			<div class="unit" style="width:500px;">
+				<label>{$fields["remark"]}：</label>
+				<textarea  name="remark" cols="40" rows="2" maxlength="100"></textarea>
+			</div>
+		</div>
+		<div class="formBar">
+			<ul>
+			<if condition="$_SESSION.a eq 1 or $_SESSION.misfinancerate_insert">
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">{$Think.lang.save}</button></div></div></li>
+			</if>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">{$Think.lang.close}</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+	</div>
+</div>
+

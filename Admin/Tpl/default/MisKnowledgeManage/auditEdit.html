@@ -1,0 +1,101 @@
+<script>
+//检查审核之前是否经过评级
+	function censor(obj){
+		var vax = $("#seleecc").val();
+		alert(vax);
+		if(vax ==''){
+			alertMsg.error('请对改文章评级!');
+			return false;
+		}
+		
+	}
+</script>
+<div class="page">
+	<div class="pageContent">
+	<form method="post" action="__URL__/auditProcess/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this, refreshtabsAudit)">
+	<input type="hidden" name="id" value="{$vo['id']}" />
+	<input type="hidden" value="1" name="iseditor">
+	<input type="hidden" name="orderno" value="{$vo['orderno']}" />
+	<input type="hidden" name="refreshtabs[tabid]" value="__MODULE__">
+	<input type="hidden" name="refreshtabs[url]" value="__APP__/MisKnowledgeManage/index">
+	<input type="hidden" name="refreshtabs[data]" value="{ ntdata:1}">
+	<input type="hidden" name="refreshtabs[title]" value="文章管理">
+	<input type="hidden" name="refreshtabs[type]" value="navtab">
+	<input type="hidden" name="pid" value="{$vo['ptmptid']}">
+	<input type="hidden" name="ostatus" value="{$vo['ostatus']}">
+	<input type="hidden" name="backprocess" value="流程回退">
+	<input type="hidden" name="auditprocess" value="流程审核">
+	<input type="hidden" name="endprocess" value="流程结束">
+	<input type="hidden" name="alreadyAuditUser" value="{$vo['alreadyAuditUser']}">
+	<input type="hidden" name="auditUser" value="{$vo['auditUser']}">
+	<div class="pageFormContent applecloth" layoutH="56">
+			<div class="keepContentCenter form-affix-content">
+				<div class="contentTitle contentTitle_center form-affix-title">文章信息	{:W('ShowAdvices',array('id'=>$vo['id']))}
+					
+				</div>
+				<fieldset>
+					<legend></legend>
+					{:W('ShowOrderno',array(1,'mis_knowledge_list',$vo['orderno']))}
+					<div class="tml-form-row">
+						<label>文章标题：</label>
+						<input type="text" readonly="readonly" name="title" class="required" value="{$vo['title']}">
+					</div>
+					<div class="tml-form-row">
+							<label>文章内容：</label>
+							<div class="edit-text">
+								<textarea class="ueditor" name="content" style="width:628px;height:300px">{$vo['content']}</textarea>
+							</div>
+					</div>
+                    <div class="tml-row">
+                        <div class="tml-form-col">
+                            <label>所属分类：</label>
+                            <!-- <select class="combox required">{$catalogolist}</select> -->
+                            <input type="text" value="{$vo['categoryid']|getFieldBy='id','name','MisKnowledgeType'}" class="required" readonly>
+                        </div>
+                        <div class="tml-form-col">
+                            <label>等&nbsp;&nbsp;&nbsp;&nbsp;级：</label>
+                            <select name="levels" class="combox required" >
+                                <option value="">未评级</option>
+                                <volist name="levels" id="le">
+                                    <option value="{$le['id']}" <if condition="$le['id'] eq $vo['levels']"> selected="selected"</if>>{$le['title']}</option>
+                                </volist>
+                            </select>
+                        </div>
+                    </div>
+					<if condition="$attarry">
+					<volist name="attarry" id="att">
+					 <div class="tml-form-row">
+					<label>附件{$key+1}</label>
+						<a class="attlink" rel="{$att['id']}" target="_blank" href="__URL__/misFileManageDownload/path/{$att['attached']|base64_encode}/rename/{$att['upname']}"><span>{$att['upname']}</span></a>
+						<a class="tml-btn tml-btn-small tml-btn-green tml-ml5" href="__URL__/lookupDocumentCollateAtta/t/0/id/{$att['id']}" title="文件归档" target="dialog"><span class="icon icon-file"></span> 归档</a>
+					</div>
+					</volist>
+					</if>
+				</fieldset>
+				<fieldset>
+					<div class="tml-row">
+						<div class="tml-form-col">
+							<label>发&nbsp;布&nbsp;&nbsp;人：</label>
+							<input type="text" readonly="readonly" value="{$vo['createid']|getFieldBy='id','name','user'}"/>
+						</div>
+						<div class="tml-form-col">
+							<label>发起时间：</label>
+					   		 <input type="text" class="textInput" value="{$vo['createtime']|transtime}" readonly="readonly" />
+						</div>
+					</div>
+				</fieldset>
+			</div>
+		</div>
+		{:W('ShowAction')}
+		<!-- <div class="formBar">
+				<if condition="$_SESSION.a eq 1 or $_SESSION.misknowledgemanage_auditprocess">
+					<button type="button" class="js-auditProcess tml-btn tml-btn-blue">{$Think.lang.auditprocess}</button>
+				</if>
+			<if condition="$_SESSION.a eq 1 or $_SESSION.misknowledgemanage_backprocess">
+				    <button type="button" class="js-backProcess tml-btn tml-btn-white" m="__MODULE__">{$Think.lang.backprocess}</button>
+			</if>
+				<button type="button" class="tml-btn tml-btn-white close">{$Think.lang.close}</button>
+		</div> -->
+	</form>
+	</div>
+</div>

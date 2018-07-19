@@ -1,0 +1,45 @@
+<script>
+function questionaddajaxbackedit(json){
+	dialogAjaxDone(json);
+	if (json.statusCode == DWZ.statusCode.ok) {
+		navTab.reloadFlag("__MODULE__view");
+	}
+}
+</script>
+<div class="page">
+	<div class="pageContent">
+		<form method="post" action="__URL__/update/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,dialogAjaxDone);">
+			<input type="hidden" name="iseditor" value="1">
+			<input type="hidden" name="id" value="{$vo['id']}">
+			<div class="pageFormContent xyEmployee" layoutH="58">
+				<div class="tml-form-row">
+					<label>标&nbsp;&nbsp;&nbsp;&nbsp;题：</label>
+					<input type="text" name="title" class="required" value="{$vo['title']}" style="width:480px">
+				</div>
+				<div class="tml-form-row">
+					<label>详&nbsp;&nbsp;&nbsp;&nbsp;细：</label>
+					<textarea class="ueditor" name="content" style="width:490px;height:150px">{$vo["content"]}</textarea>
+				</div>
+				<div class="tml-form-row">
+					<label>咨询专家：</label>
+					<input type="text" class="readonly org.name" readonly="readonly" value="{$expert.userid|getFieldBy='id','name','User'}">
+				</div>
+				<div class="tml-form-row">
+					<label>分&nbsp;&nbsp;&nbsp;&nbsp;类：</label>
+					<select name="typeid" class="combox required" onchange="changeExpertquestiontype(this)">
+						<volist name="typelist" id="vozw">
+							<option value="{$vozw['id']}" <if condition="$dafaultypeid eq $vozw['id']">selected="selected"</if>>{$vozw['name']}</option>
+						</volist>
+					</select>
+					<select name="categoryid" class="combox required" id="expertquestionptypeedit">
+						<volist name="ptypelist" id="ptype">
+						<option value="{$ptype['id']}" >{$ptype['name']}</option>
+						</volist>
+					</select>
+				</div>
+				{:W('ShowUpload',$attarry)}
+			</div>
+			{:W('ShowAction',array('data'=>$vo))}
+		</form>
+	</div>
+</div>

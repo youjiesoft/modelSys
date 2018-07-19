@@ -1,0 +1,100 @@
+ <div class="page">
+ <div class="pageContent" >
+	<form method="post" action="__APP__/MisSaleBusiness/insert/rel/__MODULE__" class="pageForm required-validate" onsubmit="return iframeCallback(this, navTabAjaxDone)">
+		<input type="hidden" name="callbackType" value="closeCurrent" />
+		<input type="hidden" name="refreshtabs[data]" value="1" />
+		<div class="pageFormContent applecloth anchorsToolBarParent" layoutH="40">
+			<div class="new_version_page">
+				<div class="new_version_page_header pageFormContent">商机</div>
+				<div class="new_version_page_content">
+					{:W('ShowOrderno',array(4,'mis_sale_business',$vo['orderno'],array('contentcls'=>'col_1_3 form_group_lay field_orderno', 'inputcls'=>'class="input_new " ','title'=>$fields["orderno"])))}
+					<div class="col_1_3 form_group_lay ">
+						<label class="label_new">{$fields["clientname"]}:</label>
+						<input type="text"  name="clientname" class="required  input_new" value="">
+					</div>
+					<div class="col_1_3 form_group_lay ">
+						<label class="label_new">{$fields["controller"]}:</label>
+						<input type="text"  name="controller" class="required  input_new" value="">
+					</div>
+					<div class="col_1_3 form_group_lay ">
+						<label class="label_new">{$fields["sourceid"]}:</label>
+						<select  name="sourceid"  class="select2 select_elm required  ">
+						{:getControllbyHtml('table',array('type'=>'select','table'=>'mis_sale_business_source','id'=>'id','name'=>'name','selected'=>$vo['sourceid']))}
+						</select>
+					</div>
+					<div class="col_1_3 form_group_lay ">
+						<label class="label_new">{$fields["intentiontypesid"]}:</label>
+						{:W('ShowSelect',array('',array('',array('type'=>'table',array('readonly'=>'','targevent'=>'','actionName'=>'MisSaleBusiness','names'=>'intentiontypesid','defaultcheckitem'=>'','defaultval'=>'','defaulttext'=>'','table'=>'mis_system_flow_type', 'id'=>'orderno','name'=>'name','conditions'=>'outlinelevel = 1','parentid'=>'','mulit'=>'','isnextend'=>'','treeheight'=>'','treewidth'=>'','key'=>'','isedit'=>'')))))}
+					</div>
+					<!-- <div class="col_1_3 form_group_lay ">
+							<label class="label_new">{$fields["areaid"]}:</label>
+							{:W('ShowSelect',				array($vo['areaid'],array('  ',array('type'=>'table',array('readonly'=>'1','targevent'=>'','actionName'=>'MisSaleBusiness','names'=>'areaid','defaultcheckitem'=>'','defaultval'=>'','defaulttext'=>'','table'=>'mis_auto_jcztc', 'id'=>'orderno','name'=>'name','conditions'=>'','parentid'=>'','mulit'=>'','isnextend'=>'','treeheight'=>'','treewidth'=>'','key'=>'','isedit'=>'1')))))}<div class="display_none {$classNodeSettingArr["areaid"]}"></div>
+					</div> -->
+					<div class="col_1_3 form_group_lay ">
+						<label class="label_new">{$fields["customertypeid"]}:</label>
+						{:W('ShowSelect',array('',array('',array('type'=>'table',array('readonly'=>'','targevent'=>'','actionName'=>'MisSaleBusiness','names'=>'customertypeid','defaultcheckitem'=>'','defaultval'=>'','defaulttext'=>'','table'=>'mis_sale_client_type', 'id'=>'orderno','name'=>'name','conditions'=>'','parentid'=>'','mulit'=>'','isnextend'=>'','treeheight'=>'','treewidth'=>'','key'=>'','isedit'=>'')))))}
+					</div>
+					<div class="col_1_3 form_group_lay ">
+						<label class="label_new">{$fields["professionid"]}:</label>
+						{:W('ShowSelect',array('',array('',array('type'=>'table',array('readonly'=>'','targevent'=>'','actionName'=>'MisSaleBusiness','names'=>'professionid','defaultcheckitem'=>'','defaultval'=>'','defaulttext'=>'','table'=>'mis_sale_profession', 'id'=>'orderno','name'=>'name','conditions'=>'','parentid'=>'','mulit'=>'','isnextend'=>'','treeheight'=>'','treewidth'=>'','key'=>'','isedit'=>'')))))}
+					</div>
+					<div class="col_1_3 form_group_lay ">
+							<label class="label_new">{$fields["industryid"]}:</label>
+							{:W('ShowSelect',array($vo['industryid'],array('',array('type'=>'table',array('readonly'=>'','targevent'=>'','actionName'=>'MisSaleBusiness','names'=>'industryid','defaultcheckitem'=>'','defaultval'=>'','defaulttext'=>'','table'=>'mis_sale_industry', 'id'=>'orderno','name'=>'name','conditions'=>'','parentid'=>'','mulit'=>'','isnextend'=>'','treeheight'=>'','treewidth'=>'','key'=>'','isedit'=>'1')))))}
+						</div>
+				<div class="col_1_7 form_group_lay ">
+					{:W('ShowArea',array("0"=>$areainfoarry["address"],"1"=>address,"2"=>$fields[address],"3"=>"col_1_7 form_group_lay field_areainfo5"))}
+				</div>
+					<div class="col_1_3 form_group_lay">
+						<label class="label_new">{$fields["linkman"]}:</label>
+						<input type="text"  name="linkman" class="  input_new" value="">
+					</div>
+					<div class="col_1_3 form_group_lay ">
+						<label class="label_new">{$fields["mobile"]}:</label>
+						<input type="text"  name="mobile" minlength="11"  maxlength="11" class="required   number input_new" value="">
+					</div>
+					<div class="col_1_3 form_group_lay ">
+						<label class="label_new">{$fields["bangongdianhua"]}:</label>
+						<input type="text"  name="bangongdianhua"  class="   number input_new" value="">
+					</div>
+					<div class="col_1_3 form_group_lay ">
+						<label class="label_new">{$fields["acquiretime"]}:</label>
+						<div  class="tml-input-calendar">
+							<input type="text" name="acquiretime" class="Wdate js-wdate required input_new half_angle_input" format="{dateFmt:'yyyy-MM-dd HH:mm'}" value="{$time|transtime='Y-m-d H:i'}"/>
+							<a href="javascript:;" class="icon_elm icon-calendar"></a>
+						</div>
+					</div>
+					 <div class="col_1_3 form_group_lay ">
+						<label class="label_new">{$fields["days"]}:</label>
+						<div  class="tml-input-unit">
+							<select  name="days"  class="input_new  select2 select_elm ">
+								{:getControllbyHtml('table',array('type'=>'select','table'=>'mis_sale_expiry_date','id'=>'id','name'=>'name','selected'=>$vo['days']))}
+							</select>
+							 <span class="input-addon-unit" title="天">天</span> 
+						</div>
+					</div> 
+					<div class="col_1_3 form_group_lay ">
+						<label class="label_new">{$fields["provider"]}:</label>
+						<div class="tml-input-lookup">
+							<input type="text" class="ORG4.name   input_new half_angle_input" autocomplete="off" readonly="readonly"   value="{$userid|getFieldBy='id','name','user'}" />
+							<input type="hidden" class="ORG4.id" name="provider" value="{$userid}"  />
+							<a class="icon_elm mid_icon_elm icon-plus" param="field=id,name&model=User&conditions=status,1&filterfield=work_date,login_count,last_login_time,account" href="__URL__/lookupGeneral" lookupGroup="ORG4" ></a>
+							<a title="清空信息" class="icon_elm icon-trash"  href="javascript:void(0);" onclick="clearOrg('ORG4');"></a>
+						</div>
+					</div>
+				<div class="col_1_7 form_group_lay ">
+					<label class="label_new">{$fields["name"]}:</label>
+					<textarea  cols="100" rows="2" class=" text_area" name="name"></textarea>
+				</div>
+					<div class="col_1_3 form_group_lay ">
+						<label class="label_new">{$fields["toolid"]}:</label>
+						<select  name="toolid"  class="required select2 select_elm  ">{:getControllbyHtml('selectlist',array('type'=>'select','key'=>'tool','selected'=>$vo['toolid']))}
+						</select>
+					</div>
+			{:W('ShowAction')}
+			</div>
+			</div>
+		</div>
+	</form>
+</div>
+</div>

@@ -1,0 +1,44 @@
+<script>
+//构造分类树
+ $(document).ready(function(){
+	var zNodes = {$tree};    //控制器中，分配数据
+	var setting = {
+			view: {
+               selectedMulti: false,
+               fontCss: getFontCss
+			},
+			data: {
+				simpleData: {
+					enable: true
+				}
+			}
+		};
+	$.fn.zTree.init($("#misexpertquestiontype_tree"), setting, zNodes);
+	//用于进入后的选定树效果
+	var zTree = $.fn.zTree.getZTreeObj("misexpertquestiontype_tree");
+	var valid='0';
+	var nodes = zTree.getNodesByParam("id", valid, null);
+	zTree.selectNode(nodes[0]);
+}); 
+</script>
+<div class="pageContent">
+{:W("ShowToLevelMenu")}
+	<div class="treeleft">
+	<div class="work_statement"></div>
+		<div class="collapse" layoutH="0">
+			<div class="toggleCollapse"><div></div></div>
+		</div>
+		<div class="close">
+		    <div class="toggleCollapse">
+		   		<h2></h2><div></div>
+		    </div>
+	   		<ul class="toolBar">
+            </ul>
+			<ul id="misexpertquestiontype_tree" class="ztree" layoutH="10"></ul>
+		</div>
+	</div>
+	
+	<div id="misexpertquestiontype" class="unitBox treeright">
+		<include file="indexview"  />
+	</div>
+</div>

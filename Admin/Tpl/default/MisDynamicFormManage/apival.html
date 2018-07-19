@@ -1,0 +1,236 @@
+<style type="text/css">
+    .rules-l-btn{
+        display: inline-block;
+        width: 90%;
+        margin: 0 auto;
+        border: 1px solid #d8d8d8;
+        height: 30px;
+        line-height: 30px;
+        border-radius: 4px;
+        outline: none;
+        margin-bottom: 10px;
+        padding:0 10px;
+        cursor: pointer;
+    }
+    #api_par_ul{border:1px solid #d8d8d8;margin: 10px 10px;float:left;}
+    #api_par_ul li{ line-height:30px;border-top: 1px solid #d8d8d8;padding:0 20px;}
+    #api_par_ul li div{ display: inline-block;width:80%;}
+    #api_par_ul li .api_check_par{
+        border-radius: 4px;
+        text-align: center;
+        color: #fff;
+        background: #03a9f4;
+        padding: 3px 6px;
+        margin-right: 5px;
+        cursor: pointer;
+    }
+</style>
+<script type="text/javascript">
+    //将form中的值转换为键值对。
+    function getFormJson(frm) {
+        var o = {};
+        var a = $(frm).serializeArray();
+        $.each(a, function () {
+            if (o[this.name] !== undefined) {
+                if (!o[this.name].push) {
+                    o[this.name] = [o[this.name]];
+                }
+                o[this.name].push(this.value || '');
+            } else {
+                o[this.name] = this.value || '';
+            }
+        });
+
+        return o;
+    }
+    (function ($) {
+        $.fn.extend({
+            insertAtCaret: function (myValue) {
+                var $t = $(this)[0];
+                if (document.selection) {
+                    this.focus();
+                    sel = document.selection.createRange();
+                    sel.text = myValue;
+                    this.focus();
+                } else
+                if ($t.selectionStart || $t.selectionStart == '0')
+                {
+                    var startPos = $t.selectionStart;
+                    var endPos = $t.selectionEnd;
+                    var scrollTop = $t.scrollTop;
+                    $t.value = $t.value.substring(0, startPos) + myValue + $t.value.substring(endPos,$t.value.length);
+                    this.focus();
+                    $t.selectionStart = startPos + myValue.length;
+                    $t.selectionEnd = startPos + myValue.length;
+                    $t.scrollTop = scrollTop;
+                } else {
+                    this.value += myValue;
+                    this.focus();
+                }
+            }
+        })
+    })(jQuery) ;
+    $(function(){
+        $(".rules-l-btn",$("#{$formname}")).on('click',function(){
+            var dtype=$(this).data("type");
+            var formname='{$formname}';
+            if(dtype){
+                if(dtype=='control'){
+                    var title = "字段值选择";
+                    var rel = formname+"_api";
+                    options = {width:360,height:260,mask:true};
+                    options.param={myform:formname+"_api",parentform:formname,parentctr:'api_par'};
+                    var url="__URL__/controlval";
+                    DWZ.debug(url);
+                    $.pdialog.open(url,rel,title,options);
+                }
+                if(dtype=='api'){
+                    var title = "接口设置";
+                    var rel = formname+"_api";
+                    options = {width:900,height:500,max:true,mask:true};
+                    options.param={myform:formname+"_api",parentform:formname,parentctr:'api_par'};
+                    var url="__URL__/apival";
+                    DWZ.debug(url);
+                    $.pdialog.open(url,rel,title,options);
+                }
+                if(dtype=='sp'){
+                    var title = "存储过程设置";
+                    var rel = formname+"_api";
+                    options = {width:900,height:500,max:true,mask:true};
+                    options.param={myform:formname+"_api",parentform:formname,parentctr:'api_par'};
+                    var url="__URL__/spval";
+                    DWZ.debug(url);
+                    $.pdialog.open(url,rel,title,options);
+                }
+                if(dtype=='att'){
+                    var title = "跨表取数";
+                    var rel = formname+"_api";
+                    options = {width:900,height:500,max:true,mask:true};
+                    options.param={myform:formname+"_api",parentform:formname,parentctr:'api_par'};
+                    var url="__URL__/attval";
+                    DWZ.debug(url);
+                    $.pdialog.open(url,rel,title,options);
+                }
+            }
+        });
+        //保存
+        $("#save_api",$("#{$formname}")).on('click',function(){
+            var frm=$("#{$formname}");
+            var atype=$("select[name=api_type]",frm).val();
+            var aurl=$("input[name=api_url]",frm).val();
+            if(atype&&aurl){
+                $(this).attr("disabled",true);
+                var dataPara = getFormJson(frm);
+                $.ajax({
+                    url: frm.attr('action'),
+                    type: frm.attr('method'),
+                    data: dataPara,
+                    success: function(data){
+                        $("#save_api",$("#{$formname}")).attr("disabled",false);
+                        var res=eval("("+data+")");
+                        if(res.status==1){
+                            var li=$("#"+res.data.name,$("#{$parentform}"));
+                            var html="";
+                            if(li.length<=0){
+                                html+='<li id="'+res.data.name+'">';
+                            }
+                            html+='<div>《接口值》代码：'+res.data.name+'提交方式:'+res.data.send_type+' 地址：'+res.data.url;
+                            if(res.data.par){
+                                html+="?"+res.data.par;
+                            }
+                            html+='<input type="hidden" name="pars[]" value="'+res.data.name+'"/>';
+                            html+='</div>';
+                            html+='<a class="check_par" data-key="'+res.data.name+'" onclick="check_par(this)">选择</a>';
+                            html+='<a class="edit_par" onclick="edit_par(\''+res.data.name+'\',\''+res.data.type+'\')">修改</a>';
+                            html+='<a class="del_par" onclick="remove_par(this,\''+res.data.name+'\')">移除</a>';
+                            if(li.length<=0){
+                                html+='</li>';
+                                $("#{$parentform} #{$parentctr}").append(html);
+                            }else{
+                                li.html(html);
+                            }
+                            $.pdialog.close('{$formname}');
+                        }else {
+                            alertMsg.error(res.message);
+                        }
+                    }
+                });
+            }
+        });
+        //选择参数
+        $(".api_check_par",$("#{$formname}")).on('click',function(){
+            var par_name=$(this).data('key');
+            $("#api_par",$("#{$formname}")).insertAtCaret(par_name);
+        });
+    });
+</script>
+<div class="page">
+    <div class="pageContent">
+        <form method="post" id="{$formname}" action="__URL__/setapival" class="pageForm required-validate">
+            <input type="hidden" name="formname" value="{$formname}"/>
+            <input type="hidden" name="par_name" value="{$par_name}"/>
+            <div class="pageFormContent" layoutH="40">
+                <ul id="api_par_ul" style="display: block;width:90%">
+                    <li><div style="font-size:16px;font-weight: bold;">可选参数 </div></li>
+                    <foreach name="pars" item="par">
+                        <li>
+                            <div>{$par['content']}</div>
+                            <a class="api_check_par" data-key="{$par['name']}">选择</a>
+                        </li>
+                    </foreach>
+                </ul>
+                <!--<div class="treeleft add_result_left">-->
+                    <!--<div class="close">-->
+                        <!--<div class="clearfix p5">-->
+                            <!--<a class="rules-l-btn" data-type="control"><span>控件值</span></a>-->
+                            <!--<a class="rules-l-btn" data-type="sp"><span>存储过程</span></a>-->
+                            <!--<a class="rules-l-btn" data-type="att"><span>跨表取数</span></a>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <div id="MisSystemIntercalateMasBox" class="unitBox treeright arc_right" style="width:90%;">
+                    <div class="add_result_right" style="width:100%;">
+                        <table style="line-height:30px;width:100%;">
+                            <tr>
+                                <td style="text-align: right;width:30%;">提交方式:</td>
+                                <td style="text-align: left; padding:10px;">
+                                    <select class="select2 list_select2" name="api_type" style="width:100%;">
+                                        <option value="get" <if condition="$api_rule and $api_rule['send_type'] eq 'get'">selected="selected"</if>>get</option>
+                                        <option value="post" <if condition="$api_rule and $api_rule['send_type'] eq 'post'">selected="selected"</if>>post</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;">URL：(规则示例:http://www.nr.com)</td>
+                                <td style="text-align: left; padding:10px;">
+                                    <input name="api_url" id="api_url" style="width:100%;"  <if condition="$api_rule and $api_rule['url']">value="{$api_rule['url']}"</if>/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;">参数：(规则示例:key=val||key=val)</td>
+                                <td style="text-align: left; padding:10px;">
+                                    <input type="text" name="api_par" id="api_par"  style="width:100%;" <if condition="$api_rule and $api_rule['param']">value="{$api_rule['param']}"</if>/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;">&nbsp;</td>
+                                <td style="text-align: left;color:red;">
+                                    注：固定文本使用双引号，变量替换不需要符号<br/>
+                                    例：aa=1||bb=【n1508139254】||cc="text"||dd=【e1508144035】;
+                        </span>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                    <div class="formBar">
+                        <ul>
+                            <li><button id="save_api" type="button" class="tml_formBar_btn tml_formBar_btn_blue enterIndex">保存</button></li>
+                            <li><button onclick="javascript:$.pdialog.close('{$formname}');" class="tml_formBar_btn tml_formBar_btn_red enterIndex" type="button">关闭</button></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

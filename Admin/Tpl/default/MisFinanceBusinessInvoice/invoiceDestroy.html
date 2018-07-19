@@ -1,0 +1,67 @@
+
+<div class="page">
+	<div class="pageContent">
+		<form method="post" action="__URL__/invoiceDestroy/rel/jbsxmisfinaneinvoiceBox/" class="pageForm required-validate" onSubmit="return validateCallback(this, dialogAjaxDone);">
+			<input type="hidden" name="id" value="{$invoicelist['id']}">
+			<input type="hidden" name="action" value="destroy">
+			<div class="pageFormContent" layoutH="55">
+				<fieldset style="padding-left:20px;border: 1px solid #CCCCCC;">
+					<legend class="fieldset_legend_toggle">
+						<b>{$makeinvoicetype}</b>
+					</legend>
+					<p>
+						<span class="fontGray">名称：{$invoicelist['customername']}</span>
+					</p>
+					<p>
+						<span class="fontGray">金额(￥)：{$invoicelist['amount']|getDigits}</span>
+					</p>
+					<if condition="$invoicelist.type eq 2">
+						<p>
+							<span class="fontGray">纳税人识别号：{$invoicelist['taxno']}</span>
+						</p>
+						<p>
+							<span class="fontGray">地址：{$invoicelist['address']}</span>
+						</p>
+						<p>
+							<span class="fontGray">电话：{$invoicelist['tel']}</span>
+						</p>
+						<p>
+							<span class="fontGray">开户行：{$invoicelist['bankname']}</span>
+						</p>
+						<p>
+							<span class="fontGray">账号：{$invoicelist['bankaccount']}</span>
+						</p>
+					</if>
+					<p>
+						<span class="fontGray">所属部门：{:getSelectByName('customertype',$invoicelist['depttype'])}</span>
+					</p>
+					<p>
+						<span class="fontGray">开票时间：{$invoicelist['createtime']|transTime}</span>
+					</p>
+					<if condition="$invoicelist['effectdate']">
+						<p>
+							<span class="fontGray">合同开始时间：{$invoicelist['effectdate']|transTime}</span>
+						</p>
+						<p>
+							<span class="fontGray">合同结束时间：{$invoicelist['expirydate']|transTime}</span>
+						</p>
+						<p>
+							<span class="fontGray">当前开票时间段：{$invoicelist['invoicebegintime']|transTime}-{$invoicelist['invoiceendtime']|transTime}</span>
+						</p>
+						<p>
+							<span class="fontGray">开票剩余次数：{$invoicelist['surinvoicenum']}</span>
+						</p>
+					</if>
+				</fieldset>
+			</div>
+			<div class="formBar">
+				<ul>
+					<if condition="$_SESSION.a eq 1 or $_SESSION.misfinancebusinessinvoice_invoicedestroy">
+						<li><div class="buttonActive"><div class="buttonContent"><button type="submit">确认注销</button></div></div></li>
+					</if>
+					<li><div class="button"><div class="buttonContent"><button type="button" class="close">{$Think.lang.close}</button></div></div></li>
+				</ul>
+			</div>
+		</form>
+	</div>
+</div>

@@ -1,0 +1,83 @@
+<form method="post" action="__URL__/update" onsubmit="return validateCallback(this,dialogAjaxDone);">
+	<div class="pageContent TablePress" style="border-top:1px #99BBE8 solid;">
+		<input type="hidden" name="type" value="1"/>
+		<input type="hidden" name="masid" value="{$masid}"/>
+		<table class="table" targetType="dialog" width="100%" layoutH="63"">
+			<thead>
+				<tr>
+					<th>序号</th>
+					<th>物资名称</th>
+					<th>物资类型</th>
+					<th>物资规格</th>
+					<th>单位</th>
+					<th width="120">采购仓</th>
+					<th>数量</th>
+					<th>单价</th>
+					<th>税金组</th>
+					<th>总价</th>
+					<th>备注</th>
+				</tr>
+			</thead>
+			<tbody>
+				<volist id="vo" name="list" key="k">
+					<tr target="asid_node" rel="{$vo['id']}">
+					    <td>{$vo['nd']}<input type="hidden" name="ids[]" value="{$vo.id}"/></td>
+						<td>{$vo['pname']}</td>
+						<td>{$vo['ptname']}</td>
+						<td>{$vo['prodsize']}</td>
+					    <td style=" width:70px;">
+					    	<select class="combox" name="unitid[]">
+								{$vo['baseunitid']|getAllUnit=$vo[prodid],2,$vo[defaultsup],true,$vo['unitid']}
+							</select>
+					    </td>
+					    <td width="120">
+							<SELECT name="whid[]" style="width:100px;">
+				                  <volist id="whl" name="whidlist">
+				                      <option <if condition="$key eq $vo['whid']">selected</if> value="{$key}">{$whl}</option>
+				                  </volist>
+				            </SELECT>
+						</td>
+					    <td>
+					     	<input type="text" size="7" name="qty[]" tabindex="{$k}01" rel="4" class="number keyBoard" 
+					     	value="{$vo['qty']|getDigits}" onblur="updateapplysub(this);"/>
+					    </td>
+					    <td>
+					     	<input type="text" size="7" name="showprice[]" tabindex="{$k}02"  rel="4" class="number keyBoard" 
+					     	value="{$vo['showprice']|getDigits}" onblur="updateapplysub(this);"/>
+					    </td>
+					    <td>
+					     	<select class="combox" name="taxid[]" >
+								{$vo['id']|getAllTax='MisPurchaseApplysub'}
+							</select>
+					    </td>
+					    <td>
+					     	<input type="text" size="7" name="showamount[]" readonly="readonly" value="{$vo['showamount']|getDigits}" />
+					    </td>
+					    <td>
+					    	<input type="text" name="remark[]" tabindex="{$k}04" rel="4" class="keyBoard"  value="{$vo['remark']}"/>
+					    </td>
+				    </tr>
+				</volist>
+			</tbody>
+		</table>
+		<div class="formBar">
+			<ul>
+				<li>
+					<div class="buttonActive">
+						<div class="buttonContent">
+							<button type="button"
+								onclick="mispurchaseapplysub_clicksubmit(this.form)">{$Think.lang.save}</button>
+						</div>
+					</div>
+				</li>
+				<li>
+					<div class="button">
+						<div class="buttonContent">
+							<button type="button" class="close">{$Think.lang.close}</button>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+</form>

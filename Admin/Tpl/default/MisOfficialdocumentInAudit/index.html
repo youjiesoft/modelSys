@@ -1,0 +1,43 @@
+<script>
+	$(document).ready(function(){
+		var zNodes = {$auditTree};
+		var setting = {
+				view: {
+	               selectedMulti: false,
+	               fontCss: getFontCss
+	           },
+				data: {
+					simpleData: {
+						enable: true
+					}
+				}
+			};
+		$.fn.zTree.init($("#MisOfficialdocumentInAuditindex_left"), setting, zNodes);
+		var zTree = $.fn.zTree.getZTreeObj("MisOfficialdocumentInAuditindex_left");
+        var valid='{$defid}';
+        var nodes = zTree.getNodesByParam("id", valid, null);
+        zTree.selectNode(nodes[0]);
+	});
+</script>
+
+<div class="pageContent">
+{:W("ShowToLevelMenu")}
+	<div class="treeleft">
+	<div class="work_statement"></div>
+		<div class="collapse" layoutH="0">
+			<div class="toggleCollapse">
+				<div></div>
+			</div>
+		</div>
+		<div class="close">
+			<div class="toggleCollapse">
+				<h2></h2>
+				<div></div>
+			</div>
+			<ul id="MisOfficialdocumentInAuditindex_left" class="ztree xyTree" layoutH="10"></ul>
+		</div>
+	</div>
+	<div id="MisOfficialdocumentInAuditindex" class="unitBox treeright">
+		<include file="indexview" />
+	</div>
+</div>

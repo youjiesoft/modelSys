@@ -1,0 +1,55 @@
+<script type="text/javascript">
+	//检查用户的选择分类层级
+ function comfirtypex(obj){
+		var va = $(obj).val();
+		//选择的子级
+		if(va == 0){
+			$("#hiddx").hide();
+		}
+		if(va == 2){
+			$("#hiddx").show();
+		}
+	} 
+</script>
+<include file="Public:pagerForm" />
+	<div class="page">
+		<div class="pageContent">
+			<form method="post" <if condition="!$top">action="__URL__/insert/rel/misexperttype"<else/>action="__URL__/insert/navTabId/__MODULE__"</if> class="pageForm required-validate" onsubmit="return validateCallback(this,dialogAjaxDone);">
+				<div class="pageFormContent" layoutH="58">
+                    <div class="tml-row">
+                        <div class="tml-form-col">
+                            <label>编&nbsp;&nbsp;&nbsp;&nbsp;码：</label><input  type="text" name="code" class="required"  value="{$code}" <if condition='$writable eq 0'> readonly="readonly" </if> value="{$code}">
+                        </div>
+                        <div class="tml-form-col">
+                            <label>名&nbsp;&nbsp;&nbsp;&nbsp;称：</label><input type="text" name="name" class="required" value="">
+                        </div>
+                    </div>
+                    <div class="tml-row">
+                        <div class="tml-form-col" id="sel">
+                            <label  title="选择父节点或是子节点">确认级类：</label>
+                            <select  name="pid1" class="combox" onchange="comfirtypex(this)">
+                                    <option value="0">顶级分类</option>
+                                    <option <if condition="$pid">selected</if> value="2">子级分类</option>
+                            </select>
+                        </div>
+                        <div class="tml-form-col" id="hiddx" <if condition="!$pid">style="display:none;"</if>>
+                            <label>选择父级：</label>
+                            <select  name="pids" class="combox">
+                                    <volist name="questiontype" id="vax">
+                                		<option <if condition="$pid eq $vax.id">selected</if> value="{$vax['id']}">{$vax['name']}</option>
+                          			</volist>
+                            </select>
+                        </div>
+                    </div>
+				</div>
+				{:W('ShowAction')}
+				<!-- <div class="formBar tml-text-c">
+					<if condition="$_SESSION.a eq 1 or $_SESSION.misknowledgetype_insert">
+						<button class="tml-btn tml-btn-blue tml-mr10" type="submit">{$Think.lang.save}</button>
+					</if>
+						<button type="button" class="tml-btn tml-btn-white close">{$Think.lang.close}</button>
+				</div> -->
+			</form>
+		</div>
+	</div>
+</div>

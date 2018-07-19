@@ -1,0 +1,167 @@
+<style type="text/css">
+    .rules-l-btn{
+        display: inline-block;
+        width: 90%;
+        margin: 0 auto;
+        border: 1px solid #d8d8d8;
+        height: 30px;
+        line-height: 30px;
+        border-radius: 4px;
+        outline: none;
+        margin-bottom: 10px;
+        padding:0 10px;
+        cursor: pointer;
+    }
+    .att_btn{
+        font-size:15px;
+        border-radius: 4px;
+        text-align: center;
+        color: #fff;
+        background: #03a9f4;
+        padding: 5px 10px;
+        margin-right: 5px;
+        cursor: pointer;
+    }
+</style>
+<script type="text/javascript">
+    //将form中的值转换为键值对。
+    function getFormJson(frm) {
+        var o = {};
+        var a = $(frm).serializeArray();
+        $.each(a, function () {
+            if (o[this.name] !== undefined) {
+                if (!o[this.name].push) {
+                    o[this.name] = [o[this.name]];
+                }
+                o[this.name].push(this.value || '');
+            } else {
+                o[this.name] = this.value || '';
+            }
+        });
+
+        return o;
+    }
+    (function ($) {
+        $.fn.extend({
+            insertAtCaret: function (myValue) {
+                var $t = $(this)[0];
+                if (document.selection) {
+                    this.focus();
+                    sel = document.selection.createRange();
+                    sel.text = myValue;
+                    this.focus();
+                } else
+                if ($t.selectionStart || $t.selectionStart == '0')
+                {
+                    var startPos = $t.selectionStart;
+                    var endPos = $t.selectionEnd;
+                    var scrollTop = $t.scrollTop;
+                    $t.value = $t.value.substring(0, startPos) + myValue + $t.value.substring(endPos,$t.value.length);
+                    this.focus();
+                    $t.selectionStart = startPos + myValue.length;
+                    $t.selectionEnd = startPos + myValue.length;
+                    $t.scrollTop = scrollTop;
+                } else {
+                    this.value += myValue;
+                    this.focus();
+                }
+            }
+        })
+    })(jQuery) ;
+    $(function(){
+        //数据控制
+        $("#atv_datas_btn",$("#{$formname}")).on('click',function(){
+            var formname = '{$formname}';
+            var title = "跨表取数-数据选择";
+            var rel = formname + "_atv";
+            options = {width: 900, height: 500, mask: true};
+            options.param = {myform: formname + "_atv", parentform: formname, parentctr: 'atv_datas',parentctr1:'atv_datas_id'};
+            var url = "__URL__/attdatas";
+            DWZ.debug(url);
+            $.pdialog.open(url, rel, title, options);
+        });
+        //规则设置
+        $("#atv_rules_btn",$("#{$formname}")).on('click',function(){
+            var formname = '{$formname}';
+            var title = "跨表取数-规则设置";
+            var rel = formname + "_atv";
+            var joinids=$("#atv_datas_id",$("#{$formname}")).val();
+            var joins=$("#atv_datas",$("#{$formname}")).val();
+            options = {width: 900, height: 500, mask: true};
+            options.param = {myform: formname + "_atv", parentform: formname, parentctr: 'atv_rules',parentctr1:'atv_where',joinids:joinids};
+            var url = "__URL__/attrules";
+            DWZ.debug(url);
+            $.pdialog.open(url, rel, title, options);
+        });
+        //保存
+        $("#save_atv",$("#{$formname}")).on('click',function(){
+            var frm=$("#{$formname}");
+            $(this).attr("disabled",true);
+            var dataPara = getFormJson(frm);
+            $.ajax({
+                url: frm.attr('action'),
+                type: frm.attr('method'),
+                data: dataPara,
+                success: function(data){
+                    $("#save_atv",$("#{$formname}")).attr("disabled",false);
+                    var res=eval("("+data+")");
+                    if(res.status==1){
+                        var li=$("#"+res.data.name,$("#{$parentform}"));
+                        var html="";
+                        if(li.length<=0){
+                            html+='<li id="'+res.data.name+'">';
+                        }
+                        html+='<div>《跨表取数》代码：'+res.data.name+' sql语句:'+res.data.sql_str;
+                        html+='<input type="hidden" name="pars[]" value="'+res.data.name+'"/>';
+                        html+='</div>';
+                        html+='<a class="check_par" data-key="'+res.data.name+'" onclick="check_par(this)">选择</a>';
+                        html+='<a class="edit_par" onclick="edit_par(\''+res.data.name+'\',\''+res.data.type+'\')">修改</a>';
+                        html+='<a class="del_par" onclick="remove_par(this,\''+res.data.name+'\')">移除</a>';
+                        if(li.length<=0){
+                            html+='</li>';
+                            $("#{$parentform} #{$parentctr}").append(html);
+                        }else{
+                            li.html(html);
+                        }
+                        $.pdialog.close('{$formname}');
+                    }else {
+                        alertMsg.error(res.message);
+                        return false;
+                    }
+                }
+            });
+        });
+    });
+</script>
+<div class="page">
+    <div class="pageContent">
+        <form method="post" target="_blank" id="{$formname}" action="__URL__/setattval" class="pageForm required-validate">
+            <input type="hidden" name="formname" value="{$formname}"/>
+            <input type="hidden" name="par_name" value="{$par_name}"/>
+            <div class="pageFormContent" layoutH="40">
+                <div id="MisSystemIntercalateMasBox" class="unitBox treeright arc_right">
+                    <div class="add_result_right" style="line-height:30px;">
+                        <span style="display: block;float:left;margin:10px 0;" id="atv_datas_btn"><a class="att_btn">数据选择</a></span>
+                        <div style="position: relative;width:100%;float:left;">
+                            <label style="float:left;">join:</label><input type="text" name="atv_datas" id="atv_datas" style="float:left;min-width:50%;width:80%;height:30px;" readonly <if condition="$att_rule and $att_rule['join']">value="{$att_rule['join']}"</if>>
+                            <input type="hidden" name="atv_datas_id" id="atv_datas_id" readonly>
+                        </div>
+                        <span style="display: block;float:left;margin:10px 0;" id="atv_rules_btn"><a class="att_btn">结果规则设置</a></span>
+                        <div style="position: relative;width:100%;float:left;">
+                            <label style="float:left;">field:</label><input type="text" name="atv_rules" id="atv_rules" style="float:left;min-width:50%;width:80%;height:30px;" readonly <if condition="$att_rule and $att_rule['filed']">value="{$att_rule['filed']}"</if>/>
+                        </div>
+                        <div style="position: relative;width:100%;float:left;">
+                            <label style="float:left;">where:</label><input type="text" name="atv_where" id="atv_where" style="float:left;min-width:50%;width:80%;height:30px;" readonly <if condition="$att_rule and $att_rule['where']">value="{$att_rule['where']}"</if>/>
+                        </div>
+                    </div>
+                    <div class="formBar">
+                        <ul>
+                            <li><button type="button" id="save_atv" class="tml_formBar_btn tml_formBar_btn_blue enterIndex">保存</button></li>
+                            <li><button onclick="javascript:$.pdialog.close('{$formname}');" class="tml_formBar_btn tml_formBar_btn_red enterIndex" type="button">关闭</button></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

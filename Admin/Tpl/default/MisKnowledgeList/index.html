@@ -1,0 +1,93 @@
+<script>
+		//guanbi
+		function openknowleddo(ids){
+			$.pdialog.open("__URL__/knowledgedo/id/"+ids,"__MODULE__knowledgedo","推广操作",{mask:true,width:500,height:270});
+			return false;
+		}
+		
+		//pinglun
+		function openknowledgeconments(ids){
+			$.pdialog.open("__URL__/conments/id/"+ids,'__MODULE__conments','评论',{mask:true,width:500,height:270});
+			return false;
+		}
+		//function knowledgelistalink(f,d1,d2){
+		//	var $callback=f;
+		//	if(!$.isFunction($callback))$callback=eval('('+f+')');
+		//	if(d1){
+		//		$callback(d1);
+		//	}else if(d1 && d2){
+		//		$callback(d1,d2);
+		//		}
+		//	return false;
+		//}
+		//链接    分类
+		function knowledgelistalink(ids,title){
+			navTab.openTab("__MODULE__","__URL__/index/categoryid/"+ids,{title:title, fresh:true});
+			return false;
+		}
+		//链接    作者
+		function knowledgelistuser(ids,title){
+			navTab.openTab("__MODULE__","__URL__/index/createid/"+ids,{title:title, fresh:true});
+			return false;
+		}
+		//打开   发表文章
+		function knowledgemanage(){
+			navTab.openTab('__MODULE__add','__APP__/MisKnowledgeManage/add',{title:'发表文章', fresh:true});
+			return false;
+		}
+		
+	</script>
+<div class="pageContent">
+	<div class="xyqa applecloth">
+		<div class="xyqa-context clearfix">
+		<form rel="pagerForm" onsubmit="return divSearch(this, 'knowleagelistBox');" action="__URL__/index" method="post">
+		<input type="hidden" name="categoryid" value="{$categoryid}">
+		<input type="hidden" name="frame" value="1">
+		<input type="hidden" name="orderField" value="{$order}" />
+		<input type="hidden" name="orderDirection" value="{$sort}" />
+		<input type="hidden" name="numPerPage" value="{$numPerPage}" />
+			<div class="xyqa-context-search">
+				<div class="xyqa-context-searcher">
+					<label>搜索</label>
+					<span class="xyqa-context-search-txt"><input type="text" name="keyword" value="{$keyword}" /></span>
+				</div>
+				<span class="xyqa-context-search-button"><button type="submit">{$Think.lang.subsearch}</button></span>
+			</div>
+			<div class="xyqa-context-newfile">
+				<a href="__APP__/MisKnowledgeManage/add" rel="__MODULE__add" target="navTab" title="发表文章"><span>发表文章</span></a>
+			</div>
+		</form>
+		</div>
+		<div layoutH="72">
+			<div class="xyqa-main-wrapper clearfix">
+				<div>
+					<div class="xyqa-sidepanel">
+						<div class="xyqa-nav-cat">
+							<ul class="xyqa-nav-cat-list xyqa-nav-cat-list-1">
+								<li class="xyqa-nav-cat-item xyqa-nav-cat-all"><a class="proRel qa-nav-cat-link" target="ajax" rel="knowleagelistBox" href="__URL__/index/frame/1">所有分类</a>
+									<ul>{$knowleagetype}</ul>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div id="knowleagelistBox" class="xyqa-main">
+						<include file="index_notcat" />
+					</div>
+				</div>
+			</div><!-- end xyqa-main-wrapper -->
+		</div>
+	</div>
+	<div class="panelBar panelPageBar">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.value},'knowleagelistBox')">
+				<option value="20" <if condition="$numPerPage eq 20"> selected </if> >20</option>
+				<option value="50" <if condition="$numPerPage eq 50 "> selected </if> >50</option>
+				<option value="100" <if condition="$numPerPage eq 100"> selected </if>>100</option>
+				<option value="250" <if condition="$numPerPage eq 250"> selected </if>>250</option>
+			</select>
+			<span>条，共{$totalCount}条</span>
+		</div>
+		<div class="pagination" rel="knowleagelistBox" totalCount="{$totalCount}" numPerPage="{$dwznumPerPage}" pageNumShown="10" currentPage="{$currentPage}"></div>
+	</div>
+</div>

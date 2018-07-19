@@ -1,0 +1,32 @@
+<div class="page">
+	<div class="pageContent">
+	<form method="post" action="__URL__/insert/navTabId/__MODULE__" class="pageForm required-validate"  onsubmit="return validateCallback(this,dialogAjaxDone);"  >
+		<div class="pageFormContent" layoutH="58">
+			<div class="unit">
+				<label>名称：</label>
+				<input type="text"   maxlength="10" name="name" value="" />
+			</div>
+			<div class="unit">
+				<label>年龄开始值：</label>
+				<input type="text" class="required digits" maxlength="3" name="startage" value="" />
+			</div>
+			<div class="unit">
+				<label>年龄结束值：</label>
+				<input type="text" class="required digits" maxlength="3" name="endage" value="" />
+			</div>
+			<div class="unit"  style="width:100%;">
+				<label>备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注：</label>
+				<textarea name="remark" maxlength="200" style="width:128px;height:60px"></textarea>
+			</div>
+		</div>
+		<div class="formBar">
+			<ul>
+			<if condition="$_SESSION.a eq 1 or $_SESSION.reporthrconfiguration_insert">
+				<li><button class="tml-btn tml-btn-primary" type="submit">{$Think.lang.save}</button></li>
+			</if>
+				<li><button type="button" class="close tml-btn tml-btn-default">{$Think.lang.close}</button></li>
+			</ul>
+		</div>
+	</form>
+	</div>
+</div>

@@ -1,0 +1,141 @@
+<div class="pageContent">
+	<form method="post" action="__URL__/update/rel/misSalesCustomerTreeBox" class="pageForm required-validate" onsubmit="return validateCallback(this,navTabAjaxDone);">
+		<input type="hidden" name="callbackType" value="closeCurrent"/>
+		<input type="hidden" name="refreshtabs[data]" value="1">
+		<input type="hidden" name="id" value="{$vo.id}"/>
+		<div class="pageFormContent applecloth" layoutH="48">
+			<div class="keepContentCenter form-affix-content">
+				<div class="contentTitle contentTitle_center form-affix-title">
+                    {$vosoft.enterprisename}
+					<span class="auto_code">
+						<b>No. </b>
+						<input type="text" name="code" value="{$vo.code}" <if condition='$writable eq 0'> readonly="readonly" class="xycodedata_read" <else/> class="xycodedata_write required alphanumeric" </if> />
+					</span>
+                    <div class="tabs tabNav" eventtype="click" currentindex="0">
+                        <div class="tabsHeader tabNavHeader">
+                            <div class="tabsHeaderContent tabNavHeaderContent">
+                                <ul>
+                                    <li class="selected"><a href="#" class="">基本档案</a></li>
+                                    <li><a href="#" class="">客户数据</a></li>
+                                    <li><a href="#" class="">股权</a></li>
+                                    <li><a href="#" class="">资产</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+				</div>
+				<fieldset>
+					<!--<legend class="fieldset_legend_toggle">-->
+                        <!--<b>基本信息</b>-->
+                        <!--<div class="tml_style_line tml_sl4 tml_slb_blue"></div>-->
+                    <!--</legend>-->
+					<div class="tml-row">
+						<div class="tml-form-col">
+							<label>企业名称：</label>
+							<input type="text" name="enterprisename" value="{$vosoft.enterprisename}"/>
+						</div>
+						<div class="tml-form-col">
+							<label>注册时间：</label>
+							<div class="tml-input-append">
+								<input type="text" name="registertime" class="Wdate js-wdate" value="{$vosoft.registertime|transtime}"/>
+								<a href="javascript:;" class="input-addon input-addon-calendar js-inputCheckDate">选择</a>
+							</div>
+						</div>
+						<div class="tml-form-col">
+							<label>注册金额：</label>
+							<div class="tml-input-append">
+								<input class="number TextMagnifier-money textInput valid tml_total_money" type="text" onblur="FormatNumber(this);" name="registermoney" value="{$vosoft.registermoney|getDigits}">
+								<span class="input-addon-unit" title="元">元</span>
+							</div>
+						</div>
+						<div class="tml-form-col">
+							<label>企业职工数：</label>
+							<input type="text" name="staffnum" value="{$vosoft.staffnum}"/>
+						</div>
+						<div class="tml-form-col">
+							<label> {$fields["intype"]}： </label>
+							<select name="intype" class="combox" aurls="__URL__/lookupAddSelectValue/model/MisSalesCustomerIndustry" atitle="行业新增" laywidth="700" layheight="200">
+								{:getDataBaseByHtml('mis_sales_customer_industry',array('selected'=>$vosoft['intype']))}
+							</select>
+						</div>
+						<div class="tml-form-col">
+							<label> {$fields["typeid"]}： </label>
+							<select name="typeid" class="combox required"  onchange="onChangeCode(this);">
+								{:getDataBaseByHtml('mis_sales_customertype',array('selected'=>$vosoft['typeid']))}
+							</select>
+						</div>
+						<div class="tml-form-col">
+							<label>所属区县：</label>
+							<input type="text" name="county" value="{$vosoft.county}"/>
+						</div>
+						<div class="tml-form-col">
+							<label>客户来源：</label>
+							<input type="text" name="clientsource" value="{$vosoft.clientsource}"/>
+						</div>
+						<div class="tml-form-col">
+							<label>法定代表人：</label>
+							<input type="text" name="jperson" value="{$vosoft.jperson}"/>
+						</div>
+						<div class="tml-form-col">
+							<label>联系方式：</label>
+							<input type="text" name="phone" value="{$vosoft.phone}"/>
+						</div>
+						<div class="tml-form-col">
+							<label>指定联系人：</label>
+							<input type="text" name="linkman" value="{$vosoft.linkman}"/>
+						</div>
+						<div class="tml-form-col">
+							<label>联系方式：</label>
+							<input type="text" name="linktel" value="{$vosoft.linktel}"/>
+						</div>
+						<div class="tml-form-col">
+							<label>其他联系方式：</label>
+							<input type="text" name="otherphone" value="{$vosoft.otherphone}"/>
+						</div>
+					</div>
+					<div class="tml-form-row">
+						<label title="企业产品/企业服务">企业产品/企业服务：</label>
+						<input type="text"  name="enterprisemessage" value="{$vo.enterprisemessage}"/>
+					</div>
+					<div class="tml-form-row">
+						<label>企业地址：</label>
+						<input type="text" name="enterpriseaddress" value="{$vo.enterpriseaddress}"/>
+					</div>
+				</fieldset>
+				<!--<fieldset>-->
+					<!--<legend class="fieldset_legend_toggle">-->
+                        <!--<b>客户资料</b>-->
+                        <!--<div class="tml_style_line tml_sl4 tml_slb_blue"></div>-->
+                    <!--</legend>-->
+					<!--<div class="tml-form-row">-->
+						<!--<label>上传附件：</label>-->
+						<!--<input id="swfupload_missalecustomer_edit" type="file" uploader="true" auto="true" name="MisSalesCustomerfile" formData="{ uploadpath:'MisSalesCustomer' }" />-->
+					<!--</div>-->
+					<!--&lt;!&ndash;此处为上传列表&ndash;&gt;-->
+					<!--<div class="tml-form-row">-->
+						<!--<label>&nbsp;</label>-->
+						<!--<span id="swfupload_missalecustomer_edit-queue" class="info uploadify_queue">-->
+							<!--<if condition="$attarry"> -->
+							<!--<volist name="attarry" id="att">-->
+								<!--<div class="uploadify-queue-item">-->
+									<!--<div class="cancel">-->
+										<!--<a class="dellink" href="__URL__/lookupdelatt/id/{$att['id']}" rel="{$att['id']}" target="ajaxTodo" callback="mis_swf_upload_del" callbackdata="swfupload_missalecustomer_edit-queue">X</a>-->
+									<!--</div>-->
+									<!--<span class="fileName">-->
+										<!--<a href="__PUBLIC__/Uploads/{$att.attached}" target="_blank">{$att['upname']}</a>-->
+									<!--</span>-->
+									<!--<span class="data"> - 已经传</span>-->
+									<!--<div class="uploadify-progress">-->
+										<!--<div class="uploadify-progress-bar" style="width: 100%;"></div>-->
+									<!--</div>-->
+								<!--</div>-->
+							<!--</volist> -->
+							<!--</if>-->
+						<!--</span>-->
+					<!--</div>-->
+				<!--</fieldset>-->
+                {:W('ShowAction')}
+			</div>
+		</div>
+	</form>
+</div>

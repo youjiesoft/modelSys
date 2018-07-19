@@ -1,0 +1,30 @@
+<script>
+$(document).ready(function(){
+	var zNodes = {$tree};
+	var setting = {
+			data: {
+				simpleData: {
+					enable: true
+				}
+			}
+		};
+	$.fn.zTree.init($("#misfinanceprojectratpay"), setting, zNodes);
+});
+</script>
+<div class="pageContent">
+	<div class="tabs">
+		<div class="tabsContent">
+			<div>
+				<div layoutH="6" style="float: left; display: block; overflow: auto; width: 200px; border: solid 1px #CCC; line-height: 21px; background: #fff">
+					<ul id="misfinanceprojectratpay" class="ztree"></ul>
+				</div>
+				<div id="positiveBoxMisCarAddOilInfoBox" class="MisCarAddOilInfoBox" style="margin-left: 204px;">
+					<include file="lookupmanagelist" />
+				</div>
+			</div>
+		</div>
+		<div class="tabsFooter">
+			<div class="tabsFooterContent"></div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,294 @@
+<div class="page">
+	<div class="pageContent">
+		<form method="post" action="__URL__/auditProcess/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this, refreshtabsAudit)">
+			<div class="pageFormContent" layoutH="56">
+				<div class="keepContentCenter" >
+					<div class="contentTitle contentTitle_center">支出证明订单审核{:W('ShowAdvices',array('id'=>$vo['id']))}
+					</div>
+					<input type="hidden" name="id" value="{$vo['id']}" />
+					<input type="hidden" name="refreshtabs[tabid]" value="__MODULE__">
+					<input type="hidden" name="refreshtabs[url]" value="__APP__/misFinanceOrgcertifmas/index/ntdata/1">
+					<input type="hidden" name="refreshtabs[title]" value="支出证明">
+					<input type="hidden" name="refreshtabs[type]" value="navtab">
+					<input type="hidden" name="pid" value="{$vo['ptmptid']}">
+					<input type="hidden" name="ostatus" value="{$vo['ostatus']}">
+					<input type="hidden" name="backprocess" value="流程回退">
+					<input type="hidden" name="auditprocess" value="流程审核">
+					<input type="hidden" name="endprocess" value="流程结束">
+					<input type="hidden" name="alreadyAuditUser" value="{$vo['alreadyAuditUser']}">
+					<input type="hidden" name="auditUser" value="{$vo['auditUser']}">
+					<fieldset>
+					{:W('ShowOrderno',array(1,'mis_finance_orgcertif_mas',$vo['orderno']))}
+                        <legend class="fieldset_legend_toggle">
+                            <b>基本信息1</b>
+                        </legend> 
+                        <p>
+                            <label>{$fields["projectid"]}:</label>
+                            <input type="text" checkfor="MisSalesProject" value="{$vo['projectid']|getFieldby='id','name','mis_sales_project'}" class="checkByInput" insert="id" show="name" readonly="readonly" value="">
+                            <input type="hidden" readonly="readonly"  name="projectid" value="{$vo['projectid']}">
+                        </p>
+                        
+                        <p>
+                            <label>制单人：</label>
+                            <input type="text" value="{$vo['deptid']|getFieldBy='id','name','MisSystemDepartment'}" size="12" insert="id" show="name" readonly="readonly">
+                            <input type="hidden" readonly="readonly"  name="deptid" value="{$vo['deptid']}">
+                            <!-- <select class="combox dep_obj" name="deptid" >
+                                <option value="">请选择部门</option>
+                                <volist id="vod" name="deplist">
+                                    <option value="{$key}" <if condition="($key eq $vo['deptid'])">selected</if>>{$vod}</option>
+                                </volist>
+                            </select> -->
+                            <input type="text" value="{$vo['userid']|getFieldBy='id','name','User'}" size="8" insert="id" show="name" readonly="readonly">
+                            <input type="hidden" readonly="readonly"  name="userid" value="{$vo['userid']}">
+                           <!--  <select class="combox user_obj required" name="userid" >
+                                <option value="">请选择专家</option>
+                                <volist id="vou" name="useridlist">
+                                    <option value="{$key}" <if condition="($key eq $vo['userid'])">selected</if>>{$vou}</option>
+                                </volist>
+                            </select>  -->          
+                            
+                        </p>
+                        
+                        <p>
+                            <label>{$fields["handledate"]}:</label>
+                            <input type="text"  class="tml-border-r0 Wdate" readonly="readonly"  name="handledate" value="{$vo['handledate']|transTime}">
+                            <span class="xyInputWithUnitButton inputDateGrayButton"></span>
+                        </p>
+                        <p>
+                            <label>{$fields["bankname"]}:</label>
+                            <input type="text" value="{$vo['bankname']}" readonly="readonly">
+                            <!-- <select name="bankname" class="combox required">
+                                <option value="" >--请选择开户行--</option>
+                                <volist name="bktype" id="bk">
+                                    <option value="{$bk}" <eq name="vo.bankname" value="$bk">selected</eq>>{$bk}</option>
+                                </volist>
+                            </select> -->
+                        </p>
+                        <p>
+                            <label>供应商编号</label>
+                            <input type="text" name="suppliercode" readonly="readonly" class=" textInput" value="{$vo['supplierid']|getFieldBy='id','code','MisPurchaseSupplier'}" >
+                        </p>
+                        <p>
+                            <label>供应商名称</label>
+                            <input type="text" name="suppliername" readonly="readonly" class=" textInput" value="{$vo['supplierid']|getFieldBy='id','name','MisPurchaseSupplier'}" >
+                        </p>
+                        <p>
+                            <label>{$fields["bankaccount"]}:</label>
+                            
+                            <input type="text" readonly="readonly" class="creditcard" name="bankaccount" value="{$vo['bankaccount']}">
+                        </p>
+                        
+                        <p>
+                            <label>{$fields["typeid"]}:</label>
+                            <input name="typeid" value="{$vo.typeid}" type="hidden" />
+                            <input type="text" value="{$vo.typeid|getFieldBy='id','name','mis_finance_order_types'}" readonly="readonly">
+                            <!-- <select class="combox required" disabled="disabled">
+                                <option value="" >--请选择类型--</option>
+                                <volist name="ftypelist" id="voftype">
+                                    <option value="{$key}" <eq name="vo.typeid" value="$key">selected</eq> >{$voftype}</option>
+                                </volist>
+                            </select> -->
+                        </p>
+                  </fieldset>   
+                        <!-- 4-27加的 -->
+                 <fieldset>
+                        <legend class="fieldset_legend_toggle">
+                            <b>基本信息2</b>
+                        </legend>
+                        <p>
+                            <label>是否预付款:</label>
+                            <select name="isadvance" id="isadvance_edit" onchange="ischeck_edit('isadvance_edit','advanceunit_input_edit','advance_input_edit')">
+                                <option value="1" <if condition="$vo.isadvance eq 1 ">selected="selected"</if> >是</option>
+                                <option value="0" <if condition="$vo.isadvance eq 0 ">selected="selected"</if>  >否</option>
+                            </select>
+                        </p>
+                        
+                        <p>
+                            <label>预付款单位：</label>
+                            <input type="text" readonly="readonly" class="" id='advanceunit_input_edit' name="advanceunit" value="{$vo['advanceunit']}">
+                        </p>
+                        
+                        <p>
+                            <label>预付款金额:</label>
+                            <input type="text" readonly="readonly" class=""  id='advance_input_edit' name="advance" value="{$vo['advance']}">
+                        </p>
+                        <p>
+                            <label>是否冲账:</label>
+                            <select name="isbalance" id="isbalance_edit" onchange="ischeck_edit('isbalance_edit','balanceid_input_edit','balamount_input_edit')">
+                                <option value="1" <if condition="$vo.isbalance eq 1">selected="selected"</if> >是</option>
+                                <option value="0" <if condition="$vo.isbalance eq 0">selected="selected"</if> >否</option>
+                            </select>
+                        </p>
+                        
+                        <p>
+                            <label>冲账人：</label>
+                            <input type="text" readonly="readonly" checkfor="user" id="balanceid_input_edit"  class="checkByInput textInput valid focus" insert="id" show="name" value="{$vo['balanceid']|getFieldby='id','name','User'}" >
+                            <input name="balanceid"    type="hidden" value="{$vo['balanceid']}" />
+                      
+                        </p>
+                        
+                        <p>
+                            <label>冲账金额:</label>
+                            <input type="text" readonly="readonly" class="" id="balamount_input_edit" name="balamount" value="{$vo['balamount']}">
+                        </p>
+                        
+                        
+                        
+                        <p>
+                            <label>{$fields["totalamount"]}:</label>
+                            <input  type="text" name="totalamount" readonly="readonly" value="{$totalamout}">
+                        </p>
+                        
+                    </fieldset>
+                    <fieldset>
+                        <legend class="fieldset_legend_toggle">
+                            <b>发票信息</b>
+                        </legend>
+                        <p>
+                            <label>开票单位:</label>
+                            <input type="text" readonly="readonly" class="" name="openticketunit" value="{$vo['openticketunit']}">
+                        </p>
+                        <p>
+                            <label>发票内容：</label>
+                            <input type="text" readonly="readonly" class="" name="invocontent" value="{$vo['invocontent']}">
+                        </p>
+                        <p>
+                            <label>发票张数:</label>
+                            <input type="text" readonly="readonly" class="" name="attachmentsum" value="{$vo['attachmentsum']}">
+                        </p>
+                        <p>
+                            <label>发票金额：</label>
+                            <input type="text" readonly="readonly" class="" name="invoamount" value="{$vo['invoamount']}">
+                        </p>
+                    </fieldset>
+                    <fieldset>
+                        <legend class="fieldset_legend_toggle">
+                            <b>单据列表</b>
+                        </legend>
+                        <table cellspacing="0" id="orgcertifmas_edit"  width="100%" border="1"  bordercolor="#B8D0D6" style="border-collapse:collapse;margin:0 auto; text-align: center">               
+                            <thead>
+                                <tr>
+                                    <th><strong class="auto_w_h_text">{$fields["fnum"]}</strong></th>
+                                    <th><strong class="auto_w_h_text">对应类型-单号</strong></th>
+                                     
+                                    <th><strong class="auto_w_h_text">{$fields["totalamount"]}</strong></th>
+                                    <th width="28"></th>
+                                </tr>
+    
+                            </thead>
+                            <tbody>
+                                <tr class="defaulttr" style="display:none;">
+                                    <td class="auto_w_h"><input type="text" readonly="readonly" class="fnum" name="fnum"/></td>
+                                    
+                                    <td class="auto_w_h">
+                                        <input class="checkByInput" readonly="readonly" name="ordermasorderno" type="text" checkfor="" insert="id" show="orderno" callback="countsubamounttitle" />
+                                        <input name="ordermasid" type="hidden" />
+                                    </td>
+                                     
+                                    <td class="auto_w_h"><input type="text" readonly="readonly" class="mastotalsubamount" value="" name="mastotalsubamount"/></td>
+                                    
+                                    <td><a href="javascript:;" class="btnDel"><strong>移除</strong></a></td>
+                                </tr>
+                                
+                                <volist id="mas" name="maslist" key="keymas">
+                                <tr class="defaulttr"> 
+                                    <td class="auto_w_h">
+                                        <input type="hidden" value="{$mas.id}" readonly="readonly" name="subidarr[{$keymas-1}]"/>
+                                        <input type="text" value="{$keymas}" readonly="readonly" class="fnum" name="fnumarr[{$keymas-1}]"/>
+                                    </td>
+                                    <td class="auto_w_h">
+                                        <input value="{$mas['ordermasorderno']}" readonly="readonly" type="text" />
+                                        <input name="ordermasidarr[{$keymas-1}]" value="{$mas['ordermasid']}" type="hidden" />
+                                    </td>
+                                    <td class="auto_w_h">
+                                        <input type="text" class="mastotalsubamount" readonly="readonly" name="mastotalsubamountarr[{$keymas-1}]" value="{$totalamout}" /></td>
+                                    <td></td>
+                                </tr>
+                                </volist>
+                                
+                            </tbody>
+                        </table>
+                        
+                    </fieldset>
+                    
+                    <fieldset>
+                        <legend class="fieldset_legend_toggle">
+                            <b>单据支出明细</b>
+                        </legend>
+                         <table cellspacing="0" id="orgcertifmas_edit_t"  width="100%" border="1"  bordercolor="#B8D0D6" style="border-collapse:collapse;margin:0 auto; text-align: center">
+                            <thead>
+                                <tr>
+                                    <th><strong class="auto_w_h_text">分号</strong></th>
+                                    <th><strong class="auto_w_h_text">单位名称</strong></th>
+                                    <th><strong class="auto_w_h_text">摘要</strong></th>
+                                    <th><strong class="auto_w_h_text">金额</strong></th>
+                                    <th width="28"><a style="display:none;" href="javascript:;" class="btnAdd" title=""></a></th>
+                                </tr>
+    
+                            </thead>
+                            <tbody>
+                                <tr class="defaulttr" style="display:none;">
+                                    <td class="auto_w_h">
+                                        <input type="hidden" readonly="readonly" name="supplierid"/>
+                                        <input type="hidden" readonly="readonly"  class="fsubnum" name="fsubnum"/>
+                                        <input type="text" readonly="readonly" name="fsubnumshow"/>
+                                    </td>
+                                    <td class="auto_w_h">
+                                        <input type="text" readonly="readonly" name="unitname"/>
+                                    </td>
+                                    <td class="auto_w_h">
+                                        <input type="hidden" name="accountid"/>
+                                        <input type="text" readonly="readonly" name="fsummarysub"/>
+                                    </td>
+                                    <td class="auto_w_h"><input type="text" readonly="readonly" name="fsubamount[]" /><a href="javascript:;" class="btnDel" style="display:none;"></a></td>
+                                    <td></td>
+                                </tr>
+                                <volist id="masa" name="maslist" key="key2">
+                                    <volist id="sublistinfo" name="masa.sublist">
+                                        <tr class="defaulttr">
+                                            <td class="auto_w_h">
+                                                <input type="hidden" value="{$sublistinfo.id}" readonly="readonly" name="masidarr[{$key}]"/>
+                                                <input type="hidden" readonly="readonly" class="fsubnum" name="fsubnumarr[{$key}]" value="{$key2}"  />
+                                                <input type="text" readonly="readonly" name="fsubnumshowarr[{$key}]" value="{$sublistinfo['keynum']}" />
+                                            </td>
+                                            <td class="auto_w_h">
+                                                <input type="text" readonly="readonly" value="{$sublistinfo['unitname']}" name="unitnamearr[{$key}]"/>
+                                            </td>
+                                            <td class="auto_w_h">
+                                                <input type="hidden" name="accountid"/>
+                                                <input type="text" readonly="readonly" value="{$sublistinfo['summary']}" name="fsummaryarr[{$key}]" />
+                                            </td>
+                                            <td class="auto_w_h">
+                                                <input type="text" readonly="readonly"  value="{$sublistinfo['totalamount']}" name="fsubamountarr[{$key}]"  />
+                                                <a href="javascript:;" class="btnDel" style="display:none;"></a></td>
+                                            <td></td>
+                                        </tr>
+                                    </volist>
+                                </volist>
+                            </tbody>
+                        </table>
+                    </fieldset> 
+					<fieldset>
+						<legend class="fieldset_legend_toggle"> <b>审核意见</b></legend>
+						<dl class="nowrap">
+							<label>审核意见：</label>
+							<textarea name="doinfo" cols="60"></textarea>
+						</dl>
+					</fieldset>
+					<div class="clear"></div>
+				</div>
+			</div>
+			<div class="formBar">
+				<ul>
+				<if condition="$_SESSION.a eq 1 or $_SESSION.misfinanceorgcertifmas_auditprocess">
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">{$Think.lang.auditprocess}</button></div></div></li>
+				</if>
+				<if condition="$_SESSION.a eq 1 or $_SESSION.misfinanceorgcertifmas_backprocess">			
+				<li><div class="buttonActive"><div class="buttonContent"><button type="button" onclick="BackProcess(this.form,'__MODULE__');">{$Think.lang.backprocess}</button></div></div></li>
+				</if>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">{$Think.lang.close}</button></div></div></li>
+				</ul>
+			</div>
+		</form>
+	</div>
+</div>

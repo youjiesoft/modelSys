@@ -1,0 +1,84 @@
+<form id="pagerForm" action="__URL__/lookupmanage" method="post">
+	<input type="hidden" name="pageNum" value="1" />
+	<input type="hidden" name="orderField" value="{$order}" />
+	<input type="hidden" name="orderDirection" value="{$sort}" />
+	
+</form>
+<div class="panelBar" >
+	<form rel="pagerForm" onsubmit="return divSearch(this, 'miscomputerfixlogBox');" action="__URL__/lookupmanage" method="post">
+		<input type="hidden" name="jump" value="1">
+		<input type="hidden" name="deptid" value="{$deptid}">
+		<input type="hidden" name="parentid" value="{$parentid}">
+		<div class="searchBar" style="margin-top:3px;">
+			<table class="searchContent">
+				<tr>
+					<td>
+						请输入关键字：<input type="text" name="keyword" value="{$keyword}" />
+					</td>
+					<td>
+						<select class="combox" name="searchby">
+							<volist id="vou" name="searchbylist">
+								<option value="{$vou['id']}" <eq name="vou.id" value="$searchby">selected</eq> >{$vou['val']}</option>
+							</volist>
+						</select>
+					</td>
+					<td>
+						<input name="searchtype" type="hidden" value="2" />			
+						<!-- <select class="combox" name="searchtype">
+							<volist id="voty" name="searchtypelist">
+								<option value="{$voty['id']}" <eq name="voty.id" value="$searchtype">selected</eq> >{$voty['val']}</option>
+							</volist>
+						</select> -->
+					</td>
+					<td><button class="xySearch" type="submit">{$Think.lang.subsearch}</button></td>
+				</tr>
+			</table>
+		</div>
+	</form>
+</div>
+<div class="" style="border-left:1px #B8D0D6 solid;border-right:1px #B8D0D6 solid">
+	<table class="table" width="99%" layoutH="96">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>计算机标识</th>
+				<th>类型</th>
+				<th>品牌</th>
+				<th>当前用户</th>
+				<th>查找带回</th>
+			</tr>
+		</thead>
+		<tbody>
+		<volist id="vo" name="list">
+			<tr>
+				<td>{$vo['id']}</td>
+				<td>{$vo['name']}</td>
+				<td>
+					<switch name="vo['type']" >
+						<case value="1">台式机</case>
+						<case value="2">笔记本</case>
+						<case value="3">相机</case>
+						<case value="4">服务器</case>
+						<case value="5">打印机</case>
+						<case value="6">网络设备</case>
+						<case value="7">电话机</case>
+						<default />其它
+					</switch>
+				</td>
+				<td>{$vo['oem']}</td>
+				<td>{$vo['user_id']|getFieldBy=\'id\',\'name\',\'MisHrPersonnelPersonInfo\'}</td>
+				<td>
+					<a class="btnSelect"
+						href="javascript:$.bringBack({ mangid:'{$vo.id}', name:'{$vo.name}' ,user_name:'{$vo.user_id|getFieldBy=\'id\',\'name\',\'MisHrPersonnelPersonInfo\'}',user_name_id:'{$vo.user_id}',deptid:'{$vo.deptid}',deptname:'{$vo.deptname}',dutylevelid:'{$vo.dutylevelid}',dutyname:'{$vo.dutyname}',dutylevelname:'{$vo.dutylevelname}',transferdate:'{$vo[transferdate]|transTime}',indate:'{$vo[indate]|transTime}'})"
+						title="查找带回">选择</a>
+				</td>
+			</tr>
+		</volist>
+	</table>
+	<div class="panelBar panelPageBar">
+		<div class="pages">
+			<span>共{$totalCount}条</span>
+		</div>
+		<div class="pagination" rel="miscomputerfixlogBox" targetType="dialog" totalCount="{$totalCount}" numPerPage="{$numPerPage}" pageNumShown="10" currentPage="{$currentPage}"></div>
+	</div>
+</div>

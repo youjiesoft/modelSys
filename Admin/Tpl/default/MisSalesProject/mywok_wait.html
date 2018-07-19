@@ -1,0 +1,51 @@
+<form id="pagerForm" action="__URL__/lookupWorkFlow" method="post">
+	<input type="hidden" name="pageNum" value="1"/>
+	<input type="hidden" name="orderField" value="{$order}" />
+	<input type="hidden" name="orderDirection" value="{$sort}" />
+	<input type="hidden" name="projectid" value="{$projectid}" />
+</form>
+<div class="pageContent">
+	<table class="table" width="100%" layoutH="93">
+		<thead ename="{$ename}">
+			<tr>
+                <th width="24">序号</th>
+				<th>工作名称</th>
+				<th>工作编号</th>
+				<th>创建人</th>
+				<th>创建时间</th>
+				<th>流程状态</th>
+			</tr>
+		</thead>
+		<tbody>
+			<volist id="vo" name="list">
+				<tr>
+                	<td class="tml-first-td">{$numPerPage*($currentPage-1)+$key+1}</td>
+					<td>
+						<a class="tml-icon-text" href="__APP__/{$vo.tablename}/edit/id/{$vo.tableid}"
+				  		<if condition="$md eq 'MisProjectImagestoreroomMas'">
+				  		target="dialog" title="上传图片" mask="true" width="690" height="480"
+				  		<else/>
+				  		title="{$vo.tablename|getConfigTypeList}_编辑"
+				  		<if condition="$md eq 'MisProjectMeasureReport'">
+				  			target="dialog" width="720" height="580" mask="true"
+				  			<else/>
+				  			target="navTab"
+				  		</if>
+					  	</if>
+				  rel="{$vo.tablename}edit"><strong>{$vo.tablename|getFieldBy='name','title','node'}</strong></a>
+					 </td>
+					<td>{$vo.orderno}</td>
+					<td>{$vo.userid|getFieldBy='id','name','user'}</td>
+					<td>{$vo.createtime|transTime='Y-m-d H:i'}</td>
+					<td>未发起流程</td>
+				</tr>
+			</volist>
+		</tbody>
+	</table>
+	<div class="panelBar panelPageBar">
+		<div class="pages">
+			<span>共{$totalCount}条</span>
+		</div>
+		<div class="pagination" rel="missalesprojectmywork_add" targetType="navTab" totalCount="{$totalCount}" numPerPage="{$numPerPage}" pageNumShown="10" currentPage="{$currentPage}"></div>
+	</div>
+</div>

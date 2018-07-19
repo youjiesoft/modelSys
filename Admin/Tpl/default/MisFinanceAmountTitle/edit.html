@@ -1,0 +1,80 @@
+<div class="page">
+	<div class="pageContent">
+		<form method="post" action="__URL__/update/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,navTabAjaxDone);">
+			<input type="hidden" name="orderno"  value="{$vo['orderno']}">
+			<input type="hidden" name="id" value="{$vo['id']}" />
+			<input type="hidden" name="oldcode" class="required" value="{$vo['code']}">
+			<input type="hidden" name="callbackType" value="closeCurrent">
+			<div class="pageFormContent " layoutH="56">
+				<p>
+					<label>{$fields["code"]}:</label>
+					<input  type="text" name="code" class="required" value="{$vo['code']}">
+				</p>
+				<p>
+					<label>{$fields["name"]}:</label>
+					<input  type="text" name="name" class="required" value="{$vo['name']}">
+				</p>
+				<p>
+					<label>{$fields["sname"]}:</label>
+					<input  type="text" name="sname" class="" value="{$vo['sname']}">
+				</p>
+				<p>
+					<label>{$fields["atype"]}:</label>
+					<select name="atype"  class="combox required">
+						<option <if condition="$vo['atype'] eq 资产">selected</if> value="资产">资产</option>
+						<option <if condition="$vo['atype'] eq 负债">selected</if> value="负债">负债</option>
+						<option <if condition="$vo['atype'] eq 所有者权益">selected</if> value="所有者权益">所有者权益</option>
+						<option <if condition="$vo['atype'] eq 成本">selected</if> value="成本">成本</option>
+						<option <if condition="$vo['atype'] eq 损益">selected</if> value="损益">损益</option>
+						</select>
+				</p>
+				<p>
+					<label>借方:</label>
+					<input <if condition="$vo['debit'] eq 1">checked="checked"</if>  name="debit[]" type="checkbox" value="1" />
+				</p>
+				<p>
+					<label>贷放:</label>
+					<input <if condition="$vo['credit'] eq 1">checked="checked"</if>  name="credit[]" type="checkbox" value="1" />
+				</p>
+				<p>
+					<label>{$fields["projectid"]}:</label>
+					<input type="hidden"  name="projectid"  class="orgp.projectid" value="{$vo['projectid']}">
+					<input type="text" name="projectname" class="orgp.projectname" value="{$vo['projectid']|getFieldby='id','name','mis_sales_project'}"  readonly="readonly" />
+					<span class="info"><a class="input-addon input-addon-addon input-addon-add" href="__URL__/lookupproject" lookupGroup="orgp">查找带回</a></span>
+
+				</p>
+				<p>
+					<label>{$fields["balance"]}:</label>
+					<input  type="text" name="balance" onblur="FormatNumber(this,'{$vo.balance|getDigits}');"  value="{$vo['balance']|getDigits}"  readonly="readonly" />
+				</p>
+				<p>
+					<label>{$fields["employeeid"]}:</label>
+					<input type="hidden"  name="employeeid"  class="orgy.mangid" value="{$vo['employeeid']}">
+					<input type="text" name="employename" class="orgy.name" value="{$vo['employeeid']|getFieldby='id','name','mis_hr_personnel_person_info'}"  readonly="readonly" />
+					<span class="info"><a class="input-addon input-addon-addon input-addon-add" href="__URL__/lookupmanage" lookupGroup="orgy">查找带回</a></span>
+				</p>
+
+			</div>
+			<div class="formBar">
+				<ul>
+					<if condition="$_SESSION.a eq 1 or $_SESSION.misfinanceamounttitle_update">
+						<li>
+							<div class="buttonActive">
+								<div class="buttonContent">
+									<button type="submit">{$Think.lang.save}</button>
+								</div>
+							</div>
+						</li>
+					</if>
+					<li>
+						<div class="button">
+							<div class="buttonContent">
+								<button type="button" class="close">{$Think.lang.close}</button>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</form>
+	</div>
+</div>

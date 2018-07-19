@@ -1,0 +1,55 @@
+<div class="page">
+	<div class="pageContent">
+	<form method="post" action="__URL__/insert/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,dialogAjaxDone)">
+		<div class="pageFormContent" layoutH="48">
+			<div class="tml-row">
+				<div class="tml-form-col">
+					<label>{$fields["orderno"]}：</label>
+					<input type="text" name="orderno" class="required alphanumeric" maxlength="40" value="" />
+				</div>
+				<div class="tml-form-col">
+					<label>{$fields["name"]}：</label>
+					<input type="text" name="name" class="required"  value="" />
+				</div>
+				<!-- select组件 start -->
+				<div class="tml-form-col">
+					<label>{$fields["hangyefenlei"]}:</label>
+					{:W('ShowSelect',array($vo['hangyefenlei'],array('required',array('type'=>'table',array('readonly'=>'','targevent'=>'','actionName'=>'MisSaleProfession','names'=>'hangyefenlei','defaultcheckitem'=>'','defaultval'=>'','defaulttext'=>'--请选择--','table'=>'mis_auto_zcfjh', 'id'=>'orderno','name'=>'name','conditions'=>'','parentid'=>'','mulit'=>'','isnextend'=>'','treeheight'=>'','treewidth'=>'','key'=>'','isedit'=>'1')))))}
+				</div>
+				<!-- select组件 end -->
+				<div class="tml-form-col">
+					<label>是否停用：</label>
+					<select name="status" class="select2">
+						<option value="1">启用</option>
+						<option value="0">停用</option>
+					</select>
+				</div>
+
+				<div class="tml-form-col" style="width: 80px">
+					<label>行业统计口径1:</label>
+					{:W('ShowSelect',array($vo['hangyetongjikoujing1'],array('',array('type'=>'table',array('readonly'=>'','targevent'=>'','actionName'=>'MisSaleProfession','names'=>'hangyetongjikoujing1','defaultcheckitem'=>'','defaultval'=>'','defaulttext'=>'--请选择--','table'=>'mis_auto_sjgav', 'id'=>'orderno','name'=>'name','conditions'=>'','parentid'=>'','mulit'=>'','isnextend'=>'','treeheight'=>'','treewidth'=>'','key'=>'','isedit'=>'1')))))}
+				</div>
+
+				<div class="tml-form-col" style="width: 80px">
+					<label>行业统计口径2:</label>
+					{:W('ShowSelect',array($vo['hangyetongjikoujing2'],array('',array('type'=>'table',array('readonly'=>'','targevent'=>'','actionName'=>'MisSaleProfession','names'=>'hangyetongjikoujing2','defaultcheckitem'=>'','defaultval'=>'','defaulttext'=>'--请选择--','table'=>'mis_auto_idnea', 'id'=>'orderno','name'=>'name','conditions'=>'','parentid'=>'','mulit'=>'','isnextend'=>'','treeheight'=>'','treewidth'=>'','key'=>'','isedit'=>'1')))))}
+				</div>
+
+				<div class="tml-form-col" style="width: 80px">
+					<label>行业统计口径3:</label>
+					{:W('ShowSelect',array($vo['hangyetongjikoujing3'],array('',array('type'=>'table',array('readonly'=>'','targevent'=>'','actionName'=>'MisSaleProfession','names'=>'hangyetongjikoujing3','defaultcheckitem'=>'','defaultval'=>'','defaulttext'=>'--请选择--','table'=>'mis_auto_hzljo', 'id'=>'orderno','name'=>'name','conditions'=>'','parentid'=>'','mulit'=>'','isnextend'=>'','treeheight'=>'','treewidth'=>'','key'=>'','isedit'=>'1')))))}
+				</div>
+
+			</div>
+			<div class="tml-form-row">
+				<label>{$fields["remark"]}</label>
+				<textarea name="remark" rows="2" maxlength="200"></textarea>
+			</div>
+			{:W('MisSystemOrderno',array(1))}
+		</div>
+		{:W('ShowAction')}
+		
+	</form>
+	</div>
+</div>
+

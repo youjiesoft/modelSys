@@ -1,0 +1,394 @@
+ <script type="text/javascript">
+ var $supcategoryval = '{$Think.get.supcategory}';
+ var $categoryval = '{$Think.get.category}';
+ var $pidval = '{$Think.get.pid}';
+$(function(){
+	var conf = new Object();
+	var data = '{$categoryComList}';
+	conf.data =$.parseJSON(data);
+	conf.ids = '#misprojectflowworkadd_supcategory,#misprojectflowworkadd_category,#misprojectflowworkadd_parentid',
+	conf.tag = 'supcategory,category,parentid'; 
+	conf.pid = 'parentid,category';
+	conf.tex = 'name'; 
+	conf.val = 'id';  
+	var def = 0;
+	if($supcategoryval != 0){
+		def = $supcategoryval;
+	}
+	if($supcategoryval != 0 && $categoryval !=0){
+		def = $supcategoryval+','+$categoryval;
+	}
+	if($supcategoryval != 0 && $categoryval !=0 && $pidval!=0){
+		def = $supcategoryval+','+$categoryval+','+$pidval;
+	}
+	if(def != 0){
+		conf.defaultVal = def;
+	}
+	$.linkage(conf); 
+});	
+function clearreceverWork(n , p){
+	$('#'+p+' li').remove();
+}
+function GetVal(type,$this){
+	 var $this = $($this);
+	 var $obj=navTab.getCurrentPanel();
+	 var supcategory=$obj.find("select[name='supcategory']").val();
+	 var title=$this.attr("title") || "任务选择";
+	 var rel="lookupGeneral";
+	 var options={};
+	 options.width=750;
+	 options.height=440;
+	 options.mask=eval("true");
+	 var conditions ="supcategory,"+supcategory+";outlinelevel,4";
+	 if(type == 4){
+		 //数据源选择,必须满足相同类型任务，客户，行业，产业链相同等条件，才能作为当前任务的数据源对象
+		 var custtypeid=$obj.find("input[name='custtypeid']").val();
+		 var hyid=$obj.find("input[name='hyid']").val();
+		 var cylid=$obj.find("input[name='cylid']").val();
+	 }
+	 options.param={conditions:conditions};
+	 var href = "__URL__/lookupGeneralA/"+"type/"+type;
+	 var url=unescape(href);
+	 $.pdialog.open(url,rel,title,options);
+}
+</script>  
+<div class="page">
+	<div class="pageContent">
+		<form method="post" action="__URL__/lookupprojectinsert/rel/lookupProjectEdit" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+			<input type="hidden" name="callbackType" value="closeCurrent" />
+			<input type="hidden" name="refreshtabs[data]" value="1" />
+			<input type="hidden" name="outlinelevel" value="4" />
+			<input type="hidden" name="projectid" value="{$projectid}" />
+			<div class="pageFormContent applecloth anchorsToolBarParen" layoutH="40">
+				<div class="new_version_page ">
+					<div class="new_version_page_header pageFormContent ">
+						任务管理
+					</div>
+					<div class="new_version_page_content">
+						{:W('ShowOrderno',array(4,'mis_project_flow_form',$vo['orderno'],array('contentcls'=>'col_1_2 form_group_lay field_orderno', 'inputcls'=>'class="input_new " ','title'=>$fields["orderno"])))}
+						
+						<div class="col_1_2 form_group_lay">
+							<label class="label_new">任务名称:</label>
+							<input type="text"  name="name" class="required input_new" value="{$vo['name']}">
+						</div>
+						
+						<div class="col_1_1 form_group_lay field_days" >
+							<div class="tml-input-unit">
+								<label class="label_new">工作日:</label>
+								<input   type="text"  name="days" class=" input_new  half_angle_input input_new" value="{$vo['days']}">
+								<span class="icon_elm icon_unit" title="天">天</span>
+							</div>
+						</div>
+						<div class="col_1_1 form_group_lay">
+							<label class="label_new">业务类型:</label>
+							 <select  name="supcategory" class="select2 required select_elm" id="misprojectflowworkadd_supcategory"><option>--请选择--</option></select>
+						</div>
+						<div class="col_1_1 form_group_lay">
+							<label class="label_new">业务阶段:</label>
+							 <select  name="category" class="select2 required select_elm" id="misprojectflowworkadd_category"><option>--请选择--</option></select>
+						</div>
+						<div class="col_1_1 form_group_lay">
+							<label class="label_new">业务节点:</label>
+							<select  name="parentid" class="select2 required select_elm"  id="misprojectflowworkadd_parentid"><option>--请选择--</option></select>
+						</div>
+						<div class="col_1_1 form_group_lay">
+							<label class="label_new">显示顺序:</label>
+							<input  type="text" name="sort" class="input_new" value="{$vo['sort']}">
+						</div>
+						<div class="col_1_7 form_group_lay" >
+							<label class="label_new">任务备注:</label>
+							<textarea  cols="100" rows="2" class="text_area" name="notes">{$vo['notes']}</textarea>
+						</div>
+						<div class="fieldset_show_box field_fieldset11">
+							 <legend class="fieldset_legend_toggle side-catalog-text side-catalog-firstanchor">
+								</a><b>详细信息</b><div class="tml_style_line tml_sl4 tml_slb_blue"></div>
+							</legend>
+						</div>
+						<div class="col_1_7 form_group_lay">
+                             <label class="label_new">查看角色:</label>
+                             <ul class="addressee select_many_user" id="projectadd_rolegroup">
+                                 <volist name="readtaskrole" id="atrole">
+							 		<li>
+							 			<input type='hidden' name="readtaskrole[]" value="{$atrole}"/>
+							 			<span>{$atrole|getFieldBy='id','name','rolegroup'}</span>
+		                               <a  class="delAddressee" title='删除该功能' onclick='this.parentNode.parentNode.removeChild(this.parentNode);' href='javascript:;'>x</a>
+							 		</li>
+							 	</volist>
+                             </ul>
+                             <a class="icon_elm mid_icon_elm icon-plus" href="__URL__/lookuprolegroup/stepType/1/obj/projectadd_rolegroup/objname/editXxBox" width="720" height="480" lookupGroup="ORG9"></a>
+	                         <a title="清空信息" class="icon_elm icon-trash"  href="javascript:;" onclick="clearreceverWork('1','projectadd_rolegroup')"></a>
+                         </div>
+						<div class="col_1_2 form_group_lay" >
+							<label class="label_new">关键任务:</label>
+							{:getControllbyHtml('selectlist',array('type'=>'radio','names'=>'critical','key'=>'debit','selected'=>$vo['critical']))}
+						</div>
+						
+						<!--  <div class="col_1_2 form_group_lay field_custtypeid" >
+							<label class="label_new">客户主体:</label>
+							<div class="tml-input-lookup">
+								<input type="text" class="ORG1.name input_new half_angle_input" autocomplete="off" readonly="readonly" value="{$vo['custtypeid']|getFieldBy='id','name','mis_sale_client_type'}">
+								<input type="hidden" class="ORG1.id" name="custtypeid" value="{$vo['custtypeid']}"  />
+								<a class="icon_elm mid_icon_elm icon-plus" param="field=id,orderno,name&model=MisSaleClientType&conditions=status,1" href="__URL__/lookupGeneral" lookupGroup="ORG1" ></a>
+								<a title="清空信息" class="icon_elm icon-trash"  href="javascript:void(0);" onclick="clearOrg('ORG1');"></a>
+							</div>
+						</div>
+						
+						<div class="col_1_2 form_group_lay field_hyid" >
+								<label class="label_new">行业:</label>
+								<div class="tml-input-lookup">
+								 <input type="text" class=" checkByInput input_new half_angle_input ORG2.name" 
+									checkfor="MisSaleProfession" 
+									insert="id" 
+									show="name" 
+									fields="array('orderno'=>'编码','name'=>'行业名称','id'=>'0');"  
+									autocomplete="on" value="{$vo['hyid']|getFieldBy='id','name','mis_sale_profession'}">
+									<input type="hidden" class="ORG2.id" name="hyid" value="{$vo['hyid']}"/>
+									<a class="icon_elm mid_icon_elm icon-plus" param="field=id,orderno,name&model=MisSaleProfession&conditions=status,1" href="__URL__/lookupGeneral" lookupGroup="ORG2" ></a>
+									<a title="清空信息" class="icon_elm icon-trash"  href="javascript:void(0);" onclick="clearOrg('ORG2');"></a>
+								</div>
+						</div>
+						<div class="col_1_1 form_group_lay ">
+							<label class="label_new">产业链:</label>
+							<div class="tml-input-lookup">
+							<input type="text"   
+								class=" checkByInput input_new half_angle_input ORG3.name" 
+								checkfor="MisSaleIndustry" 
+								insert="id" 
+								show="name" 
+								fields="array('orderno'=>'编码','name'=>'产业链名称','id'=>'0');"  
+								autocomplete="on" 
+								value="{$vo['cylid']|getFieldBy='id','name','mis_sale_industry'}">
+								<input type="hidden" class="ORG3.id" name="cylid"  value="{$vo['cylid']}"/>
+								<a class="icon_elm mid_icon_elm icon-plus" param="field=id,orderno,name&model=MisSaleIndustry&conditions=status,1" href="__URL__/lookupGeneral" lookupGroup="ORG3" ></a>
+								<a title="清空信息" class="icon_elm icon-trash"  href="javascript:void(0);" onclick="clearOrg('ORG3');"></a>
+							</div>
+						</div>  -->
+						<div class="col_1_2 form_group_lay ">
+							<label class="label_new">对应模板:</label>
+								<div class="tml-input-lookup" id="misprojectflowworkformobj1">
+								 <input type="text"   
+									class=" checkByInput input_new half_angle_input required ORG4.title " 
+									checkfor="Node" 
+									name="js-formobj"
+									id="misprojectflowworkcheckByInput1"
+									insert="name" 
+									show="title" 
+									newconditions="(status=('1') and level=('3') and isprojectwork=('1'))"
+									fields="array('name'=>'模块名','title'=>'名称','id'=>'0');"  
+									autocomplete="on" 
+									value="{$vo['formobj']|getFieldBy='name','title','node'}">
+									<input type="hidden" class="ORG4.name" id="formobj_dj" name="formobj" value=""/>
+									<a class="icon_elm mid_icon_elm icon-plus" param="field=name,title&model=Node&conditions=status,1;level,3;isprojectwork,1&filterfield=icon,type,pid,group_id,showmenu,toolshow,sort,remark,category" href="__URL__/lookupGeneral" lookupGroup="ORG4" ></a>
+									<a title="清空信息" class="icon_elm icon-trash"  href="javascript:void(0);" onclick="clearOrg('ORG4');"></a>
+							</div>
+						</div>
+						<div class="col_1_1 form_group_lay ">
+							<label class="label_new">是否列表:</label>
+							<select  name="datatype"  class="select2 select_elm required">
+								{:getControllbyHtml('selectlist',array('type'=>'select','key'=>'ListYesOrNo','selected'=>$vo['datatype']))}
+							</select>
+						</div>
+						<div class="col_1_2 form_group_lay ">
+							<label class="label_new">前置任务:</label>
+							<div class="tml-input-lookup">
+								<input type="text" class="ORG5.name input_new half_angle_input" name="predecessoridval" autocomplete="off" readonly="readonly" value="{$vo['predecessorid']|getFieldBy='id','name','mis_project_flow_form'}" />
+								<input type="hidden" class="ORG5.id" name="predecessorid" value="{$voList['predecessorid']}"  />
+								<a class="icon_elm mid_icon_elm icon-plus" href="javascript:void(0);" onclick="GetVal(1)"></a>
+								<a title="清空信息" class="icon_elm icon-trash"  href="javascript:void(0);" onclick="clearOrg('ORG5');"></a>
+							</div>
+						</div>
+						<div class="col_1_2 form_group_lay ">
+							<label class="label_new">引用任务:</label>
+							<div class="tml-input-lookup">
+								<input type="text" class="ORG6.name input_new half_angle_input" name="quotename" autocomplete="off" readonly="readonly" value="{$vo['quote']|getFieldBy='id','name','mis_project_flow_form'}" />
+								<input type="hidden" class="ORG6.id" name="quote" value="{$vo['quote']}"  />
+								<a class="icon_elm mid_icon_elm icon-plus"  href="javascript:void(0);" onclick="GetVal(3)"></a>
+								<a title="清空信息" class="icon_elm icon-trash"  href="javascript:void(0);" onclick="clearOrg('ORG6');"></a>
+							</div>
+						</div>	
+						<div class="col_1_2 form_group_lay field_xiangmujuese " >
+								<label class="label_new">项目角色:</label>
+								<div class="tml-input-lookup">
+								<input type="text"   class="orgDBX3753.name required  input_new half_angle_input  " autocomplete="off" readonly="readonly"  value="{$vo['xiangmujuese']|getFieldBy='orderno','name','mis_auto_wqzrv'}" />
+								<input type="hidden"   class="orgDBX3753.orderno " name="xiangmujuese" value="{$vo['xiangmujuese']}"  />
+								<a class="icon_elm mid_icon_elm icon-plus" param="lookupchoice=b590f11e954b9b058cb05640c647c548&newconditions=" href="__URL__/lookupGenerals" lookupGroup="orgDBX3753" ></a>
+								<a title="清空信息" class="icon_elm icon-trash"  href="javascript:void(0);" onclick="clearOrg('orgDBX3753');"></a>
+								</div><div class="display_none {$classNodeSettingArr['xiangmujuese']}">{$vo['xiangmujuese']|getFieldBy='orderno','name','mis_auto_wqzrv'}</div>
+						</div>
+						<div class="col_1_2 form_group_lay ">
+							<label class="label_new">动态阶段条件:</label>
+							<div class="tml-input-lookup">
+								<input type="text" class="ORG12.name input_new half_angle_input"
+									name="dyconshowname" autocomplete="off" readonly="readonly"
+									value="" />
+								<a class="icon_elm mid_icon_elm icon-plus"
+									href="javascript:void(0);" title="动态阶段条件"
+									onclick="lookupProjectDyCondition(this)"></a>
+								<a title="清空信息" class="icon_elm icon-trash"
+									href="javascript:void(0);" onclick="clearOrgname('ORG12','js-itemId-lookupDyCondition');"></a>
+								<div class="js-itemId-lookupDyCondition"></div>
+							</div>
+						</div>
+						<div class="col_1_1 form_group_lay" >
+							<label class="label_new">是否启用：</label>
+							<input type="radio" name="status" value="1" checked />启用
+							<input type="radio" name="status" value="0"  />禁用
+						</div>
+						<div class="col_1_2 form_group_lay field_lookup22 ">
+							<label class="label_new">
+							<span title="lookup组件 _22">生单数据</span>:</label>
+							<div class="tml-input-lookup">
+							<input type="text" name="datasourcename" value="{$vo['sourcemodel']|getFieldBy='name','title','node'}" readonly="readonly" autocomplete="off" class="ORG111.title   input_new half_angle_input   textInput enterIndex readonly">
+							<input type="hidden" value="{$vo['sourcemodel']}" name="sourcemodel" class="ORG111.name ">
+							<a lookupgroup="ORG111" href="__URL__/lookupGenerals" param="lookupchoice=4cefe3bc1c6f3c9e60128f4209b30d51&amp;newconditions=" class="icon_elm mid_icon_elm icon-plus"></a>
+							<a onclick="clearOrg('ORG111');" href="javascript:void(0);" class="icon_elm icon-trash" title="清空信息"></a>
+							</div><div class="display_none "></div>
+						</div>
+						<div class="col_1_2 form_group_lay field_lookup22 ">
+							<label class="label_new">分派人:</label>
+							<div class="tml-input-lookup">
+								<input type="text" readonly="readonly"  value="{$vo['alloterid']|getFieldBy='id','name','user'}"  class="user1.username input_new half_angle_input   textInput enterIndex readonly"/>
+								<input type="hidden" class="user1.userid"  name="alloterid" value="{$vo['alloterid']}"  />
+								<a class="icon_elm mid_icon_elm icon-plus checkUser" href="javascript:void(0);" data="user1;username,username;userid,userid;deptid,deptid;deptname,deptname"></a>
+								<a title="清空信息" class="icon_elm icon-trash"  href="javascript:void(0);" onclick="clearOrg('user1');"></a>
+							</div>
+						</div>
+						<div class="col_1_1 form_group_lay field_lookup22 ">
+							<label class="label_new">执行人:</label>
+							<div class="tml-input-lookup">
+								<input type="text" readonly="readonly"  value="{$vo['executorid']|getFieldBy='id','name','user'}" class="user.username input_new half_angle_input   textInput enterIndex readonly"/>
+								<input type="hidden" class="user.userid"  name="executorid" value="{$vo['executorid']}"  />
+								<a class="icon_elm mid_icon_elm icon-plus checkUser" href="javascript:void(0);" data="user;username,username;userid,userid;deptid,deptid;deptname,deptname"></a>
+								<a title="清空信息" class="icon_elm icon-trash"  href="javascript:void(0);" onclick="clearOrg('user1');"></a>
+							</div>
+						</div>
+						<div class="fieldset_show_box field_fieldset11">
+							 <legend class="fieldset_legend_toggle side-catalog-text side-catalog-firstanchor">
+								<b>报告信息</b><div class="tml_style_line tml_sl4 tml_slb_blue"></div>
+							</legend>
+						</div>
+						<div class="fieldsetjs_show_box field_fieldset10" >
+							<div class="col_1_1 form_group_lay ">
+								<label class="label_new">总报告:</label>
+								<div class="left tml-checkbox tml-w100">
+									<input type="checkbox" name="totalreport"
+									<if condition="$vo['totalreport'] eq 1">checked="checked"</if> value="1"/>
+								</div>
+							</div>
+							<div class="col_1_1 form_group_lay ">
+								<label class="label_new">显示顺序:</label>
+								<input type="text" name="totalsort" class="input_new"
+									value="{$vo.totalsort}">
+							</div>
+							<div class="col_1_1 form_group_lay ">
+								<label class="label_new">阶段报告:</label>
+								<input class="enterIndex" type="checkbox" value="1" <if condition="$vo['smallreport'] eq 1">checked="checked"</if> name="smallreport">
+							</div>
+							<div class="col_1_1 form_group_lay ">
+								<label class="label_new">显示顺序:</label>
+								<input type="text" name="smallsort" class="input_new" value="{$vo.smallsort}">
+							</div>
+							<div  id="pigeonhole" class="col_1_1 form_group_lay ">
+								<label class="label_new">是否归档:</label>
+								<div class="left tml-checkbox tml-w100">
+									<input type="checkbox" name="isfile" <if condition="$vo['isfile'] eq 1">checked="checked"</if> value="1"/>
+								</div>
+							</div>
+							<!-- select组件 start -->
+							<div class="col_1_1 form_group_lay field_zhutileixing combox_tree" >
+								<label class="label_new">归档类型:</label>
+								{:W('ShowSelect',array($vo['guidangleixing'],array('',array('type'=>'table',array('readonly'=>'1','targevent'=>'','actionName'=>'MisAutoCzk','names'=>'guidangleixing','defaultcheckitem'=>'','defaultval'=>'','defaulttext'=>'--请选择--','table'=>'mis_auto_zhlgn', 'id'=>'orderno','name'=>'name','conditions'=>'','parentid'=>'parentid','mulit'=>'0','isnextend'=>'1','treeheight'=>'','treewidth'=>'','key'=>'','isedit'=>'1','showtype'=>'0')))))}
+							</div>
+							<div class="col_1_2 form_group_lay ">
+								<label class="label_new">资料名称:</label>
+								<input type="text" name="ziliaomingcheng" class="input_new" value="{$vo.ziliaomingcheng}">
+							</div>
+						</div>
+						
+						
+						 <div class="tml-row">
+							
+						</div> 
+						<div class="tml_search_tips">
+							<div class="search_tips_title"><span class="icon-comments" style="margin-right: 5px"></span>友情提示：</div>
+							<p class="search_tips_center">1、客户主体、行业和产业链为非必填验证，及验证条件为逐次累加</p>
+							<p class="search_tips_center">2、例如：A、AB、ABC 都满足条件ABC</p>
+						</div>
+					</div>
+					<div class="formBar">
+						 <ul>
+						 	<li><button class="tml_formBar_btn tml_formBar_btn_blue enterIndex" type="submit">保存</button></li>
+						 </ul>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+<script>
+
+function lookupProjectDyCondition($this) {
+	var $this = $($this);
+	var $obj = navTab.getCurrentPanel();
+	//获取业务类型
+	var $type = $("#misprojectflowworkadd_supcategory", $obj).val();
+	//获取对应模板
+	var modelname = $("#misprojectflowworkformobj1").find(
+			"input[name='formobj']").val();
+
+	if (!isNullorEmpty(modelname)) {
+		alertMsg.error("对应模板必须");
+		return false;
+	}
+	$dycon = $(".js-itemId-lookupDyCondition", $obj).find(
+			"input[name='dycon']").val();
+	$rules = $(".js-itemId-lookupDyCondition", $obj).find(
+			"input[name='rules']").val();
+	$showrules = $(".js-itemId-lookupDyCondition", $obj).find(
+			"input[name='showrules']").val();
+	$rulesinfo = $(".js-itemId-lookupDyCondition", $obj).find(
+			"input[name='rulesinfo']").val();
+
+	var title = $this.attr("title");
+	var rel = "lookupDyCondition";
+	var options = {};
+	options.width = 750;
+	options.height = 440;
+	options.mask = eval("true");
+	options.param = {
+		modelname : modelname,
+		type : $type,
+		dycon : $dycon,
+		rules : $rules,
+		showrules : $showrules,
+		rulesinfo : $rulesinfo
+	};
+	var href = "__URL__/lookupDyCondition";
+	var url = unescape(href);
+	$.pdialog.open(url, rel, title, options);
+}
+function changeForm(val){
+	 if(val==1){
+		 document.getElementById('pigeonhole').style.display = "none";
+		  document.getElementById('misprojectflowworkformobj').style.display = "";
+	      document.getElementById('misprojectflowworkformobj1').style.display = "none";
+	      $('#formobj_dj').removeAttr("name");
+	      $('#formobj_fj').attr("name", "formobj");
+	      $('#misprojectflowworkcheckByInput1').removeClass("required");
+	      $('#misprojectflowworkcheckByInput').addClass("required");
+	}else{
+		document.getElementById('pigeonhole').style.display = "";
+		 document.getElementById('misprojectflowworkformobj1').style.display = "";
+	      document.getElementById('misprojectflowworkformobj').style.display = "none";
+	      $('#formobj_fj').removeAttr("name");
+	      $('#formobj_dj').attr("name", "formobj");
+	      $('#misprojectflowworkcheckByInput').removeClass("required");
+	      $('#misprojectflowworkcheckByInput1').addClass("required");
+	} 
+}
+
+function clearOrgname(name, classname) {
+	clearOrg(name);
+	$('div.' + classname).html('');
+}
+</script>

@@ -1,0 +1,83 @@
+﻿<script type="text/javascript">
+$(function(){
+	var conf = new Object();
+	var data = '{$list}';
+	conf.data =$.parseJSON(data);
+	conf.ids = '#missalepiadd_yiji,#missalepiadd_erji,#missalepiadd_sanji,#missalepiadd_siji';
+	conf.tag = 'yiji,erji,sanji,siji'; 
+	conf.pid = 'erjiid,sanjiid,sijiid';
+	conf.tex = 'name'; 
+	conf.val = 'id';  
+	$.linkage(conf); 
+});
+
+$(function(){
+	//var box = navTab.getCurrentPanel();
+	var box = $.pdialog.getCurrent();
+	$('a.nbm_add_item_sale_pll' , box).on('click',function(){
+		var  p = $(this).closest('div');
+		var order = p.next('div.tml-form-row');
+		var neworder=order.clone();
+		var curTag = neworder.find("select");
+		curTag.addClass('combox');
+		neworder.find("div.combox").remove();
+		neworder.find("label").after(curTag);
+		order.after(neworder);
+		$('div.nbm_add_item', box).initUI();
+		delitem();
+	});
+	
+	function delitem(){
+		$('div.nbm_add_item a.nbm_del_item_sale_pll' , box).on('click',function(){
+			if($('div.nbm_add_item').length>1){
+ 				var order = $(this).closest('div.tml-form-row');
+				order.remove();
+			}
+		});
+	}
+	
+});
+</script>
+<div class="page">
+	<div class="pageContent">
+	<form method="post" action="__URL__/insert/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,dialogAjaxDone)">
+		<div class="pageFormContent" layoutH="65">
+		 <fieldset>
+		<div class="tml-form-row">
+				<label>行业：</label>
+				 <select  name="professionid[]"   class="combox required "  id="missalepiadd_yiji"><option>--请选择--</option></select>   
+			
+				 <select  name="professionid[]"   class="combox required "  id="missalepiadd_erji"><option>--请选择--</option></select>
+			
+				 <select  name="professionid[]"   class="combox required "  id="missalepiadd_sanji"><option>--请选择--</option></select>
+			
+				 <select  name="professionid[]"   class="combox required "  id="missalepiadd_siji"><option>--请选择--</option></select>
+			</div>
+			<div class="tml-form-row">
+				<label>产业链：</label>				
+				 <select  name="industryid"   class="required combox">
+				 {:getDataBaseByHtml('mis_sale_industry')}
+				</select>	
+			</div>
+			<div class="tml-form-row">
+				<a href="javascript:void(0);" class="nbm_add_item_sale_pll">点击添加指标</a>
+			</div>
+			<div class="tml-form-row nbm_add_item">
+				<label>指标：</label>
+				 <select  name="indicatorid[]"   class=" combox">
+				<volist name="indicator" id="vos">
+					<option value='{$vos.id}'>{$vos.name}</option>
+				</volist>
+				</select>
+				<a href="javascript:void(0);" class="nbm_del_item_sale_pll" style="color:blue">删除</a>	
+			</div>			
+			<div class="tml-form-row">
+				<label>备注说明：</label>
+				<textarea  name="remark"  rows="4"></textarea>
+		</div>
+		</fieldset>
+		</div>
+		 {:W('ShowAction')}
+	</form>
+	</div>
+</div>

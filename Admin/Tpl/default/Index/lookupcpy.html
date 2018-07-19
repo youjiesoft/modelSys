@@ -1,0 +1,80 @@
+<style>
+.clear{ clear:both;}
+img {border:none;}
+ul,li{ list-style:none;}
+#s_left{ width:400px; float:right; margin-top:4px;}
+/*new*/
+.index_l{ background-color:#FFF; border-left:1px solid #b8d0d6; border-right:1px solid #b8d0d6;  border-bottom:1px solid #b8d0d6; margin-bottom:15px;  margin-left:15px; height:220px;}
+.index_c{ background:#eaf1f2; border-top:1px solid #b8d0d6; border-bottom:1px solid #b8d0d6; height:25px;}
+	.index_c h1{ font-size:14px; padding-left:5px; padding-top:6px; width:83%;}
+	.index_c img{ margin-top:-1px;}
+	.index_c p{ width:55px;}
+	.index_c li{ line-height:20px;}
+	.index_c ul{ margin-left:5px;}
+	.index_c span{ font-size:14px; padding-right:5px; font-weight:bold;}
+.r_title h4{ font-weight:100;}
+.r_title span{ color:#1d50a1;}
+.r_weather{ margin-top:5px;}
+.r_weather ul{ border:1px dashed #b8d0d6; height:30px; padding-top:3px;}
+.cl img{ margin-top:-5px;}
+#tododiv1{height:190px;width:100%;}
+.dhx_year_body table tr{ height:auto;}
+
+.lcan{ background:url(__PUBLIC__/Images/index/lcan.gif) no-repeat; width:231px; height:38px; margin:0 auto; text-align:center;}
+.lcan a{ line-height:30px; text-decoration:none;}
+.lcjt{ background:url(__PUBLIC__/Images/index/lcjt.gif) no-repeat; width:27px; height:45px; margin:0 auto;}
+</style>
+
+<script>
+initLayout();
+var sysTimeout = null;
+// 工作台更变
+function workbenchChange($id){
+	if(sysTimeout) clearTimeout(sysTimeout);
+	$("#xywrap").loadUrl("__URL__/lookupuserindex/workbench/"+$id);
+}
+$(function(){
+	$('#xyToolbar').bind('click', function(e){
+		if($(e.target).is('a') || $(e.target).parent().is('a')){
+			e.preventDefault();
+			$(this).find('li').removeClass('active');
+			$(e.target).closest('li').addClass('active');
+		}
+	});
+});
+function navToPanel(id){
+	if(sysTimeout) clearTimeout(sysTimeout);
+	$("#xywrap").loadUrl("__APP__/DesingForm/autoPanelShow/navid/"+id);
+}
+</script>
+<div id="new_index">
+    <div id="chart">
+		<div class="xymenu" id="xymenu">
+			<div class="xypt clearfix">
+				<div class="xytoolbar" id="xyToolbar">
+					<ul class="clearfix tml_myNav">
+						<!--TEMPLATE_NAV_START--><if condition="getSesstionContion(59)"><li><a class="" href="" onclick="navToPanel(59);"><span class="ui-select my-destop"></span></a><span>个人主页</span></li></if><if condition="getSesstionContion(60)"><li><a class="" href="" onclick="navToPanel(60);"><span class="ui-select my-app"></span></a><span>公司主页</span></li></if><if condition="getSesstionContion(144)"><li><a class="" href="" onclick="navToPanel(144);"><span class="ui-select my-destop"></span></a><span>公司主页L</span></li></if><if condition="getSesstionContion(66)"><li><a class="" href="" onclick="navToPanel(66);"><span class="ui-select my-folder"></span></a><span>行业资讯</span></li></if><if condition="getSesstionContion(63)"><li><a class="" href="" onclick="navToPanel(63);"><span class="ui-select my-box"></span></a><span>管理驾驶窗</span></li></if><if condition="getSesstionContion(67)"><li><a class="" href="" onclick="navToPanel(67);"><span class="ui-select my-folder"></span></a><span>功能盒子</span></li></if><!--TEMPLATE_NAV_END-->
+					</ul>
+				</div>
+			</div> 
+			
+			 
+			 <div class="xypc" layouth="48" id="xywrap">
+			<!--TEMPLATE_CONTENT_START--><li class="left panel_group_lay panel_4" title="代办工作统计" style="height:280px;{:A('UserOftenMenu')->getConfig()}"><div class="title"><span>代办工作统计</span></div><div class="desing_content">{:A('UserOftenMenu')->lookupworkinfo()}</div></li><li class="left panel_group_lay panel_5" title="提醒中心" style="height:280px;{:A('MisSystemRemind')->getConfig()}"><div class="title"><span>提醒中心</span></div><div class="desing_content">{:A('MisSystemRemind')->lookupmyRemindDis()}</div></li><li class="right panel_group_lay panel_3" title="日历" style="height:280px;{:A('MisSystemRemind')->getConfig()}"><div class="title"><span>日历</span></div><div class="desing_content">{:A('MisSystemRemind')->calder()}</div></li><li class="left panel_group_lay panel_6" title="各部门“各类型担保+创投”任务完成情况（按新发生项目个数）" style="height:500px;{:A('MisSystemPanelIbj')->getConfig()}"><div class="title"><span>各部门“各类型担保+创投”任务完成情况（按新发生项目个数）</span></div><div class="desing_content">{:A('MisSystemPanelIbj')->showPanel()}</div></li><li class="left panel_group_lay panel_6" title="各部门“各类型担保+创投”任务完成情况（按新发生放款金额）" style="height:500px;{:A('MisSystemPanelNiv')->getConfig()}"><div class="title"><span>各部门“各类型担保+创投”任务完成情况（按新发生放款金额）</span></div><div class="desing_content">{:A('MisSystemPanelNiv')->showPanel()}</div></li><li class="left panel_group_lay panel_6" title="公司放款走势图(个数)" style="height:500px;{:A('MisSystemPanelJha')->getConfig()}"><div class="title"><span>公司放款走势图(个数)</span></div><div class="desing_content">{:A('MisSystemPanelJha')->showPanel()}</div></li><li class="left panel_group_lay panel_6" title="公司放款走势图(金额)" style="height:500px;{:A('MisSystemPanelAoq')->getConfig()}"><div class="title"><span>公司放款走势图(金额)</span></div><div class="desing_content">{:A('MisSystemPanelAoq')->showPanel()}</div></li><li class="left panel_group_lay panel_12" title="常用" style="height:150px;{:A('UserOftenMenu')->getConfig()}"><div class="title"><span>常用</span></div><div class="desing_content">{:A('UserOftenMenu')->getOftenList()}</div></li><li class="left panel_group_lay panel_6" title="未读文档" style="height:220px;{:A('MisSystemPanelLtf')->getConfig()}"><div class="title"><span>未读文档</span></div><div class="desing_content">{:A('MisSystemPanelLtf')->showPanel()}</div></li><li class="left panel_group_lay panel_6" title="外出人员公告" style="height:220px;{:A('MisSystemPanelJvt')->getConfig()}"><div class="title"><span>外出人员公告</span></div><div class="desing_content">{:A('MisSystemPanelJvt')->showPanel()}</div></li><!--TEMPLATE_CONTENT_END-->
+			</div> 
+			<div class="xypb">
+			</div>
+		</div><!-- end xymenu -->
+    </div>
+    <div id="s_left" style="display:none;">
+        <volist id="app" name="aryapps">
+			<div class="index_l">
+				<div class="index_c">
+					<h1 class="">{$app['appname']}</h1>
+                    <div class="clear"></div>
+                </div>
+				<div class="modules_content index_z" url="{$app['apppath']}"></div>
+			</div>
+		</volist>
+    </div>
+</div>

@@ -1,0 +1,98 @@
+<div class="page">
+	<div class="pageContent">
+		<div class="pageFormContent" layoutH="40">
+            <div class="new_version_page">
+                <div class="new_version_page_header pageFormContent">项目信息</div>
+                <div class="new_version_page_content">
+                	<div class="fieldset_show_box field_fieldset14">
+						 <legend class="fieldset_legend_toggle side-catalog-text side-catalog-firstanchor">
+							<a></a><b>项目基础信息</b><div class="tml_style_line tml_sl4 tml_slb_blue"></div>
+						 </legend>
+					</div>
+                	<div class="fieldsetjs_show_box field_fieldset14" >
+						<table class="data-table" width="100%" cellspacing="0" style="line-height:32px;">
+                            <tbody>
+                            <tr>
+                                <td class="cell_left">项目名称:</td>
+                                <td class="cell_right" colspan="5"> {$projectInfo['id']|getFieldBy='id','name','mis_auto_kimpu'}</td>
+                            </tr>
+                            <tr>
+                                <td class="cell_left" width="12%">业务类型:</td>
+                                <td class="cell_right" width="21%">{$projectInfo['typeid']|getFieldBy='orderno','name','mis_project_flow_type','projectid',$projectInfo['id']}</td>
+                                <td class="cell_left" width="12%">项目编码:</td>
+                                <td class="cell_right" width="21%">{$projectInfo['orderno']}</td>
+                                <td class="cell_left" width="12%">主体:</td>
+                                <td class="cell_right" width="21%">{$projectInfo['zt']|getFieldBy='orderno','name','mis_sale_client_type'}</td>
+                            </tr>
+                            <tr>
+                                <td class="cell_left" width="12%">细分品类:</td>
+                                <td class="cell_right" width="21%">{$projectInfo['hy']|getFieldBy='orderno','name','mis_sale_profession'}</td>
+                                <td class="cell_left" width="12%">行业:</td>
+                                <td class="cell_right" width="21%">{$projectInfo['cyl']|getFieldBy='orderno','name','mis_sale_industry'}</td>
+                                <td class="cell_left" width="12%">客户</td>
+                                <td class="cell_right" width="21%">{$projectInfo['customerid']|getFieldBy='orderno','kehumingchen','MisAutoCbj'}</td>
+                            </tr>
+                            <tr>
+                            	<td class="cell_left" width="12%">主调</td>
+                                <td class="cell_right" width="21%">{$projectInfo['zd']|getFieldBy='id','name','user'}</td>
+                                <td class="cell_left" width="12%">立项部门</td>
+                                <td class="cell_right" width="21%">{$projectInfo['zddeptid']|getFieldBy='id','name','mis_system_department'}</td>
+                           		<td class="cell_left" width="12%">辅调:</td>
+                                <td class="cell_right" width="21%">{$provo['fudiao']|getFieldBy='id','name','user'}</td>
+                            </tr>
+                            <tr>
+                            	<td class="cell_left" width="12%">申请期限:</td>
+								<td class="cell_right" width="21%" >{$projectInfo['shenqingqixian']|unitExchange=###,month,month,3}</td>
+								<td class="cell_left" width="12%">申请金额:</td>
+								<td class="cell_right" width="21%" >{$projectInfo['shenqingjine']|unitExchange=###,yuan,wan,3}</td>
+								<td class="cell_left" width="12%">贷款用途:</td>
+								<td class="cell_right" width="21%" >{$projectInfo['daikuanyongtu']|getFieldBy='orderno','name','mis_auto_hgwtp'}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+					</div>
+					<div class="fieldset_show_box field_fieldset14">
+						 <legend class="fieldset_legend_toggle side-catalog-text side-catalog-firstanchor">
+							<a></a><b>项目组信息</b><div class="tml_style_line tml_sl4 tml_slb_blue"></div>
+						 </legend>
+					</div>
+                	<div class="fieldsetjs_show_box field_fieldset14" >
+                        <div class="dl_dd_dt_lay">
+                        	<volist name="info" id="ifvo">
+                        		<dl class="{$ifvo['class']}">
+	                                <dt>{$ifvo['name']}:     {$ifvo['username']}</dt>
+	                               <!--  <dd><span class="left">【{$ifvo['pmjuese']}】：{$ifvo['username']}</span></dd> -->
+		                            <if condition="$ifvo.user">
+		                           		 <table class="data-table left" width="30%" cellspacing="0" style="line-height:30px;">
+		                                	<tr>
+		                                		<th>姓名</th>
+		                                		<th>进入时间</th>
+		                                	</tr>
+				                            <tbody>
+					                            <volist name="ifvo.user" id="uservo">
+					                            	<tr>
+					                            		<td>{$uservo.zhixingren|getFieldBy="id",'name','user'}</td>
+					                            		<td>{$ifvo.jinrushijian|transTime}</td>
+					                            	</tr>
+					                            </volist>
+				                            </tbody>
+				                        </table>
+			                        </if>
+		                        </dl>
+                        	</volist>
+                        	<dl class="first_dl">
+                                <dt>项目协作成员:</dt>
+                                <volist name="useridArr" id="user">
+	                                <dd>
+	                                	<span class="left">【{$user|getFieldBy='id','name','user'}】</span>
+			                        </dd>
+                                </volist>
+                            </dl>
+                        </div>
+					</div>
+		           {:W('ShowAction')}
+			    </div>
+			</div>
+		</div>
+	</div>
+</div>
