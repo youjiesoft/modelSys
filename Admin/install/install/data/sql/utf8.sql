@@ -1,4 +1,4 @@
-CREATE TABLE `user` (
+CREATE TABLE `#__user` (
   `id` smallint(10) unsigned NOT NULL AUTO_INCREMENT,
   `account` varchar(64) DEFAULT NULL,
   `name` varchar(50) DEFAULT NULL,

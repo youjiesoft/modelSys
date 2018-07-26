@@ -105,19 +105,27 @@ function step3(&$install_error,&$install_recover){
             $install_error = '数据库连接失败';return;
         }
 
-    if($mysqli->get_server_info()> '5.0') {
-        $mysqli->query("CREATE DATABASE IF NOT EXISTS `$db_name` DEFAULT CHARACTER SET ".DBCHARSET);
-    } else {
-        $install_error = '数据库必须为MySQL5.0版本以上';return;
-    }
+
     if($mysqli->error) {
         $install_error = $mysqli->error;return ;
     }
     if($_POST['install_recover'] != 'yes' && ($query = $mysqli->query("SHOW TABLES FROM $db_name"))) {
         while($row = mysqli_fetch_array($query)) {
             if(preg_match("/^$db_prefix/", $row[0])) {
-                $install_error = '数据表已存在，继续安装将会覆盖已有数据';
+                $err='数据表已存在，继续安装将会覆盖已有数据';
+                $js= "<script type='text/javascript'>errm('.$err.');</script>";
+                echo  $js;
+                //$install_error = '数据表已存在，继续安装将会覆盖已有数据';
                 $install_recover = 'yes';
+                if($mysqli->get_server_info()> '5.0') {
+                    //$mysqli->query("drop DATABASE `$db_name`");
+//                    if($f){
+//                        $mysqli->query("drop DATABASE `$db_name`");
+//                    }
+                    $mysqli->query("CREATE DATABASE IF NOT EXISTS `$db_name` DEFAULT CHARACTER SET ".DBCHARSET);
+                } else {
+                    $install_error = '数据库必须为MySQL5.0版本以上';return;
+                }
                 return;
             }
         }
@@ -132,10 +140,24 @@ function step3(&$install_error,&$install_recover){
     $_charset = strtolower(DBCHARSET);
     $mysqli->select_db($db_name);
     $mysqli->set_charset($_charset);
-    $sql = file_get_contents("data/{$_charset}.sql");
+
+    $path = 'data/sql';
+    $result = scanFile($path);
+      $sql=null;
+    foreach ($result as $re){
+        //$sql .= file_get_contents($re);
+    }
+
+
     //判断是否安装测试数据
     if ($_POST['demo_data'] == '1'){
-        $sql .= file_get_contents("data/{$_charset}_add.sql");
+        $sql .= file_get_contents("data/sql_add/utf8_add.sql");
+    }
+
+    $path1 = 'data/sql_add';
+    $result1 = scanFile($path1);
+    foreach ($result1 as $re1){
+        $sql .= file_get_contents($re1);
     }
     $sql = str_replace("\r\n", "\n", $sql);
     runquery($sql,$db_prefix,$mysqli);
@@ -154,7 +176,7 @@ function step3(&$install_error,&$install_recover){
     //$mysqli->query("UPDATE {$db_prefix}setting SET value='".$sitename."' WHERE name='site_name'");
    
     //管理员账号密码
-    $mysqli->query("INSERT INTO user (`id`, `account`, `name`, `zhname`, `sex`, `duty_id`, `dept_id`, `role_id`, `auditduty`, `attachdept`, `attachrole`, `orderdisplay`, `knowledgedisplay`, `projectdisplay`, `password`, `bind_account`, `work_date`, `last_login_time`, `last_login_ip`, `login_count`, `login_error_count`, `verify`, `tel`, `mobile`, `mobilestatus`, `qq`, `email`, `remindid`, `reportmethod`, `remark`, `createtime`, `createid`, `operateid`, `updatetime`, `updateid`, `status`, `typeid`, `info`, `score`, `expertmanage`, `employeid`, `ispur`, `imgname`, `channel`, `isonline`, `sessionid`, `logintime`, `leavetime`, `companyid`, `departmentid`, `newmsg`, `newmsgtype`, `isnewmsg`, `sort`, `pinyin`, `projectdefset`, `loginnumstatus`, `questionpwd`, `solidpath`, `appdateils`, `sysdutyid`, `relationmodelname`, `anquandengji`, `shangji`, `usertype`, `txsj`, `yongyouorderno`, `zhpassword`) VALUES ('1', '$username', '管理员', '管理员', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2', NULL, '0', '".md5($password)."', NULL, NULL, '".time()."', '127.0.0.1', '4208', '0', NULL, NULL, NULL, '0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', NULL, NULL, '1', '1', NULL, '0', '0', NULL, '0', NULL, NULL, '1', '4dq56jpdgf9ordt2r3nc1c7gg3', '1531964859', NULL, NULL, '0', '1', '1', '1', NULL, 'GLY', '0', '0', NULL, NULL, NULL, '0', '0', NULL, NULL, '1', NULL, NULL, 'hndgs20180804');");
+    $mysqli->query("INSERT INTO user (`id`, `account`, `name`, `zhname`, `sex`, `duty_id`, `dept_id`, `role_id`, `auditduty`, `attachdept`, `attachrole`, `orderdisplay`, `knowledgedisplay`, `projectdisplay`, `password`, `bind_account`, `work_date`, `last_login_time`, `last_login_ip`, `login_count`, `login_error_count`, `verify`, `tel`, `mobile`, `mobilestatus`, `qq`, `email`, `remindid`, `reportmethod`, `remark`, `createtime`, `createid`, `operateid`, `updatetime`, `updateid`, `status`, `typeid`, `info`, `score`, `expertmanage`, `employeid`, `ispur`, `imgname`, `channel`, `isonline`, `sessionid`, `logintime`, `leavetime`, `companyid`, `departmentid`, `newmsg`, `newmsgtype`, `isnewmsg`, `sort`, `pinyin`, `projectdefset`, `loginnumstatus`, `questionpwd`, `solidpath`, `appdateils`, `sysdutyid`, `relationmodelname`, `anquandengji`, `shangji`, `usertype`, `txsj`, `yongyouorderno`, `zhpassword`) VALUES ('1', '$username', '管理员', '管理员', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2', NULL, '0', '".md5($password)."', NULL, NULL, '".time()."', '127.0.0.1', '4208', '0', NULL, NULL, NULL, '0', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '0', NULL, NULL, '1', '1', NULL, '0', '0', NULL, '0', NULL, NULL, '1', 'e10adc3949ba59abbe56e057f20f883e', '1531964859', NULL, NULL, '0', '1', '1', '1', NULL, 'GLY', '0', '0', NULL, NULL, NULL, '0', '0', NULL, NULL, '1', NULL, NULL, 'hndgs20180804');");
 
 
     //测试数据
@@ -168,6 +190,23 @@ function step3(&$install_error,&$install_recover){
     exit();
 }
 //execute sql
+
+function scanFile($path) {
+    global $result;
+    $files = scandir($path);
+    foreach ($files as $file) {
+        if ($file != '.' && $file != '..') {
+            if (is_dir($path . '/' . $file)) {
+                scanFile($path . '/' . $file);
+            } else {
+                $result[] = $path.'/'.basename($file);
+
+            }
+        }
+
+    }
+    return $result;
+}
 function runquery($sql, $db_prefix, $mysqli) {
 //  global $lang, $tablepre, $db;
     if(!isset($sql) || empty($sql)) return;
@@ -183,18 +222,32 @@ function runquery($sql, $db_prefix, $mysqli) {
         $num++;
     }
     unset($sql);
+
     foreach($ret as $query) {
-        $query = trim($query);
+
+        //$query = trim($query);
         if($query) {
             if(substr($query, 0, 12) == 'CREATE TABLE') {
                 $line = explode('`',$query);
                 $data_name = $line[1];
-                showjsmessage('数据表  '.$data_name.' ... 创建成功');
-                $mysqli->query(droptable($data_name));
-                $mysqli->query($query);
+               // $f=$mysqli->query(droptable($data_name));
+                $flag = $mysqli->query($query);
+                if($flag){
+                    showjsmessage('数据表  '.$data_name.' ... 创建<span style="color: green;">成功</span>');
+                }else{
+                    showjsmessage('<span style="color: red; font-weight: bold;">数据表  '.$data_name.' ... 创建失败</span><br>'.$query);
+
+                }
+
                 unset($line,$data_name);
-            } else {
-                $mysqli->query($query);
+            }else {
+                $flag=$mysqli->query($query);
+                if($flag){
+
+                }else{
+                    showjsmessage($query);
+
+                }
             }
         }
     }
@@ -205,6 +258,7 @@ function showjsmessage($message) {
     flush();
     ob_flush();
 }
+
 //写入config文件
 function write_config($url) {
     extract($GLOBALS, EXTR_SKIP);
@@ -232,5 +286,5 @@ function write_config($url) {
     $configfile = str_replace("===db_pwd===",       $db_pwd, $configfile);
     $configfile = str_replace("===db_name===",      $db_name, $configfile);
     $configfile = str_replace("===db_port===",      $db_port, $configfile);
-    @file_put_contents('../../Conf/db1.inc.php', $configfile);
+    @file_put_contents('../../Conf/db.inc.php', $configfile);
 }

@@ -1,0 +1,20 @@
+CREATE TABLE `mis_hr_job_info` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `deptid` int(10) DEFAULT NULL COMMENT '部门ID',
+  `name` varchar(40) DEFAULT NULL COMMENT '岗位名称',
+  `rolegroup_id` int(10) DEFAULT NULL COMMENT '关联授权组ID rolegroup',
+  `sort` int(5) DEFAULT NULL COMMENT '排序',
+  `remark` varchar(200) DEFAULT NULL COMMENT '备注',
+  `status` tinyint(1) DEFAULT '1' COMMENT '状态',
+  `companyid` int(10) DEFAULT '0' COMMENT '公司ID',
+  `departmentid` int(10) DEFAULT '0' COMMENT '部门ID',
+  `createid` int(10) DEFAULT NULL COMMENT '创建人',
+  `createtime` int(11) DEFAULT NULL COMMENT '创建时间',
+  `updateid` int(10) DEFAULT NULL COMMENT '修改人',
+  `updatetime` int(11) DEFAULT NULL COMMENT '修改时间',
+  `sysdutyid` int(10) DEFAULT '0' COMMENT 'èŒçº§ID',
+  `relationmodelname` varchar(100) DEFAULT '0' COMMENT '关系型表单关联model',
+  `yongyouorderno` varchar(100) DEFAULT NULL COMMENT '用友编码',
+  PRIMARY KEY (`id`),
+  KEY `IDX_mis_hr_job_info_employeid` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

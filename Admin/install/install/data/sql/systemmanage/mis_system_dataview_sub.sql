@@ -1,0 +1,22 @@
+CREATE TABLE `mis_system_dataview_sub` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `masid` int(11) DEFAULT NULL COMMENT '数据masid',
+  `field` varchar(50) DEFAULT NULL COMMENT '字段',
+  `otherfield` varchar(50) DEFAULT NULL COMMENT '别名',
+  `tablename` varchar(50) DEFAULT NULL COMMENT '表名',
+  `status` int(1) DEFAULT '1' COMMENT '状态',
+  `funname` varchar(100) DEFAULT NULL COMMENT 'fun 函数名称',
+  `title` varchar(100) DEFAULT NULL COMMENT '字段中文名',
+  `china` varchar(100) DEFAULT NULL COMMENT '原表里中文字段名',
+  `isshow` varchar(200) DEFAULT '0' COMMENT 'lookup显示字段',
+  `isback` int(1) DEFAULT '0' COMMENT '带回字段',
+  `funfield` text COMMENT 'fun  函数参数',
+  `backfield` text COMMENT '带回字段',
+  `islistshow` int(1) DEFAULT '0' COMMENT '列是否显示',
+  `funcdata` text COMMENT '关联函数参数列表',
+  `dataval` varchar(200) DEFAULT '0' COMMENT '存储字段 1是',
+  `funccheck` tinyint(1) DEFAULT NULL COMMENT '是否转换',
+  `datasort` varchar(100) DEFAULT NULL COMMENT '排序字段',
+  `sorttype` varchar(10) DEFAULT NULL COMMENT '排序类型 asc升序 desc降序',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=23254 DEFAULT CHARSET=utf8;

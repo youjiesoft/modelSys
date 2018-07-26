@@ -1,0 +1,20 @@
+CREATE TABLE `mis_system_data_access_model_quote` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `actionname` varchar(100) DEFAULT NULL COMMENT '模块名称',
+  `quotefield` text COMMENT '对应字段',
+  `quotetable` text COMMENT '表',
+  `quoteaction` text COMMENT '控制模块名称',
+  `quotetype` text COMMENT '字段类型（lookup,select,radio,checkbox）',
+  `quoteformid` int(11) DEFAULT NULL,
+  `quotepropertyid` int(11) DEFAULT NULL,
+  `savefield` varchar(100) DEFAULT NULL COMMENT '存储字段',
+  `createtime` int(11) DEFAULT NULL COMMENT '创建时间',
+  `createid` int(10) DEFAULT NULL COMMENT '创建人',
+  `updatetime` int(11) DEFAULT NULL COMMENT '修改时间',
+  `updateid` int(10) DEFAULT NULL COMMENT '修改人',
+  `status` int(1) DEFAULT '1' COMMENT '状态',
+  `companyid` int(10) DEFAULT '0' COMMENT '公司ID',
+  `departmentid` int(10) DEFAULT '0' COMMENT '部门ID',
+  `sysdutyid` int(10) DEFAULT '0' COMMENT 'èŒçº§ID',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
