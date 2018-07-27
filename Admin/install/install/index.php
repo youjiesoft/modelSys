@@ -112,24 +112,22 @@ function step3(&$install_error,&$install_recover){
     if($_POST['install_recover'] != 'yes' && ($query = $mysqli->query("SHOW TABLES FROM $db_name"))) {
         while($row = mysqli_fetch_array($query)) {
             if(preg_match("/^$db_prefix/", $row[0])) {
-                $err='数据表已存在，继续安装将会覆盖已有数据';
-                $js= "<script type='text/javascript'>errm('.$err.');</script>";
-                echo  $js;
-                //$install_error = '数据表已存在，继续安装将会覆盖已有数据';
-                $install_recover = 'yes';
-                if($mysqli->get_server_info()> '5.0') {
-                    //$mysqli->query("drop DATABASE `$db_name`");
-//                    if($f){
-//                        $mysqli->query("drop DATABASE `$db_name`");
-//                    }
-                    $mysqli->query("CREATE DATABASE IF NOT EXISTS `$db_name` DEFAULT CHARACTER SET ".DBCHARSET);
-                } else {
-                    $install_error = '数据库必须为MySQL5.0版本以上';return;
-                }
+                $install_error = '数据库已存在，请修改';
                 return;
             }
         }
+    }else{
+        $_POST['install_recover'] ='yes';
+        if($mysqli->get_server_info()> '5.0') {
+            $mysqli->query("CREATE DATABASE IF NOT EXISTS `$db_name` DEFAULT CHARACTER SET ".DBCHARSET);
+        } else {
+            $install_error = '数据库必须为MySQL5.0版本以上';return;
+        }
     }
+
+
+
+
 
     require ('step_4.php');
     $sitepath = strtolower(substr($_SERVER['PHP_SELF'], 0, strrpos($_SERVER['PHP_SELF'], '/')));
@@ -160,9 +158,12 @@ function step3(&$install_error,&$install_recover){
         $sql .= file_get_contents($re1);
     }
     $sql = str_replace("\r\n", "\n", $sql);
-    runquery($sql,$db_prefix,$mysqli);
-    showjsmessage('初始化数据 ... 成功 ');
-
+    $boo = runquery($sql,$db_prefix,$mysqli);
+    if($boo=='0'){
+        showjsmessage('<span style="color: red;font-weight: bolder;">操作失败</span>');
+    }else{
+        showjsmessage('<span style="color: green;font-weight: bolder;">操作成功</span>');
+    }
     /**
      * 转码
      */
@@ -180,7 +181,7 @@ function step3(&$install_error,&$install_recover){
 
 
     //测试数据
-    if ($_POST['demo_data'] == '1'){
+    if ($_POST['demo_datademo_data'] == '1'){
         //$sql .= file_get_contents("data/{$_charset}_add.sql");
     }
     //新增一个标识文件，用来屏蔽重新安装
@@ -207,7 +208,7 @@ function scanFile($path) {
     }
     return $result;
 }
-function runquery($sql, $db_prefix, $mysqli) {
+function  runquery($sql, $db_prefix, $mysqli) {
 //  global $lang, $tablepre, $db;
     if(!isset($sql) || empty($sql)) return;
     $sql = str_replace("\r", "\n", str_replace('#__', $db_prefix, $sql));
@@ -230,27 +231,33 @@ function runquery($sql, $db_prefix, $mysqli) {
             if(substr($query, 0, 12) == 'CREATE TABLE') {
                 $line = explode('`',$query);
                 $data_name = $line[1];
-               // $f=$mysqli->query(droptable($data_name));
+                //$f=$mysqli->query(droptable($data_name));
                 $flag = $mysqli->query($query);
                 if($flag){
                     showjsmessage('数据表  '.$data_name.' ... 创建<span style="color: green;">成功</span>');
                 }else{
-                    showjsmessage('<span style="color: red; font-weight: bold;">数据表  '.$data_name.' ... 创建失败</span><br>'.$query);
-
+                    showjsmessage('<span style="color: red; font-weight: bold;">数据表  '.$data_name.' ... 创建失败<br>创建终止</span>');
+                    return "0";
+                    break ;
                 }
 
                 unset($line,$data_name);
-            }else {
-                $flag=$mysqli->query($query);
-                if($flag){
-
-                }else{
-                    showjsmessage($query);
-
+            }else if(substr($query, 0, 11) == 'INSERT INTO') { //判断添加数据的表是否存在
+                $line = explode('`',$query);
+                $data_name = $line[1];
+                //$f=$mysqli->query(droptable($data_name));
+                $flag = $mysqli->query($query);
+                if(!$flag){
+                    showjsmessage('<span style="color: red; font-weight: bold;">数据表  '.$data_name.' ... 不存在，添加失败<br>添加数据终止</span>');
+                    return "0";
+                    break ;
                 }
+                unset($line,$data_name);
             }
+
         }
     }
+
 }
 //抛出JS信息
 function showjsmessage($message) {

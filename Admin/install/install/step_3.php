@@ -14,11 +14,7 @@ $(document).ready(function(){
     radioClass: 'iradio_flat-green'
   });
 });
-function errm(message) {
-    var flag=confirm(message);
-    return flag;
 
-}
 $(function(){
     jQuery.validator.addMethod("lettersonly", function(value, element) {
         return this.optional(element) || /^[^:%,'\*\"\s\<\>\&]+$/i.test(value);
@@ -49,7 +45,9 @@ $(function(){
         $('#install_form').submit();
     });
 
+
 });
+
 </script>
 </head>
 <body>
@@ -84,7 +82,7 @@ $(function(){
         <div>
           <label>数据库名</label>
           <span>
-          <input type="text" name="db_name" maxlength="40" value="<?php echo $_POST['db_name'] ? $_POST['db_name'] : 'project';?>">
+          <input type="text"  name="db_name" maxlength="40" value="<?php echo $_POST['db_name'] ? $_POST['db_name'] : 'project';?>"  onkeyup="showHint(this.value)">
           </span> <em></em></div>
         <div>
           <label>数据库用户名</label>
@@ -142,7 +140,8 @@ $(function(){
           </span> <em>确保两次输入的密码一致</em></div>
       </fieldset>
     </div>
-    <div class="btn-box"><a href="index.php?step=2" class="btn btn-primary">上一步</a><a id="next" href="javascript:void(0);" class="btn btn-primary">下一步</a></div>
+    <div class="btn-box"><button href="index.php?step=2" class="btn btn-primary"style="height: 50px;">上一步</button>
+        <button id="next" href="javascript:void(0);" class="btn btn-primary" style="height: 50px;">下一步</button></div>
   </form>
 </div>
 <?php echo $html_footer;?>
