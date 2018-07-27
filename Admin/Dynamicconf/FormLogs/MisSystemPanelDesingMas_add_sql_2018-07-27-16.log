@@ -1,0 +1,4 @@
+Time 2018-07-27 16:36:15 : INSERT INTO `mis_system_panel_desing_mas` (`id`,`name`,`title`,`type`,`isshow`,`createid`,`createtime`) VALUES (0,'pfr',',,,,n',1,1,1,1532680575)
+Time 2018-07-27 16:36:19 : INSERT INTO `mis_system_panel_desing_mas` (`id`,`name`,`title`,`type`,`isshow`,`createid`,`createtime`) VALUES (0,'pfr',',,,,n',0,1,1,1532680579)
+Time 2018-07-27 16:36:28 : INSERT INTO `mis_system_panel_desing_mas` (`id`,`name`,`title`,`type`,`isshow`,`createid`,`createtime`) VALUES (0,'pfr','哈哈',0,1,1,1532680588)
+Time 2018-07-27 16:36:37 : INSERT INTO `mis_system_panel_desing_mas` (`id`,`name`,`title`,`type`,`isshow`,`createid`,`createtime`) VALUES (0,'pfr','哈哈',0,1,1,1532680597)

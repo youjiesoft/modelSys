@@ -1,0 +1,8 @@
+Time 2018-07-23 15:46:17 : You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') )' at line 1
+ [ SQL语句 ] : UPDATE `mis_system_templete_manage` SET `zhuangtai`=0 WHERE ( `id` IN () )
+Time 2018-07-23 15:46:20 : You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') )' at line 1
+ [ SQL语句 ] : UPDATE `mis_system_templete_manage` SET `zhuangtai`=0 WHERE ( `id` IN () )
+Time 2018-07-23 15:46:28 : You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') )' at line 1
+ [ SQL语句 ] : UPDATE `mis_system_templete_manage` SET `zhuangtai`=0 WHERE ( `id` IN () )
+Time 2018-07-23 15:47:26 : You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') )' at line 1
+ [ SQL语句 ] : UPDATE `mis_system_templete_manage` SET `zhuangtai`=0 WHERE ( `id` IN () )

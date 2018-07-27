@@ -1,0 +1,2 @@
+Time 2018-07-23 16:55:45 : INSERT INTO `mis_system_dataview_mas` (`name`,`modelname`,`title`,`spellsql`) VALUES ('View','','','')
+Time 2018-07-23 16:57:49 : INSERT INTO `mis_system_dataview_mas` (`name`,`modelname`,`title`,`spellsql`) VALUES ('fsdfView','','sd','select * from user')

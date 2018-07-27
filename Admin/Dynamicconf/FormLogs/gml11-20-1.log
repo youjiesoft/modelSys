@@ -1,0 +1,2 @@
+Time 2018-07-24 09:48:27 : SELECT * FROM `process_relation_children` WHERE ( `zitablename` = 'ProcessManageIntervention' ) AND ( `zitableid` = null ) AND ( `createid` = null ) LIMIT 1  
+Time 2018-07-24 09:48:27 : 

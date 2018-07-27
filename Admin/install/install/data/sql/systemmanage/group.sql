@@ -18,4 +18,4 @@ CREATE TABLE `group` (
   `sysdutyid` int(10) DEFAULT '0' COMMENT 'èŒçº§ID',
   `relationmodelname` varchar(100) DEFAULT '0' COMMENT '关系型表单关联model',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8 COMMENT='应用项目组';
+) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8 COMMENT='应用项目组';

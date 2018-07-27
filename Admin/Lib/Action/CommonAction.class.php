@@ -1467,7 +1467,7 @@ EOF;
                     $voList = $model->where($map)->order(  $order." ".$sort)->limit($limitval)->select();
                 }
             }
-            //echo $model->getLastSql();
+            echo $model->getLastSql();
             logs($model->getLastSql(),'listSql');
             $htmls.=<<<EOF
 				<script>
@@ -1476,7 +1476,7 @@ EOF;
 EOF;
 // 			 echo $htmls;
 // 			dump($voList);
-//			echo $model->getLastSql();
+			echo $model->getLastSql();
             if($echoSql=='list' && $_SESSION['a']==1){
                 echo $model->getLastSql();
             }

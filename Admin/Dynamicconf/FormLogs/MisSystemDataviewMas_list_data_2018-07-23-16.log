@@ -1,0 +1,4 @@
+Time 2018-07-23 16:55:45 : ----------1---------array('name'=>'View','modelname'=>'','title'=>'','spellsql'=>'','createid'=>'1','createtime'=>'1532336145','companyid'=>'0','departmentid'=>'0','sysdutyid'=>'0',)
+Time 2018-07-23 16:55:45 : ----------2---------array('name'=>'View','modelname'=>'','title'=>'','spellsql'=>'','createid'=>'1','createtime'=>'1532336145','companyid'=>'0','departmentid'=>'0','sysdutyid'=>'0',)
+Time 2018-07-23 16:57:49 : ----------1---------array('name'=>'fsdfView','modelname'=>'','title'=>'sd','spellsql'=>'select * from user','createid'=>'1','createtime'=>'1532336269','companyid'=>'0','departmentid'=>'0','sysdutyid'=>'0',)
+Time 2018-07-23 16:57:49 : ----------2---------array('name'=>'fsdfView','modelname'=>'','title'=>'sd','spellsql'=>'select * from user','createid'=>'1','createtime'=>'1532336269','companyid'=>'0','departmentid'=>'0','sysdutyid'=>'0',)

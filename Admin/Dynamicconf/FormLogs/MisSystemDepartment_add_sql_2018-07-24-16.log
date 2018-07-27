@@ -1,0 +1,2 @@
+Time 2018-07-24 16:02:53 : INSERT INTO `mis_system_department` (`orderno`,`name`,`manageid`,`status`,`sort`,`category`,`quyu`,`yongyouorderno`,`createid`,`createtime`,`sysdutyid`) VALUES ('01','a',0,1,0,0,'','',1,1532419373,0)
+Time 2018-07-24 16:04:11 : INSERT INTO `mis_system_department` (`orderno`,`name`,`manageid`,`status`,`sort`,`category`,`quyu`,`yongyouorderno`,`createid`,`createtime`,`sysdutyid`) VALUES ('01','a',0,1,0,0,'','',1,1532419450,0)

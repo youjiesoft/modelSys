@@ -67,9 +67,9 @@ switch ($_GET['step']) {
 		
 		break;
 	case 5:
-		$sitepath = strtolower(substr($_SERVER['PHP_SELF'], 0, strrpos($_SERVER['PHP_SELF'], '/')));
-        $sitepath = str_replace('install',"",$sitepath);
-        $auto_site_url = strtolower('http://'.$_SERVER['HTTP_HOST'].$sitepath);
+		$sitepath = substr($_SERVER['PHP_SELF'], 0, strrpos($_SERVER['PHP_SELF'], '/'));
+        $sitepath = str_replace('/install',"",$sitepath);
+        $auto_site_url = 'http://'.$_SERVER['HTTP_HOST'].$sitepath;
 		break;
 	default:
 		# code...
@@ -130,7 +130,7 @@ function step3(&$install_error,&$install_recover){
 
 
     require ('step_4.php');
-    $sitepath = strtolower(substr($_SERVER['PHP_SELF'], 0, strrpos($_SERVER['PHP_SELF'], '/')));
+    $sitepath =substr($_SERVER['PHP_SELF'], 0, strrpos($_SERVER['PHP_SELF'], '/'));
     $sitepath = str_replace('install',"",$sitepath);
     $auto_site_url = strtolower('http://'.$_SERVER['HTTP_HOST'].$sitepath);
     write_config($auto_site_url);
@@ -242,7 +242,18 @@ function  runquery($sql, $db_prefix, $mysqli) {
                 }
 
                 unset($line,$data_name);
-            }else if(substr($query, 0, 11) == 'INSERT INTO') { //判断添加数据的表是否存在
+            }
+
+        }
+    }
+    addtable($ret,$mysqli);
+
+}
+function addtable($ret,$mysqli){
+    showjsmessage('<font style="color:grey;">正在添加数据——————————————</font>');
+    foreach($ret as $query) {
+        if($query) {
+            if(substr($query, 0, 11) == 'INSERT INTO') { //判断添加数据的表是否存在
                 $line = explode('`',$query);
                 $data_name = $line[1];
                 //$f=$mysqli->query(droptable($data_name));
@@ -250,11 +261,10 @@ function  runquery($sql, $db_prefix, $mysqli) {
                 if(!$flag){
                     showjsmessage('<span style="color: red; font-weight: bold;">数据表  '.$data_name.' ... 不存在，添加失败<br>添加数据终止</span>');
                     return "0";
-                    break ;
+                    break;
                 }
                 unset($line,$data_name);
             }
-
         }
     }
 
@@ -269,12 +279,11 @@ function showjsmessage($message) {
 //写入config文件
 function write_config($url) {
     extract($GLOBALS, EXTR_SKIP);
-    $config = 'data/config.php';
-    $configfile = @file_get_contents($config);
-    $configfile = trim($configfile);
+    $file = '../../../Admin/Conf/db.inc.php';
+    $conf = '../../../Admin/Conf/configbase.php';
+    $configfile = file_get_contents($conf);
     $configfile = substr($configfile, -2) == '?>' ? substr($configfile, 0, -2) : $configfile;
     $charset = 'UTF-8';
-    echo
     $db_host = $_POST['db_host'];
     $db_port = $_POST['db_port'];
     $db_user = $_POST['db_user'];
@@ -293,5 +302,6 @@ function write_config($url) {
     $configfile = str_replace("===db_pwd===",       $db_pwd, $configfile);
     $configfile = str_replace("===db_name===",      $db_name, $configfile);
     $configfile = str_replace("===db_port===",      $db_port, $configfile);
-    @file_put_contents('../../Conf/db.inc.php', $configfile);
+    file_put_contents($file, $configfile);
+
 }

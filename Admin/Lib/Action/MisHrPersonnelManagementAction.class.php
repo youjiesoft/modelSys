@@ -35,7 +35,7 @@ class MisHrPersonnelManagementAction extends MisHrPersonnelVoViewAction{
 			$deptmap=array();
 			$deptmap['companyid']=$_REQUEST['companyid'];
 			$map['companyid']=$deptmap['companyid'];
-		} 
+		}
 		$deptmap["status"]=1;
 		$deptlist=$dptmodel->where($deptmap)->select();
 		//得到部门编号
@@ -57,12 +57,12 @@ class MisHrPersonnelManagementAction extends MisHrPersonnelVoViewAction{
 				$qx_name = substr($name,0, -4);
 			}
 		//验证浏览及权限
-			if( !isset($_SESSION['a']) ){				
+			if( !isset($_SESSION['a']) ){
 				if( $_SESSION[strtolower($qx_name.'_'.ACTION_NAME)]!=1 ){
 					if( $_SESSION[strtolower($qx_name.'_'.ACTION_NAME)]==2 ){////判断公司权限
 						//查询该部门及子部门
 						$map["companyid"]=$_SESSION['companyid'];
-						
+
 					}else if($_SESSION[strtolower($qx_name.'_'.ACTION_NAME)]==3){//判断部门权限
 						//查询该部门人员
 						$map['deptid']=$_SESSION['user_dep_id'];
@@ -107,11 +107,15 @@ class MisHrPersonnelManagementAction extends MisHrPersonnelVoViewAction{
 			$this->display('regularemployee');
 		}
 	}
+
+
+
 	public function addleave(){
 		$id=$_GET['id'];
 		if($id){
 			$model = D ('MisHrRegularEmployeeView');
 			$volist = $model->where("mis_hr_personnel_person_info.status=1 and    mis_hr_personnel_person_info.id=".$id)->find();
+            $model->getLastSql();
 			$this->assign('volist',$volist);
 		}
 		//查询岗位类别
@@ -201,12 +205,13 @@ class MisHrPersonnelManagementAction extends MisHrPersonnelVoViewAction{
 		//$this->assign("worktypeList",$worktypeList);
 		//查询岗位信息，判断是否选择了人员
 		//根据人员部门获取部门下面的岗位
-		
+
 		$pcmozhiye = D("Duty");//职位表
 		$pcarrzhiwei = $pcmozhiye->where("status = 1")->getField("id,name");//查询职位
 		$this->assign ( 'zhiwei', $pcarrzhiwei );
 		//查询岗位异动类型
 		$model=D("Typeinfo");
+
 		$list=$model->where("typeid=2 and pid=11")->select();
 		$this->assign ('tranlist', $list );
 		$pcmodel = D("MisSystemDepartment");//部门 表
@@ -274,13 +279,13 @@ class MisHrPersonnelManagementAction extends MisHrPersonnelVoViewAction{
 				break;
 		}
 	}
-	/**
-	 * @Title: importconfig
-	 * @Description: todo(字段配置)
-	 * @author renling
-	 * @date 2013-11-25 上午11:40:54
-	 * @throws
-	 */
+//	/**
+//	 * @Title: importconfig
+//	 * @Description: todo(字段配置)
+//	 * @author renling
+//	 * @date 2013-11-25 上午11:40:54
+//	 * @throws
+//	 */
 	public  function importconfig(){
 		$importconfig=$_POST['importconfig'];
 		//如果没有配置字段默认导入全部字段
@@ -342,7 +347,7 @@ class MisHrPersonnelManagementAction extends MisHrPersonnelVoViewAction{
 				$saveconfigMap['updateid']=$_SESSION[C('USER_AUTH_KEY')];
 				$saveconfigMap['updatetime']=time();
 				$result=$MisImportFieldconfigModel->save($saveconfigMap);
-					
+
 			}else{	 //增加
 				$saveconfigMap['createid']=$_SESSION[C('USER_AUTH_KEY')];
 				$saveconfigMap['createtime']=time();
@@ -490,6 +495,7 @@ class MisHrPersonnelManagementAction extends MisHrPersonnelVoViewAction{
 							if(trim($v['C'])=="男"){
 								$saveMap['sex']='1';
 							}else if(trim($v['C'])=="女"){
+								$saveMap['sex']='0';
 								$saveMap['sex']='0';
 							}
 							$chinaid=$v['E'];//18位身份证号
@@ -698,6 +704,7 @@ class MisHrPersonnelManagementAction extends MisHrPersonnelVoViewAction{
 		$this->display('viewInfo');
 
 	}
+
 	public function delete() {
 		//删除指定记录
 		$model = D ('MisHrRegularEmployee');
@@ -744,7 +751,7 @@ class MisHrPersonnelManagementAction extends MisHrPersonnelVoViewAction{
 			}
 			//验证浏览及权限
 			if( !isset($_SESSION['a']) ){
-				$map=D('User')->getAccessfilter($qx_name,$map);	
+				$map=D('User')->getAccessfilter($qx_name,$map);
 			}
 		}
 		if($_POST["keyword"]){

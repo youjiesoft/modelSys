@@ -6,7 +6,7 @@
  * @author yangxi
  */
 class MisSystemCompanyModel extends CommonModel{
-    protected $trueTableName = 'mis_system_company';
+        protected $trueTableName = 'mis_system_company';
 
     public $_auto	=array(
     		array('createid','getMemberId',self::MODEL_INSERT,'callback'),

@@ -1,0 +1,4 @@
+Time 2018-07-24 16:02:53 : ----------1---------array('orderno'=>'01','name'=>'a','manageid'=>'','status'=>'1','sort'=>'','category'=>'','quyu'=>'','yongyouorderno'=>'','createid'=>'1','createtime'=>'1532419373','sysdutyid'=>'0',)
+Time 2018-07-24 16:02:53 : ----------2---------array('orderno'=>'01','name'=>'a','manageid'=>'','status'=>'1','sort'=>'','category'=>'','quyu'=>'','yongyouorderno'=>'','createid'=>'1','createtime'=>'1532419373','sysdutyid'=>'0',)
+Time 2018-07-24 16:04:10 : ----------1---------array('orderno'=>'01','name'=>'a','manageid'=>'','status'=>'1','sort'=>'','category'=>'','quyu'=>'','yongyouorderno'=>'','createid'=>'1','createtime'=>'1532419450','sysdutyid'=>'0',)
+Time 2018-07-24 16:04:11 : ----------2---------array('orderno'=>'01','name'=>'a','manageid'=>'','status'=>'1','sort'=>'','category'=>'','quyu'=>'','yongyouorderno'=>'','createid'=>'1','createtime'=>'1532419450','sysdutyid'=>'0',)
