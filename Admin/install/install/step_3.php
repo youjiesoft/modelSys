@@ -82,7 +82,7 @@ $(function(){
         <div>
           <label>数据库名</label>
           <span>
-          <input type="text"  name="db_name" maxlength="40" value="<?php echo $_POST['db_name'] ? $_POST['db_name'] : 'project';?>"  onkeyup="showHint(this.value)">
+          <input type="text"  name="db_name" maxlength="40" value="<?php echo $_POST['db_name'] ?>"  onkeyup="showHint(this.value)">
           </span> <em></em></div>
         <div>
           <label>数据库用户名</label>
@@ -92,7 +92,7 @@ $(function(){
         <div>
           <label>数据库密码</label>
           <span>
-          <input type="password" name="db_pwd" maxlength="20" value="<?php echo $_POST['db_pwd'] ? $_POST['db_pwd'] : '12345678';?>">
+          <input type="password" name="db_pwd" maxlength="20" value="<?php echo $_POST['db_pwd'] ?>">
           </span> <em></em></div>
 <!--        <div>-->
 <!--          <label>数据库表前缀</label>-->
@@ -121,22 +121,22 @@ $(function(){
         <div>
           <label>站点名称</label>
           <span>
-          <input name="site_name" value="<?php echo $_POST['site_name'] ? $_POST['site_name'] :'w';?>" maxlength="100" type="text">
+          <input name="site_name" value="<?php echo $_POST['site_name'] ?>" maxlength="100" type="text">
           </span> <em>输入站点名称，安装后可在平台设置中进行修改</em></div>
         <div>
           <label>管理员账号</label>
           <span>
-          <input name="admin" value="<?php echo $_POST['admin'] ? $_POST['admin'] : 'admin';?>" maxlength="20" type="text">
+          <input name="admin" value="<?php echo $_POST['admin'] ?>" maxlength="20" type="text">
           </span> <em></em></div>
         <div>
           <label>管理员密码</label>
           <span>
-          <input name="password" id="password" maxlength="20" value="<?php echo $_POST['password'] ? $_POST['password']:'123456';?>" type="password">
+          <input name="password" id="password" maxlength="20" value="<?php echo $_POST['password'] ?>" type="password">
           </span> <em>管理员密码不少于6个字符</em></div>
         <div>
           <label>重复密码</label>
           <span>
-          <input name="rpassword" value="<?php echo $_POST['rpassword'] ? $_POST['rpassword']: '123456';?>" maxlength="20" type="password">
+          <input name="rpassword" value="<?php echo $_POST['rpassword']?>" maxlength="20" type="password">
           </span> <em>确保两次输入的密码一致</em></div>
       </fieldset>
     </div>
