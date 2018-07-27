@@ -336,7 +336,7 @@
 /* TextInput */
 input.required, input.error, input.disabled,div.select2-container.required,
 textarea.required, textarea.error, textarea.disabled {
-    background-image: url(images/form/input_bg5.png);
+    background-image: url(images/form/input_bg.png);
     background-repeat: no-repeat;
     background-attachment: scroll;
 }
