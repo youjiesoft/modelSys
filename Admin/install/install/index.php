@@ -132,10 +132,10 @@ function step3(&$install_error,&$install_recover){
     require ('step_4.php');
     $sitepath =substr($_SERVER['PHP_SELF'], 0, strrpos($_SERVER['PHP_SELF'], '/'));
     $sitepath = str_replace('install',"",$sitepath);
-    $auto_site_url = strtolower('http://'.$_SERVER['HTTP_HOST'].$sitepath);
+    $auto_site_url = 'http://'.$_SERVER['HTTP_HOST'].$sitepath;
     write_config($auto_site_url);
     
-    $_charset = strtolower(DBCHARSET);
+    $_charset = DBCHARSET;
     $mysqli->select_db($db_name);
     $mysqli->set_charset($_charset);
 
@@ -250,7 +250,7 @@ function  runquery($sql, $db_prefix, $mysqli) {
 
 }
 function addtable($ret,$mysqli){
-    showjsmessage('<font style="color:grey;">正在添加数据——————————————</font>');
+    //showjsmessage('<font style="color:grey;">正在添加数据——————————————</font>');
     foreach($ret as $query) {
         if($query) {
             if(substr($query, 0, 11) == 'INSERT INTO') { //判断添加数据的表是否存在
