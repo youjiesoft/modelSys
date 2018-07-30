@@ -1,1 +1,0 @@
-Time 2018-07-27 15:21:45 : INSERT INTO `mis_system_templete_manage` (`name`,`zhuangtai`,`modelid`,`modelname`,`bindid`,`orderno`,`projectid`,`projectworkid`,`upload3`,`rules`,`rulesinfo`,`showrules`,`createid`,`createtime`,`companyid`,`departmentid`,`sysdutyid`) VALUES ('机构档案',1,96,'MisSystemCompany','','00001',0,0,'upload3','','','',1,1532676105,0,0,0)

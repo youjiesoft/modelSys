@@ -1,3 +1,0 @@
-Time 2018-07-27 15:42:57 : INSERT INTO `rolegroup` (`name`,`pid`,`status`,`remark`,`createid`,`createtime`,`companyid`,`departmentid`,`sysdutyid`) VALUES ('sdfsdf',0,0,'sdf',1,1532677377,0,0,0)
-Time 2018-07-27 15:42:58 : INSERT INTO `rolegroup` (`name`,`pid`,`status`,`remark`,`createid`,`createtime`,`companyid`,`departmentid`,`sysdutyid`) VALUES ('sdfsdf',0,0,'sdf',1,1532677378,0,0,0)
-Time 2018-07-27 15:43:07 : INSERT INTO `rolegroup` (`name`,`pid`,`status`,`remark`,`createid`,`createtime`,`companyid`,`departmentid`,`sysdutyid`) VALUES ('sdfsdf',0,0,'sdf',1,1532677387,0,0,0)

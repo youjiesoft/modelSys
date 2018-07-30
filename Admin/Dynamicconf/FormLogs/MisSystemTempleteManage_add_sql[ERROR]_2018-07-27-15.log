@@ -1,2 +1,0 @@
-Time 2018-07-27 15:21:45 : You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') )' at line 1
- [ SQL语句 ] : UPDATE `mis_system_templete_manage` SET `zhuangtai`=0 WHERE ( `id` IN () )
