@@ -8,7 +8,7 @@ if(file_exists("install") && !file_exists("install/install/lock")){
     exit;
 }
 // 开启调试模式
-if(true){
+if(false){
 	define('APP_DEBUG',true);
 }else{
 	define('APP_DEBUG',false);
