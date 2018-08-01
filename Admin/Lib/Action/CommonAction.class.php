@@ -25,6 +25,7 @@ class CommonAction extends CommonExtendAction {
         }
         $_REQUEST=$this->escapeChar($_REQUEST);
         $_POST=$this->escapeChar($_POST);
+
         $_GET=$this->escapeChar($_GET);
         //extract($_REQUEST);
         //if($_REQUEST['ntdata']!=='') $_SESSION['navTab_data']=$_REQUEST['ntdata'];
@@ -1434,7 +1435,7 @@ EOF;
             $count = count($count);
         }
         if($echoSql=='count' && $_SESSION['a']==1){
-            echo $model->getLastSql();
+            //echo $model->getLastSql();
         }
         //传参开启调式 eagle
         /* ***************** 修改 ***************** */
@@ -1467,18 +1468,14 @@ EOF;
                     $voList = $model->where($map)->order(  $order." ".$sort)->limit($limitval)->select();
                 }
             }
-            echo $model->getLastSql();
             logs($model->getLastSql(),'listSql');
             $htmls.=<<<EOF
 				<script>
 				console.log("查询语句:{$model->getLastSql()}");
 				</script>
 EOF;
-// 			 echo $htmls;
-// 			dump($voList);
-			echo $model->getLastSql();
             if($echoSql=='list' && $_SESSION['a']==1){
-                echo $model->getLastSql();
+                //echo $model->getLastSql();
             }
             // 处理lookup数据 by杨东
             if($_POST['dealLookupList']==1){
