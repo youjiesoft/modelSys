@@ -1,7 +1,6 @@
 <?php
 $env_items = array();
 $dirfile_items = array(
-		array('type' => 'dir', 'path' => 'data'),
 		array('type' => 'dir', 'path' => 'install'),
 );
 
