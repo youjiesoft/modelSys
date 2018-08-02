@@ -2,8 +2,8 @@
 $env_items = array();
 $dirfile_items = array(
     array('type' => 'dir', 'path' => 'install'),
-    array('type' => 'dir', 'path' => 'Admin'),
-    array('type' => 'dir', 'path' => 'Public'),
+    array('type' => 'dir', 'path' => '../Admin'),
+    array('type' => 'dir', 'path' => '../Public'),
 );
 
 $func_items = array(
