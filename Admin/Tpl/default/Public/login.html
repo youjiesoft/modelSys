@@ -16,7 +16,7 @@
 
     <script type="text/javascript" src="__PUBLIC__/Js/jquery.cookie.js"></script>
 
-     <!-- conditionizr core -->
+    <!-- conditionizr core -->
 
     <script src="__PUBLIC__/Js/conditionizr-4.4.0/conditionizr.min.js"></script>
 
@@ -25,9 +25,9 @@
     <script src="__PUBLIC__/Js/conditionizr-4.4.0/conditionizr_browser.js"></script>
     <script src="__PUBLIC__/Js/pointCut.js"></script>
 
-    
 
-    
+
+
 
     <script language="JavaScript">
 
@@ -41,57 +41,57 @@
 
             $(".login_btn").live("click",function(){
 
-            	$(".login_btn").attr("disabled",true);
+                $(".login_btn").attr("disabled",true);
 
-            	$(".login_btn").addClass("disabled");
+                $(".login_btn").addClass("disabled");
 
-            	$(".login_btn").html("登录中...");
+                $(".login_btn").html("登录中...");
 
-            	$(".return_info_lay").html("");
+                $(".return_info_lay").html("");
 
-            	if($("#username").val()=="" || $("#password").val()==""){
+                if($("#username").val()=="" || $("#password").val()==""){
 
-            		var error = '用户名或者密码不能为空！';
+                    var error = '用户名或者密码不能为空！';
 
-            		if($.trim($("#password").val())==""){
+                    if($.trim($("#password").val())==""){
 
-            			error = '密码不能为空！';
+                        error = '密码不能为空！';
 
-            			$("#password").focus();
+                        $("#password").focus();
 
-            		}
+                    }
 
-            		if($.trim($("#username").val())==""){
+                    if($.trim($("#username").val())==""){
 
-            			error = '用户名不能为空！';
+                        error = '用户名不能为空！';
 
-            			$("#username").focus();
+                        $("#username").focus();
 
-            		}
+                    }
 
-            		$(".return_info_lay").html('<span class="return_info"><span class="icon-comments mr5"></span>'+error+'</span>');
+                    $(".return_info_lay").html('<span class="return_info"><span class="icon-comments mr5"></span>'+error+'</span>');
 
-            		$(".login_btn").removeClass("disabled");
+                    $(".login_btn").removeClass("disabled");
 
-            		$(".login_btn").attr("disabled",false);
+                    $(".login_btn").attr("disabled",false);
 
-            		$(".login_btn").html("安全登录");
+                    $(".login_btn").html("安全登录");
 
-            		return false;
+                    return false;
 
-            	}
+                }
 
-            	$(".login_form").submit();
+                $(".login_form").submit();
 
-            	return true;
+                return true;
 
             });
 
-            
+
 
             $("input#username,input#password").live("keypress",function (e) { //添加回车监控
 
-                var key = e.which; 
+                var key = e.which;
 
                 if (key == 13) {
 
@@ -101,29 +101,29 @@
 
             });
 
-            
 
-            
 
-            
+
+
+
 
             conditionizr.on('ie6', function () {
 
-            	recomendBrower('IE 6');
+                recomendBrower('IE 6');
 
-              });
+            });
 
-              conditionizr.on('ie7', function () {
+            conditionizr.on('ie7', function () {
 
-            	  recomendBrower('IE 7');
+                recomendBrower('IE 7');
 
-              });
+            });
 
-              conditionizr.on('ie8', function () {
+            conditionizr.on('ie8', function () {
 
-            	  recomendBrower('IE 8');
+                recomendBrower('IE 8');
 
-              });
+            });
 
 
 
@@ -131,40 +131,17 @@
 
 
 
-        
+
 
         function recomendBrower(browsername){
 
-        	var html = '';
+            var html = '';
 
-        	html +='<div style="background-color:yellow;">你当前的浏览器为'+browsername+'，建议使用 <a href="http://www.firefox.com.cn/">FF</a> 、<a href="http://www.google.cn/intl/zh-CN/chrome">Chorm</a>、IE9及以上版本</div>';
+            html +='<div style="background-color:yellow;">你当前的浏览器为'+browsername+'，建议使用 <a href="http://www.firefox.com.cn/">FF</a> 、<a href="http://www.google.cn/intl/zh-CN/chrome">Chorm</a>、IE9及以上版本</div>';
 
-        	$('body').before(html);
+            $('body').before(html);
 
         }
-
-        <!--
-
-                function fleshVerify(type){
-
-                    //重载验证码
-
-                    var timenow = new Date().getTime();
-
-                    if (type){
-
-                        $('#verifyImg').attr("src", '__URL__/verify/adv/1/'+timenow);
-
-                    }else{
-
-                        $('#verifyImg').attr("src", '__URL__/verify/'+timenow);
-
-                    }
-
-                }
-
-        //-->
-
     </script>
 
     <!--[if IE 6]>

@@ -2,9 +2,9 @@
 return array(
     'DB_TYPE' => 'mysql',
     'DB_HOST' => 'localhost',
-    'DB_NAME' => 'aa',
+    'DB_NAME' => 'project',
     'DB_USER' => 'root',
-    'DB_PWD' => '12345678',
+    'DB_PWD' => '123456',
     'DB_PORT' => '3306',
     'DB_PREFIX' => '',
     'DB_HOST_WORD' => 'localhost',
