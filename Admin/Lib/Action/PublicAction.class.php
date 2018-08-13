@@ -79,6 +79,7 @@ class PublicAction extends PublicExtendAction {
 	 */
 	public function login() {
 		$this->index();
+
 		//$this->display();
 	}
 	
@@ -123,7 +124,11 @@ class PublicAction extends PublicExtendAction {
 			//$this->assign("nameList",$nameList);
 			//$this->assign("enameList",$enameList);
 			$this->assign('verificationcode',C("VERIFICATION_CODE"));
-			$this->display('login');
+            if(isMobile()){
+                $this->display('login_mobile');
+            }else{
+                $this->display('login');
+			}
 		}else{
 			$this->assign("isLogin",1);
 			$this->redirect('Index/index');
@@ -157,7 +162,11 @@ class PublicAction extends PublicExtendAction {
 		Cookie::delete("userinfo");
 		Cookie::clear();
 		session_destroy();//释放当前内存
-		$this->display("login");
+        if(isMobile()){
+            $this->display('login_mobile');
+        }else{
+            $this->display('login');
+        }
 // 		$this->success('注销成功！');
 	}
 	
@@ -573,7 +582,11 @@ class PublicAction extends PublicExtendAction {
 			$this->assign("jumpUrl",__URL__.'/login/');
 			if($this->loginType!='helperLogin'){
 					$this->assign("info","帐号不存在或已禁用！");
-					$this->display('login');
+					if(isMobile()){
+						$this->display('login_mobile');
+					}else{
+						$this->display('login');
+					}
 			}else{
 				return array('status'=>0,'msg'=>"error:帐号不存在或已禁用！");
 				exit;

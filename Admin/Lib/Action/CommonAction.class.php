@@ -19,7 +19,6 @@ class CommonAction extends CommonExtendAction {
         //过登录验证方法
         $func = array("saveOnlineEditWord","saveoffice","playSWF","curl_export_word","export_word_one","misFileManageDownload","guoqizhuanshou","SaveOnlineWord");
         if(!in_array(ACTION_NAME, $func)){
-            //$this->SendTelmMsg("hi,good luck to you","13983475645");
             //随机数命中cookie改变
             $this->randNumExecFunc();
         }
@@ -27,13 +26,7 @@ class CommonAction extends CommonExtendAction {
         $_POST=$this->escapeChar($_POST);
 
         $_GET=$this->escapeChar($_GET);
-        //extract($_REQUEST);
-        //if($_REQUEST['ntdata']!=='') $_SESSION['navTab_data']=$_REQUEST['ntdata'];
     }
-// 	public function lookupadvancedresult(){
-// 		 $this->display();
-
-// 	}
 
     /*
 	 * @author  yangxi
