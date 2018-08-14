@@ -1929,7 +1929,7 @@ EOF;
             /*
 			 * _over_insert方法为静默插入生单。
 			 */
-            if (method_exists($module2,"_over_insert")) {
+           /* if (method_exists($module2,"_over_insert")) {
 //                var_dump($module2);
 //                exit;
                 //这里用来存储临时缓存文件
@@ -1937,7 +1937,7 @@ EOF;
                 //模型对象名与插入的id值
                 $paramate=array($name,$list,$updateBackup);
                 call_user_func_array(array(&$module2,"_over_insert"),$paramate);
-            }
+            }*/
             /*
 			 * startprocess,在页面是不存在。此参数是在启动流程startprocess方法中默认赋值的，
 			 * 为了关闭insert的成功success输出,此参数在update方法中也是同样的效果
@@ -3961,7 +3961,7 @@ EOF;
         //model 权限取值 End
         $model = D ( $name );
         //这里用来存储临时缓存文件
-        $updateBackup=$this->setOldDataToCache($model,$name,$id,'update');
+        //$updateBackup=$this->setOldDataToCache($model,$name,$id,'update');
         if (false === $model->create ()) {
             if(!$isrelation){
                 $this->error ( $model->getError () );
@@ -3994,7 +3994,7 @@ EOF;
             /*
 			 * _over_update 方法，为静默插入生单。
 			 */
-            if (method_exists($module2,"_over_update")) {
+           /* if (method_exists($module2,"_over_update")) {
                 //模型对象名与插入的id值,这里2是修改
                 $paramate=array($name,$pkValue,2,$updateBackup);
                 //ischageoperateid为1的时候。表示审批流过来的变更节点审批终审。需要进行变更漫游
@@ -4003,7 +4003,7 @@ EOF;
                     $paramate=array($name,$pkValue,5,$updateBackup);
                 }
                 call_user_func_array(array(&$module2,"_over_update"),$paramate);
-            }
+            }*/
             /*
 			 * startprocess,在页面是不存在。此参数是在启动流程startprocess方法中默认赋值的，为了关闭insert的成功success输出
 			 */
@@ -4013,7 +4013,7 @@ EOF;
 			 */
             if($_POST['operateid']==1){
                 //这里清除内存表缓存的修改前数据代码
-                $this->unsetOldDataToCache($updateBackup);
+                //$this->unsetOldDataToCache($updateBackup);
                 /*
 				 * 套表时特有属性，nbmxkj@20150625 1516
 				 *  __coverformoperateid__ : mian/children
@@ -4150,7 +4150,7 @@ EOF;
                 }
                 //这里用来存储临时缓存文件
 // 				$updateBackup=self::setOldDataToCache($model,$name,$id,'delete');
-                $updateBackup=$this->setOldDataToCache($model,$name,$id,'delete');
+                //$updateBackup=$this->setOldDataToCache($model,$name,$id,'delete');
                 //print_R( $id);
                 if(1>1){
                     //在此之前判断项目是否完毕
@@ -4171,7 +4171,7 @@ EOF;
                 /*
 				 * _over_delete 方法，为静默插入生单。
 				*/
-                if (method_exists($module2,"_over_delete")) {
+                /*if (method_exists($module2,"_over_delete")) {
                     //模型对象名与插入的id值
                     $paramate=array($name,$id,$updateBackup);
                     call_user_func_array(array(&$module2,"_over_delete"),$paramate);
@@ -4181,7 +4181,7 @@ EOF;
 // // 						self::unsetOldDataToCache($updateBackup);
 // 						$this->unsetOldDataToCache($updateBackup);
 // 					}
-                }
+                }*/
                 //删除附件表、地址表、地图表数据
                 $this->delete_record($id);
                 $condition = array ($pk => array ('eq',$id) );
