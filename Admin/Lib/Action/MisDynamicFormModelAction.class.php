@@ -467,7 +467,7 @@ EOF;
 			$a=true;
 		}
 
-		$phpcodeExtendr="<?php\r\n/**";
+		$phpcodeExtend="<?php\r\n/**";
 		$phpcodeExtend.="\r\n * @Title: {$modelname}Model";
 		$phpcodeExtend.="\r\n * @Package package_name";
 		$phpcodeExtend.="\r\n * @Description: todo(动态表单_自动生成-数据表格-Model-扩展Modedl)";
