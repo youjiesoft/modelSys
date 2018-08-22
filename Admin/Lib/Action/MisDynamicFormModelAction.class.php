@@ -197,7 +197,7 @@ WHERE p.formid ={$formid}
 				$listArr.="'_on'=>'".$primaryname.".id=".getFieldBy($tkey,"id","tablename","mis_dynamic_database_mas").".masid'),\r\n";
 			}
 		}
-		$phpcode.="<?php\r\n/**";
+		$phpcode="<?php\r\n/**";
 		$phpcode.="\r\n * @Title: ".$this->nodeName."ModelView";
 		$phpcode.="\r\n * @Package package_name";
 		$phpcode.="\r\n * @Description: todo(动态表单_自动生成-".$this->nodeTitle.")";
@@ -296,7 +296,7 @@ EOF;
 		$autohtml1.="\n\t\tarray('allnode','getActionName',self::MODEL_INSERT,'callback'),";
 		$a=true;
 
-		$phpcodeExtend.="<?php\r\n/**";
+		$phpcodeExtend="<?php\r\n/**";
 		$phpcodeExtend.="\r\n * @Title: {$modelname}Model";
 		$phpcodeExtend.="\r\n * @Package package_name";
 		$phpcodeExtend.="\r\n * @Description: todo(动态表单_自动生成-Model-扩展Modedl)";
@@ -312,7 +312,7 @@ EOF;
 		$phpcodeExtend.="\n\t}";
 
 
-		$phpcode.="<?php\r\n/**";
+		$phpcode="<?php\r\n/**";
 		$phpcode.="\r\n * @Title: {$modelname}Model";
 		$phpcode.="\r\n * @Package package_name";
 		$phpcode.="\r\n * @Description: todo(动态表单_自动生成-".$this->nodeTitle.")";
@@ -467,7 +467,7 @@ EOF;
 			$a=true;
 		}
 
-		$phpcodeExtend.="<?php\r\n/**";
+		$phpcodeExtendr="<?php\r\n/**";
 		$phpcodeExtend.="\r\n * @Title: {$modelname}Model";
 		$phpcodeExtend.="\r\n * @Package package_name";
 		$phpcodeExtend.="\r\n * @Description: todo(动态表单_自动生成-数据表格-Model-扩展Modedl)";
@@ -483,7 +483,7 @@ EOF;
 		$phpcodeExtend.="\n\t}";
 
 
-		$phpcode.="<?php\r\n/**";
+		$phpcode="<?php\r\n/**";
 		$phpcode.="\r\n * @Title: {$modelname}Model";
 		$phpcode.="\r\n * @Package package_name";
 		$phpcode.="\r\n * @Description: todo(动态表单_自动生成-数据表格-".$this->nodeTitle.")";

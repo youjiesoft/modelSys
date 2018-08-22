@@ -480,7 +480,7 @@ class CommonModel extends Model {
 		switch ($type) {
 			case 'text':
 				//文本框
-				$option .= '<div class="tml-form-row"><label>'.$title.'：</label>
+				$option = '<div class="tml-form-row"><label>'.$title.'：</label>
 						    <input type="hidden" name="expand_property_tableid[]" value="'.$tableid.'" />
 						    <input type="hidden" name="expand_property_extendid[]" value="'.$extendid.'" />
 						    <input type="text" class="'.$must.$checkreg.'" name="expand_property_content['.$extendid.']" value="'.$default.'" '.$readonly.' />'.$dataExchange.$msg.'</div>';
@@ -488,14 +488,14 @@ class CommonModel extends Model {
 	
 			case 'hidden':
 				//隐藏表单
-				$option .= '<input type="hidden" name="expand_property_tableid[]" value="'.$tableid.'" />
+				$option = '<input type="hidden" name="expand_property_tableid[]" value="'.$tableid.'" />
 						    <input type="hidden" name="expand_property_extendid[]" value="'.$tableid.'" />
 						    <input type="hidden" name="expand_property_content['.$extendid.']" value="'.$default.'" />';
 				break;
 	
 			case 'file':
 				//上传表单
-				$option .= '<div class="tml-form-row"><label>'.$title.'：</label>
+				$option = '<div class="tml-form-row"><label>'.$title.'：</label>
 						    <input type="hidden" name="expand_property_tableid[]" value="'.$tableid.'" />
 						    <input type="hidden" name="expand_property_extendid[]" value="'.$extendid.'" />
 						    <input type="file" class="'.$must.$checkreg.'" name="expand_property_content['.$extendid.']" value="'.$default.'" />'.$msg.'</div>';;
@@ -503,7 +503,7 @@ class CommonModel extends Model {
 	
 			case 'select':
 				//下拉菜单
-				$option .= '<div class="tml-form-row"><label>'.$title.'：</label>
+				$option = '<div class="tml-form-row"><label>'.$title.'：</label>
 						    <input type="hidden" name="expand_property_tableid[]" value="'.$tableid.'" />
 						    <input type="hidden" name="expand_property_extendid[]" value="'.$extendid.'" />
 						    <select class="combox '.$must.$checkreg.'" name="expand_property_content['.$extendid.']">';
@@ -518,7 +518,7 @@ class CommonModel extends Model {
 	
 			case 'checkbox':
 				//复选框
-				$option .= '<div class="tml-form-row"><label>'.$title.'：</label>
+				$option = '<div class="tml-form-row"><label>'.$title.'：</label>
 						    <input type="hidden" name="expand_property_tableid[]" value="'.$tableid.'" />
 						    <input type="hidden" name="expand_property_extendid[]" value="'.$extendid.'" />';
 				$optionsArr = explode(";", $options);
@@ -532,7 +532,7 @@ class CommonModel extends Model {
 	
 			case 'radio':
 				//单选按钮
-				$option .= '<div class="tml-form-row"><label>'.$title.'：</label>
+				$option = '<div class="tml-form-row"><label>'.$title.'：</label>
 						    <input type="hidden" name="expand_property_tableid[]" value="'.$tableid.'" />
 						    <input type="hidden" name="expand_property_extendid[]" value="'.$extendid.'" />';
 				$arr = explode(";", $options);
@@ -544,14 +544,14 @@ class CommonModel extends Model {
 				break;
 			case 'textarea':
 				//文本区域
-				$option .= '<div class="tml-form-row"><label>'.$title.'：</label>
+				$option = '<div class="tml-form-row"><label>'.$title.'：</label>
 						    <input type="hidden" name="expand_property_tableid[]" value="'.$tableid.'" />
 						    <input type="hidden" name="expand_property_extendid[]" value="'.$extendid.'" />
 						    <textarea name="expand_property_content['.$extendid.']" class="'.$must.$checkreg.'" cols="60" rows="'.$rows.'">'.$default.'</textarea>'.$msg.'</div>';
 				break;
 			case 'pass':
 				//密码表单
-				$option .= '<div class="tml-form-row"><label>'.$title.'：</label>
+				$option = '<div class="tml-form-row"><label>'.$title.'：</label>
 						    <input type="hidden" name="expand_property_tableid[]" value="'.$tableid.'" />
 						    <input type="hidden" name="expand_property_extendid[]" value="'.$extendid.'" />
 						    <input type="password" class="'.$must.$checkreg.'" name="expand_property_content['.$extendid.']" value="'.$default.'" />'.$msg.'</div>';
@@ -705,7 +705,7 @@ class CommonModel extends Model {
 					case 'update':
 						$sqlResume="Update ".$targetTable." SET ";
 						$fieldVal="";
-						foreach($backupVal as $subkey=>$subval){
+						foreach($backupVal as $subkey=> $subval){
 							$fieldVal.=" `".$subkey."`='".$subval."',";
 						}
 						$sqlResume.=substr($fieldVal,0,-1).$where;
