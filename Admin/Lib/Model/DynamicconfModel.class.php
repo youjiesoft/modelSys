@@ -529,8 +529,6 @@ class DynamicconfModel extends CommonModel {
 		}
 		//获取表数据信息
 		$tableInfo=$this->GetFile($modelname,$typename="data");
-		dump($tableInfo);
-		exit;
 		if(file_exists($tableInfo)){
             $tableInfo=(require $tableInfo);
 		}else{
