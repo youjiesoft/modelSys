@@ -392,11 +392,14 @@ EOF;
 
 		$phpcode.=$autohtml.$validate.$dateOprateCode;
 		$phpcode.="\r\n}\r\n?>";
-		logs("Model文件生成! ".$modelPath);
+
 		if(!is_dir(dirname($modelPath))) mk_dir(dirname($modelPath),0777);
 		if( false === file_put_contents( $modelPath , $phpcode )){
+            logs("Model文件生成失败! ".$modelPath);
 			$this->error ("Model文件生成失败! ".$modelPath);
-		}
+		}else{
+            logs("Model文件生成! ".$modelPath);
+        }
 		logs("扩展Model文件生成! ".$modelPath);
 		$phpcodeExtendPath = LIB_PATH."Model/".$extendModelName.".class.php";
 		if(!file_exists($phpcodeExtendPath)){
