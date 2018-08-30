@@ -5393,10 +5393,10 @@
 	 *   <!-- the gfx -->
 	 *   <g class="djs-element djs-(shape|connection)">
 	 *     <g class="djs-visual">
-	 *       <!-- the renderer draws in here -->
+	 *       <!-渲染器画在这里 -->
 	 *     </g>
 	 *
-	 *     <!-- extensions (overlays, click box, ...) goes here
+	 *     <!--扩展（覆盖，点击框，…）在这里
 	 *   </g>
 	 *
 	 *   <!-- the gfx child nodes -->
@@ -5404,10 +5404,11 @@
 	 * </g>
 	 *
 	 * @param {Object} parent
-	 * @param {String} type the type of the element, i.e. shape | connection
+	 * @param {String}输入元素的类型，获取形状
 	 * @param {Number} [parentIndex] position to create container in parent
 	 */
 	GraphicsFactory.prototype._createContainer = function(type, childrenGfx, parentIndex) {
+	    console.log(childrenGfx);
 	  var outerGfx = create('g');
 	  classes$1(outerGfx).add('djs-group');
 
@@ -15081,7 +15082,7 @@
 	var LOW_PRIORITY = 500;
 
 	/**
-	 * A plugin that provides interaction events for diagram elements.
+	 * 为图表元素提供交互事件的插件
 	 *
 	 * It emits the following events:
 	 *
@@ -15109,10 +15110,10 @@
 	  /**
 	   * Fire an interaction event.
 	   *
-	   * @param {String} type local event name, e.g. element.click.
+	   * @param {String} 本地事件名称。。eq:点击
 	   * @param {DOMEvent} event native event
-	   * @param {djs.model.Base} [element] the diagram element to emit the event on;
-	   *                                   defaults to the event target
+	   * @param {djs.model.Base}将事件发送到的图表元素
+	   *                                对事件目标的默认值
 	   */
 	  function fire(type, event, element) {
 
@@ -15184,10 +15185,10 @@
 	  // manual event trigger
 
 	  /**
-	   * Trigger an interaction event (based on a native dom event)
-	   * on the target shape or connection.
+	   * 触发交互事件
+	   * 用于连接线
 	   *
-	   * @param {String} eventName the name of the triggered DOM event
+	   * @param {String} 事件名称 点击、双击、移开。。。。。
 	   * @param {MouseEvent} event
 	   * @param {djs.model.Base} targetElement
 	   */
@@ -15195,7 +15196,6 @@
 
 	    // i.e. element.mousedown...
 	    var localEventName = bindings[eventName];
-
 	    if (!localEventName) {
 	      throw new Error('unmapped DOM event name <' + eventName + '>');
 	    }
@@ -15343,7 +15343,7 @@
 	 */
 
 	/**
-	 * An event indicating that the mouse has clicked an element
+	 * 指示鼠标单击某个元素的事件。
 	 *
 	 * @event element.click
 	 *
@@ -15354,7 +15354,7 @@
 	 */
 
 	/**
-	 * An event indicating that the mouse has double clicked an element
+	 *鼠标双击某个元素
 	 *
 	 * @event element.dblclick
 	 *
@@ -15365,7 +15365,7 @@
 	 */
 
 	/**
-	 * An event indicating that the mouse has gone down on an element.
+	 * 鼠标移动到元素事件。
 	 *
 	 * @event element.mousedown
 	 *
@@ -15376,7 +15376,7 @@
 	 */
 
 	/**
-	 * An event indicating that the mouse has gone up on an element.
+	 * 移开事件
 	 *
 	 * @event element.mouseup
 	 *
@@ -15387,7 +15387,8 @@
 	 */
 
 	/**
-	 * An event indicating that the context menu action is triggered
+	 *
+     指示上下文菜单动作被触发的事件。
 	 * via mouse or touch controls.
 	 *
 	 * @event element.contextmenu
@@ -16416,19 +16417,11 @@
 	  overlays: [ 'type', Overlays ]
 	};
 
-	/**
-	 * This file must not be changed or exchanged.
-	 *
-	 * @see http://bpmn.io/license for more information.
-	 */
 
 
-	// inlined ../../resources/logo.svg
-	var BPMNIO_LOGO_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 960"><path fill="#fff" d="M960 60v839c0 33-27 61-60 61H60c-33 0-60-27-60-60V60C0 27 27 0 60 0h839c34 0 61 27 61 60z"/><path fill="#52b415" d="M217 548a205 205 0 0 0-144 58 202 202 0 0 0-4 286 202 202 0 0 0 285 3 200 200 0 0 0 48-219 203 203 0 0 0-185-128zM752 6a206 206 0 0 0-192 285 206 206 0 0 0 269 111 207 207 0 0 0 111-260A204 204 0 0 0 752 6zM62 0A62 62 0 0 0 0 62v398l60 46a259 259 0 0 1 89-36c5-28 10-57 14-85l99 2 12 85a246 246 0 0 1 88 38l70-52 69 71-52 68c17 30 29 58 35 90l86 14-2 100-86 12a240 240 0 0 1-38 89l43 58h413c37 0 60-27 60-61V407a220 220 0 0 1-44 40l21 85-93 39-45-76a258 258 0 0 1-98 1l-45 76-94-39 22-85a298 298 0 0 1-70-69l-86 22-38-94 76-45a258 258 0 0 1-1-98l-76-45 40-94 85 22a271 271 0 0 1 41-47z"/></svg>';
 
-	var BPMNIO_LOGO_URL = 'data:image/svg+xml,' + encodeURIComponent(BPMNIO_LOGO_SVG);
 
-	var BPMNIO_IMG = '<img width="52" height="52" src="' + BPMNIO_LOGO_URL + '" />';
+
 
 	function css(attrs) {
 	  return attrs.join(';');
@@ -16468,11 +16461,6 @@
 	  '<div class="bjs-powered-by-lightbox" style="' + LIGHTBOX_STYLES + '">' +
 	    '<div class="backdrop" style="' + BACKDROP_STYLES + '"></div>' +
 	    '<div class="notice" style="' + NOTICE_STYLES + '">' +
-	      '<a href="http://bpmn.io" target="_blank" style="float: left; margin-right: 10px">' +
-	        BPMNIO_IMG +
-	      '</a>' +
-	      'Web-based tooling for BPMN, DMN and CMMN diagrams ' +
-	      'powered by <a href="http://bpmn.io" target="_blank">bpmn.io</a>.' +
 	    '</div>' +
 	  '</div>';
 
@@ -16570,7 +16558,7 @@
 	 * bpmnViewer.importXML(...);
 	 * ```
 	 *
-	 * @param {Object} [options] configuration options to pass to the viewer
+	 * @param {Object} [options] configuration options to pass to the viewer传递给查看器的配置选项
 	 * @param {DOMElement} [options.container] the container to render the viewer in, defaults to body.
 	 * @param {String|Number} [options.width] the width of the viewer
 	 * @param {String|Number} [options.height] the height of the viewer
@@ -16586,9 +16574,7 @@
 
 	  this._container = this._createContainer(options);
 
-	  /* <project-logo> */
 
-	  addProjectLogo(this._container);
 
 	  /* </project-logo> */
 
@@ -16999,28 +16985,6 @@
 	 *
 	 * @param {Element} container
 	 */
-	function addProjectLogo(container) {
-	  var img = BPMNIO_IMG;
-
-	  var linkMarkup =
-	    '<a href="http://bpmn.io" ' +
-	       'target="_blank" ' +
-	       'class="bjs-powered-by" ' +
-	       'title="Powered by bpmn.io" ' +
-	       'style="position: absolute; bottom: 15px; right: 15px; z-index: 100">' +
-	      img +
-	    '</a>';
-
-	  var linkElement = domify(linkMarkup);
-
-	  container.appendChild(linkElement);
-
-	  componentEvent.bind(linkElement, 'click', function(event$$1) {
-	    open();
-
-	    event$$1.preventDefault();
-	  });
-	}
 
 	/* </project-logo> */
 
@@ -29740,9 +29704,8 @@
 	 * @param  {Boolean} [autoActivate=false]
 	 */
 	ContextPad.prototype.trigger = function(action, event$$1, autoActivate) {
-
 	  var element = this._current.element,
-	      entries = this._current.entries,
+	      entries = this._current.entries,                  ///添加group
 	      entry,
 	      handler,
 	      originalEvent,
@@ -29756,19 +29719,19 @@
 	  handler = entry.action;
 
 	  originalEvent = event$$1.originalEvent || event$$1;
-
-	  // simple action (via callback function)
+	  //简单动作 通过回调函数
 	  if (isFunction(handler)) {
 	    if (action === 'click') {
 	      return handler(originalEvent, element, autoActivate);
 	    }
 	  } else {
 	    if (handler[action]) {
+	        ////////////创建下一步
 	      return handler[action](originalEvent, element, autoActivate);
 	    }
 	  }
 
-	  // silence other actions
+	  // 禁止其他动作
 	  event$$1.preventDefault();
 	};
 
@@ -29834,7 +29797,7 @@
 	  this._eventBus.fire('contextPad.open', { current: this._current });
 	};
 
-
+    //点击添加下一步
 	ContextPad.prototype.getPad = function(element) {
 	  if (this.isOpen()) {
 	    return this._current.pad;
@@ -29846,15 +29809,16 @@
 
 	  var html = domify('<div class="djs-context-pad"></div>');
 
-	  delegateEvents.bind(html, entrySelector, 'click', function(event$$1) {
-	    self.trigger('click', event$$1);
-	  });
 
+	 delegateEvents.bind(html, entrySelector, 'click', function(event$$1) {
+
+         var a=self.trigger('click', event$$1);
+	  });
 	  delegateEvents.bind(html, entrySelector, 'dragstart', function(event$$1) {
+          alert("bb");
 	    self.trigger('dragstart', event$$1);
 	  });
-
-	  // stop propagation of mouse events
+	  //鼠标事件停止传播
 	  componentEvent.bind(html, 'mousedown', function(event$$1) {
 	    event$$1.stopPropagation();
 	  });
@@ -29868,9 +29832,12 @@
 	  });
 
 	  var pad = overlays.get(this._overlayId);
+       //alert(element.type);
+        var type_bpmn=element.type;
+        var m = "ProcessManage";
+
 
 	  this._eventBus.fire('contextPad.create', { element: element, pad: pad });
-
 	  return pad;
 	};
 
@@ -32024,7 +31991,7 @@
 	};
 
 	/**
-	 * Creates an array of menu entry objects for a given sequence flow.
+	 * 为给定的序列流创建菜单输入对象的数组。
 	 *
 	 * @param  {djs.model.Base} element
 	 * @param  {Object} replaceOptions
@@ -32093,14 +32060,14 @@
 
 
 	/**
-	 * Creates and returns a single menu entry item.
+	 * 创建并返回单个菜单项项
 	 *
-	 * @param  {Object} definition a single replace options definition object
+	 * @param  {Object}定义单个替换选项定义对象
 	 * @param  {djs.model.Base} element
 	 * @param  {Function} [action] an action callback function which gets called when
 	 *                             the menu entry is being triggered.
 	 *
-	 * @return {Object} menu entry item
+	 * @return {Object} 菜单项
 	 */
 	ReplaceMenuProvider.prototype._createMenuEntry = function(definition, element, action) {
 	  var translate = this._translate;
@@ -32514,7 +32481,8 @@
 	    function appendStart(event, element) {
 
 	      var shape = elementFactory.createShape(assign({ type: type }, options));
-	      create.start(event, shape, element);
+
+	     create.start(event, shape, element);
 	    }
 
 
@@ -45251,95 +45219,9 @@
 	      }
 	    };
 	  }
-
-	  function createParticipant(event, collapsed) {
-	    create.start(event, elementFactory.createParticipantShape(collapsed));
-	  }
-
-	  assign(actions, {
-	    'hand-tool': {
-	      group: 'tools',
-	      className: 'bpmn-icon-hand-tool',
-	      title: translate('Activate the hand tool'),
-	      action: {
-	        click: function(event) {
-	          handTool.activateHand(event);
-	        }
-	      }
-	    },
-	    'lasso-tool': {
-	      group: 'tools',
-	      className: 'bpmn-icon-lasso-tool',
-	      title: translate('Activate the lasso tool'),
-	      action: {
-	        click: function(event) {
-	          lassoTool.activateSelection(event);
-	        }
-	      }
-	    },
-	    'space-tool': {
-	      group: 'tools',
-	      className: 'bpmn-icon-space-tool',
-	      title: translate('Activate the create/remove space tool'),
-	      action: {
-	        click: function(event) {
-	          spaceTool.activateSelection(event);
-	        }
-	      }
-	    },
-	    'global-connect-tool': {
-	      group: 'tools',
-	      className: 'bpmn-icon-connection-multi',
-	      title: translate('Activate the global connect tool'),
-	      action: {
-	        click: function(event) {
-	          globalConnect.toggle(event);
-	        }
-	      }
-	    },
-	    'tool-separator': {
-	      group: 'tools',
-	      separator: true
-	    },
-	    'create.start-event': createAction(
-	      'bpmn:StartEvent', 'event', 'bpmn-icon-start-event-none'
-	    ),
-	    'create.intermediate-event': createAction(
-	      'bpmn:IntermediateThrowEvent', 'event', 'bpmn-icon-intermediate-event-none',
-	      translate('Create Intermediate/Boundary Event')
-	    ),
-	    'create.end-event': createAction(
-	      'bpmn:EndEvent', 'event', 'bpmn-icon-end-event-none'
-	    ),
-	    'create.exclusive-gateway': createAction(
-	      'bpmn:ExclusiveGateway', 'gateway', 'bpmn-icon-gateway-none',
-	      translate('Create Gateway')
-	    ),
-	    'create.task': createAction(
-	      'bpmn:Task', 'activity', 'bpmn-icon-task'
-	    ),
-	    'create.data-object': createAction(
-	      'bpmn:DataObjectReference', 'data-object', 'bpmn-icon-data-object'
-	    ),
-	    'create.data-store': createAction(
-	      'bpmn:DataStoreReference', 'data-store', 'bpmn-icon-data-store'
-	    ),
-	    'create.subprocess-expanded': createAction(
-	      'bpmn:SubProcess', 'activity', 'bpmn-icon-subprocess-expanded',
-	      translate('Create expanded SubProcess'),
-	      { isExpanded: true }
-	    ),
-	    'create.participant-expanded': {
-	      group: 'collaboration',
-	      className: 'bpmn-icon-participant',
-	      title: translate('Create Pool/Participant'),
-	      action: {
-	        dragstart: createParticipant,
-	        click: createParticipant
-	      }
-	    }
-	  });
-
+	  // function createParticipant(event, collapsed) {
+	  //   create.start(event, elementFactory.createParticipantShape(collapsed));
+	  // }
 	  return actions;
 	};
 
