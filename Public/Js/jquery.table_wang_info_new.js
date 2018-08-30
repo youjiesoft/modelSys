@@ -457,6 +457,17 @@ var TABLEWNEW = function() {
                     html += "<input type='text' readonly='readonly' name='"+template_name+"' class='list_input autoOrderno "+template_class+"' /></div>"
                     html += '</div>';
                     break;
+                case "icon":
+                    if((template_data!=null) && (template_data.callback != "")){
+                        callback = "onUploadSuccess='"+template_data.callback+"'";
+                    }
+                    html = '<div class="list_group_lay">';
+                    if(!is_readonly){
+                        html += "<input id='swf_up"+column+"_#index#' uploadLimit='1' type=\"file\" name='"+template_name+"' uploader=\"true\" auto=\"true\" multi='false' "+callback+" queueSizeLimit='1'  formData=\"{ uploadpath:\'"+template_data.uploadpath+"\'}\"/>"+
+                            "<span id='swf_up"+column+"_#index#-queue' class='info uploadify-queue'></span>";
+                    }
+                    html += '</div>';
+                    break;
                 default :
                     html = val;
                     break;
@@ -482,6 +493,62 @@ var TABLEWNEW = function() {
                     uploadLimit:$this.attr("uploadLimit")||"5",
                     queueSizeLimit:$this.attr("queueSizeLimit")||"5",
                     fileSizeLimit:$this.attr("fileSizeLimit")||"100MB",
+                    onUploadComplete:onUploadComplete,
+                    onUploadSuccess:onUploadSuccess,
+                    upload_save_name : $this.attr("upload_save_name")?$this.attr("upload_save_name"):"",
+                    onUploadError: uploadifyError,
+                    /*以下仅Huploadify适用*/
+                    breakPoints:false, //断点续传
+                    saveInfoLocal:false,
+                    previewImg:false,//预览上传图片
+                    previewLoadimg:'', //预览前的载入图标
+                    dragDrop:false,
+                    showUploadedSize:true,
+                    removeTimeout:2000000000,//指定的时间内，删除进度条
+                    removeCompleted:true
+                };
+                if($this.attr("onUploadSuccess")){
+                    options.onUploadSuccess=DWZ.jsonEval($this.attr("onUploadSuccess"));
+                }
+                if($this.attr("onUploadComplete")){
+                    options.onUploadComplete=DWZ.jsonEval($this.attr("onUploadComplete"));
+                }
+                if($this.attr("scriptData")){
+                    options.scriptData=DWZ.jsonEval($this.attr("scriptData"));
+                }
+                if($this.attr("formData")){
+                    var f=DWZ.jsonEval($this.attr("formData"));
+                    if(f.uploadpath) f.uploadpath=TP_PUBLIC+"/Uploadstemp/"+f.uploadpath;
+                    options.formData=f;
+                }
+                if (window.FileReader) {
+                    var $up = $('<div id="'+ $this.attr('id') +'"></div>');
+                    $up.insertBefore($this).Huploadify(options);
+                    $this.remove();
+                } else {
+                    $this.uploadify(options);
+                }
+            }
+        },
+        icon_init:function(obj){
+            if($.fn.uploadify && $.fn.Huploadify){
+                var $this=$("input[type=file]",obj);
+                var options={
+                    swf:$this.attr("swf")||TP_PUBLIC+"/Js/uploadify/scripts/uploadify.swf",
+                    uploader:TP_PUBLIC+"/Js/uploadify/uploadify.php",
+                    buttonText:'选择上传图片',
+                    fileDataName:$this.attr("name")||"file",
+                    queueID:$this.attr("id")+"-queue",
+                    auto:$this.attr("auto")=='true'?true:false,//true,
+                    multi:$this.attr("multi")=='false'?false:true,//true,
+                    width:$this.attr("width")||105,
+                    height:$this.attr("height")||32,
+                    buttonImage:$this.attr("buttonImage")||TP_PUBLIC+"/Js/uploadify/img/upload.png",
+                    fileTypeDesc:$this.attr("fileTypeDesc")||"*.jpg;*.jpeg;*.gif;*.png;",
+                    fileTypeExts:$this.attr("fileTypeExts")||"*.jpg;*.jpeg;*.gif;*.png;",
+                    uploadLimit:1,
+                    queueSizeLimit:1,
+                    fileSizeLimit:"10MB",
                     onUploadComplete:onUploadComplete,
                     onUploadSuccess:onUploadSuccess,
                     upload_save_name : $this.attr("upload_save_name")?$this.attr("upload_save_name"):"",
@@ -791,6 +858,17 @@ var TABLEWNEW = function() {
                             new_tr.find("td").eq(j).find(".list_group_lay").addClass("initUpload");
                             var td_html = "";
                             td_html += '<a class="btn btn-default btn-sm Huploadify-button" href="javascript:void(0)">选择上传附件</a>';
+                            new_tr.find("td").eq(j).find("input").hide();
+                            new_tr.find("td").eq(j).find(".list_group_lay>div:first").before(td_html);
+                        }
+                        break;
+                    case "icon":
+                        if(isInit){
+                            if($.fn.uploadify)that.icon_init(new_tr.find("td").eq(j));
+                        }else{
+                            new_tr.find("td").eq(j).find(".list_group_lay").addClass("initUpload");
+                            var td_html = "";
+                            td_html += '<a class="btn btn-default btn-sm Huploadify-button" href="javascript:void(0)">选择上传图片</a>';
                             new_tr.find("td").eq(j).find("input").hide();
                             new_tr.find("td").eq(j).find(".list_group_lay>div:first").before(td_html);
                         }
@@ -1337,8 +1415,8 @@ var TABLEWNEW = function() {
             $(that.st.table).find(".top").append('<div class="save_btn_div"><span class="save_btn_span"><a href="javascript:;" class="both_save_btn tml-btn tml_look_btn tml_mp">保存</a></span></div>');
             $(that.st.table).find(".both_save_btn").live( 'click', function () {
                 alertMsg.confirm("确定要保存?",{okCall:function(){
-                    that.saveOk(this);
-                }});
+                        that.saveOk(this);
+                    }});
             });
         },
         fnDestroy:function(){
@@ -2272,131 +2350,6 @@ var TABLEWNEW = function() {
         lookupAddRow:function(arr){
             var that = this;
             if(that.isArray(arr)){
-                // if($(that.st.table).parents("#MisAutoDeb_edit").length || $(that.st.table).parents("#MisAutoDeb_add").length){//保后计划
-                //     try{
-                //         var dingbao_count = 0;//定保条数
-                //         var dingbao_danweizhi = 0;//定保单位值
-                //         var dingbao_date = $(that.st.table).parents("form").find("input[name='jiangetianshu']").val();//定保周期
-                //         var sDate = $(that.st.table).parents("form").find("input[name='jihuayijuriqi']").val();//计划开始日期
-                //         var eDate = $(that.st.table).parents("form").find("input[name='yinghuaikuanrijidaoq']").val();//计划结束日期
-                //         for(var i = 0;i<arr.length;i++){
-                //             for(var k in arr[i]){
-                //                 if(k=="baohounaxing" && arr[i][k]=="02" && arr[i]["zhouqitian"]=="01"){
-                //                     dingbao_danweizhi = parseInt(arr[i]["danweizhi"])?parseInt(arr[i]["danweizhi"]):0;
-                //                     break;
-                //                 }
-                //             }
-                //         }
-                //         dingbao_count = parseInt(dingbao_date/dingbao_danweizhi) - 1;
-                //         var newArr = new Array();
-                //         var is_shoubao = false;//是否存在首保
-                //         for(var i = 0;i<arr.length;i++){
-                //             for(var k in arr[i]){
-                //                 var dingbao_arr = new Array();
-                //                 dingbao_arr["baohounaxing"] = arr[i]["baohounaxing"];
-                //                 dingbao_arr["zhouqitian"] = arr[i]["zhouqitian"];
-                //                 dingbao_arr["danweizhi"] = arr[i]["danweizhi"];
-                //                 dingbao_arr["shifugaidong"] = arr[i]["shifugaidong"];
-                //                 dingbao_arr["yaoqiujimiaoshu"] = arr[i]["yaoqiujimiaoshu"];
-                //                 if(k=="baohounaxing" && arr[i][k]=="01" && arr[i]["zhouqitian"]=="01"){//首保 天
-                //                     dingbao_arr["jihuakaishiriqi"] = sDate;
-                //                     dingbao_arr["jihuawanchengriqi"] = that.add_day(sDate,parseInt(dingbao_arr["danweizhi"]),"add");
-                //                     newArr.push(dingbao_arr);
-                //                 }
-                //                 if(k=="baohounaxing" && arr[i][k]=="01" && arr[i]["zhouqitian"]=="02"){//首保 定月
-                //                     dingbao_arr["jihuakaishiriqi"] = that.ding_month(sDate,parseInt(dingbao_arr["danweizhi"]),'first');
-                //                     dingbao_arr["jihuawanchengriqi"] = that.ding_month(sDate,parseInt(dingbao_arr["danweizhi"]),'last');
-                //                     newArr.push(dingbao_arr);
-                //                 }
-                //             }
-                //         }
-                //         if(newArr.length>0){
-                //             is_shoubao = true;
-                //         }
-                //         var weibaoksDate = "";
-                //         for(var i = 0;i<arr.length;i++){
-                //             for(var k in arr[i]){
-                //                 if(k=="baohounaxing" && arr[i][k]=="02" && arr[i]["zhouqitian"]=="01"){//定保 天
-                //                     if(dingbao_count){
-                //                         for(var j=0; j<dingbao_count; j++){
-                //                             var dingbao_arr = new Array();
-                //                             dingbao_arr["baohounaxing"] = arr[i]["baohounaxing"];
-                //                             dingbao_arr["zhouqitian"] = arr[i]["zhouqitian"];
-                //                             dingbao_arr["danweizhi"] = arr[i]["danweizhi"];
-                //                             dingbao_arr["shifugaidong"] = arr[i]["shifugaidong"];
-                //                             dingbao_arr["yaoqiujimiaoshu"] = arr[i]["yaoqiujimiaoshu"];
-                //                             if(j==0){
-                //                                 if(newArr.length==0){
-                //                                     dingbao_arr["jihuakaishiriqi"] = sDate;
-                //                                     dingbao_arr["jihuawanchengriqi"] = that.add_day(dingbao_arr["jihuakaishiriqi"],parseInt(arr[i]["danweizhi"]),"add");
-                //                                 }else{
-                //                                     dingbao_arr["jihuakaishiriqi"] = that.add_day(newArr[0]["jihuawanchengriqi"],1,"add");
-                //                                     dingbao_arr["jihuawanchengriqi"] = that.add_day(dingbao_arr["jihuakaishiriqi"],parseInt(arr[i]["danweizhi"]),"add");
-                //                                 }
-                //                             }else{
-                //                                 if(!is_shoubao){
-                //                                     dingbao_arr["jihuakaishiriqi"] = that.add_day(newArr[j-1]["jihuawanchengriqi"],1,"add");
-                //                                     dingbao_arr["jihuawanchengriqi"] = that.add_day(dingbao_arr["jihuakaishiriqi"],parseInt(arr[i]["danweizhi"]),"add");
-                //                                 }else{
-                //                                     dingbao_arr["jihuakaishiriqi"] = that.add_day(newArr[j]["jihuawanchengriqi"],1,"add");
-                //                                     dingbao_arr["jihuawanchengriqi"] = that.add_day(dingbao_arr["jihuakaishiriqi"],parseInt(arr[i]["danweizhi"]),"add");
-                //                                 }
-                //                             }
-                //                             weibaoksDate = dingbao_arr["jihuawanchengriqi"];
-                //                             newArr.push(dingbao_arr);
-                //                         }
-                //                     }
-                //                 }
-                //                 if(k=="baohounaxing" && arr[i][k]=="02" && arr[i]["zhouqitian"]=="02"){//定保 定月
-                //                     var dingbao_arr = new Array();
-                //                     dingbao_arr["baohounaxing"] = arr[i]["baohounaxing"];
-                //                     dingbao_arr["zhouqitian"] = arr[i]["zhouqitian"];
-                //                     dingbao_arr["danweizhi"] = arr[i]["danweizhi"];
-                //                     dingbao_arr["shifugaidong"] = arr[i]["shifugaidong"];
-                //                     dingbao_arr["yaoqiujimiaoshu"] = arr[i]["yaoqiujimiaoshu"];
-                //                     dingbao_arr["jihuakaishiriqi"] = that.ding_month(sDate,parseInt(dingbao_arr["danweizhi"]),'first');
-                //                     dingbao_arr["jihuawanchengriqi"] = that.ding_month(sDate,parseInt(dingbao_arr["danweizhi"]),'last');
-                //                     newArr.push(dingbao_arr);
-                //                 }
-                //             }
-                //         }
-                //         for(var i = 0;i<arr.length;i++){
-                //             for(var k in arr[i]){
-                //                 if(k=="baohounaxing" && arr[i][k]=="03" && arr[i]["zhouqitian"]=="01"){//尾保 天
-                //                     var wbLength = $("#MisAutoDeb_add,#MisAutoDeb_edit").find("table tbody").eq(0).find("tr").length;
-                //                     if(wbLength){
-                //                         for(var j = 0;j<wbLength;j++){
-                //                             var dingbao_arr = new Array();
-                //                             dingbao_arr["baohounaxing"] = arr[i]["baohounaxing"];
-                //                             dingbao_arr["zhouqitian"] = arr[i]["zhouqitian"];
-                //                             dingbao_arr["danweizhi"] = arr[i]["danweizhi"];
-                //                             dingbao_arr["shifugaidong"] = arr[i]["shifugaidong"];
-                //                             dingbao_arr["yaoqiujimiaoshu"] = arr[i]["yaoqiujimiaoshu"];
-                //                             dingbao_arr["jihuawanchengriqi"] = that.add_day($("#MisAutoDeb_add,#MisAutoDeb_edit").find("table tbody").eq(0).find("tr").eq(j).find("[name*='[yinghuaikuanrijidaoqiri]']").val(),parseInt(arr[i]["danweizhi"]),"jian");
-                //                             dingbao_arr["jihuakaishiriqi"] = that.add_day(dingbao_arr["jihuawanchengriqi"],30,"")
-                //                             newArr.push(dingbao_arr);
-                //                         }
-                //                     }
-                //                 }
-                //                 if(k=="baohounaxing" && arr[i][k]=="03" && arr[i]["zhouqitian"]=="02"){//尾保 定月
-                //                     var dingbao_arr = new Array();
-                //                     dingbao_arr["baohounaxing"] = arr[i]["baohounaxing"];
-                //                     dingbao_arr["zhouqitian"] = arr[i]["zhouqitian"];
-                //                     dingbao_arr["danweizhi"] = arr[i]["danweizhi"];
-                //                     dingbao_arr["shifugaidong"] = arr[i]["shifugaidong"];
-                //                     dingbao_arr["yaoqiujimiaoshu"] = arr[i]["yaoqiujimiaoshu"];
-                //                     dingbao_arr["jihuakaishiriqi"] = that.ding_month(sDate,parseInt(dingbao_arr["danweizhi"]),'first');
-                //                     dingbao_arr["jihuawanchengriqi"] = that.ding_month(sDate,parseInt(dingbao_arr["danweizhi"]),'last');
-                //                     newArr.push(dingbao_arr);
-                //                 }
-                //             }
-                //         }
-                //         if(newArr.length>0){
-                //             arr = newArr;
-                //         }
-                //     }catch(err){
-                //     }
-                // }
                 for(var i = 0;i<arr.length;i++){
                     that.addRow('',arr);
                     var row_index = that.st.tableObj.rows().nodes().length-1; //获取新增索引
@@ -2428,25 +2381,7 @@ var TABLEWNEW = function() {
                                             }
                                         }
                                         break;
-//                                  case "selecttree":
-////                                        var content = $(row).find("td").eq(index);
-////                                        if($.fn.comboxtree)$("input.comboxtree", content ).comboxtree();
-////                                        var $input = $(row).find("[name*='["+k+"]']").siblings(".comboxtree");
-////                                        if($input.length){
-////                                            try{
-////                                                var ul_tree = $input.siblings("ul.ztree").attr("nodes");
-////                                                ul_tree = ul_tree?$.parseJSON(ul_tree):"";
-////                                                if(ul_tree.length>0){
-////                                                    for(var i=0; i<ul_tree.length;i++){
-////                                                        if(ul_tree[i]["key"]==$input.siblings("input:hidden").val()){
-////                                                            $input.val(ul_tree[i]["name"]);
-////                                                        }
-////                                                    }
-////                                                }
-////                                            }catch(err){
-////                                            }
-////                                        }
-//                                      break;
+//
                                     case "lookup":
                                         $(row).find("[name*='["+k+"]']").siblings("input.readonly").val(this_value).change();
                                         break;
@@ -2536,8 +2471,8 @@ function initTableWNEW(dtdata,namses,tag) {
                     //内嵌表二维录入，循环添加列
                     if(dtdata){
                         //重新选择时，删除原来的列
-                        var _deleteth = $(table.st.table).find('.delete');
-                        if(_deleteth){
+                        var _deleteth = $(table.st.table).find('th.delete');
+                        if(_deleteth.length){
                             _deleteth.remove();
                         }
                         if(table.st.isinitth)
@@ -2559,7 +2494,6 @@ function initTableWNEW(dtdata,namses,tag) {
                 }
             }
             time.end();
-            // nbox.find('.pageFormContent').eq(0).animate({scrollTop: '0px'}, 0);
         }
     });
     //一维表
@@ -2635,7 +2569,3 @@ function initTableWNEWOne(objId) {
     }
     return table;
 }
-
-
-
-

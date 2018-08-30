@@ -1923,6 +1923,10 @@ class CommonAuditAction extends CommonAction {
                 $data ['auditState'] = 0;
                 $data ['updateid'] = $userid;
                 $data ['updatetime'] = time ();
+                if($tablename == "MisAutoJwf"){
+                    $data["operateid"] = 0;
+                }
+
                 $list = $model2->save ( $data );
                 if($list){
                     //单据打回成功，为当前单据存储历史记录信息

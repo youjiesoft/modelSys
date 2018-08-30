@@ -2,6 +2,7 @@
 //定义项目名称和路径
 define('APP_NAME', 'Admin');
 define('APP_PATH', './');
+
 if(file_exists("install") && !file_exists("install/install/lock")){
     header("Location: install/index.php");
     //确保重定向后，后续代码不会被执行

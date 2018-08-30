@@ -16,6 +16,8 @@ $(document).ready(function(){
 	var zTree = $.fn.zTree.getZTreeObj("misdynamicformmanagetree");
 	var valid = '{$uilid}';
     var nodes = zTree.getNodesByParam("id", valid, null);
+    var url = $(navTab.getCurrentPanel()).find("[title='动态表管理_编辑']").attr("href");
+    $(navTab.getCurrentPanel()).find("[title='动态表管理_编辑']").attr("href",url+nodes[0]["id"]);
     zTree.selectNode(nodes[0]);
 });
 </script>

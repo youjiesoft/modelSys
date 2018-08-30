@@ -1,4 +1,0 @@
-Time 2018-07-24 16:02:53 : Table 'project.user' doesn't exist
- [ SQL语句 ] : SHOW COLUMNS FROM `user`
-Time 2018-07-24 16:04:11 : Table 'project.user' doesn't exist
- [ SQL语句 ] : SHOW COLUMNS FROM `user`

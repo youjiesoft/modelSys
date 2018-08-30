@@ -1139,7 +1139,8 @@ class MisDynamicFormManageAction extends MisDynamicFormTemplateAction {
 			$formid = getFieldBy($this->nodeName, "actionname", "id", "mis_dynamic_form_manage");
 			if(!$formid || empty($formid)){
 				$msg = "不能通用action名称{$this->nodeName}获取表单信息！{$formid}";
-				throw new NullDataExcetion($msg);
+                $this->error($msg);
+				//throw new NullDataExcetion($msg);
 			}
 			$DBConfigData = $this->getfieldCategory($formid);
 			$data = $DBConfigData[$this->curnode];

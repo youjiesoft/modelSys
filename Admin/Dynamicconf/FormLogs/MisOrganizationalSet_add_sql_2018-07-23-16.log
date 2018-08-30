@@ -1,1 +1,0 @@
-Time 2018-07-23 16:35:49 : INSERT INTO `rolegroup` (`name`,`catgory`,`status`,`remark`,`sort`,`createid`,`createtime`,`companyid`,`departmentid`,`sysdutyid`) VALUES ('aa',5,1,'',10,1,1532334949,0,0,0)

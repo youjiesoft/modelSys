@@ -40,7 +40,7 @@ class DynamicconfModel extends CommonModel {
         if (!is_dir( $pathinfo['dirname'] )) {
         	$this->make_dir( $pathinfo['dirname'],0755);
         }
-        logs('开始生成listinc文件系统:'.PHP_OS.'路径:'.$filename);            
+        logs('开始生成listinc文件系统:'.PHP_OS.'路径:'.$filename);
 //         echo $filename;
 //         exit;
         $this->writeover($filename,$str."return ".$this->pw_var_export($data).";\n",true);
@@ -74,12 +74,12 @@ class DynamicconfModel extends CommonModel {
 	 * @param $modelname  string  模型名称
 	 * @author yangxi  2014-12-12
 	 */
-	public  function GetFile($modelname,$typename=""){		
-		$filename=$this->getDynamicFileName($typename);		
+	public  function GetFile($modelname,$typename=""){
+		$filename=$this->getDynamicFileName($typename);
 		$filepath=DConfig_PATH."/Models/".$modelname."/".$filename;
 		return  $filepath;
 	}
-	
+
 /**
 	 * (non-PHPdoc)
 	 * @Description: setTableInfo(设置配置文件data.inc信息,数据字典)
@@ -100,7 +100,7 @@ class DynamicconfModel extends CommonModel {
               LEFT JOIN mis_system_dataview_sub
               ON mis_system_dataview_mas.id = mis_system_dataview_sub.`masid`
               WHERE mis_system_dataview_mas.`modelname` = '".$modelname."' ";
-		
+
 		$viewList=$this->query($sql);
 		if(count($viewList)){
 			//如果存在时，对视图进行查询
@@ -109,7 +109,7 @@ class DynamicconfModel extends CommonModel {
 			$filedName="";//初始化字段名
 			$otherName =array();//初始化别名
 			$columnsList = array();//最终结果
-			foreach($viewList as  $key => $val){	
+			foreach($viewList as  $key => $val){
 				$filelist = array();
 				//$fieldInfo第一个元素为表名，第二个元素为字段名
 				$fieldInfo=explode(".",$val['field']);
@@ -122,7 +122,7 @@ class DynamicconfModel extends CommonModel {
 						$otherName[$val['field']] = $fieldInfo[1];
 					}
 					//如果是最后一个元素执行最后一次SQL
-					if($key+1==count($viewList)){						
+					if($key+1==count($viewList)){
 						$filelist=$this->getTableInfo($tableName,$filedName);
 						if($filelist){
 							$otherList = array();
@@ -136,7 +136,7 @@ class DynamicconfModel extends CommonModel {
 							}
 							$columnsList = array_merge($columnsList,$otherList);
 						}
-					}					
+					}
 				}else{
 					//如果已经进入新表名，就开始之前的拼装查询
 					if($tableName){
@@ -157,14 +157,14 @@ class DynamicconfModel extends CommonModel {
 					//并对表名，字段名重新赋值
 					$tableName=$fieldInfo[0];
 					$filedName=$fieldInfo[1];
-					
+
 					if(isset($val['otherfield']) && $val['otherfield']){
 						$otherName[$val['field']] = $val['otherfield'];
 					}else{
 						$otherName[$val['field']] = $fieldInfo[1];
 					}
 				}
-			}	
+			}
 		}else{
 			//通过modelname获取表名
 			$tableName=D($modelname)->getTableName();
@@ -185,7 +185,7 @@ class DynamicconfModel extends CommonModel {
                 );
             }
         }
-        $this->SetRules($tableInfo,$modelname,$typename="data");   
+        $this->SetRules($tableInfo,$modelname,$typename="data");
 
 	}
 	/**
@@ -259,14 +259,14 @@ class DynamicconfModel extends CommonModel {
 	        foreach($formList as $key => $val){
 		        if(!empty($val['fieldname'])){
 		        	$temp = array();
-		        	
+
 		        	//组件name，用来提交数据的
 		        	$temp["template_name"]   = "datatable[#index#][table][".$val['fieldname']."]";
 		        	$temp["template_data"] = "";
 		        	$temp["template_class"] = $val["isrequired"]?"required":"";
 		        	$temp["template_key"] = "";
 		        	$temp["is_readonly"] = $val["islock"]?"":"true";
-		        	
+
 		        	switch ($val['category']){
 		        		case "text":
 		        			$temp["template_key"] = "input";
@@ -277,7 +277,7 @@ class DynamicconfModel extends CommonModel {
 		        				$template_data["bindlookupname"] = $org[0];
 		        				$template_data["upclass"] = $org[1];
 		        			}
-		        			
+
 		        			if(!empty($val['unitls'])){
 		        				//存储的单位编码
 		        				$template_data["unitl"] = $val['unitls'];
@@ -297,8 +297,8 @@ class DynamicconfModel extends CommonModel {
 		        				$bindlookup = array("lookupname"=>$org[0],"name"=>$org[1]);
 		        				$temp["bindlookup"] = json_encode($bindlookup);
 		        			}
-		        			/* 
-		        			 * 下拉树配置	
+		        			/*
+		        			 * 下拉树配置
 		        			 * */
 		        			if($val['treedtable'] && $val['treevaluefield'] && $val['treeshowfield'] && $val['treeparentfield'] ){
 		        				$chkStyle="radio";
@@ -319,7 +319,7 @@ class DynamicconfModel extends CommonModel {
 		        						'"treeheight":"'.$val['treeheight'].'",'.
 		        						'"treewidth":"'.$val['treewidth'].'",'.
 		        						'"treedata":'.$treeData.'}';
-		        				
+
 		        				$temp["template_data"] = $dataSouceArr;
 		        				$temp["template_key"] = "selecttree";
 		        			}else{
@@ -338,8 +338,8 @@ class DynamicconfModel extends CommonModel {
 		        		case "lookup":
 		        			$temp["template_key"] = "lookup";
 		        			$abc=$this->getLookupSource($val);
-		        			//upclass:查找带回显示字段,格式 string class="textInput enterIndex readonly into_table_new9122317_wrapperorgfandanbaocuoshibianhao11.name" class里 org.name  
-		        			//callback是回调函数  param是传递到lookupGeneral函数的参数，格式 string 例：param="field=orderno,pid,name,id&model=MisSaleProfession&newconditions="   
+		        			//upclass:查找带回显示字段,格式 string class="textInput enterIndex readonly into_table_new9122317_wrapperorgfandanbaocuoshibianhao11.name" class里 org.name
+		        			//callback是回调函数  param是传递到lookupGeneral函数的参数，格式 string 例：param="field=orderno,pid,name,id&model=MisSaleProfession&newconditions="
 		        			//herf是请求地址   格式 string 例：href="/workarea/workstation/systemui/product/Admin/index.php/MisAutoDap/lookupGeneral"
 		        			//hidden_data:隐藏的存入数据库字段的值 格式 ：[{"upclass":"","name":"datatable[#index#][datatable1][sinianji]"}]，其中upclass是查找带回存储字段，name是隐藏输入入框的name，[datatable1][sinianji]表名，字段名
 		        			$param="";//初始化参数
@@ -355,7 +355,7 @@ class DynamicconfModel extends CommonModel {
 // 		        			//lookup的模型对象
 // 		        			$param.="&model=".$val['lookupmodel'];
 	                        //过滤条件
-		        			
+
 		        			//////////////////////////////////////////////////////////////////////////////////////////////
 		        			unset($conditionConfigJson);
 		        			unset($appendCondtion);
@@ -435,7 +435,7 @@ class DynamicconfModel extends CommonModel {
 	        					$formatTemp=explode('@', $val['dateformat']);
 	        					$val['dateformat']=$formatTemp[0];
 	        				}
-	        				$temp["template_data"]   ='{"format":"'.$val['dateformat'].'"}';       				
+	        				$temp["template_data"]   ='{"format":"'.$val['dateformat'].'"}';
 	        				break;
 	        			case "upload":
 	        				$temp["template_key"] = "uploadfilenew";
@@ -452,11 +452,11 @@ class DynamicconfModel extends CommonModel {
 		        	$val['datatable']=$th_html;
 		        	$list[$val["fieldname"]]=$val;
 		        }
-	        }	
-	     }  
+	        }
+	     }
 	   $this->SetRules($list,$modelname,$typename="form");
 	}
-		
+
 	protected function getSelectSource($confVo){
 		if($confVo){
 			// 用户指定的枚举
@@ -465,7 +465,7 @@ class DynamicconfModel extends CommonModel {
 				$selectList = require ROOT . '/Dynamicconf/System/selectlist.inc.php';
 				//取得配置的数据表
 				$MisSaleClientTypeList=$selectList[$confVo['showoption']][$confVo['showoption']];
-					
+
 			}else{
 				$skey="";
 				$ekey="";
@@ -491,13 +491,13 @@ class DynamicconfModel extends CommonModel {
 		}else{
 			return false;
 		}
-	}	
+	}
 
 	protected function getLookupSource($confVo){
 		if($confVo){
 			// 用户指定的枚举
 			if($confVo['lookupgrouporg']){
-				
+
 				return "grouporg";
 			}else{
 				// 用户指定的视图查找带回来源
@@ -506,8 +506,8 @@ class DynamicconfModel extends CommonModel {
 				}else{
 					return false;
 				}
-				
-			}		
+
+			}
 		}else{
 			return false;
 		}
@@ -533,8 +533,9 @@ class DynamicconfModel extends CommonModel {
             $tableInfo=(require $tableInfo);
 		}else{
 			$tableInfo=$this->setTableInfo($modelname);
+
 			$tableInfo=(require $tableInfo);
-		}		
+		}
 		//如果存在list文件
 		if(!empty($listInfo)){
 			//获取listInfo的最大key值
@@ -600,8 +601,8 @@ class DynamicconfModel extends CommonModel {
 		$autoformModel->setPath($listincpath);
 		$autoformModel->SetListinc($listInfo);
 	}
-	
-	
+
+
 
     /**
      * (non-PHPdoc)
@@ -619,9 +620,9 @@ class DynamicconfModel extends CommonModel {
     	$columnsList = $tableObj->where($map)->getField("COLUMN_NAME,TABLE_NAME,COLUMN_KEY,EXTRA,IS_NULLABLE,DATA_TYPE,COLUMN_TYPE,COLUMN_DEFAULT,COLUMN_COMMENT");
 //     	echo $tableObj->getLastSql()."<br/>";
 //     	print_r($columnsList);
-    
+
     	return $columnsList;
-    }    
-   
+    }
+
 }
 ?>

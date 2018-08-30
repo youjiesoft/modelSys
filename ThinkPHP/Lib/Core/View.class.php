@@ -90,9 +90,6 @@ class View {
      */
     public function display($templateFile='',$charset='',$contentType='') {
         G('viewStartTime');
-        if(ismobile()){
-            echo 1111;exit;
-        }
         // 视图开始标签
         tag('view_begin',$templateFile);
         // 解析并获取模板内容
