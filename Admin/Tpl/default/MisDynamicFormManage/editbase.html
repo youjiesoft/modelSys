@@ -1072,8 +1072,8 @@
                 </div>
                 <!-- 系统字段 -->
                 <include file="systemfieldlist" />
-                <foreach name="anameListvo" item="anamevo"  key="j">
-                    <div class="tableItem">
+                <volist name="anameListvo" id="anamevo"  key="j">
+                    <div class="tableItem" <if condition="$anamevo['souceid']">ischoise="1"</if>>
                     <div class="list_header">
                         <span>表名：</span>
                         <input class="" type="text" name="tablename[{$j-1}]" value="{$anamevo['tabletitle']}"  placeholder="请输入表名" />
@@ -1082,6 +1082,8 @@
                         <input type="hidden" name="deleteField[]" value="" >
                         <input name="ischoise[{$anamevo['tablename']}]" type="hidden" value="{$anamevo.ischoise}" />
                         <span class="right">
+						 <input name="tableprimary[{$j-1}]"  type="hidden" <if condition="$anamevo.isprimary eq '1'"> value="{$anamevo['tablename']}"</if>  />
+							<input  class="mr10 nbm_primary_table" value="1"  <if condition="$anamevo.isprimary eq '1'"> checked="checked"   </if>  disabled="disabled" type="checkbox"  />
 							<span>是否设置为主表</span>
 						  </span>
                     </div>
@@ -1101,13 +1103,13 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <foreach name="anamevo['list']" item="anamevochild" key="k" >
+                        <volist name="anamevo['list']" id="anamevochild" key="k" >
                             <tr>
                                 <td>
                                     <if condition="$anamevo.ischoise eq '1'">
                                         <div class="no_for_edit"></div>
                                         <input name="fieldname[{$j-1}][{$k-1}]"  value="{$anamevochild['field']}" placeholder="请输入英文名称" type="text" class="nbm_fieldnameonly required" />
-                                        <else />
+                                        <else/>
                                         <input name="fieldname[{$j-1}][{$k-1}]"  value="{$anamevochild['field']}" placeholder="请输入英文名称" type="text" class="nbm_fieldnameonly required" />
                                     </if>
                                     <input type="hidden" class="nbm_oldfieldnameonly" name="fieldid[{$j-1}][{$k-1}]" value="{$anamevochild['id']}"/>
@@ -1124,20 +1126,19 @@
                                     <input name="fielddesc[{$j-1}][{$k-1}]"  value="{$anamevochild['desc']}" placeholder="请输入备注" type="text" class="" />
                                     <if condition="$anamevochild.id"><input name="oldfielddesc[{$j-1}][{$k-1}]" type="hidden" value="{$anamevochild['desc']}"/></if>
                                 </td>
-                                <td></td>
+                                <td>
+                                    {:W('ShowSelectDataType',array("id"=>$anamevochild["id"],"j"=>$j,"k"=>$k,"category"=>$anamevochild["category"],"type"=>$anamevochild["type"],"ischoise"=>$anamevo["ischoise"],"fieldtypeList"=>$fieldtypeList))}
+                                </td>
                                 <td>
                                     <if condition="$anamevo.ischoise eq '1'"><div class="no_for_edit"></div></if>
                                     <input name="fieldlength[{$j-1}][{$k-1}]"   placeholder="请输入字段长度"  value="{$anamevochild['length']}" type="text" value="10" class="required" />
                                     <if condition="$anamevochild.id"><input  name="oldfieldlength[{$j-1}][{$k-1}]" value="{$anamevochild['length']}" type="hidden" /> </if>
                                 </td>
                                 <td>
-                                    <if condition="$anamevo.ischoise eq '1'">
-                                        <div class="no_for_edit"></div>
-                                    </if>
                                     <select  name="fieldcategory[{$j-1}][{$k-1}]"    class="select2 opweight ">
-                                        <foreach name="comboxOptionList" item="comboxOptionVo">
+                                        <volist name="comboxOptionList" id="comboxOptionVo">
                                             <option <if condition="$comboxOptionVo.name eq  $anamevochild.category"> selected="selected"</if>  weight="{$comboxOptionVo.weight}" value ="{$comboxOptionVo.name}">{$comboxOptionVo.title} </option>
-                                        </foreach>
+                                        </volist>
                                     </select>
                                     <if condition="$anamevochild.id">
                                         <input  name="oldfieldcategory[{$j-1}][{$k-1}]" value="{$anamevochild['category']}" type="hidden" /> </if>
@@ -1146,20 +1147,17 @@
                                     <input name="fieldweight[{$j-1}][{$k-1}]" value="{$anamevochild.weight}" placeholder="请输入权重" type="text" class=" required"/>
                                     <input  name="oldfieldweight[{$j-1}][{$k-1}]" value="{$anamevochild['weight']}" type="hidden" />
                                 </td>
-                                <td>
-                                    <input name="fieldunique[{$j-1}][{$k-1}]" value="1" type="checkbox"  <if condition="$anamevochild.unique eq '1'">    checked</if> />
-                                    <if condition="$anamevochild.id"><input  name="oldfieldunique[{$j-1}][{$k-1}]"<if condition="$anamevochild.unique eq '1'">  value="1"<else />value="0" </if> type="hidden" /> </if>
-                                </td>
-                                <td>
-                                    <if condition="$anamevochild.category eq 'datatable' and $MisDynamicFormProperyList[$anamevochild['field']] ">
-                                        <div class="no_for_edit"></div>
-                                    </if>
-                                    <input name="fieldshow[{$j-1}][{$k-1}]" value="1" type="checkbox"  <if condition="$MisDynamicFormProperyList[$anamevochild['field']]">   checked</if> />
-                                    <if condition="$anamevochild.id"><input  name="oldfieldshow[{$j-1}][{$k-1}]"<if condition="$MisDynamicFormProperyList[$anamevochild['field']]"> value="1"<else />value="0" </if> type="hidden" /> </if>
-                                </td>
-                                <td> <a class="nbm_del_col" href="javascript:void(0);" >移除</a></td>
+                                    <td>
+                                        <input name="fieldunique[{$j-1}][{$k-1}]" value="1" type="checkbox"  <if condition="$anamevochild.unique eq '1'">    checked</if> />
+                                        <if condition="$anamevochild.id"><input  name="oldfieldunique[{$j-1}][{$k-1}]"<if condition="$anamevochild.unique eq '1'">  value="1"<else/>value="0" </if> type="hidden" /> </if>
+                                    </td>
+                                    <td>
+                                        <input name="fieldshow[{$j-1}][{$k-1}]" value="1" type="checkbox"  <if condition="$MisDynamicFormProperyList[$anamevochild['field']]">   checked</if> />
+                                        <if condition="$anamevochild.id"><input  name="oldfieldshow[{$j-1}][{$k-1}]"<if condition="$MisDynamicFormProperyList[$anamevochild['field']]"> value="1"<else/>value="0" </if> type="hidden" /> </if>
+                                    </td>
+                                    <td> <a class="nbm_del_col" href="javascript:void(0);" >移除</a></td>
                             </tr>
-                        </foreach>
+                        </volist>
                         </tbody>
                         <tfoot>
                         <tr>
@@ -1178,8 +1176,8 @@
                         </tr>
                         </tfoot>
                     </table>
-                    </div>
-                </foreach>
+        </div>
+        </volist>
         <div class="btn_group">
             <button type="button" class="tml_formBar_btn tml_formBar_btn_blue nbm_add_new_table">
                 新建表
