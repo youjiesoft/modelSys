@@ -1,0 +1,22 @@
+CREATE TABLE `access` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `role_id` smallint(6) unsigned NOT NULL,
+  `node_id` smallint(6) unsigned NOT NULL,
+  `level` tinyint(1) NOT NULL,
+  `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0顶级应用;1面板;2空模块;3模块;4操作',
+  `pid` smallint(6) NOT NULL,
+  `module` varchar(50) DEFAULT NULL,
+  `plevels` tinyint(1) NOT NULL DEFAULT '1' COMMENT '浏览级别[1全部,2部门及子部门,3部门,4个人]',
+  `companyid` int(10) DEFAULT NULL COMMENT 'company_id',
+  `sysdutyid` int(10) DEFAULT '0' COMMENT '职级ID',
+  `relationmodelname` varchar(100) DEFAULT '0' COMMENT '关系型表单关联model',
+  `departmentid` int(10) DEFAULT '0' COMMENT '部门ID',
+  `createid` int(10) DEFAULT NULL COMMENT 'create_id',
+  `operateid` int(10) DEFAULT '0' COMMENT '操作人ID',
+  `createtime` int(11) DEFAULT NULL COMMENT 'create_time',
+  `updatetime` int(11) DEFAULT NULL COMMENT 'update_time',
+  `updateid` int(10) DEFAULT NULL COMMENT 'update_id',
+  PRIMARY KEY (`id`),
+  KEY `groupId` (`role_id`),
+  KEY `nodeId` (`node_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=270931 DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC;
