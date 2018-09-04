@@ -1,0 +1,21 @@
+CREATE TABLE `mis_system_log` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `name` varchar(50) NOT NULL COMMENT '表名',
+  `logtype` tinyint(1) NOT NULL COMMENT '日志类型0异常;1更新;2删除',
+  `content` text NOT NULL COMMENT '操作SQL内容',
+  `resume` text COMMENT '备份SQL内容',
+  `actionip` varchar(40) DEFAULT NULL COMMENT '操作IP地址',
+  `companyid` int(10) DEFAULT NULL COMMENT 'company_id',
+  `departmentid` int(10) DEFAULT '0' COMMENT '部门ID',
+  `createid` int(10) DEFAULT NULL COMMENT 'create_id',
+  `createtime` int(11) DEFAULT NULL COMMENT 'create_time',
+  `status` int(1) DEFAULT '1' COMMENT '状态',
+  `sysdutyid` int(10) DEFAULT '0' COMMENT 'èŒçº§ID',
+  `relationmodelname` varchar(100) DEFAULT '0' COMMENT '关系型表单关联model',
+  PRIMARY KEY (`id`),
+  KEY `logtype` (`logtype`),
+  KEY `name` (`name`),
+  KEY `companyid` (`companyid`),
+  KEY `createid` (`createid`),
+  KEY `departmentid` (`departmentid`)
+) ENGINE=MyISAM AUTO_INCREMENT=179704 DEFAULT CHARSET=utf8;
