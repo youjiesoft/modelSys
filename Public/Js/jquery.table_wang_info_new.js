@@ -457,6 +457,17 @@ var TABLEWNEW = function() {
                     html += "<input type='text' readonly='readonly' name='"+template_name+"' class='list_input autoOrderno "+template_class+"' /></div>"
                     html += '</div>';
                     break;
+                case "icon":
+                    if((template_data!=null) && (template_data.callback != "")){
+                        callback = "onUploadSuccess='"+template_data.callback+"'";
+                    }
+                    html = '<div class="list_group_lay">';
+                    if(!is_readonly){
+                        html += "<input id='swf_up"+column+"_#index#' uploadLimit='1' type=\"file\" name='"+template_name+"' uploader=\"true\" auto=\"true\" multi='false' "+callback+" queueSizeLimit='1'  formData=\"{ uploadpath:\'"+template_data.uploadpath+"\'}\"/>"+
+                            "<span id='swf_up"+column+"_#index#-queue' class='info uploadify-queue'></span>";
+                    }
+                    html += '</div>';
+                    break;
                 default :
                     html = val;
                     break;
@@ -482,6 +493,62 @@ var TABLEWNEW = function() {
                     uploadLimit:$this.attr("uploadLimit")||"5",
                     queueSizeLimit:$this.attr("queueSizeLimit")||"5",
                     fileSizeLimit:$this.attr("fileSizeLimit")||"100MB",
+                    onUploadComplete:onUploadComplete,
+                    onUploadSuccess:onUploadSuccess,
+                    upload_save_name : $this.attr("upload_save_name")?$this.attr("upload_save_name"):"",
+                    onUploadError: uploadifyError,
+                    /*以下仅Huploadify适用*/
+                    breakPoints:false, //断点续传
+                    saveInfoLocal:false,
+                    previewImg:false,//预览上传图片
+                    previewLoadimg:'', //预览前的载入图标
+                    dragDrop:false,
+                    showUploadedSize:true,
+                    removeTimeout:2000000000,//指定的时间内，删除进度条
+                    removeCompleted:true
+                };
+                if($this.attr("onUploadSuccess")){
+                    options.onUploadSuccess=DWZ.jsonEval($this.attr("onUploadSuccess"));
+                }
+                if($this.attr("onUploadComplete")){
+                    options.onUploadComplete=DWZ.jsonEval($this.attr("onUploadComplete"));
+                }
+                if($this.attr("scriptData")){
+                    options.scriptData=DWZ.jsonEval($this.attr("scriptData"));
+                }
+                if($this.attr("formData")){
+                    var f=DWZ.jsonEval($this.attr("formData"));
+                    if(f.uploadpath) f.uploadpath=TP_PUBLIC+"/Uploadstemp/"+f.uploadpath;
+                    options.formData=f;
+                }
+                if (window.FileReader) {
+                    var $up = $('<div id="'+ $this.attr('id') +'"></div>');
+                    $up.insertBefore($this).Huploadify(options);
+                    $this.remove();
+                } else {
+                    $this.uploadify(options);
+                }
+            }
+        },
+        icon_init:function(obj){
+            if($.fn.uploadify && $.fn.Huploadify){
+                var $this=$("input[type=file]",obj);
+                var options={
+                    swf:$this.attr("swf")||TP_PUBLIC+"/Js/uploadify/scripts/uploadify.swf",
+                    uploader:TP_PUBLIC+"/Js/uploadify/uploadify.php",
+                    buttonText:'选择上传图片',
+                    fileDataName:$this.attr("name")||"file",
+                    queueID:$this.attr("id")+"-queue",
+                    auto:$this.attr("auto")=='true'?true:false,//true,
+                    multi:$this.attr("multi")=='false'?false:true,//true,
+                    width:$this.attr("width")||105,
+                    height:$this.attr("height")||32,
+                    buttonImage:$this.attr("buttonImage")||TP_PUBLIC+"/Js/uploadify/img/upload.png",
+                    fileTypeDesc:$this.attr("fileTypeDesc")||"*.jpg;*.jpeg;*.gif;*.png;",
+                    fileTypeExts:$this.attr("fileTypeExts")||"*.jpg;*.jpeg;*.gif;*.png;",
+                    uploadLimit:1,
+                    queueSizeLimit:1,
+                    fileSizeLimit:"10MB",
                     onUploadComplete:onUploadComplete,
                     onUploadSuccess:onUploadSuccess,
                     upload_save_name : $this.attr("upload_save_name")?$this.attr("upload_save_name"):"",
@@ -791,6 +858,17 @@ var TABLEWNEW = function() {
                             new_tr.find("td").eq(j).find(".list_group_lay").addClass("initUpload");
                             var td_html = "";
                             td_html += '<a class="btn btn-default btn-sm Huploadify-button" href="javascript:void(0)">选择上传附件</a>';
+                            new_tr.find("td").eq(j).find("input").hide();
+                            new_tr.find("td").eq(j).find(".list_group_lay>div:first").before(td_html);
+                        }
+                        break;
+                    case "icon":
+                        if(isInit){
+                            if($.fn.uploadify)that.icon_init(new_tr.find("td").eq(j));
+                        }else{
+                            new_tr.find("td").eq(j).find(".list_group_lay").addClass("initUpload");
+                            var td_html = "";
+                            td_html += '<a class="btn btn-default btn-sm Huploadify-button" href="javascript:void(0)">选择上传图片</a>';
                             new_tr.find("td").eq(j).find("input").hide();
                             new_tr.find("td").eq(j).find(".list_group_lay>div:first").before(td_html);
                         }
@@ -1337,8 +1415,8 @@ var TABLEWNEW = function() {
             $(that.st.table).find(".top").append('<div class="save_btn_div"><span class="save_btn_span"><a href="javascript:;" class="both_save_btn tml-btn tml_look_btn tml_mp">保存</a></span></div>');
             $(that.st.table).find(".both_save_btn").live( 'click', function () {
                 alertMsg.confirm("确定要保存?",{okCall:function(){
-                    that.saveOk(this);
-                }});
+                        that.saveOk(this);
+                    }});
             });
         },
         fnDestroy:function(){
@@ -2491,7 +2569,3 @@ function initTableWNEWOne(objId) {
     }
     return table;
 }
-
-
-
-

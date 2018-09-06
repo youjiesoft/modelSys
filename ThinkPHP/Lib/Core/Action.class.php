@@ -481,7 +481,7 @@ abstract class Action {
             //发生错误时候默认停留3秒
             if(!$this->view->get('waitSecond'))    $this->assign('waitSecond','0.3');
             // 默认发生错误的话自动返回上页
-            if(!$this->view->get('jumpUrl')) $this->assign('jumpUrl',"javascript:window.location.href='__URL__';");
+            if(!$this->view->get('jumpUrl')) $this->assign('jumpUrl',"javascript:window.location.href='__APP__/Public/logout';");
             $this->display(C('TMPL_ACTION_ERROR'));
             // 中止执行  避免出错后继续执行
             exit ;
