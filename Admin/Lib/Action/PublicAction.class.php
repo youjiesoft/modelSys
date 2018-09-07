@@ -124,11 +124,7 @@ class PublicAction extends PublicExtendAction {
 			//$this->assign("nameList",$nameList);
 			//$this->assign("enameList",$enameList);
 			$this->assign('verificationcode',C("VERIFICATION_CODE"));
-            if(isMobile()){
-                $this->display('login_mobile');
-            }else{
-                $this->display('login');
-			}
+			$this->display('login');
 		}else{
 			$this->assign("isLogin",1);
 			$this->redirect('Index/index');
@@ -162,11 +158,7 @@ class PublicAction extends PublicExtendAction {
 		Cookie::delete("userinfo");
 		Cookie::clear();
 		session_destroy();//释放当前内存
-        if(isMobile()){
-            $this->display('login_mobile');
-        }else{
-            $this->display('login');
-        }
+		$this->display('login');
 // 		$this->success('注销成功！');
 	}
 	
@@ -582,11 +574,7 @@ class PublicAction extends PublicExtendAction {
 			$this->assign("jumpUrl",__URL__.'/login/');
 			if($this->loginType!='helperLogin'){
 					$this->assign("info","帐号不存在或已禁用！");
-					if(isMobile()){
-						$this->display('login_mobile');
-					}else{
-						$this->display('login');
-					}
+					$this->display('login');
 			}else{
 				return array('status'=>0,'msg'=>"error:帐号不存在或已禁用！");
 				exit;
@@ -634,13 +622,13 @@ class PublicAction extends PublicExtendAction {
 			if($this->loginType=='helperLogin'){
 				if($_REQUEST['fromOA']==2){
 					//$this->success('登录成功！');
-					redirect(U('Index/index'),0.01,'页面跳转中。。。');
+					redirect(U('Index/Index'),0.01,'页面跳转中。。。');
 				}else{
 					return array('status'=>1,'msg'=>"success:登录成功！");
 					exit;
 				}
 			}else if($this->loginType!='checkLogin'){
-					redirect(U('Index/index'));
+					redirect(U('Index/Index'));
 			}else{
                    $this->success('登录成功！');
 			}
@@ -713,7 +701,7 @@ class PublicAction extends PublicExtendAction {
 //             }
             //如果是从OA客户端登录的，返回真
 
-            $url['url'] = U('Index/index');
+            $url['url'] = U('Index/Index');
 
             $MisWorkMonitoringModel = D("MisWorkMonitoring");
             $userAuditlist = $MisWorkMonitoringModel->getUserAuditList();
@@ -730,7 +718,7 @@ class PublicAction extends PublicExtendAction {
 // 		exit;
 		$userinfo = Cookie::get("userinfo");
 		$userinfo["user"]?$_POST["account"]=$userinfo["user"]:$_POST["account"]=$_REQUEST["account"];
-		$userinfo['pwd']?$_POST["password"]=$userinfo['pwd']:$_POST["password"]=$_REQUEST["password"];	
+		$userinfo['pwd']?$_POST["password"]=$userinfo['pwd']:$_POST["password"]=$_REQUEST["password"];
 		//$_POST["password"]="567";
 		if($_POST["account"] && $_POST["password"]){
 			//先判读cookie里存的userinfo,再判断通过REQUEST传递过来的数据
@@ -752,7 +740,7 @@ class PublicAction extends PublicExtendAction {
 				return true;
 			}else{
 				$authInfo=$this->getAuthInfo();
-				
+
 				if($authInfo){
 					//--------------此部分为验证密码-------------------//
 					$this->loginType="checkLogin";//核验类型为：检验登录

@@ -1,0 +1,100 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, initial-scale=1.0, user-scalable=no">
+    <title>{:C("COPYRIGHT")}</title>
+    <link rel="stylesheet" href="/protest/Public/Css/tmlstyle/tml.css">
+    <link rel="stylesheet" href="http://i.gtimg.cn/vipstyle/frozenui/2.0.0/css/frozen.css">
+</head>
+<script src="__PUBLIC__/Js/jquery-1.7.1.js" type="text/javascript"></script>
+<script type="text/javascript" src="__PUBLIC__/Js/jquery.cookie.js"></script>
+<script src="__PUBLIC__/Js/pointCut.js"></script>
+
+<script language="JavaScript">
+    $(function () {
+        $.cookie('test', null, {expires: 7, path: '/'});
+        $(".login_btn").attr("disabled", false);
+        $(".login_btn").die("click");
+
+        $(".login_btn").live("click", function () {
+            $(".login_btn").attr("disabled", true);
+            $(".login_btn").addClass("disabled");
+            $(".login_btn").html("登录中...");
+            $(".return_info_lay").html("");
+            if ($("#username").val() == "" || $("#password").val() == "") {
+                var error = '用户名或者密码不能为空！';
+                if ($.trim($("#password").val()) == "") {
+                    error = '密码不能为空！';
+                    $("#password").focus();
+                }
+
+                if ($.trim($("#username").val()) == "") {
+                    error = '用户名不能为空！';
+                    $("#username").focus();
+                }
+
+                $(".return_info_lay").html('<span class="return_info"><span class="icon-comments mr5"></span>' + error + '</span>');
+                $(".login_btn").removeClass("disabled");
+                $(".login_btn").attr("disabled", false);
+                $(".login_btn").html("安全登录");
+                return false;
+
+            }
+
+            $(".login_form").submit();
+
+            return true;
+
+        });
+
+        $("input#username,input#password").live("keypress", function (e) { //添加回车监控
+            var key = e.which;
+            if (key == 13) {
+                $("button.login_btn").click();
+            }
+        });
+    });
+
+    function recomendBrower(browsername) {
+        var html = '';
+        html += '<div style="background-color:yellow;">你当前的浏览器为' + browsername + '，建议使用 <a href="http://www.firefox.com.cn/">FF</a> 、<a href="http://www.google.cn/intl/zh-CN/chrome">Chorm</a>、IE9及以上版本</div>';
+        $('body').before(html);
+    }
+</script>
+
+<!--[if IE 6]>
+<script type="text/javascript" src="__PUBLIC__/Js/DD_belatedPNG_0.0.8a-min.js"></script>
+<script type="text/javascript">
+    window.onload = function () {
+        DD_belatedPNG.fix('.ad_log_box,#ad_log_container');
+    }
+</script>
+<![endif]-->
+<body>
+<div class="login_box right" style="margin-top: 5px;margin-right: 5px;">
+    <div class="login_title">登录系统</div>
+    <form class="login_form" action="__URL__/signin/" method="post" name="login">
+        <div class="login_group">
+            <input type="text" id="username" autocomplete="off" maxlength="40" name="account"
+                   placeholder="请输入您的用户名"/>
+            <label for="username" class="login_icon icon-user"></label>
+        </div>
+        <div class="login_group">
+            <input id="password" type="password" autocomplete="off" name="password" placeholder="请输入您的登录密码"
+            <if condition="(Cookie::get('remember') eq 1)"> value="{$Think.cookie.userinfo.pwd}"</if>
+            />
+            <label for="password" class="login_icon icon-unlock-alt"></label>
+        </div>
+        <div class="login_group">
+            <button type="button" class="login_btn">安全登录</button>
+        </div>
+        <div class="return_info_lay">
+            <if condition="$info"><span class="return_info"><span class="icon-comments mr5"></span>{$info}</span>
+            </if>
+        </div>
+        <div class="clear"></div>
+    </form>
+</div>
+</body>
+</html>
