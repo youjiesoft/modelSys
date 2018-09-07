@@ -62,7 +62,7 @@ class RBAC {
 					$_action['yes'] = explode(',',strtoupper(C('REQUIRE_AUTH_ACTION')));
 				}else {
 					//无需认证的操作
-					$_action['no'] = explode(',',strtoupper($notauth['NOT_AUTH_ACTION']));
+					$_action['no'] = explode(',',strtoupper(C('NOT_AUTH_ACTION')));
 				}
 				//检查当前操作是否需要认证
 				if((!empty($_action['no']) && !in_array(strtoupper(ACTION_NAME),$_action['no'])) || (!empty($_action['yes']) && in_array(strtoupper(ACTION_NAME),$_action['yes']))) {
