@@ -70,10 +70,10 @@ $config	= array(
     'USER_AUTH_GATEWAY'  =>'/Public/login',	// 默认认证网关
 	'AREA_TYPE'  =>'1',	// 系统的地址组件版本  1按模板取值  2按表取值
     //无需认证模块  已移植至notauth.php
- 	//'NOT_AUTH_MODULE'	 =>'Public,MisOaItems,MisOaItemsWaitFor,UserInfo,ReportCharts,CheckFor,Search,MisChat,SendMsg,MisMessage,MisMessageInbox,MisMessageOutbox,MisMessageDrafts,MisMessageRecycle,ReportExcel,OAHelper,MisMessagePhone,MisHrRemindBecomeEmployee,MisHrRemindEmployeeContract,MisUserEvents,MisSystemFunctionalBox,WXHelper',		// 默认无需认证模块
+ 	'NOT_AUTH_MODULE'	 =>'Index,Public,MisOaItems,MisOaItemsWaitFor,UserInfo,ReportCharts,CheckFor,Search,MisChat,SendMsg,MisMessage,MisMessageInbox,MisMessageOutbox,MisMessageDrafts,MisMessageRecycle,ReportExcel,OAHelper,MisMessagePhone,MisHrRemindBecomeEmployee,MisHrRemindEmployeeContract,MisUserEvents,MisSystemFunctionalBox,WXHelper',		// 默认无需认证模块
     'REQUIRE_AUTH_MODULE'=>'',		// 默认需要认证模块  
 	//无需认证方法  已移植至notauth.php
-    //'NOT_AUTH_ACTION'	 =>'additemview,acquire,mybusiness,getFormFlow,showMessage,myCoursesList,roleGroupAuthorizeC,exportBysearchHtml,baseInfo,detail,clear_cache,workplatform,audit,insert,update,view,waitAudit,alreadyAudit,auditProcess,backprocess,auditEdit,startprocess,auditView,seeProcessDetail,seeAuditUser,playSWF,sureProcess,getAllScheduleList,setDbhaSmsgType,organization,misimportexceladd,misimportexcelinsert,tmlbbs,misFileManageDownload',	// 默认无需认证操作
+    'NOT_AUTH_ACTION'	 =>'additemview,acquire,mybusiness,getFormFlow,showMessage,myCoursesList,roleGroupAuthorizeC,exportBysearchHtml,baseInfo,detail,clear_cache,workplatform,audit,insert,update,view,waitAudit,alreadyAudit,auditProcess,backprocess,auditEdit,startprocess,auditView,seeProcessDetail,seeAuditUser,playSWF,sureProcess,getAllScheduleList,setDbhaSmsgType,organization,misimportexceladd,misimportexcelinsert,tmlbbs,misFileManageDownload',	// 默认无需认证操作
     'REQUIRE_AUTH_ACTION'=>'',		// 默认需要认证操作
     'GUEST_AUTH_ON'      => false,    // 是否开启游客授权访问
     'GUEST_AUTH_ID'      => 0,     // 游客的用户ID

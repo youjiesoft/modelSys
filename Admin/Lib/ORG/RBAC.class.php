@@ -53,7 +53,7 @@ class RBAC {
                 $_module['yes'] = explode(',',strtoupper(C('REQUIRE_AUTH_MODULE')));
             }else {
                 //无需认证的模块
-                $_module['no'] = explode(',',strtoupper($notauth['NOT_AUTH_MODULE']));
+                $_module['no'] = explode(',',strtoupper(C('NOT_AUTH_MODULE')));
             }
             //检查当前模块是否需要认证
             if((!empty($_module['no']) && !in_array(strtoupper(MODULE_NAME),$_module['no'])) || (!empty($_module['yes']) && in_array(strtoupper(MODULE_NAME),$_module['yes']))) {
@@ -62,7 +62,7 @@ class RBAC {
 					$_action['yes'] = explode(',',strtoupper(C('REQUIRE_AUTH_ACTION')));
 				}else {
 					//无需认证的操作
-					$_action['no'] = explode(',',strtoupper($notauth['NOT_AUTH_ACTION']));
+					$_action['no'] = explode(',',strtoupper(C('NOT_AUTH_ACTION')));
 				}
 				//检查当前操作是否需要认证
 				if((!empty($_action['no']) && !in_array(strtoupper(ACTION_NAME),$_action['no'])) || (!empty($_action['yes']) && in_array(strtoupper(ACTION_NAME),$_action['yes']))) {
