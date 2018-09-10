@@ -58,6 +58,10 @@ class App {
             array_walk_recursive($_POST,    'think_filter');
             array_walk_recursive($_REQUEST, 'think_filter');
         }
+        if(isMobile()){
+            C('DEFAULT_THEME',"mobile");
+        }
+
         /* 获取模板主题名称 */
         $templateSet =  C('DEFAULT_THEME');
         if(C('TMPL_DETECT_THEME')) {// 自动侦测模板主题
@@ -72,6 +76,7 @@ class App {
                 $templateSet = C('DEFAULT_THEME');
             cookie('think_template',$templateSet);
         }
+
         /* 模板相关目录常量 */
         define('THEME_NAME',   $templateSet);                  // 当前模板主题名称
         $group   =  defined('GROUP_NAME')?GROUP_NAME.'/':'';
