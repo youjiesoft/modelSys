@@ -622,13 +622,13 @@ class PublicAction extends PublicExtendAction {
 			if($this->loginType=='helperLogin'){
 				if($_REQUEST['fromOA']==2){
 					//$this->success('登录成功！');
-					redirect(U('Index/Index'),0.01,'页面跳转中。。。');
+					redirect(U('Index/index'),0.01,'页面跳转中。。。');
 				}else{
 					return array('status'=>1,'msg'=>"success:登录成功！");
 					exit;
 				}
 			}else if($this->loginType!='checkLogin'){
-					redirect(U('Index/Index'));
+					redirect(U('Index/index'));
 			}else{
                    $this->success('登录成功！');
 			}
@@ -701,7 +701,7 @@ class PublicAction extends PublicExtendAction {
 //             }
             //如果是从OA客户端登录的，返回真
 
-            $url['url'] = U('Index/Index');
+            $url['url'] = U('Index/index');
 
             $MisWorkMonitoringModel = D("MisWorkMonitoring");
             $userAuditlist = $MisWorkMonitoringModel->getUserAuditList();
