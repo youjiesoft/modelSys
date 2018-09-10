@@ -34,8 +34,6 @@ class MisSystemMenuModel extends CommonModel{
 				$map ['status'] = 1;
 				if ($groupList) {
 					$map ['id'] = array ( " in ", $groupList);
-				} else {
-					$map ['id'] = 0;
 				}
 			}else{
 				$map ['status'] = array('gt',0);
