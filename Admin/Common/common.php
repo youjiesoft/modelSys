@@ -469,13 +469,13 @@ function sort_by($array, $keyname = null, $sortby = 'asc')
     switch ($sortby) {
         case 'asc':
             
-            // Sort an array and maintain index association...
+            // Sort an array and maintain Index association...
             asort($myarray);
             break;
         case 'desc':
         case 'arsort':
             
-            // Sort an array in reverse order and maintain index association
+            // Sort an array in reverse order and maintain Index association
             arsort($myarray);
             break;
         case 'natcasesor':
@@ -1440,7 +1440,7 @@ function getobjname($typeid, $typename)
 /*
  *
  */
-function getnextUrl($name, $par_val, $par = 'id', $action = "index", $title = "", $opentype = "navTab", $navTab = __MODULE__)
+function getnextUrl($name, $par_val, $par = 'id', $action = "Index", $title = "", $opentype = "navTab", $navTab = __MODULE__)
 {
     $url = strtolower(end(explode('/', __URL__)));
     $url_a = __URL__;
@@ -1454,7 +1454,7 @@ function getNodeSortIcon($name, $par_val, $par = 'id')
     $url_a = __URL__;
     $info = '';
     if ($name != 4) {
-        $info = '<a rel="' . $navTab . '" title="' . $title . '" href="' . $url_a . '/index/' . $par . '/' . $par_val . '/navTabId/' . $navTab . '" target="' . $opentype . '">' . $name . '</a>';
+        $info = '<a rel="' . $navTab . '" title="' . $title . '" href="' . $url_a . '/Index/' . $par . '/' . $par_val . '/navTabId/' . $navTab . '" target="' . $opentype . '">' . $name . '</a>';
         $info = '<a class="up"  target="ajaxTodo" href="__URL__/setsort/frame/1/d/up/id/' . $par_val . '/rel/jbsxNodeBox"><img width="20" border="0" height="20" alt="正常" src="__PUBLIC__/Images/up.gif"></a>&nbsp;
 			<a class="down"  target="ajaxTodo" href="__URL__/setsort/frame/1/d/down/id/' . $par_val . '/rel/jbsxNodeBox"><img width="20" border="0" height="20" alt="正常" src="__PUBLIC__/Images/down.gif"></a>';
     }
@@ -1489,7 +1489,7 @@ function getNodeSortIcon($name, $par_val, $par = 'id')
  * @throws
  *
  */
-function getUrl($name, $object, $action = "index", $par_val, $par = 'id', $title = "默认页面", $opentype = "navTab", $width = 600, $height = 400, $mask = "true")
+function getUrl($name, $object, $action = "Index", $par_val, $par = 'id', $title = "默认页面", $opentype = "navTab", $width = 600, $height = 400, $mask = "true")
 {
     if ($opentype == "navTab") {
         $info = '<a  rel="' . $object . '" title="' . $title . '" href="__APP__/' . $object . '/' . $action . '/' . $par . '/' . $par_val . '" target="' . $opentype . '" mask="' . $mask . '" width="' . $width . '" height="' . $height . '" >' . $name . '</a>';
@@ -1703,7 +1703,7 @@ function getProductPictureUrl($pcode = "")
  * @param $imgtype 1：mas图片
  *            2：sub图片
  * @param $index 索引
- *            $imgtype=1，$index 为masid;$imgtype=2，$index 为subid;
+ *            $imgtype=1，$Index 为masid;$imgtype=2，$Index 为subid;
  * @param $type 附件配置文件对应的type            
  * @author jiangx
  */
@@ -1908,7 +1908,7 @@ function excelTplidTonameAppend($val, $key = 'id', $name = 'name', $md)
  * @return string 返回经过函数处理有的结果
  *         +----------------------------------------------------------
  */
-function createUrl($param1, $param2 = "", $m = "", $a = "index", $rel = "__MODULE__", $target = "navTab", $title = "", $callback = "", $width = "", $height = "")
+function createUrl($param1, $param2 = "", $m = "", $a = "Index", $rel = "__MODULE__", $target = "navTab", $title = "", $callback = "", $width = "", $height = "")
 {
     $width = $width ? "width='" . $width . "'" : "";
     $height = $height ? "height='" . $height . "'" : "";
@@ -2810,7 +2810,7 @@ function getWorkMonitoringCurNodeUser($curNodeUser)
         if ($uStr != "")
             $uStr .= "|"; // 判断是否为第一个人
         $uStr .= '<a class="send" mask="true" width="530" height="300" rel="ADVICE" target="dialog"
-				href="__APP__/SendMsg/index/userid/' . $k . '" title="发送消息给' . $v . '"></a>';
+				href="__APP__/SendMsg/Index/userid/' . $k . '" title="发送消息给' . $v . '"></a>';
         if ($k == $_SESSION[C('USER_AUTH_KEY')]) {
             $uStr .= "<strong>" . $v . "</strong>"; // 如果当前登录人在待办人员里面则加粗显示
         } else {
@@ -5772,10 +5772,10 @@ $(function(){
 				                                      var tempId = k+'_'+tag;
 				                                      var curOprateObj = $('#'+tempId, header);
 				                                      curOprateObj.attr('href',v);
-				                                      var index = curOprateObj.closest('li').index();
+				                                      var Index = curOprateObj.closest('li').Index();
 				console.log(tempId);
 				                                      // 重新请求子表页面
-		                                              $('.tabsContent',obj).children().eq(index).loadUrl(v,{},function(){});
+		                                              $('.tabsContent',obj).children().eq(Index).loadUrl(v,{},function(){});
 						                        });
 						                    });
 										}
@@ -6377,10 +6377,10 @@ $(function(){
 				                                      var tempId = k+'_'+tag;
 				                                      var curOprateObj = $('#'+tempId, header);
 				                                      curOprateObj.attr('href',v);
-				                                      var index = curOprateObj.closest('li').index();
+				                                      var Index = curOprateObj.closest('li').Index();
 				console.log(tempId);
 				                                      // 重新请求子表页面
-		                                              $('.tabsContent',obj).children().eq(index).loadUrl(v,{},function(){});
+		                                              $('.tabsContent',obj).children().eq(Index).loadUrl(v,{},function(){});
 						                        });
 						                    });
 										}
@@ -7252,7 +7252,7 @@ function importValidate($type, $value)
     $bool = false;
     $str = '';
     if (! empty($value)) {
-        switch ($validate) {
+        switch ($type) {
             case "eamil":
                 $str = "/\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/";
                 break;
@@ -7672,5 +7672,9 @@ function getSesstionContion($id)
         return false;
     }
     return true;
+}
+
+function getSelectDataTypeHtml($name,$name2){
+    return $name.$name2;
 }
 ?>
