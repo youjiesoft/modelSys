@@ -30,9 +30,9 @@ class ShowAreaWidget extends Widget{
 		$gid = $this->getGUID();
 		
 		//默认城市重庆
-		$default = '230000';
+		$default = '500000';
 		//默认地址重庆
-		$detail='黑龙江省';
+		$detail='重庆市';
 		//横坐标
 		$coordinatex = "";
 		//纵坐标
@@ -105,13 +105,18 @@ class ShowAreaWidget extends Widget{
 			 	
 			 	<select data-souce='{$souceStr}' data-required='{$required}' cascade  class=" address_level_elm left select2 next  nbm1 {$required}" names="areainfo[{$fieldName}][data]">{$option}</select>
 			 	<!-- 详细地址信息 -->
-			 	<input class="address_four_level address input_new left" placeholder="详情地址，具体到街道\村庄" type="text" name="areainfo[{$fieldName}][address]" value="{$address}" />
+			 	<input style="border-radius:4px 0 0 4px;width:calc(18% - 20px);" class="address_four_level address input_new left" placeholder="详情地址，具体到街道\村庄" type="text" name="areainfo[{$fieldName}][address]" value="{$address}" />
 			 	<input class="address_detail_coordinatex" name="areainfo[{$fieldName}][coordinatex]" id="address_detail_coordinatex_{$fieldName}" type="hidden" value="{$coordinatex}"/>
 			 	<input class="address_detail_coordinatey" name="areainfo[{$fieldName}][coordinatey]" id="address_detail_coordinatey_{$fieldName}" type="hidden" value="{$coordinatey}"/>
 			 	<!-- 地图标注 -->
-			 	<a class="icon-map-marker tml_map_link" style="cursor:pointer" onclick="openMap('{$fieldName}');" mask="true" rel="lookupgetMapCoordinate"  title="地图"></a>
+			 	<a href="javascript:;" class="icon_elm icon-map-marker js-inputCheckMap" style="color:#3290f4;width:20px;" title="打开地图"></a>
+	
 			 	<!-- 完整地址信息 -->
-			 	<input name="areainfo[{$fieldName}][detail]" value="{$detail}" id="address_detail_address_{$fieldName}" class="area_push detail split_address input_new left {$required}"  placeholder="地址显示：省、市、区县、详细地址" type="text"  />
+			 	<div style="width:100%;float:left;">
+			 	    <input style="width:calc(100% - 6px);"  readonly unselectable="on" name="areainfo[{$fieldName}][detail]" value="{$detail}" id="address_detail_address_{$fieldName}" class="js-getLnglat area_push detail split_address input_new left {$required}"  placeholder="地址显示：省、市、区县、详细地址" type="text"  />
+			 	    <!--<a style="margin-top:5px;width:68px;cursor:pointer;" class="icon_elm  js-getLnglat" rel="lookupgetMapCoordinate"  title="查询经纬度">查询经纬度</a>-->
+                </div>
+			 	
 			 </div>
 EOF;
 		// 测试版的调用JS
