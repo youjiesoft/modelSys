@@ -17,7 +17,6 @@
                                 <input type="hidden" name="areainfo[#fields#][area]" value="{$areainfo['#fields#']['area']}">
                                 <input type="hidden" name="areainfo[#fields#][town]" value="{$areainfo['#fields#']['town']}">
                                 <input type="hidden" name="areainfo[#fields#][street]" value="{$areainfo['#fields#']['street']}">
-                                <input type="hidden" name="areainfo[#fields#][address]" value="{$areainfo['#fields#']['address']}">
                                 <input type="hidden" name="areainfo[#fields#][longitude]" value="{$areainfo['#fields#']['longitude']}"/>
                                 <input type="hidden" name="areainfo[#fields#][latitude]" value="{$areainfo['#fields#']['latitude']}"/>
                                 <input type="hidden" name="areainfo[#fields#][formattedAddress]" value="{$areainfo['#fields#']['detail']}"/>
