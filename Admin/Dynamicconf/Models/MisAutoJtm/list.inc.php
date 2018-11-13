@@ -1,0 +1,223 @@
+<?php 
+/**
+ * @Title: Config
+ * @Package package_name
+ * @Description: todo(动态表单_配置文件-list)
+ * @author 管理员
+ * @company 重庆特米洛科技有限公司
+ * @copyright 本文件归属于重庆特米洛科技有限公司
+ * @date 2015-03-04 10:07:04
+ * @version V1.0
+*/
+return array(
+	'orderno' => array(
+		'name' => 'orderno',
+		'showname' => '编号',
+		'widths' => '',
+		'sorts' => '0',
+		'models' => '',
+		'sortname' => 'orderno',
+		'sortnum' => '1',
+		'shows' => '1',
+		'status' => '1',
+		'rules' => '1',
+		'message' => '1',
+		'isexport' => '1',
+		'fieldtype' => '',
+		'fieldcategory' => 'text',
+		'searchField' => 'mis_auto_fwvvg.orderno',
+		'conditions' => '',
+		'type' => 'text',
+		'issearch' => '1',
+		'isallsearch' => '1',
+		'searchsortnum' => '0',
+		'table' => 'mis_auto_fwvvg',
+		'field' => 'orderno',
+		'helpvalue' => '',
+	),
+	'name' => array(
+		'name' => 'name',
+		'showname' => '名称',
+		'widths' => '',
+		'sorts' => '0',
+		'models' => '',
+		'sortname' => 'name',
+		'sortnum' => '2',
+		'shows' => '1',
+		'status' => '1',
+		'rules' => '1',
+		'message' => '1',
+		'isexport' => '1',
+		'fieldtype' => '',
+		'fieldcategory' => 'text',
+		'searchField' => 'mis_auto_fwvvg.name',
+		'conditions' => '',
+		'type' => 'text',
+		'issearch' => '1',
+		'isallsearch' => '1',
+		'searchsortnum' => '1',
+		'table' => 'mis_auto_fwvvg',
+		'field' => 'name',
+		'helpvalue' => '',
+	),
+	'duiyingmoban' => array(
+		'name' => 'duiyingmoban',
+		'showname' => '表决模板',
+		'shows' => '1',
+		'widths' => '',
+		'sorts' => '0',
+		'models' => '',
+		'sortname' => 'duiyingmoban',
+		'sortnum' => '4',
+		'issearch' => '0',
+		'searchField' => 'mis_auto_fwvvg.duiyingmoban',
+		'table' => 'node',
+		'field' => 'id',
+		'conditions' => '',
+		'type' => 'group2',
+		'isallsearch' => '0',
+		'searchsortnum' => '2',
+		'status' => '1',
+		'helpvalue' => '',
+		'func' => array(
+			'0' => array(
+				'0' => 'getFieldBy',
+			),
+		),
+		'funcdata' => array(
+			'0' => array(
+				'0' => array(
+					'0' => '###',
+					'1' => 'name',
+					'2' => 'title',
+					'3' => 'node',
+				),
+			),
+		),
+		'rules' => '0',
+		'message' => '0',
+	),
+	'action' => array(
+		'name' => 'action',
+		'showname' => '操作',
+		'shows' => '0',
+		'widths' => '',
+		'sorts' => '0',
+		'models' => '',
+		'sortname' => 'status',
+		'func' => array(
+			'0' => array(
+				'0' => 'showStatus',
+			),
+		),
+		'funcdata' => array(
+			'0' => array(
+				'0' => array(
+					'0' => '#status#',
+					'1' => '#id#',
+				),
+			),
+		),
+		'sortnum' => '5',
+		'table' => NULL,
+		'field' => NULL,
+		'searchField' => '.',
+		'helpvalue' => '',
+		'status' => '1',
+		'rules' => '0',
+		'message' => '0',
+	),
+	'shenqingmoban' => array(
+		'name' => 'shenqingmoban',
+		'showname' => '申请模板',
+		'shows' => '1',
+		'widths' => '',
+		'sorts' => '0',
+		'models' => '',
+		'sortname' => 'shenqingmoban',
+		'sortnum' => '3',
+		'issearch' => '1',
+		'searchField' => 'mis_auto_fwvvg.shenqingmoban',
+		'table' => '',
+		'field' => '',
+		'conditions' => '',
+		'type' => '',
+		'isallsearch' => '1',
+		'searchsortnum' => '2',
+		'status' => '1',
+		'helpvalue' => '',
+		'func' => array(
+			'0' => array(
+				'0' => 'getFieldBy',
+			),
+		),
+		'funcdata' => array(
+			'0' => array(
+				'0' => array(
+					'0' => '###',
+					'1' => 'name',
+					'2' => 'title',
+					'3' => 'node',
+				),
+			),
+		),
+	),
+	'huizongmoban' => array(
+			'name' => 'huizongmoban',
+			'showname' => '汇总模板',
+			'shows' => '1',
+			'widths' => '',
+			'sorts' => '0',
+			'models' => '',
+			'sortname' => 'huizongmoban',
+			'sortnum' => '6',
+			'issearch' => '1',
+			'searchField' => 'mis_auto_fwvvg.huizongmoban',
+			'table' => '',
+			'field' => '',
+			'conditions' => '',
+			'type' => '',
+			'isallsearch' => '1',
+			'searchsortnum' => '2',
+			'status' => '1',
+			'helpvalue' => '',
+			'func' => array(
+					'0' => array(
+							'0' => 'getFieldBy',
+					),
+			),
+			'funcdata' => array(
+					'0' => array(
+							'0' => array(
+									'0' => '###',
+									'1' => 'name',
+									'2' => 'title',
+									'3' => 'node',
+							),
+					),
+			),
+	),
+	'datatable3' => array(
+			'name' => 'datatable3',
+			'showname' => '设置外部显示表决字段',
+			'widths' => '',
+			'sorts' => '0',
+			'models' => '',
+			'sortname' => 'datatable3',
+			'sortnum' => '6',
+			'shows' => '0',
+			'status' => '1',
+			'rules' => '1',
+			'message' => '1',
+			'isexport' => '1',
+			'fieldtype' => 'varchar',
+			'fieldcategory' => 'datatable',
+			'searchField' => 'mis_auto_vddcc.datatable3',
+			'conditions' => '',
+			'type' => 'datatable',
+			'ischosice' => '1',
+	),
+	
+);
+
+?>
