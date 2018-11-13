@@ -708,14 +708,20 @@ class MisDynamicFormManageAction extends MisDynamicFormTemplateAction {
 				// 普通表单 - 审批表单
 				// 生成Action 文件
 				$this->createAction ( $controllProperty, $actionName, false, $serviceType, false );
-				// 生成模板
-				$this->createTemplate ( $controllProperty ['visibility'], $actionName, $serviceType );
+                //生成手机端Action 文件
+                $this->createMobileAction ( $controllProperty, $actionName, false, $serviceType, false );
+            // 生成模板
+				$this->createTemplate( $controllProperty ['visibility'], $actionName, $serviceType );
+                $this->createTemplate_app( $controllProperty ['visibility'], $actionName, $serviceType );  //生成手机html
 				$this->createJsText();
+//                $this->createJsApp($this->nodeName , 1,$controllProperty);  //生成手机js
 				break;
 			case 'basisarchivestpl':
 				// 基础档案
 				$this->createBaseArchivesCode($formTypeData);
+                $this->createBaseArchivesCode_App($formTypeData);                  //生成手机html
 				$this->createJsText($this->nodeName , 1);
+//                $this->createJsApp($this->nodeName , 1,$controllProperty);              //生成手机js
 				break;
 			case 'basisarchivesaudittpl':
 				// 基础档案-审批
@@ -724,9 +730,13 @@ class MisDynamicFormManageAction extends MisDynamicFormTemplateAction {
 				// 普通表单
 				// 生成Action 文件
 				$this->createAction ( $controllProperty, $actionName, false, $serviceType, false );
+				//生成手机端Action 文件
+				$this->createMobileAction ( $controllProperty, $actionName, false, $serviceType, false );
 				// 生成模板
 				$this->createTemplate ( $controllProperty ['visibility'], $actionName, $serviceType );
+                $this->createTemplate_app ( $controllProperty ['visibility'], $actionName, $serviceType);             //生成手机html
 				$this->createJsText($this->nodeName , 1);
+//                $this->createJsApp($this->nodeName , 1,$controllProperty);                  //生成手机js
 				break;
 		}
 
@@ -763,12 +773,12 @@ class MisDynamicFormManageAction extends MisDynamicFormTemplateAction {
 				$primaryname = $this->autoInsert();
 				$transeModel->commit();
 				$this->success("操作成功", '', array('type' => 1, 'nodename' => $this->nodeName , 'tablename'=>$primaryname,'tpltype'=>$this->tpltype));
-				
+
 			}catch (Exception $e){
 				$transeModel->rollback();
 				$this->error( $e->__toString() );
 			}
-			
+
 		}else{
 			/*此方法为查询子表信息*/
 			//$this->getTableNameList();
@@ -852,7 +862,7 @@ class MisDynamicFormManageAction extends MisDynamicFormTemplateAction {
 			}
 			if($this->tpltype=="zczuhetpl"){
 				//获取已绑定关系有类型筛选的主表
-				$MisAutoBindList=$MisAutoBindModel->where("status=1 and typeid=0")->getField("id,bindaname");
+				$MisAutoBindList=$controllProperty->where("status=1 and typeid=0")->getField("id,bindaname");
 				$mdmMap=array();
 				if($MisAutoBindList){
 					$mdmMap['actionname']=array("not in",implode(',',$MisAutoBindList));
@@ -1904,7 +1914,7 @@ function editAutoForm() {
 			$this->assign ( 'action', $this->nodeName );
 			// 现有组件
 			$data = $filedModel->where ( 'formid=' . $id )->select ();
-			
+
 			// 生成html
 			$html = self::createContrlHtml ( $data );
 			$this->assign ( 'html', $html );
@@ -1916,6 +1926,7 @@ function editAutoForm() {
 			$this->assign ( 'controlls', $this->controls );
 			$this->getNodeList ();
 			$this->display ( 'MisDynamicFormManage:autoformindex' );
+
 		} else {
 			// //////////////////////////////////////////////
 			// 通用表单改版 //
@@ -1923,14 +1934,14 @@ function editAutoForm() {
 			// 此处新增mis_dynamic_form_indatatable
 			$mis_dynamic_form_indatatable = M ( "mis_dynamic_form_indatatable" );
 			$misdynamicform = M ( 'mis_dynamic_form_manage' );
-			// 重新设置当前action的真实表名
+			// 重新设置当前action的真实表名   表名
 			$this->tableName = $this->getTrueTableName ();
-			
 			$nodeModel = D ( 'Node' );
 			// 当前修改方式为不可靠的修改。
 			$this->isaudit = $nodeModel->where ( "`name`='{$this->nodeName}'" )->getField ( "isprocess" );
-			$controlProperty = $this->getParame ();
-			
+
+            $controlProperty = $this->getParame ();     //由post获取参数
+//            dump($controlProperty);exit;
 			$formData = $misdynamicform->where ( "`actionname`='{$this->nodeName}'" )->find ();
 			$this->formtype = $formData ['tpl'];
 			$this->isrecord = $formData['isrecord'];
@@ -1954,6 +1965,106 @@ function editAutoForm() {
 			
 		}
 	}
+
+
+
+    //实现批量保存
+	public function editbatch(){
+//        $id = $_GET ['id'];
+        $masmodel = D('mis_dynamic_database_mas');
+        $propery = D('mis_dynamic_form_propery');    //自拼参数  实现批量
+        $list = $masmodel->select();
+//        echo  "<script>console.log(JSON.parse('".json_encode($list)."'));</script>";
+        foreach ($list as $k => $v){
+            // 重新设置当前表名
+            $this->tableName = $v['tablename'];
+            $this->nodeName =  $v['modelname'];
+            $misdynamicform = M ( 'mis_dynamic_form_manage' );
+            $nodeModel = D ( 'Node' );
+            // 当前修改方式为不可靠的修改。
+            $this->isaudit = $nodeModel->where ( "`name`='{$this->nodeName}'" )->getField ( "isprocess" );
+
+            $map['dbname']= $this->tableName;
+            $t =$propery->where($map)->select();
+            $controlProperty['all']=$t;
+            foreach ($this->publicProperty as $kye => $val) {
+                //				if($val['identity']){
+                //					$temp[$v][$val['name']] = $_POST[$val['name']][$k];
+                //				}else{
+                //					$temp[$v][$val['name']] = $_POST[$val['name']][$v];
+                //				}
+                //
+
+                if ($val['identity']) {
+                    $t = $_POST[$val['name']][$k];
+                } else {
+                    $t = $_POST[$val['name']][$v];
+                }
+                $controlTempArr[$v][$val['name']] = $t;
+                if ($val['dbfield']) {
+                    $publicArr[$v][$val['dbfield']] = $t;
+                }
+            }
+            /**
+             * 获取所有组件属性和可显示组件属性
+             * 1：先取得组件类型
+             * 2：从POST中取出该组件的属性
+             * 3：分离出不生成字段的，
+             */
+            //			unset($temp);
+            //			unset($controlTempArr);
+            unset($t);
+            unset($visib);
+
+            foreach ($this->privateProperty[$controlTempArr[$v][$this->publicProperty['catalog']['name']]] as $key => $val) {
+
+                /* 得到具体属性的值 */
+                // 得到所有组件
+                if ($val['identity']) {
+                    if ($val['name']) {
+                        $t[$val['name']] = $_POST[$val['name']][$k];
+                    }
+                } else {
+                    if ($val['name']) {
+                        $t[$val['name']] = $_POST[$val['name']][$v];
+                    }
+                }
+                if ($val['dbfield']) {
+                    $publicArr[$v][$val['dbfield']] = $t[$val['name']];
+                }
+
+            }
+            foreach ($t as $key => $val)
+                if ($val['isshow']==1){ //$t['isshow']) {
+                    $controlProperty['visibility' ] = $t;
+                }
+            if($t['ids']=='' && $t['tablename'] && $this->controlConfig[$t['catalog']]['iscreate']){
+                $controlProperty['conf'] = $t;
+            }
+//            echo "<script>console.log(JSON.parse('".json_encode($controlProperty['all'])."'));</script>";
+
+            $managewhere['actionname']= $this->nodeName;
+            $formData = $misdynamicform->where ($managewhere)->select();
+            $this->formtype = $formData[0]['tpl'];
+            $this->isrecord = $formData[0]['isrecord'];
+            $_POST['dynamicformid']=$formData[0]['id'];
+            //生成代码 html
+            if(!$this->isrecord){
+                try {
+                    $this->createCode ($controlProperty , $this->nodeName, $formData[0]['tpl'], $this->isaudit );
+                } catch ( Exception $e ) {
+                    $this->error ( $e->getMessage());
+                }
+            }
+        }
+//        $this->success ( '修改成功', '', array (
+//            'type' => 1,
+//            'nodename' => $this->nodeName,
+//            'isaudit' => $this->isaudit,
+//            'tablename' => $this->tableName
+//        ) );
+       echo "成功 ";
+    }
 	/**
 	 * @Title: lookupSetAccess
 	 * @Description: todo(查看授权)
@@ -3132,6 +3243,87 @@ EOF;
 		 *
 		 */
 	}
+
+        //手机端口js
+    private function createJsApp($nodeNames='' , $tplType='',$controllProperty){
+        // 生成JS功能。
+
+        logs ( '开始生成JS', 'js' );
+        // 1.获取到当前Action的组件配置文件信息
+        $nodeName = $nodeNames ? $nodeNames : $this->nodeName;
+        $rands = time().microtime();
+        logs ( "开始生成JS nodeNames-{$nodeNames} : node -" . $this->nodeName, 'js' );
+
+
+        $addFileName = TMPL_PATH . C ( 'DEFAULT_APP' ) . "/" . $nodeName . "/add.js";
+        $editFileName = TMPL_PATH . C ( 'DEFAULT_APP' ) . "/" . $nodeName . "/edit.js";
+        $viewFildNmae=TMPL_PATH . C ( 'DEFAULT_APP' ) . "/" . $nodeName . "/view.js";
+        $addExtendFileName = TMPL_PATH . C ( 'DEFAULT_APP' ) . "/" . $nodeName . "/addExtend.js";
+        $editExtendFileName = TMPL_PATH . C ( 'DEFAULT_APP' ) . "/" . $nodeName . "/editExtend.js";
+        $viewExtendFileName=TMPL_PATH . C ( 'DEFAULT_APP' ) . "/" . $nodeName . "/viewExtend.js";
+        //开始拼接 JS 文本
+
+        $appJs = '';
+        $str = '';
+        foreach ($controllProperty['all'] as $ck => $cv) {
+            $str .=$cv['fields'] .=": '',";
+        }
+        $appJs = <<<EOF
+        <script>
+		var data = {
+EOF;
+        $appJs .= $str;
+        $appJs .= <<< EOF
+        }
+		Vue.use(VueResource);
+		var app = new Vue({
+			el: '#dcontent',
+			data: {
+				data
+			},
+			methods:{
+			   push:function(){
+				   this.\$http({
+					   methods:'push',
+					   url:'',
+					   data: data
+				   }).then(function(response){console.log(response)})
+			   },
+			   push2:function(){
+				   this.\$http({
+					   methods:'GET',
+					   url:'',
+				   }).then(function(response){
+					   console.log(response);
+				   }).catch(function(error){
+					   console.log(error)
+				   })
+			   },
+			   onClickLeft:function(url){
+				   window.location.href=url;
+			   }
+			}
+        
+    })
+</script>
+EOF;
+
+
+
+        /*值更新公共js*/
+
+        $autoformObj = D ( 'Autoform' );
+        $autoformObj->createJSCode_app ( $appJs, $viewFildNmae, '生成查看页面专用JS' );
+        $autoformObj->createJSCode_app ( $appJs, $addFileName, '生成添加页面专用JS' );
+        $autoformObj->createJSCode_app ( $appJs, $editFileName, '生成修改页面专用JS' );
+
+        $autoformObj->createExtendJSCode ( '', $viewExtendFileName, '查看页面JS扩展' );
+        $autoformObj->createExtendJSCode('' , $addExtendFileName , '新增页面JS扩展');
+        $autoformObj->createExtendJSCode('' , $editExtendFileName , '修改页面JS扩展');
+
+
+
+    }
 
 	/* 私有函数区域 */
 
@@ -6940,6 +7132,7 @@ EOF;
 			 * 获取公用属性
 			 */
 			$controlTempArr = array();
+//            echo  "<script>console.log(JSON.parse('".json_encode($this->privateProperty)."'));</script>";
 			foreach ($this->publicProperty as $kye => $val) {
 				//				if($val['identity']){
 				//					$temp[$v][$val['name']] = $_POST[$val['name']][$k];
@@ -6947,6 +7140,7 @@ EOF;
 				//					$temp[$v][$val['name']] = $_POST[$val['name']][$v];
 				//				}
 				//
+
 				if ($val['identity']) {
 					$t = $_POST[$val['name']][$k];
 				} else {
@@ -6967,7 +7161,9 @@ EOF;
 			//			unset($controlTempArr);
 			unset($t);
 			unset($visib);
+
 			foreach ($this->privateProperty[$controlTempArr[$v][$this->publicProperty['catalog']['name']]] as $key => $val) {
+
 				/* 得到具体属性的值 */
 				// 得到所有组件
 				if ($val['identity']) {
@@ -6982,7 +7178,7 @@ EOF;
 				if ($val['dbfield']) {
 					$publicArr[$v][$val['dbfield']] = $t[$val['name']];
 				}
-					
+
 			}
 			$allArr[$v] = $t;
 			// 可显示的组件
@@ -7198,6 +7394,59 @@ EOF;
 			return $tables2;
 		}
 	}
+
+    /**
+     * @Title: getRoams
+     * @Description: todo(获取当前所有已经生成的漫游信息)
+     * @author xiaosen
+     * @data 2018-11-7 16:55:01
+     */
+    public function getRoams($iscur=true){
+        $Model = M('mis_system_data_roam_mas');
+        $roma=array();
+        $romas = $Model
+            ->where('sourcemodel ='.$this->nodeName)
+            ->getField('id,title');
+        foreach($romas as $k=>$v){
+           $roma[$v['id']] = $v['title'];
+        }
+        if($iscur){
+            echo json_encode($roma);
+        }else{
+            return $roma;
+        }
+    }
+
+    /**
+     * @Title: getAutoTables
+     * @Description: todo(获取当前所有自动生成的数据表信息)
+     * @author xiaosen
+     *  @data 2018-11-07
+     */
+    public function getAutoTables ($iscur=true){
+        $model3=M();
+        $tables = $model3->query("SELECT `modelname`,`tabletitle` FROM mis_dynamic_database_mas ");//limit 1
+        $tables2=array();
+        foreach($tables as $k=>$v){
+            $k=$v['modelname'];
+            $v=$v['tabletitle'];
+            if($v==""){
+                $tables2[$k]=$k;
+            }else{
+                $v=explode("; InnoDB",$v);
+                $tables2[$k]=$v[0];
+                if( count(explode("InnoDB",$v[0])) >1 ){
+                    $tables2[$k]=$k;
+                }
+            }
+        }
+        if($iscur){
+            echo json_encode($tables2);
+        }else{
+            return $tables2;
+        }
+    }
+
 
 	/**
 	 * @Title: comboxgetTableField
@@ -7517,6 +7766,7 @@ EOF;
 						// 基础档案 左侧列表，右侧ajax刷新编辑页面
 						// 生成action
 						$this->createBaseArchives($this->nodeName, false , false);
+
 						// 生成新增模板
 						//$baseAddHtml = $this->createBaseArchivesAddTemplate($curnodeData , $this->nodeName, '' , false);
 						$baseAddHtml = $this->getPage('archiver_ajax_add', $curnodeData, 1);
@@ -7595,6 +7845,122 @@ EOF;
 		}
 				
 	}
+
+    private function createBaseArchivesCode_App($temp){
+
+        $jsPath=$this->nodeName;
+        $addjs = $this->getJS ( $jsPath );
+        $addjs .= $this->getJS ( $jsPath, 'addExtend' );
+        $editjs = $this->getJS ( $jsPath, 'edit' );
+        $editjs .= $this->getJS ( $jsPath, 'editExtend' );
+
+
+        // 获取当前节点的字段组件配置信息
+        $curnodeData = $this->getOrderNode('index');
+        logs('C:'.__CLASS__.' L:'.__LINE__.'生成基础档案'.$this->pw_var_export($temp));
+
+        switch($temp[0]){
+            case 'basisarchivestpl':
+                switch($temp[1]){
+                    case 'ltrc':
+                        // 基础档案 左侧列表，右侧ajax刷新编辑页面
+                        // 生成action_app
+                        $this->createBaseArchives_app($this->nodeName, false , false);
+                        // 生成新增模板
+                        $baseAddHtml = $this->getPage_app('archiver_ajax_add', $curnodeData, 1);
+                        $file = TMPL_PATH.C('DEFAULT_APP')."/".$this->nodeName."/add.html";
+                        if(!is_dir(dirname($file))) mk_dir(dirname($file),0777);
+                        if( false === file_put_contents( $file , $baseAddHtml )){
+                            $this->error ( "基础档案add.html生成失败");
+                        }
+                        if( false === file_put_contents( $file , '' )){
+                            $this->error ( "基础档案add.html生成失败");
+                        }
+                        $baseIndexHtml = $this->getPage_app('archiver_ajax_index', $curnodeData, 1);
+                        $file = TMPL_PATH.C('DEFAULT_APP')."/".$this->nodeName."/index.html";
+                        if(!is_dir(dirname($file))) mk_dir(dirname($file),0777);
+                        if( false === file_put_contents( $file , $baseIndexHtml )){
+                            $this->error ( "基础档案index.html生成失败");
+                        }
+                        if( false === file_put_contents( $file , '' )){
+                            $this->error ( "基础档案add.html生成失败");
+                        }
+                        $baseIndexViewHtml = $this->getPage_app('archiver_ajax_indexview', $curnodeData, 1);
+                        $file = TMPL_PATH.C('DEFAULT_APP')."/".$this->nodeName."/indexview.html";
+                        if(!is_dir(dirname($file))) mk_dir(dirname($file),0777);
+                        if( false === file_put_contents( $file , $baseIndexViewHtml )){
+                            $this->error ( "基础档案indexview.html生成失败");
+                        }
+                        if( false === file_put_contents( $file , '' )){
+                            $this->error ( "基础档案add.html生成失败");
+                        }
+                        // 生成Model
+                        $this->createModel('','');
+                        // 生成list文件
+                        $this->modifyConfig('',$this->nodeTitle , false,true);
+                        break;
+                    case 'ltrl':
+                        // 基础档案 左侧树右侧列表
+                        // 生成action
+                        $this->createBaseArchivesLsit_app($this->nodeName, false , false);
+                        // add
+                        //$baseAddHtml = $this->createBaseArchivesListAddTemplate($curnodeData , $this->nodeName, '' , false);
+                        $baseAddHtml = $this->getPage_app('archivers_add', $curnodeData, 0);
+                        $file = TMPL_PATH.C('DEFAULT_APP')."/".$this->nodeName."/add.html";
+                        if(!is_dir(dirname($file))) mk_dir(dirname($file),0777);
+                        if( false === file_put_contents( $file , '' )){
+                            $this->error ( "基础档案add.html生成失败");
+                        }
+                        //edit
+// 						$baseEditHtml = $this->createBaseArchivesListEditTemplate($curnodeData , $this->nodeName, '' , false);
+                        $baseEditHtml = $this->getPage_app('archivers_edit', $curnodeData, 1);
+                        $file = TMPL_PATH.C('DEFAULT_APP')."/".$this->nodeName."/edit.html";
+                        if(!is_dir(dirname($file))) mk_dir(dirname($file),0777);
+                        if( false === file_put_contents( $file , '')){
+                            $this->error ( "基础档案edit.html生成失败");
+                        }
+                        if( false === file_put_contents( $file , '' )){
+                            $this->error ( "基础档案add.html生成失败");
+                        }
+                        // index.html
+// 						$baseIndexHtml = $this->createBaseArchivesIndexTemplate($this->nodeName, $this->nodeTitle,false);
+                        $baseIndexHtml = $this->getPage_app('archivers_index', $curnodeData, 1);
+                        $file = TMPL_PATH.C('DEFAULT_APP')."/".$this->nodeName."/index.html";
+                        if(!is_dir(dirname($file))) mk_dir(dirname($file),0777);
+                        if( false === file_put_contents( $file , '' )){
+                            $this->error ( "基础档案index.html生成失败");
+                        }
+                        if( false === file_put_contents( $file , '' )){
+                            $this->error ( "基础档案add.html生成失败");
+                        }
+                        // indexView.html
+// 						$baseIndexViewHtml = $this->createBaseArchivesListIndexView($this->nodeName);
+                        $baseIndexViewHtml = $this->getPage_app('archivers_index_view', $curnodeData, 1);
+                        $file = TMPL_PATH.C('DEFAULT_APP')."/".$this->nodeName."/indexview.html";
+                        if(!is_dir(dirname($file))) mk_dir(dirname($file),0777);
+                        if( false === file_put_contents( $file , '' )){
+                            $this->error ( "基础档案indexview.html生成失败");
+                        }
+                        if( false === file_put_contents( $file , '' )){
+                            $this->error ( "基础档案add.html生成失败");
+                        }
+                        // 生成Model
+                        //$this->createModel('','');
+                        // 生成list文件
+                        //$this->modifyConfig('',$this->nodeTitle , false,true);
+                        break;
+                }
+                break;
+            case 'basisarchivesaudittpl':
+                // 基础档案 有审批
+                break;
+        }
+        $updatefile = TMPL_PATH.C('DEFAULT_APP')."/".$this->nodeName."/misSystemDataUpdate.html";
+        if(is_file($updatefile)){
+            unlink($updatefile);
+        }
+
+    }
 	/**
 	 * @Title: getControllDataSouce
 	 * @Description: todo(取得指定组件项的属性配置)

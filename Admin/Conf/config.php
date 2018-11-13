@@ -11,7 +11,8 @@ $config	= array(
     'DEFAULT_LANG' => 'zh-cn', // 默认语言
     'LANG_AUTO_DETECT' => true, // 自动侦测语言
     'DEFAULT_THEME'=>'default',
-    
+    'DEFAULT_APP'=>'mobile',//手机端 视图路径
+
     'Version'=>"1.0",
     'pcode'=>'1',
     'software'=>'software',
@@ -178,6 +179,9 @@ $config	= array(
 			'--EXT--' => '__EXT__',
 			'--MODULE--'=>'__MODULE__'
 	),
+
+    'URL_ROUTER_ON'   => true,
+
 );
 
 return array_merge($config, $siteconfig,$dbconfig);

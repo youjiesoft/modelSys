@@ -47,7 +47,7 @@ class MisDynamicFormCtrollAction extends MisDynamicFormBaseAction{
         $phpcode.="<?php\r\n/**";
         $phpcode.="\r\n * @Title: {$cotrollname}Action";
         $phpcode.="\r\n * @Package package_name";
-        $phpcode.="\r\n * @Description: todo(动态表单_自动生成-".$this->nodeTitle.")";
+        $phpcode.="\r\n * @Description: todo(动态表单_自动生成_".$this->nodeTitle.")";
         $phpcode.="\r\n * @author ".$_SESSION['loginUserName'];
         $phpcode.="\r\n * @company Aqo5Re65bSr5zG755m45t92YuQnZvNHbtRnL3d3d";
         $phpcode.="\r\n * @copyright 本文件归属于Aqo5Re65bSr5zG755m45t92YuQnZvNHbtRnL3d3d";
@@ -565,8 +565,12 @@ COD;
 
         //$phpcode.=$before_edit.$before_insert.$before_update.$after_edit.$after_list.$after_insert.$after_add.$after_update;
         $phpcode.=$edit.$before_index.$before_edit.$before_insert.$before_update.$after_edit.$after_insert.$before_add.$after_update.$delChildData.$after_view;
+//        $appcode = $this->action_app();
+//        $phpcode.=$appcode;
         $phpcode.="\r\n}\r\n?>";
         $extendphpcode.="\r\n}\r\n?>";
+
+
         if(!is_dir(dirname($actionPath))) mk_dir(dirname($actionPath),0777);
         if( false === file_put_contents( $actionPath , $phpcode )){
             $this->error ("Action文件生成失败!");
@@ -631,6 +635,647 @@ COD;
 
             }
         }
+        //return $phpcode;
+    }
+    //添加action——app
+    function action_app(){
+        $test ='';
+        $test .="\r\n\t/**";
+        $test .="\r\n\t * @Title: test";
+        $test .="\r\n\t * @Description: todo(测试追加函数)";
+        $test .="\r\n\t * @author ";
+        $test .="\r\n\t * @date ".date('Y-m-d H:i:s');
+        $test .="\r\n\t * @throws ";
+        $test .="\r\n\t*/";
+        $test .="\r\n\tfunction test(){}";
+
+        return $test;
+    }
+    /**
+     * @Title: createMobileAction
+     * @Description: todo(生成手机端Action代码)
+     * @param array $fieldData 组件属性列表
+     * @param string $cotrollname 控制器名称
+     * @param boolean $add 是否覆盖现有文件，默认为false:需要覆盖
+     * @param boolean $isaudit 是否带审批流，默认为false:不带审批流
+     * @param boolean $isinitExtendAction 是否初始化扩展Action代码 默认为空，不初始化【为组合表单的初化解绑准备】
+     * @author quqiang
+     * @date 2014-8-21 上午10:03:39
+     * @throws
+     */
+    function createMobileAction($fieldData , $cotrollname,$add=false ,$isaudit=false , $isinitExtendAction=false){
+        $cotrollname=ucfirst($cotrollname);
+        $cotrollname=str_replace("MisAuto",'MisAutoMobile',$cotrollname);
+        $actionPath =  LIB_PATH."Action/".$cotrollname."Action.class.php";
+        $actionExtendPath = LIB_PATH."Action/".$cotrollname."ExtendAction.class.php";
+        $isExist = (file_exists($actionPath));
+        if( $isExist && $add){
+            $this->error($actionPath."文件已存在!");
+        }
+        $extendphpcode .="<?php\r\n/**";
+        $extendphpcode .="\r\n * @Title: {$cotrollname}Action";
+        $extendphpcode .="\r\n * @Package package_name";
+        $extendphpcode .= "\r\n * @Description: todo(动态表单_扩展类。本类为用户代码注入入口，系统一旦生成将不再重复生成。";
+        $extendphpcode .= "\r * \t\t\t\t\t\t但当用户选为组合表单方案后会更新该文件，请做好备份)";
+        $extendphpcode .="\r\n * @author ".$_SESSION['loginUserName'];
+        $extendphpcode .="\r\n * @company Aqo5Re65bSr5zG755m45t92YuQnZvNHbtRnL3d3d";
+        $extendphpcode .="\r\n * @copyright 本文件归属于";
+        $extendphpcode .="\r\n * @date ".date('Y-m-d H:i:s');
+        $extendphpcode .="\r\n * @version V1.0";
+        $extendphpcode .="\r\n*/";
+        $extendphpcode .="\r\nclass ";
+
+        $phpcode.="<?php\r\n/**";
+        $phpcode.="\r\n * @Title: {$cotrollname}Action";
+        $phpcode.="\r\n * @Package package_name";
+        $phpcode.="\r\n * @Description: todo(动态表单_自动生成移动端_".$this->nodeTitle.")";
+        $phpcode.="\r\n * @author ".$_SESSION['loginUserName'];
+        $phpcode.="\r\n * @company Aqo5Re65bSr5zG755m45t92YuQnZvNHbtRnL3d3d";
+        $phpcode.="\r\n * @copyright 本文件归属于Aqo5Re65bSr5zG755m45t92YuQnZvNHbtRnL3d3d";
+        $phpcode.="\r\n * @date ".date('Y-m-d H:i:s');
+        $phpcode.="\r\n * @version V1.0";
+        $phpcode.="\r\n*/";
+        $phpcode.="\r\nclass ";
+
+        if( $isaudit ){
+            $jcc="CommonAuditAction";
+        }else{
+            $jcc="CommonAction";
+        }
+        $extendsCC = $cotrollname."ExtendAction";
+        $extendphpcode .=$cotrollname."ExtendAction extends ".$jcc." {\r\n";
+        $phpcode.= $cotrollname."Action extends ".$extendsCC." {\r\n";
+        $phpcode.="\tpublic function _filter(&\$map){";//start filter
+
+        $extendphpcode .="\tpublic function _extend_filter(&\$map){";//start filter
+
+        $phpcode.="\r\n";
+        // \$map['allnode']=\$this->getActionName();
+        $phpcode .= <<<COD
+		\$fieldtype=\$_REQUEST['fieldtype'];
+		\$relationmodelname=\$_REQUEST['bindaname'];
+		//获取表单类型
+		\$type=getFieldBy(\$relationmodelname, "bindaname", "typeid", "mis_auto_bind"); 		
+		if(\$fieldtype){
+			\$map[\$fieldtype]=\$_REQUEST[\$fieldtype];
+			\$this->assign("fieldtype",\$fieldtype);
+			\$this->assign("fieldtypeval",\$_REQUEST[\$fieldtype]);
+		}else{
+			//组从表单需加此条件过滤 
+			if(\$type==1){
+				if(\$relationmodelname){
+					\$map['relationmodelname']=\$relationmodelname;	
+				}
+			}
+		}
+		//强制加allnode 4.25 为区分复用表数据
+		 \$map['allnode']=\$this->getActionName();
+		if(\$type==1){
+			// 为了兼容普通模式下的表单使用
+			\$bindid = \$_REQUEST['bindid'];
+			if(\$bindid){
+				\$map['bindid']=\$bindid;
+				\$this->assign("bindid",\$bindid);
+			}
+		}
+		if (\$_SESSION["a"] != 1){
+			\$map['status']=array("gt",-1);
+		}
+		\$this->_extend_filter(\$map);
+COD;
+        $phpcode .="\r\n\t}";
+
+        $extendphpcode .="\r\n\t}";
+        $extendphpcode .="\r\n\t/**";
+        $extendphpcode .="\r\n\t * @Title: _extend_before_index";
+        $extendphpcode .="\r\n\t * @Description: todo(扩展前置index函数)";
+        $extendphpcode .="\r\n\t * @author ".$_SESSION['loginUserName'];
+        $extendphpcode .="\r\n\t * @date ".date('Y-m-d H:i:s');
+        $extendphpcode .="\r\n\t * @throws ";
+        $extendphpcode .="\r\n\t*/";
+        $extendphpcode .="\r\n\tfunction _extend_before_index() {";
+        $extendphpcode .="\r\n\t}";
+
+        $extendphpcode .="\r\n\t/**";
+        $extendphpcode .="\r\n\t * @Title: _extend_before_edit";
+        $extendphpcode .="\r\n\t * @Description: todo(扩展的前置编辑函数)";
+        $extendphpcode .="\r\n\t * @author ".$_SESSION['loginUserName'];
+        $extendphpcode .="\r\n\t * @date ".date('Y-m-d H:i:s');
+        $extendphpcode .="\r\n\t * @throws ";
+        $extendphpcode .="\r\n\t*/";
+        $extendphpcode .="\r\n\tfunction _extend_before_edit(){";
+        $extendphpcode.="\r\n\t}";
+
+        $extendphpcode.="\r\n\t/**";
+        $extendphpcode.="\r\n\t * @Title: _extend_before_insert";
+        $extendphpcode.="\r\n\t * @Description: todo(扩展的前置添加函数)";
+        $extendphpcode.="\r\n\t * @author ".$_SESSION['loginUserName'];
+        $extendphpcode.="\r\n\t * @date ".date('Y-m-d H:i:s');
+        $extendphpcode.="\r\n\t * @throws ";
+        $extendphpcode.="\r\n\t*/";
+        $extendphpcode.="\r\n\tfunction _extend_before_insert(){";
+        $extendphpcode.="\r\n\t}";
+
+        $extendphpcode .= "\r\n\t/**";
+        $extendphpcode .= "\r\n\t * @Title: _extend_before_update";
+        $extendphpcode .= "\r\n\t * @Description: todo(扩展前置修改函数)  ";
+        $extendphpcode .= "\r\n\t * @author ".$_SESSION['loginUserName'];
+        $extendphpcode .= "\r\n\t * @date ".date('Y-m-d H:i:s');
+        $extendphpcode .= "\r\n\t * @throws";
+        $extendphpcode .= "\r\n\t*/";
+        $extendphpcode .= "\r\n\tfunction _extend_before_update(){";
+        $extendphpcode .="\r\n\t}";
+
+        $extendphpcode .="\r\n\t/**";
+        $extendphpcode .="\r\n\t * @Title: _extend_after_edit";
+        $extendphpcode .="\r\n\t * @Description: todo(扩展后置编辑函数)";
+        $extendphpcode .="\r\n\t * @author ".$_SESSION['loginUserName'];
+        $extendphpcode .="\r\n\t * @date ".date('Y-m-d H:i:s');
+        $extendphpcode .="\r\n\t * @throws ";
+        $extendphpcode .="\r\n\t*/";
+        $extendphpcode .="\r\n\tfunction _extend_after_edit(&\$vo){";
+// 		$extendphpcode .="\r\n\t\tif(\$_GET['viewtype']=='view'){";
+// 		$extendphpcode .="\r\n\t\t\t\$this->assign( 'vo', \$vo );";
+// 		$extendphpcode .="\r\n\t\t\t\$this->display('formview');";
+// 		$extendphpcode .="\r\n\t\t\texit;";
+// 		$extendphpcode .="\r\n\t\t}";
+        $extendphpcode .="\r\n\t}";
+
+        $extendphpcode.="\r\n\t/**";
+        $extendphpcode.="\r\n\t * @Title: _extend_after_list";
+        $extendphpcode.="\r\n\t * @Description: todo(扩展前置List)";
+        $extendphpcode.="\r\n\t * @author ".$_SESSION['loginUserName'];
+        $extendphpcode.="\r\n\t * @date ".date('Y-m-d H:i:s');
+        $extendphpcode.="\r\n\t * @throws ";
+        $extendphpcode.="\r\n\t*/";
+        $extendphpcode.="\r\n\tfunction _extend_after_list(){";
+        $extendphpcode .="\r\n\t}";
+
+        $extendphpcode .= "\r\n\t/**";
+        $extendphpcode .= "\r\n\t * @Title: _extend_after_insert";
+        $extendphpcode .= "\r\n\t * @Description: todo(扩展后置insert函数)  ";
+        $extendphpcode .= "\r\n\t * @author ".$_SESSION['loginUserName'];
+        $extendphpcode .= "\r\n\t * @date ".date('Y-m-d H:i:s');
+        $extendphpcode .= "\r\n\t * @throws";
+        $extendphpcode .= "\r\n\t*/";
+        $extendphpcode .= "\r\n\tfunction _extend_after_insert(\$id){";
+        $extendphpcode .="\r\n\t}";
+
+        $extendphpcode .= "\r\n\t/**";
+        $extendphpcode .= "\r\n\t * @Title: _extend_before_add";
+        $extendphpcode .= "\r\n\t * @Description: todo(扩展前置add函数)  ";
+        $extendphpcode .= "\r\n\t * @author ".$_SESSION['loginUserName'];
+        $extendphpcode .= "\r\n\t * @date ".date('Y-m-d H:i:s');
+        $extendphpcode .= "\r\n\t * @throws";
+        $extendphpcode .= "\r\n\t*/";
+        $extendphpcode .= "\r\n\tfunction _extend_before_add(&\$vo){";
+        $extendphpcode .="\r\n\t\t\$this->getFormIndexLoad(\$vo);";
+        $extendphpcode .="\r\n\t}";
+
+        $extendphpcode .= "\r\n\t/**";
+        $extendphpcode .= "\r\n\t * @Title: _extend_after_update";
+        $extendphpcode .= "\r\n\t * @Description: todo(扩展后置update函数)  ";
+        $extendphpcode .= "\r\n\t * @author ".$_SESSION['loginUserName'];
+        $extendphpcode .= "\r\n\t * @date ".date('Y-m-d H:i:s');
+        $extendphpcode .= "\r\n\t * @throws";
+        $extendphpcode .= "\r\n\t*/";
+        $extendphpcode .= "\r\n\tfunction _extend_after_update(){";
+        $extendphpcode .="\r\n\t}";
+
+
+        // beforindex
+        $before_index='';
+        $before_index .="\r\n\t/**";
+        $before_index .="\r\n\t * @Title: _before_index";
+        $before_index .="\r\n\t * @Description: todo(前置index函数)";
+        $before_index .="\r\n\t * @author ".$_SESSION['loginUserName'];
+        $before_index .="\r\n\t * @date ".date('Y-m-d H:i:s');
+        $before_index .="\r\n\t * @throws ";
+        $before_index .="\r\n\t*/";
+        $before_index .="\r\n\tfunction _before_index() {";
+
+        // 默认生成 前置函数
+        $before_edit ='';
+        $before_edit .="\r\n\t/**";
+        $before_edit .="\r\n\t * @Title: _before_edit";
+        $before_edit .="\r\n\t * @Description: todo(前置编辑函数)";
+        $before_edit .="\r\n\t * @author ".$_SESSION['loginUserName'];
+        $before_edit .="\r\n\t * @date ".date('Y-m-d H:i:s');
+        $before_edit .="\r\n\t * @throws ";
+        $before_edit .="\r\n\t*/";
+        $before_edit .="\r\n\tfunction _before_edit(){";
+
+        $before_insert='';
+        $before_insert.="\r\n\t/**";
+        $before_insert.="\r\n\t * @Title: _before_insert";
+        $before_insert.="\r\n\t * @Description: todo(前置添加函数)";
+        $before_insert.="\r\n\t * @author ".$_SESSION['loginUserName'];
+        $before_insert.="\r\n\t * @date ".date('Y-m-d H:i:s');
+        $before_insert.="\r\n\t * @throws ";
+        $before_insert.="\r\n\t*/";
+        $before_insert.="\r\n\tfunction _before_insert(){";
+        $allNodeconfig = $fieldData['all'];
+        if(in_array("orderno", array_keys($allNodeconfig)) || $this->isaudit ){
+            //判断是否带审批流，必须验证编码是否重复
+            $before_insert.="\r\n\t\t\$this->checkifexistcodeororder('{$this->tableName}','orderno',\$this->getActionName());";
+        }
+        $before_update = '';
+        $before_update .= "\r\n\t/**";
+        $before_update .= "\r\n\t * @Title: _before_update";
+        $before_update .= "\r\n\t * @Description: todo(前置修改函数)  ";
+        $before_update .= "\r\n\t * @author ".$_SESSION['loginUserName'];
+        $before_update .= "\r\n\t * @date ".date('Y-m-d H:i:s');
+        $before_update .= "\r\n\t * @throws";
+        $before_update .= "\r\n\t*/";
+        $before_update .= "\r\n\tfunction _before_update(){";
+        if(in_array("orderno", array_keys($allNodeconfig)) || $this->isaudit ){
+            //判断是否带审批流，必须验证编码是否重复
+            $before_update.="\r\n\t\t\$this->checkifexistcodeororder('{$this->tableName}','orderno',\$this->getActionName(),1);";
+        }
+
+        // 重写父类编辑函数--为多表操作所做的修改 屈强@20141008 15:53
+        $edit ='';
+        $edit .="\r\n\t/**";
+        $edit .="\r\n\t * @Title: edit";
+        $edit .="\r\n\t * @Description: todo(重写父类编辑函数)";
+        $edit .="\r\n\t * @author ".$_SESSION['loginUserName'];
+        $edit .="\r\n\t * @date ".date('Y-m-d H:i:s');
+        $edit .="\r\n\t * @throws ";
+        $edit .="\r\n\t*/";
+        $edit .="\r\n\tfunction edit(\$isdisplay=1){";
+
+        $edit .="\r\n\t\t\$mainTab = '{$this->tableName}';";
+        $edit .="\r\n\t\t//获取当前控制器名称";
+        $edit .="\r\n\t\t\$name=\$this->getActionName();";
+        $edit .="\r\n\t\t\$model = D(\"{$this->nodeName}View\");";
+        $edit .="\r\n\t\t//获取当前主键";
+        $edit .="\r\n\t\t\$map[\$mainTab.'.id']=\$_REQUEST['id'];";
+        $edit .="\r\n\t\t\$vo = \$model->where(\$map)->find();";
+        $edit .="\r\n\t\tif(!\$vo){";
+        $edit .="\r\n\t\t\$this->getFormIndexLoad(\$vo);";
+        $edit .="\r\n\t\t}";
+        $edit .="\r\n\t\tif(method_exists ( \$this, '_filter' )) {";
+        $edit .="\r\n\t\t\t\$this->_filter ( \$map );";
+        $edit .="\r\n\t\t}";
+        $edit .="\r\n\t\t//读取动态配制";
+        $edit .="\r\n\t\t\$this->getSystemConfigDetail(\$name);";
+        $edit .="\r\n\t\t//扩展工具栏操作";
+        $edit .="\r\n\t\t\$scdmodel = D('SystemConfigDetail');";
+        $edit .="\r\n\t\t// 上一条数据ID";
+        $edit .="\r\n\t\t\$map['id'] = array(\"lt\",\$id);";
+        $edit .="\r\n\t\t\$updataid = \$model->where(\$map)->order('id desc')->getField('id');";
+        $edit .="\r\n\t\t\$this->assign(\"updataid\",\$updataid);";
+        $edit .="\r\n\t\t// 下一条数据ID";
+        $edit .="\r\n\t\t\$map['id'] = array(\"gt\",\$id);";
+        $edit .="\r\n\t\t\$downdataid = \$model->where(\$map)->getField('id');";
+        $edit .="\r\n\t\t\$this->assign(\"downdataid\",\$downdataid);";
+        $edit .="\r\n\t\t//lookup带参数查询";
+        $edit .="\r\n\t\t\$module=A(\$name);";
+        $edit .="\r\n\t\tif (method_exists(\$module,\"_after_edit\")) {";
+        $edit .="\r\n\t\t\tcall_user_func(array(\$module,\"_after_edit\"),\$vo);";
+        $edit .="\r\n\t\t}";
+        $edit .="\r\n\t\t\$this->assign( 'vo', \$vo );";
+        $edit .="\r\n\t\tif(\$isdisplay)";
+        $edit .="\r\n\t\t\$this->display ();";
+        $edit.="\r\n\t}";
+        //////////////////////////////////////////////////////////////////
+        /*
+         * 不要重写父类中的edit函数
+         */
+        $edit ='';
+        /////////////////////////////////////////////////////////////////////
+        // 默认生成后置函数
+        $after_edit = '';
+        $after_view = '';
+        $after_list ='';
+        $after_insert ='';
+        $before_add='';
+        $after_update='';
+
+        // 删除子表数据
+        $delChildData='';
+        $is_create_del_child = false;
+        $is_create_opraete_child = false;
+        $is_create_modify_child = false;
+        $is_create_insert_child = false;
+        //控制地址组件修改代码生成
+        $isArea = false;
+        // 实例化MODE
+        $model_code = '';
+        $is_include_model = false;
+
+        $after_edit .="\r\n\t/**";
+        $after_edit .="\r\n\t * @Title: _after_edit";
+        $after_edit .="\r\n\t * @Description: todo(后置编辑函数)";
+        $after_edit .="\r\n\t * @author ".$_SESSION['loginUserName'];
+        $after_edit .="\r\n\t * @date ".date('Y-m-d H:i:s');
+        $after_edit .="\r\n\t * @throws ";
+        $after_edit .="\r\n\t*/";
+        $after_edit .="\r\n\tfunction _after_edit(\$vo){";
+
+        $after_view .="\r\n\t/**";
+        $after_view .="\r\n\t * @Title: _after_view";
+        $after_view .="\r\n\t * @Description: todo(后置编辑函数)";
+        $after_view .="\r\n\t * @author ".$_SESSION['loginUserName'];
+        $after_view .="\r\n\t * @date ".date('Y-m-d H:i:s');
+        $after_view .="\r\n\t * @throws ";
+        $after_view .="\r\n\t*/";
+        $after_view .="\r\n\tfunction _after_view(\$vo){";
+
+        $after_list.="\r\n\t/**";
+        $after_list.="\r\n\t * @Title: _after_list";
+        $after_list.="\r\n\t * @Description: todo(前置List)";
+        $after_list.="\r\n\t * @author ".$_SESSION['loginUserName'];
+        $after_list.="\r\n\t * @date ".date('Y-m-d H:i:s');
+        $after_list.="\r\n\t * @throws ";
+        $after_list.="\r\n\t*/";
+        $after_list.="\r\n\tfunction _after_list(){";
+
+        $after_insert .= "\r\n\t/**";
+        $after_insert .= "\r\n\t * @Title: _after_insert";
+        $after_insert .= "\r\n\t * @Description: todo(后置insert函数)  ";
+        $after_insert .= "\r\n\t * @author ".$_SESSION['loginUserName'];
+        $after_insert .= "\r\n\t * @date ".date('Y-m-d H:i:s');
+        $after_insert .= "\r\n\t * @throws";
+        $after_insert .= "\r\n\t*/";
+        $after_insert .= "\r\n\tfunction _after_insert(\$id){";
+
+        $before_add .= "\r\n\t/**";
+        $before_add .= "\r\n\t * @Title: _before_add";
+        $before_add .= "\r\n\t * @Description: todo(前置add函数)  ";
+        $before_add .= "\r\n\t * @author ".$_SESSION['loginUserName'];
+        $before_add .= "\r\n\t * @date ".date('Y-m-d H:i:s');
+        $before_add .= "\r\n\t * @throws";
+        $before_add .= "\r\n\t*/";
+        $before_add .= "\r\n\tfunction _before_add(){";
+
+
+        $after_update .= "\r\n\t/**";
+        $after_update .= "\r\n\t * @Title: _after_update";
+        $after_update .= "\r\n\t * @Description: todo(后置update函数)  ";
+        $after_update .= "\r\n\t * @author ".$_SESSION['loginUserName'];
+        $after_update .= "\r\n\t * @date ".date('Y-m-d H:i:s');
+        $after_update .= "\r\n\t * @throws";
+        $after_update .= "\r\n\t*/";
+        $after_update .= "\r\n\tfunction _after_update(){";
+
+        /**
+         * 步骤：
+         * 1。先源数据 $filedData['visibility'] 中的项按表名['tablename']分组。
+         * 2。区分出主从表，主表的文件名用当前action名命名，从表以直接表名命名。
+         * 3。遍历分组后的数据，依次生成Model文件。
+         *
+         *		表数组，基础为二维.
+         * 	0=>主表信息
+         * 	1=>所有从表的信息
+         */
+        /*	处理子表错误，子表不做数据添加 会导致修改 视图查询数据若用户只勾取部分表字段 引起的查询不出数据。
+         * 处理方式为：取出当前action的所有子表 都生成 添加与修改都 做处理
+         **/
+        $curTabData = $this->getDataBaseConf();
+        $curTabData = $curTabData['cur'];
+        foreach ($curTabData['datebase'] as $key => $val){
+            if(!$val['isprimay']){
+                $after_update.="\r\n\t\t//添加子表数据处理--".$_SESSION['loginUserName'].'@'.date('Y-m-d H:i:s');
+                $after_update.="\r\n\t\t\${$key}Mode = D('".createRealModelName($key)."');";
+                $after_update.="\r\n\t\t\${$key}Data = \${$key}Mode->create();";
+                $after_update.="\r\n\t\tunset(\${$key}Data['id']);";
+                $after_update.="\r\n\t\tif(\${$key}Data){";
+                $after_update.="\r\n\t\t\tif(\${$key}Mode->where('masid='.\${$key}Data['masid'])->find())";
+                $after_update.="\r\n\t\t\t\t\${$key}Mode->where('masid='.\${$key}Data['masid'])->save(\${$key}Data);";
+                $after_update.="\r\n\t\t\telse";
+                $after_update.="\r\n\t\t\t\t\${$key}Mode->add(\${$key}Data);";
+                $after_update.="\r\n\t\t}";
+
+                $after_insert .="\r\n\t\t// 添加子表数据处理----".$_SESSION['loginUserName'].'@'.date('Y-m-d H:i:s');
+                $after_insert .="\r\n\t\t\${$key}Mode = D('".createRealModelName($key)."');";
+                $after_insert .="\r\n\t\t\${$key}Data = \${$key}Mode->create();";
+                $after_insert .="\r\n\t\tunset(\${$key}Data['id']);";
+                $after_insert .="\r\n\t\tif(\${$key}Data){";
+                $after_insert .="\r\n\t\t\t\t\${$key}Data['masid']=\$id;";
+                $after_insert .="\r\n\t\t\t\t\${$key}Mode->add(\${$key}Data);";
+                $after_insert .="\r\n\t\t}";
+            }
+        }
+        // 审批流
+        if($isaudit){
+        }
+        foreach ($fieldData['visibility'] as $k=>$v){
+            $property = $this->getProperty($v['catalog']);
+
+            // 时间组件的自动获取当前系统时间功能
+            if($v[$property['catalog']['name']] == 'date'){
+                //
+                if($v[$property['defaulttimechar']['name']] && stringToTime($v[$property['defaulttimechar']['name']])){
+                    $before_add .= "\r\n\t\t\$vo['{$v[$property['fields']['name']]}']=stringToTime('{$v[$property['defaulttimechar']['name']]}');";
+                }else{
+                    if($v[$property['acquiretime']['name']]){
+                        $before_add .= "\r\n\t\t\$vo['{$v[$property['fields']['name']]}']=time();";
+                    }
+                    if($v[$property['editacquiretime']['name']]){
+                        $after_edit .= "\r\n\t\t\$vo['{$v[$property['fields']['name']]}']=time();";
+                        $after_view .= "\r\n\t\t\$vo['{$v[$property['fields']['name']]}']=time();";
+                    }
+                }
+            }
+            if(($v[$property['catalog']['name']]=='lookup'||$v[$property['catalog']['name']]=='text')&&$v[$property['defaultval']['name']]){
+                //Lookup默认值
+                $defaultval=str_replace ( array ( '&quot;', '&#39;', '&lt;','&gt;'), array ('"',"'",'<','>'), $v[$property['defaultval']['name']] );
+                if($defaultval=="user_txsj"){
+                    $before_add .= "\r\n\t\t\$txsj=M('User')->where('id='.\$_SESSION[C('USER_AUTH_KEY')])->getField('txsj');";
+                    $before_add .= "\r\n\t\t\$vo['{$v[$property['fields']['name']]}']=\$txsj;";
+                }else{
+                    $before_add .= "\r\n\t\t\$vo['{$v[$property['fields']['name']]}']=\$_SESSION[{$defaultval}];";
+
+                }
+
+            }
+            // 文本框组件的默认显示数据功能 	by nbmxkj@20150408 1642
+            if($v[$property['catalog']['name']] == 'text'){
+                // 对现有字段  	subimporttableobj(数据来源表)  	subimporttablefieldobj(显示字段)		subimporttablefield2obj(值字段)
+                // 做功用重定义		数据来源表									显示字段											是否在修改页面时也启用功能
+
+                $conditions = $v[$property['conditions']['name']];
+                $table = $v[$property['subimporttableobj']['name']];
+                $showField = $v[$property['subimporttablefieldobj']['name']];
+                $isEditShow = $v[$property['subimporttablefield2obj']['name']];
+// 				throw new NullCreateOprateException($isEditShow);
+                // 附加条件
+                $textAppendCondtionConfigStr = $v[$property['additionalconditions']['name']];
+
+                if( $table && $showField  ){
+                    $conditionsOperated ="'";
+                    if($conditions){
+                        $conditionsOperated .=$conditions;
+                    }
+                    $textAppendCondtionConfigArr = appendConditionConfigResolve($textAppendCondtionConfigStr);
+                    if($conditions && $textAppendCondtionConfigStr){
+                        $configResilvedArr = getAppendCondition($vo, $textAppendCondtionConfigArr);
+                        $conditionsOperated .=" and '.parameReplace(\"&#39;\",\"'\",getAppendConditionExceptEmpty(\$vo,".arr2string($textAppendCondtionConfigArr)."))";
+                    }else if(!$conditions && $textAppendCondtionConfigStr){
+                        $conditionsOperated .="'.parameReplace(\"&#39;\",\"'\",getAppendConditionExceptEmpty(\$vo,".arr2string($textAppendCondtionConfigArr)."))";
+                    }else{
+                        $conditionsOperated .="'";
+                    }
+                    $before_add .= "\r\n\t\t\$vo['{$v[$property['fields']['name']]}']=getFieldData('{$showField}','{$table}' , {$conditionsOperated});";
+                    // 修改页面自动生成控制
+                    if( $isEditShow ){
+                        $after_edit .= "\r\n\t\t\$vo['{$v[$property['fields']['name']]}']=getFieldData('{$showField}','{$table}' ,{$conditionsOperated});";
+                        $after_view .= "\r\n\t\t\$vo['{$v[$property['fields']['name']]}']=getFieldData('{$showField}','{$table}' ,{$conditionsOperated});";
+                    }
+                }
+            }
+
+            if($v[$property['catalog']['name']] == 'upload'){
+                //存在上传组件
+                $after_edit		.= "\r\n\t\t\$this->getAttachedRecordList(\$vo['id']);";
+                $after_view		.= "\r\n\t\t\$this->getAttachedRecordList(\$vo['id']);";
+
+            }
+            if($v[$property['catalog']['name']] == 'datatable'){  //存在datatable类型组件
+                // 删除子表数据
+                if(!$is_create_del_child){
+                    $delChildData.=$this->getDataTableAction();
+                    $is_create_del_child = true;
+                }
+                $after_edit .= $this->dataTableEditCode($v , $property);
+                $after_view .= $this->dataTableEditCode($v , $property);
+                if(!$is_create_modify_child){
+                    $after_update .="\r\n\t\t// 内嵌表数据添加处理";
+                    $after_update .=$this->updateDatatableCode();
+                    $is_create_modify_child = true;
+                }
+
+                if(!$is_create_insert_child){
+                    $after_insert .=$this->insertDatatableCode();
+                    $is_create_insert_child = true;
+                }
+            }
+            if($v[$property['catalog']['name']] == 'areainfo' && $isArea==false){
+                //存在areainfo类型组件
+                $after_edit .=$this->getAreaInfoCode();
+                $after_view .=$this->getAreaInfoCode();
+                $isArea=true;
+            }
+        }
+
+        /**************************************************************************************************************************************/
+        /*		左侧树代码的处理 	20141114 1957																							  */
+        /**************************************************************************************************************************************/
+        $misdynamicform = M('mis_dynamic_form_manage');
+        $formData = $misdynamicform->where("`actionname`='{$this->nodeName}'")->find();
+        $temp = explode('#', $formData['tpl']);
+        if($temp[0]=='noaudittpl' && $temp[1]=='ltrl'){
+            $before_index .="\r\n\t\t//查询绑定数据源";
+            $before_index .="\r\n\t\t\$this->getDateSoure();";
+        }
+        /**************************************************************************************************************************************/
+        /*		左侧树代码的处理  end													*/
+        /**************************************************************************************************************************************/
+
+        $before_index .="\r\n\t\t\$this->_extend_before_index();";
+        $before_index .="\r\n\t}";
+
+        $before_edit.="\r\n\t\tif(\$_REQUEST['main'])";
+        $before_edit.="\r\n\t\t\t\$this->assign(\"main\",\$_REQUEST['main']);";
+
+        $before_edit.="\r\n\t\t\$this->_extend_before_edit();";
+        $before_edit.="\r\n\t}";
+        $before_insert.="\r\n\t\t\$this->_extend_before_insert();";
+        $before_insert.="\r\n\t}";
+        $before_update.="\r\n\t\t\$this->_extend_before_update();";
+        $before_update.="\r\n\t}";
+
+        $after_edit.="\r\n\t\t\$this->_extend_after_edit(\$vo);";
+        $after_edit .="\r\n\t}";
+        $after_view .="\r\n\t}";
+        $after_list.="\r\n\t\t\$this->_extend_after_list();";
+        $after_list .="\r\n\t}";
+        $after_insert.="\r\n\t\t\$this->_extend_after_insert(\$id);";
+        $after_insert .="\r\n\t}";
+
+        $before_add.="\r\n\t\tif(\$_REQUEST['main'])";
+        $before_add.="\r\n\t\t\t\$this->assign(\"main\",\$_REQUEST['main']);";
+        $before_add.="\r\n\t\t\$this->_extend_before_add(\$vo);";
+        $before_add .="\r\n\t}";
+
+        $after_update.="\r\n\t\t\$this->_extend_after_update();";
+        $after_update .="\r\n\t}";
+
+
+
+        //$phpcode.=$before_edit.$before_insert.$before_update.$after_edit.$after_list.$after_insert.$after_add.$after_update;
+        $phpcode.=$edit.$before_index.$before_edit.$before_insert.$before_update.$after_edit.$after_insert.$before_add.$after_update.$delChildData.$after_view;
+//        $appcode = $this->action_app();
+//        $phpcode.=$appcode;
+        $phpcode.="\r\n}\r\n?>";
+        $extendphpcode.="\r\n}\r\n?>";
+
+
+        if(!is_dir(dirname($actionPath))) mk_dir(dirname($actionPath),0777);
+        if( false === file_put_contents( $actionPath , $phpcode )){
+            $this->error ("移动端Action文件生成失败!");
+        }
+
+//        if($isinitExtendAction){
+//            if( false === file_put_contents( $actionExtendPath , $extendphpcode )){
+//                $this->error ("扩展Action文件生成失败!");
+//            }
+//        }else{
+//
+//
+//            if(false == (file_exists($actionExtendPath))){
+//                if( false === file_put_contents( $actionExtendPath , $extendphpcode )){
+//                    $this->error ("扩展Action文件生成失败!");
+//                }
+//            }else{
+//                // 扩展文件已存在时的内部代码指定位置替换修改。
+//                // by nbmxkj@20150605 1711
+//                // 获取现有代码内容
+//                $actionExtendContent = file_get_contents($actionExtendPath);
+//                //var_dump($actionExtendContent);
+//                // 正则匹配关键字
+//
+//                $baseExtendClass = 'CommonAction';
+//                if($this->isaudit){
+//                    $baseExtendClass = 'CommonAuditAction';
+//                }
+//                // 替换基类
+//                $clearUpContent = preg_replace_callback('/(extends)(.*?)(\{)+/s' , function($vo) 	use($baseExtendClass){
+//                    return $vo[1].' '.$baseExtendClass.' '.$vo[3];
+//                } , $actionExtendContent);
+//                //var_dump($clearUpContent);
+//
+//                /*
+//                替换其中的特殊代码问题
+//                获取该文件的创建间
+//                如果创建时间大于 2015-04-28 00:00:01 后的代码文件不进行特殊代码替换生成
+//                 */
+//                // 创建时间
+//                $createTime = filectime($actionExtendPath);
+//                // 目标比较时间
+//                $orderTime = strtotime('2015-04-28 00:00:01');
+//
+//                if( false !== $createTime ){ //&& $createTime < $orderTime ){
+//                    // 为 _extend_before_add(扩展前置添加函数) 增加参数，及内容代码调用处理
+//                    /*
+//                    function _extend_before_add(){
+//                        $this->getFormIndexLoad();
+//                    }
+//                    */
+//                    $extendBeforeAdd = '&$vo';
+//                    $clearUpContent = preg_replace_callback('/(_extend_before_add\()(.*?)(\))+/s' , function($vo) use($extendBeforeAdd){
+//                        return $vo[1].$extendBeforeAdd.$vo[3];
+//                    } , $clearUpContent);
+//                    $outerFuncParam = '$vo';
+//                    $clearUpContent = preg_replace_callback('/(getFormIndexLoad\()(.*?)(\))+/s' , function($vo) use($outerFuncParam){
+//                        return $vo[1].$outerFuncParam.$vo[3];
+//                    } , $clearUpContent);
+//                }
+//                file_put_contents( $actionExtendPath , $clearUpContent );
+//
+//            }
+//        }
         //return $phpcode;
     }
     /**
@@ -1668,6 +2313,55 @@ EOF;
         }
     }
 
+    /**生成手机端普通档案Action
+     * @param $cotrollname 生成的Ation名称
+     * @param bool $isaudit 是否是审批流
+     * @param bool $isinitExtendAction 是否有扩展类Action
+     * @author xiaosen
+     * @date 2018-11-10 09:57:20
+     */
+    function createBaseArchives_app($cotrollname , $isaudit=false , $isinitExtendAction=false){
+        logs('我要生成acationqk::::'.$cotrollname);
+        // 1.获取到当前Action的组件配置文件信息
+        // 获取所有节点信息
+        // $allNodeconfig = $model->getAllControllConfig(); // 物理文件获取方式
+        $allNodeconfig = $this->getAllControllConfig();
+        $fieldData['visibility'] = $allNodeconfig;
+        $cotrollname=ucfirst($cotrollname);
+        $actionPath =  LIB_PATH."Action/".$cotrollname."Action.class.php";
+        $actionExtendPath = LIB_PATH."Action/".$cotrollname."ExtendAction.class.php";
+
+        $test ='';
+        $test .="\r\n\t/**";
+        $test .="\r\n\t * @Title: test";
+        $test .="\r\n\t * @Description: todo(测试追加函数)";
+        $test .="\r\n\t * @author ";
+        $test .="\r\n\t * @date ".date('Y-m-d H:i:s');
+        $test .="\r\n\t * @throws ";
+        $test .="\r\n\t*/";
+        $test .="\r\n\tfunction test(){}";
+        // 审批流
+        if($isaudit){
+        }
+        //给普通表单action 添加方法
+        if(!file_get_contents($actionPath)){
+            $this->error ("无action!");
+        }else {
+            $phpcode = file_get_contents($actionPath);    //值得到action    然后追加
+
+            file_put_contents($actionPath, $phpcode);      //重新写入
+
+        }
+        //给普通表单扩展action 添加方法
+        if( !file_get_contents($actionExtendPath)){
+            $this->error ("无扩展action!");
+        }else{
+            $extendphpcode = file_get_contents( $actionExtendPath);     //值得到action    然后追加
+            file_put_contents( $actionExtendPath , $extendphpcode );    //重新写入
+        }
+    }
+
+
     /**
      * @Title: createBaseArchives
      * @Description: todo(生成基础档案Action)
@@ -2435,6 +3129,55 @@ EOF;
                     $this->error ("扩展Action文件生成失败!");
                 }
             }
+        }
+    }
+
+
+    //基础档案追加action  2
+    function createBaseArchivesLsit_app($cotrollname , $isaudit=false , $isinitExtendAction=false){
+        logs('我要生成acationqk::::'.$cotrollname);
+        // 1.获取到当前Action的组件配置文件信息
+        $model = D('Autoform');
+        $dir = '/autoformconfig/';
+        $path = $dir.$this->nodeName.'.php';
+        $model->setPath($path);
+
+        // 获取所有节点信息
+        //$allNodeconfig = $model->getAllControllConfig(); // 物理文件
+        $allNodeconfig = $this->getAllControllConfig();
+
+        $fieldData['visibility'] = $allNodeconfig;
+        $cotrollname=ucfirst($cotrollname);
+        $actionPath =  LIB_PATH."Action/".$cotrollname."Action.class.php";
+        $actionExtendPath = LIB_PATH."Action/".$cotrollname."ExtendAction.class.php";
+
+
+
+        $test .="\r\n\t/**";
+        $test .="\r\n\t * @Title: after_view";
+        $test .="\r\n\t * @Description: todo(后置编辑函数)";
+        $test .="\r\n\t * @author ".$_SESSION['loginUserName'];
+        $test .="\r\n\t * @date ".date('Y-m-d H:i:s');
+        $test .="\r\n\t * @throws ";
+        $test .="\r\n\t*/";
+        $test .="\r\n\tfunction _after_view(\$vo){";
+        // 审批流
+        if($isaudit){
+        }
+        //给普通表单action 添加方法
+        if(!file_get_contents($actionPath)){
+            $this->error ("无action!");
+        }else {
+            file_get_contents($actionPath);    //值得到action    然后追加
+            file_put_contents($actionPath, $phpcode);
+
+        }
+        //给普通表单扩展action 添加方法
+        if( !file_get_contents($actionExtendPath)){
+            $this->error ("无扩展action!");
+        }else{
+            file_get_contents( $actionExtendPath);     //值得到action    然后追加
+            file_put_contents( $actionExtendPath , $extendphpcode );
         }
     }
 

@@ -180,6 +180,163 @@ EOF;
         }
     }
 
+    protected function createTemplate_app($fieldData, $filedPathName, $isaudit = false)
+    {
+//      import('@.ORG.dynamicForm.dynamicForm');
+        $misdynamicform = M('mis_dynamic_form_manage');
+        $formData       = $misdynamicform->where("`actionname`='{$this->nodeName}'")->find();
+        // $formid = getFieldBy($this->nodeName, "actionname", "id", "mis_dynamic_form_manage");
+        $formid = $formData ['id'];
+
+
+        // 扩展JS的导入路径
+        $jsPath            = '';
+        $allControllConfig = $this->getfieldCategory($formid);
+        // 获取当前节点的字段组件配置信息
+        $curnodeData = $allControllConfig [$this->curnode];
+        logs('组件属性：' . $this->pw_var_export($curnodeData));
+        $f      = ucfirst($filedPathName);
+        $jsPath = $f;
+//        $layerJs=<<<EOF
+//<script src="__PUBLIC__/Js/layer/layer.js" type="text/javascript"></script>
+//EOF;
+
+        $addjs  = $this->createAppJS($fieldData,'add',$this->nodeName);
+        $addjs  .= $this->createAppJS($fieldData, 'addExtend');
+
+
+        $viewjs = $this->createAppJS($fieldData, 'view',$this->nodeName);
+        $viewjs .= $this->createAppJS($fieldData, 'viewExtend');
+
+
+        $editjs = $this->createAppJS($fieldData, 'edit',$this->nodeName);
+        $editjs .= $this->createAppJS($fieldData, 'editExtend');
+
+
+        // 复选框样式
+        $styles = "";
+        // miniindex.html
+        $mini_index = $styles . $this->getPage_app('miniindex');
+        $file       = TMPL_PATH . C('DEFAULT_APP') . "/" . $f . "/miniindex.html";
+        $this->createFile($mini_index, $file);
+        $this->createFile(null, $file);
+        // 生成公共页面 dwzloadindex.html
+        $dynamic_dwzloadindex = $this->getPage_app('dwzloadindex');
+        $file                 = TMPL_PATH . C('DEFAULT_APP') . "/" . $f . "/dwzloadindex.html";
+        $this->createFile($dynamic_dwzloadindex, $file);
+        $this->createFile(null, $file);
+
+        if ($isaudit) {
+            /**
+             * ***************************
+             *    审批流表单 7个
+             * ***************************
+             */
+            // add.html
+            $dynamic_add =  $styles . $this->getPage_app('audit_add', $curnodeData, 0).$addjs;
+            $file        = TMPL_PATH . C('DEFAULT_APP') . "/" . $f . "/add.html";
+            $this->createFile($dynamic_add, $file);
+            $this->createFile(null, $file);
+
+            // edit.html
+            $dynamic_edit =  $styles . $this->getPage_app('audit_edit', $curnodeData, 1).$editjs;
+            $file         = TMPL_PATH . C('DEFAULT_APP') . "/" . $f . "/edit.html";
+            $this->createFile($dynamic_edit, $file);
+            $this->createFile(null, $file);
+
+            // indexview.html
+            $dynamic_indeview = $this->getPage_app('audit_indexview');
+            $file             = TMPL_PATH . C('DEFAULT_APP') . "/" . $f . "/indexview.html";
+            $this->createFile($dynamic_indeview, $file);
+            $this->createFile(null, $file);
+
+            // view.html
+            $dynamic_view =  $styles . $this->getPage_app('audit_view').$viewjs;
+            $file         = TMPL_PATH . C('DEFAULT_APP') . "/" . $f . "/view.html";
+            $this->createFile($dynamic_view, $file);
+
+            // auditIndex.html
+            $dynamic_auditindex = $this->getPage_app('audit_auditIndex');
+            $file               = TMPL_PATH . C('DEFAULT_APP') . "/" . $f . "/auditIndex.html";
+            $this->createFile($dynamic_auditindex, $file);
+
+            // auditView.html
+            $dynamic_auditView =   $styles . $this->getPage_app('audit_auditView').$viewjs;
+            $file              = TMPL_PATH . C('DEFAULT_APP') . "/" . $f . "/auditView.html";
+            $this->createFile($dynamic_auditView, $file);
+
+            // auditEdit.html
+            $dynamic_auditEdit =  $styles . $this->getPage_app('audit_auditEdit', $curnodeData, 1).$editjs;
+            $file              = TMPL_PATH . C('DEFAULT_APP') . "/" . $f . "/auditEdit.html";
+            $this->createFile($dynamic_auditEdit, $file);
+
+            // 生成公用查看主体内容
+            $dwzContentHtml = $this->getPage_app('audit_contenthtml', $curnodeData, 2);
+            $file           = TMPL_PATH . C('DEFAULT_APP') . "/" . $f . "/contenthtml.html";
+            $this->createFile($dwzContentHtml, $file);
+
+            $updatefile = TMPL_PATH . C('DEFAULT_APP') . "/" . $f . "/misSystemDataUpdate.html";
+            if (is_file($updatefile)) {
+                unlink($updatefile);
+            }
+
+        } else {
+            /**
+             * ************************
+             * 非审核 4个
+             * ***********************
+             */
+            try {
+                //查询当前表单有没有左侧菜单配置
+                $isdatasouce = getFieldBy($formid, "formid", "isdatasouce", "mis_dynamic_database_sub", "isdatasouce", "1");
+                // index.html
+                if ($isdatasouce) {
+                    $dynamic_index = $styles . $this->getPage_app('index_tree');
+                    $file          = TMPL_PATH . C('DEFAULT_APP') . "/" . $f . "/index.html";
+                    $this->createFile($dynamic_index, $file);
+                } else {
+                    $dynamic_index = $styles . $this->getPage_app('index');
+                    $file          = TMPL_PATH . C('DEFAULT_APP') . "/" . $f . "/index.html";
+                    $this->createFile($dynamic_index, $file);
+                }
+//              dump($this->formtype);exit;
+                $formtype = $this->formtype;
+                // indexview.html//noaudittpl#ltrl
+                if ($formtype == 'noaudittpl#ltrl') {
+                    $indexview = $styles . $this->getPage_app('indexview_right');
+                } else {
+                    $indexview = $styles . $this->getPage_app('indexview');
+                }
+
+                $file = TMPL_PATH . C('DEFAULT_APP') . "/" . $f . "/indexview.html";
+                $this->createFile('', $file);
+                // add.html
+                $dynamic_add =  $styles . $this->getPage_app('add', $curnodeData, 0).$addjs;
+                $file        = TMPL_PATH . C('DEFAULT_APP') . "/" . $f . "/add.html";
+                $this->createFile($dynamic_add, $file);
+                // edit.html
+                $dynamic_edit =   $styles . $this->getPage_app('edit', $curnodeData, 1).$editjs;
+                $file         = TMPL_PATH . C('DEFAULT_APP') . "/" . $f . "/edit.html";
+                $this->createFile($dynamic_edit, $file);
+                // view.html
+                $dynamic_view =   $styles . $this->getPage_app('view', $curnodeData, 2).$viewjs;
+                $file         = TMPL_PATH . C('DEFAULT_APP') . "/" . $f . "/view.html";
+                $this->createFile($dynamic_view, $file);
+                // 生成公用查看主体内容
+                $dwzContentHtml = $styles . $this->getPage_app('contenthtml', $curnodeData, 2);
+                $file           = TMPL_PATH . C('DEFAULT_APP') . "/" . $f . "/contenthtml.html";
+                $this->createFile($dwzContentHtml, $file);
+                $updatefile = TMPL_PATH . C('DEFAULT_APP') . "/" . $f . "/misSystemDataUpdate.html";
+                if (is_file($updatefile)) {
+                    unlink($updatefile);
+                }
+
+            } catch (Exception $e) {
+                ReturnData($e->getMessage(),1002);
+            }
+        }
+    }
+
     /**
      * 模板变量替换
      * @Title: templateReplace
@@ -203,6 +360,47 @@ EOF;
 
         array_push($search, '#nodeTitle#');
         array_push($replace, $this->nodeTitle);
+        if (is_array($replaceArr) && count($replaceArr)) {
+            foreach ($replaceArr as $key => $val) {
+                if (preg_match('#(.*?)#', $key)) {
+                    array_push($search, $key);
+                    array_push($replace, html_entity_decode($val));
+                }
+            }
+        }
+
+        if ($template) {
+            $template = str_replace($search, $replace, $template);
+        }
+
+        return $template;
+    }
+
+    /**
+     * 手机端模板变量替换
+     * @Title: templateReplace
+     * @Description: todo(唯一模板替换处理单元)
+     * @param string $replaceArr 被替换内容,key为查找对象，val为替换内容
+     * @param string $template 替换对象
+     * @author quqiang
+     * @date 2015年8月23日 下午5:35:34
+     * @throws
+     */
+    protected function templateReplace_app($replaceArr, $template)
+    {
+        $search  = array();   // 查找对象集合
+        $replace = array(); //   替换对象集合
+        // 系统预制替换变量
+        array_push($search, '#nodeName#');
+        array_push($replace, $this->nodeName);
+
+        array_push($search, '#tableName#');
+        array_push($replace, $this->tableName);
+
+        array_push($search, '#nodeTitle#');
+        array_push($replace, $this->nodeTitle);
+
+
         if (is_array($replaceArr) && count($replaceArr)) {
             foreach ($replaceArr as $key => $val) {
                 if (preg_match('#(.*?)#', $key)) {
@@ -268,6 +466,7 @@ EOF;
         }
         $searchArr = array();
         if (is_array($fieldsinfo)) {
+
             // 组件解析变量，
             $controll = '';
             // 需要生成组件
@@ -303,6 +502,85 @@ EOF;
     }
 
     /**
+     * * 手机端获取页面内容
+     * @Title: getPage
+     * @Description: todo(获取手机端要生成页面的页面内容信息)
+     * @param    string $pageCategory 页面分类，确定调用哪一种类型的页面基础模板
+     * @param    array $fieldsinfo 组件配置信息
+     * @param    boolean $pageOperate 表单操作类型，0：新增，1：修改  ,2：查看
+     * @author xiaosen
+     */
+    protected function getPage_app($pageCategory, $fieldsinfo, $pageOperate)
+    {
+        $template = $this->getPageConf_app($pageCategory);
+        $defaultControlTplArr;
+        if (empty($template)) {
+            $msg = "指定模板  {$pageCategory} 不存在";
+            ReturnData($msg,1002);
+        }
+        $ret = preg_match_all('/<check name="([\s\S]*?)">([\s\S]*?)<\/check>/', $template, $defaultControllTag);
+        if ($ret && is_array($defaultControllTag)) {
+            // [0] 原始数据
+            // [1] 字段名
+            // [2] 逻辑判断输出
+
+            foreach ($defaultControllTag[1] as $k => $v) {
+                // 判断是否出现指定字段
+                $logicArr = explode('<else/>', $defaultControllTag[2][$k]);
+                if ($fieldsinfo[$v]) {
+                    // 需要将模板传入组件生成函数，以接收用户参数
+                    // 用户指定字段时，模板标记设定<else/>标签前为逻辑判断真输出内容
+                    $replacement              = $logicArr[0];
+                    $pattern                  = '/<check name="' . $v . '">([\s\S]*?)<\/check>/';
+                    $template                 = preg_replace($pattern, '', $template);
+                    $defaultControlTplArr[$v] = $replacement;
+                } else {
+                    // 用户没有指定字段时，如果模板没有设定<else/>标签则不做输出，
+                    // 将结果重新写入当前页面模板
+                    $replacement = $logicArr[1];
+                    $pattern     = '/<check name="' . $v . '">([\s\S]*?)<\/check>/';
+                    $template    = preg_replace($pattern, $replacement, $template);
+//                  preg_replace_callback($pattern, function ($vo){
+//                      var_dump($vo);
+//                  }, $template);
+                }
+            }
+        }
+        $searchArr = array();
+        if (is_array($fieldsinfo)) {
+            // 组件解析变量，
+            $controll = '';
+            // 需要生成组件
+            if ($pageOperate == 2) {
+                foreach ($fieldsinfo as $k => $data) {
+                    logs($data [$this->publicProperty ['catalog'] ['name']],"gml");
+                    if($data [$this->publicProperty ['catalog'] ['name']] == "iframe"){
+                        $controll .= $this->cellForOprate_app($data, 'add', $defaultControlTplArr[$k],$pageCategory);
+                    }else{
+                        $controll .= $this->cellForView_app($data, 'view');
+                    }
+
+                }
+            } else {
+                foreach ($fieldsinfo as $k => $data) {
+                    $controll .= $this->cellForOprate_app($data, 'add', $defaultControlTplArr[$k],$pageCategory);
+                }
+            }
+            // 处理 fieldset的开始结束问题
+            $ret = preg_match('/#endfieldset#/', $controll);
+            if ($ret) {
+                $controll .= '#endfieldset#';
+            }
+            $controll = preg_replace('/#endfieldset#/', '', $controll, 1);
+            $controll = str_replace('#endfieldset#', '</div>', $controll);
+
+            $searchArr['#controll#'] = $controll;
+        }
+        $html = $this->templateReplace_app($searchArr, $template);
+        return $html;
+    }
+
+    /**
      * 组件生成函数,查看页面专用
      * @Title: cellForView
      * @Description: todo(按配置文件中的组件模板生成组件最终效果)
@@ -328,6 +606,7 @@ EOF;
 
         // 获取当前组件的全部配置属性
         $property = $this->getProperty($category);
+
         // 获取显示模板
         $template = $this->controlConfig [$category] [$type];
         if (empty ($template)) {
@@ -345,6 +624,7 @@ EOF;
          * 定义在组件生成使用到的变量名并赋初值空.
          */
 
+
         $class         = ""; // 主体布局样式归结
         $style         = ""; // 主体布局行内样式
         $title         = ""; // 标题内容
@@ -353,6 +633,16 @@ EOF;
         $content       = ""; // 显示内容
         $content_class = ""; // 显示内容容器类名
         $content_style = ""; // 显示内容行内样式
+
+        /**
+         * 赋值给需要替换的变量
+         */
+        $show_table = $data['subimporttableobj'];
+        $stored     = $data['subimporttablestoreobj'];
+        $php_path   = $data['subimporttablephpobj'];
+        $js_path    = $data['subimporttablejsobj'];
+        $js_path    = $data['subimporttablejsobj'];
+        $showtype   = $data['showtype'];
 
         $original = ""; // 数据格式转换前的值，真实值
         //$category = ""; // 组件类型
@@ -633,6 +923,354 @@ EOF;
         $searchArr['#category#']      = $category;
         $searchArr['#fields#']        = $fields;
 
+        // 新增组件Button 的6个属性
+        $searchArr["#showtables#"]   = $show_table;
+        $searchArr["#stored#"]       = $stored;
+        $searchArr["#php_path#"]     = $php_path;
+        $searchArr["#js_path#"]      = $js_path;
+        $searchArr["#showtype#"]     = $data['showtype'];
+        $searchArr["#table#"]        = getFieldBy($data['tablename'],'tablename','modelname','mis_dynamic_database_mas');
+
+
+        $html = $this->templateReplace($searchArr, $template);
+
+        return $html;
+    }
+
+    /**
+     * 手机端组件生成函数,查看页面专用
+     * @Title: cellForView
+     * @Description: todo(按配置文件中的组件模板生成组件最终效果)
+     * @param array $data 组件属性数据
+     * @param string $type 页面类型，按此类型找配置文件中的显示模板
+     * @author quqiang
+     * @date 2015年8月11日 下午12:44:10
+     * @throws
+     *
+     */
+    private function cellForView_app($data, $type = 'add')
+    {
+        if (!is_array($data)) {
+            $msg = '组件配置数据为空！！';
+            ReturnData($msg,1002);
+        }
+        // 返回变量
+        $html = '';
+        // 获取 当前组件的组件类型，
+        $category = $data [$this->publicProperty ['catalog'] ['name']];
+        // 显示状态
+        $isshow = $data [$this->publicProperty ['isshow'] ['name']];
+
+        // 获取当前组件的全部配置属性
+        $property = $this->getProperty($category);
+
+        // 获取显示模板
+        $template = $this->controlConfig [$category] [$type];
+//        if (empty ($template)) {
+//            $msg = "{$category}没有定义 {$type} 模板！";
+//            throw new NullDataExcetion ($msg);
+//        }
+        if ($this->nodeName) {
+            $path           = DConfig_PATH . "/Models/" . $this->nodeName . "/list.inc.php";
+            $detailList     = require $path;
+            $this->datalist = $detailList;
+        }
+
+        /**
+         * 变量定义：
+         * 定义在组件生成使用到的变量名并赋初值空.
+         */
+        $show_table = $data['subimporttableobj'];
+        $stored     = $data['subimporttablestoreobj'];
+        $php_path   = $data['subimporttablephpobj'];
+        $js_path    = $data['subimporttablejsobj'];
+        $js_path    = $data['subimporttablejsobj'];
+        $showtype   = $data['showtype'];
+
+
+        $original = ""; // 数据格式转换前的值，真实值
+        //$category = ""; // 组件类型
+        $changeFunc = ""; // 格式转换函数
+
+        $content    = ""; // 显示数据
+        $conditions = ""; // 获取数据时的过滤条件
+
+        // 布局样式，包含： 必填、org、格式验证
+        $contentCls = "col_" . $data [$property ['titlepercent'] ['name']] . "_" . $data [$property ['contentpercent'] ['name']] . " form_group_lay field_" . $data [$property ['fields'] ['name']];
+        // 标题
+        $title = $data [$property ['title'] ['name']];
+        // 真实字段名
+        $fields = $data [$property ['fields'] ['name']];
+
+        // 属性合并
+        $class = $contentCls;
+        if (!$isshow) {
+            $style = "display:none;";
+        }
+        $original = "{\$vo['{$fields}']}";
+        // 将组件全属性按属性名称封装到替换数据中
+        foreach ($data as $k=>$v){
+            //          var_dump($k);
+            if($k==$property ['conditions'] ['name']){
+                $cs=array('&lt;','&gt;');
+                $cr=array('<','>');
+                $v = str_replace($cs ,$cr , $v);
+            }
+            if($k == $property['component']['name']){
+                $cs1=array('&#39;');
+                $cr1=array('\'');
+                $v = str_replace($cs1 ,$cr1 , $v);
+            }
+            $searchArr["#{$k}#"] = $v;
+        }
+        switch ($category) {
+            case 'iframe' :
+                $content = $this->getControl($data, true, true);
+                break;
+            case 'text' :
+
+                // 单位转换
+                $unitl  = $data [$property ['unitl'] ['name']];
+                $unitls = $data [$property ['unitls'] ['name']];
+                if ($unitl && $unitls) {
+                    $changeFunc = "|unitExchange=###,{$unitl},{$unitls},3";
+                }
+                // 显示数据
+                $content = "{\$vo['{$fields}']{$changeFunc}}";
+                break;
+            case 'password' :
+                $content = "{:str_repeat('*', strlen(\$vo['{$fields}']))}";
+                break;
+            case 'tablabel' :
+
+                // 该标签没有值可从DB中获取。
+                $content = "";
+                break;
+            case 'hiddens' :
+                $func = "";
+                foreach ($detailList as $dkey => $dval) {
+                    if ($dval ['name'] == $data [$property ['fields'] ['name']]) {
+                        if ($dval ['func']) {
+                            $func .= $dval ['func'] [0] [0];
+                            if ($dval ['func'] [0] [0] = "getFieldBy") {
+                                $func .= "=";
+                            }
+                        }
+                        if ($dval ['funcdata']) {
+                            $func .= "'" . $dval ['funcdata'] [0] [0] [1];
+                            if ($dval ['funcdata'] [0] [0] [2]) {
+                                $func .= "','" . $dval ['funcdata'] [0] [0] [2] . "','" . $dval ['funcdata'] [0] [0] [3];
+                            }
+                        }
+                    }
+                }
+                if ($func) {
+                    $changeFunc = '|' . $func;
+                }
+                // 显示数据
+                $content = "{\$vo['{$fields}']{$changeFunc}}";
+                break;
+            case 'select' :
+                $conditions = '';
+                $showtype   = '1';
+                $type       = '';
+                // 数据来源方式：table|selectlist
+                if ($data [$property ['showoption'] ['name']]) {
+                    $type = 'selectlist';
+                    $key  = $data [$property ['showoption'] ['name']];
+                } else {
+                    if ($data [$property ['subimporttableobj'] ['name']] || $data [$property ['treedtable'] ['name']]) {
+                        $conditions = $data [$property ['conditions'] ['name']];
+                        $type       = 'table';
+                        if ($data [$property ['subimporttableobj'] ['name']]) {
+                            // 查询表名
+                            $tableName = $data [$property ['subimporttableobj'] ['name']];
+                            // 值字段名
+                            $tableVal = $data [$property ['subimporttablefield2obj'] ['name']];
+                            // 显示字段名
+                            $tableText = $data [$property ['subimporttablefieldobj'] ['name']];
+                        } elseif ($data [$property ['treedtable'] ['name']]) {
+                            // 查询表名
+                            $tableName = $data [$property ['treedtable'] ['name']];
+                            // 值字段名
+                            $tableVal = $data [$property ['treevaluefield'] ['name']];
+                            // 显示字段名
+                            $tableText = $data [$property ['treeshowfield'] ['name']];
+
+                            $parentid = $data [$property ['treeparentfield'] ['name']];
+                            // 是否末级操作
+                            $mulit = $data [$property ['mulit'] ['name']];
+                            // 是否多选
+                            $isnextend = $data [$property ['isnextend'] ['name']];
+                            // 树形-下拉高度
+                            $treeheight = $data [$property ['treeheight'] ['name']];
+                            // 树形-下拉宽度
+                            $treewidth = $data [$property ['treewidth'] ['name']];
+                            // 树形-是否对话框模式
+                            $treedialog = $data [$property ['isdialog'] ['name']] ? true : false;
+                        }
+                    }
+                }
+                if ($type) {
+                    $func = '';
+                    switch ($type) {
+                        case 'selectlist' :
+                            $func = "getControllbyHtml('selectlist',array('type'=>'select','key'=>'$key','conditions'=>'$conditions','selected'=>\$vo[$fields] ,'showtype'=>'$showtype'))";
+                            break;
+                        case 'table' :
+                            $func = "getControllbyHtml('table',array('type'=>'select','table'=>'$tableName','id'=>'$tableVal','name'=>'$tableText','conditions'=>'$conditions','selected'=>\$vo[$fields],'showtype'=>'$showtype'))";
+                            break;
+                    }
+                }
+                // 显示数据
+                if ($func) {
+                    $content = "{:{$func}}";
+                } else {
+                    $content = "";
+                }
+                break;
+            case 'checkbox' :
+
+                if ($data [$property ['subimporttableobj'] ['name']]) {
+                    $changeFunc = "|excelTplidTonameAppend='{$data[$property['subimporttablefield2obj']['name']]}','{$data[$property['subimporttablefieldobj']['name']]}','{$data[$property['subimporttableobj']['name']]}'";
+                } else {
+                    $changeFunc = "|getSelectlistByName='{$data[$property['showoption']['name']]}'";
+                }
+                // 显示数据
+                $content = "{\$vo['{$fields}']{$changeFunc}}";
+                break;
+            case 'radio' :
+                if ($data [$property ['subimporttableobj'] ['name']]) {
+                    $changeFunc = "|getFieldBy='{$data[$property['subimporttablefield2obj']['name']]}','{$data[$property['subimporttablefieldobj']['name']]}','{$data[$property['subimporttableobj']['name']]}'}";
+                } else {
+                    $changeFunc = "|getSelectlistValue='{$data[$property['showoption']['name']]}'";
+                }
+                // 显示数据
+                $content = "{\$vo['{$fields}']{$changeFunc}}";
+                break;
+            case 'textarea' :
+                if ($data [$property ['isrichbox'] ['name']]) {
+                    //$changeFunc = "|richtext2str";
+                }
+                $changeFunc = '|htmlspecialchars_decode';
+                // 显示数据
+                $content = "{\$vo['{$fields}']{$changeFunc}}";
+                break;
+            case 'date' :
+                $format      = '';
+                $format1     = '';
+                $formatSouce = '';
+                if ($data [$property ['format'] ['name']]) {
+                    $formatSouce = $data [$property ['format'] ['name']];
+                } else {
+                    $formatSouce = $property ['format'] ['default'];
+                }
+                if ($formatSouce) {
+                    $temp   = '';
+                    $temp   = explode('@', $formatSouce);
+                    $format = "format=\"{dateFmt:'" . $temp [0] . "'}\"";
+                    if ($temp [1]) {
+                        $format1 = "='{$temp[1]}'";
+                    }
+                }
+                $changeFunc = "|transtime{$format1}";
+                // 显示数据
+                $content = "{\$vo['{$fields}']{$changeFunc}}";
+                break;
+            case 'lookup' :
+                $content = "{:W('Lookup',array('1',\$vo,'{$data[$property['id']['name']]}','','false'))}";
+                break;
+            case 'lookupsuper' :
+
+                // 不实现
+                break;
+            case 'upload' :
+
+//                $content = $this->getControl($data, true, true);
+
+                //              // 数据字段名
+                //              $filedName = $data [$property ['fields'] ['name']];
+                //              // 组件标题
+                //              $filedTitle = $data [$property ['title'] ['name']];
+                //              // 上传数量
+                //              $uploadNum = $data [$property ['uploadnum'] ['name']];
+                //              // 上传类型
+                //              $uploadType = $data [$property ['uploadtype'] ['name']];
+                //              $param = 'array("0"=>$uploadarry["' . $filedName . '"],"1"=>' . $filedName . ',"2"=>$fields[' . $filedName . '],"3"=>"' . $uploadNum . '","4"=>"' . $uploadType . '")';
+                //              // 显示数据
+                //              $content = "{:W('ShowUploadView',{$param})}";
+                break;
+            case 'fieldset' :
+                break;
+//            case 'userselect' :
+//                $content = $this->getControl($data, true, true);
+//                // 不知道怎么做
+//                break;
+            case 'areainfo' :
+                // 显示数据
+                $content = "{\$vo['{$fields}']{$changeFunc}}";
+                break;
+            case 'divider2' :
+                // 不做
+                break;
+            case 'fiexdtext' :
+                $fiexdtextstyle = '';
+                if ($data[$property['aligntype']['name']]) {
+                    $fiexdtextstyle .= "text-align:" . $data[$property['aligntype']['name']] . ";";
+                } else {
+                    $fiexdtextstyle .= "text-align:{$property['aligntype']['default']};";
+                }
+                if ($data[$property['backgroundcolor']['name']]) {
+                    $fiexdtextstyle .= "background:#" . $data[$property['backgroundcolor']['name']] . ";";
+                } else {
+                    $fiexdtextstyle .= "background:#{$property['backgroundcolor']['default']};";
+                }
+                if ($data[$property['fontcolor']['name']]) {
+                    $fiexdtextstyle .= "color:#" . $data[$property['fontcolor']['name']] . ";";
+                } else {
+                    $fiexdtextstyle .= "color:#{$property['fontcolor']['default']};";
+                }
+                if ($fiexdtextstyle[$property['fontsize']['name']]) {
+                    $fiexdtextstyle .= "font-size:" . $data[$property['fontsize']['name']] . "px;";
+                } else {
+                    $fiexdtextstyle .= "font-size:{$property['fontsize']['default']}px;";
+                }
+                if ($data[$property['fontheight']['name']]) {
+                    $fiexdtextstyle .= "line-height:" . $data[$property['fontheight']['name']] . "px;";
+                } else {
+                    $fiexdtextstyle .= "line-height:{$property['fontheight']['default']}px;";
+                }
+                if ($controllProperty[$property['fontweight']['name']]) {
+                    $fiexdtextstyle .= "font-weight:" . $controllProperty[$property['fontweight']['name']] . ";";
+                } else {
+                    $fiexdtextstyle .= "font-weight:{$property['fontweight']['default']};";
+                }
+                $content       = $data[$property['title']['name']];
+                $content_style = $fiexdtextstyle;
+                break;
+//            case 'subtitles' :
+//                $content = $this->getControl($data, true, true);
+//                break;
+//            case 'datatable' :
+//                $content = '<div class="pos_relative">' . $this->getControl($data, true, true) . '</div>';
+//                break;
+        }
+
+        $searchArr['#title#']         = $title;
+        $searchArr['#content#']       = $content;
+        $searchArr['#original#']      = $original;
+        $searchArr['#category#']      = $category;
+        $searchArr['#fields#']        = $fields;
+
+        // 新增组件Button 的6个属性
+        $searchArr["#showtables#"]   = $show_table;
+        $searchArr["#stored#"]       = $stored;
+        $searchArr["#php_path#"]     = $php_path;
+        $searchArr["#js_path#"]      = $js_path;
+        $searchArr["#showtype#"]     = $data['showtype'];
+        $searchArr["#table#"]        = getFieldBy($data['tablename'],'tablename','modelname','mis_dynamic_database_mas');
+
+
         $html = $this->templateReplace($searchArr, $template);
 
         return $html;
@@ -659,6 +1297,7 @@ EOF;
         $html = '';
         // 获取 当前组件的组件类型，
         $category = $data [$this->publicProperty ['catalog'] ['name']];
+
         // 显示状态
         $isshow = $data [$this->publicProperty ['isshow'] ['name']];
         // 获取当前组件的全部配置属性
@@ -690,6 +1329,22 @@ EOF;
         $content       = ""; // 显示内容
         $content_class = ""; // 显示内容容器类名,必填、org、格式验证
         $content_style = ""; // 显示内容行内样式
+
+        $show_table    = ""; // 需要展开的数据表名称
+        $stored        = ""; //需要调用的存储过程名称
+        $php_path      = ""; //需要调用的PHP代码路径
+        $js_path       = ""; //需要调用的JS代码
+        $showtype      = ""; //表单打开方式
+
+        /**
+         * 赋值给需要替换的变量
+         */
+        $show_table = $data['subimporttableobj'];
+        $stored     = $data['subimporttablestoreobj'];
+        $php_path   = $data['subimporttablephpobj'];
+        $js_path    = $data['subimporttablejsobj'];
+        $js_path    = $data['subimporttablejsobj'];
+        $showtype    = $data['showtype'];
 
         $original = ""; // 数据格式转换前的值，真实值
         //$category = ""; // 组件类型
@@ -941,11 +1596,351 @@ EOF;
         $searchArr['#content_style#'] = $content_style;
         $searchArr['#original#']      = $original;
         $searchArr['#category#']      = $category;
-        $searchArr['#fields#']        = $fields;
         $searchArr['#propertyid#']    = $propertyid;
         //$searchArr["#format#"]=$format;
-        $searchArr["#unitlsChar#"] = $unitlsChar;
-        $searchArr["#paramArr#"]   = $paramArr;
+        $searchArr["#unitlsChar#"]    = $unitlsChar;
+        $searchArr["#paramArr#"]      = $paramArr;
+
+        // 新增组件Button 的6个属性
+        $searchArr["#showtables#"]   = $show_table;
+        $searchArr["#stored#"]       = $stored;
+        $searchArr["#php_path#"]     = $php_path;
+        $searchArr["#js_path#"]      = $js_path;
+        $searchArr["#showtype#"]     = $data['showtype'];
+        $searchArr["#table#"]        = getFieldBy($data['tablename'],'tablename','modelname','mis_dynamic_database_mas');
+
+        $html = $this->templateReplace($searchArr, $template);
+
+        return $html;
+    }
+    /**
+     *
+     *  手机端组件生成函数,新增、修改页面专用
+     * @Title: cellForOprate
+     * @Description: todo(o(按配置文件中的组件模板生成组件最终效果)
+     * @param array $data 组件属性数据
+     * @param string $type 页面类型，按此类型找配置文件中的显示模板
+     * @param string $inTemplate 特殊情况下的重置组件模板结构
+     * @author xiaosen
+     */
+    private function cellForOprate_app($data, $type = 'add', $inTemplate,$pageCategory)
+    {
+        if (!is_array($data)) {
+            $msg = '组件配置数据为空！！';
+           ReturnData($msg,1002);
+        }
+        // 返回变量
+        $html = '';
+        // 获取 当前组件的组件类型，
+        $category = $data [$this->publicProperty ['catalog'] ['name']];
+        // 显示状态
+        $isshow = $data [$this->publicProperty ['isshow'] ['name']];
+        // 获取当前组件的全部配置属性
+        $property = $this->getProperty($category);
+        // 获取显示模板
+        //$template = $this->controlConfig [$category] [$type];
+        $template = $this->getControllConf_app($category);
+//        $template = $dinTemplate ? $inTemplate : $template;
+//        if (empty ($template)) {
+//            $msg = "手机端组件 {$category} 没有定义模板！";
+//            throw new NullDataExcetion ($msg);
+//        }
+        if ($this->nodeName) {
+            $path           = DConfig_PATH . "/Models/" . $this->nodeName . "/list.inc.php";
+            $detailList     = require $path;
+            $this->datalist = $detailList;
+        }
+        $searchArr = array();
+        /**
+         * 变量定义：
+         * 定义在组件生成使用到的变量名并赋初值空.
+         */
+
+//        $class         = ""; // 主体布局样式归结
+//        $style         = ""; // 主体布局行内样式
+        $title         = ""; // 标题内容
+//        $title_class   = ""; // 标题类名
+//        $title_style   = ""; // 标题行内样式
+        $content       = ""; // 显示内容
+        $content_class = ""; // 显示内容容器类名,必填、org、格式验证
+        $content_style = ""; // 显示内容行内样式
+
+        $show_table    = ""; // 需要展开的数据表名称
+        $stored        = ""; //需要调用的存储过程名称
+        $php_path      = ""; //需要调用的PHP代码路径
+        $js_path       = ""; //需要调用的JS代码
+        $showtype      = ""; //表单打开方式
+
+        /**
+         * 赋值给需要替换的变量
+         */
+        $show_table = $data['subimporttableobj'];
+        $stored     = $data['subimporttablestoreobj'];
+        $php_path   = $data['subimporttablephpobj'];
+        $js_path    = $data['subimporttablejsobj'];
+        $js_path    = $data['subimporttablejsobj'];
+        $showtype   = $data['showtype'];
+
+        $original = ""; // 数据格式转换前的值，真实值
+        //$category = ""; // 组件类型
+        $changeFunc = ""; // 格式转换函数
+
+        $unitlsChar = ""; // 单位转换时的显示单位
+
+        $content    = ""; // 显示数据
+        $conditions = ""; // 获取数据时的过滤条件
+        $propertyid = $data[$property['id']['name']];//通用属性，配置ID
+
+        //$format = ''; // 日期组件特殊属性
+        $paramArr = ''; // 参数集合，组件不同参数集合构成与写法也存在差异.
+
+        // 布局样式
+//        $contentCls = "col_" . $data [$property ['titlepercent'] ['name']] . "_" . $data [$property ['contentpercent'] ['name']] . " form_group_lay field_" . $data [$property ['fields'] ['name']];
+        // 标题
+        $title = $data [$property ['title'] ['name']];
+        // 真实字段名
+        $fields = $data [$property ['fields'] ['name']];
+        if ($data[$property['requiredfield'] ['name']]) {
+            $content_class_arr[] = "required";
+        }
+        if ($data [$property ['org'] ['name']]) {
+            $content_class_arr[] = $data [$property ['org'] ['name']];
+        }
+        if ($data [$property ['checkfunc'] ['name']]) {
+            $content_class_arr[] = $data [$property ['checkfunc'] ['name']];
+        }
+
+        $content_class = implode(' ', $content_class_arr);
+        // 属性合并
+//        $class = $contentCls;
+        if (!$isshow) {
+            $style = "display:none;";
+        }
+        $original = "{\$vo['{$fields}']}";
+        if ($data [$property ['islock'] ['name']] == '0') {
+            $paramArr = "readonly=\"readonly\"";
+        }
+        // 将组件全属性按属性名称封装到替换数据中
+        foreach ($data as $k=>$v){
+//          var_dump($k);
+            if($k==$property ['conditions'] ['name']){
+                $cs=array('&lt;','&gt;');
+                $cr=array('<','>');
+                $v = str_replace($cs ,$cr , $v);
+            }
+            if($k == $property['component']['name']){
+                $cs1=array('&#39;');
+                $cr1=array('\'');
+                $v = str_replace($cs1 ,$cr1 , $v);
+            }
+            $searchArr["#{$k}#"] = $v;
+        }
+        switch ($category) {
+            case 'text' :
+
+                if ($data[$property ['callback'] ['name']]) {
+                    $searchArr["#callback#"] = 'callback="' . $data[$property ['callback'] ['name']] . '"';
+                }
+                // 显示数据
+                //$content=$this->getControl ( $data, true, false );
+                if ($data[$property ['unitls'] ['name']] && $data[$property ['unitl'] ['name']]) {
+                    $template   = $this->getControllConf_app($category . '_unit');
+                    $unitlsChar = $this->untils[$data[$property ['unitls'] ['name']]];
+                }
+                break;
+            case 'password' :
+                $content = "{:str_repeat('*', strlen(\$vo['{$fields}']))}";
+                break;
+            case 'tablabel' :
+                // 该标签没有值可从DB中获取。
+                $content = "";
+                break;
+            case 'hiddens' :
+                if ($data[$property ['callback'] ['name']]) {
+                    $searchArr["#callback#"] = 'callback="' . $data[$property ['callback'] ['name']] . '"';
+                }
+                break;
+            case 'select' :
+                // 显示数据
+                //$content=$this->getControl ( $data, true, false );
+                if ($data[$property ['treedtable'] ['name']] && $data[$property ['treeshowfield'] ['name']] && $data[$property ['treevaluefield'] ['name']] && $data[$property ['treeparentfield'] ['name']]) {
+                    $template = $this->getControllConf_app($category . '_tree');
+                }
+
+                break;
+            /**
+             * 手机端数据 通过JS 来控制
+             */
+//            case 'checkbox' :
+//                // 显示数据
+//                $content = $this->getControl($data, true, false);
+//                break;
+//            case 'radio' :
+//                // 显示数据
+//                $content = $this->getControl($data, true, false);
+//                break;
+            case 'textarea' :
+                // 显示数据
+                //$content=$this->getControl ( $data, true, false );
+
+                if ($data[$property ['isrichbox'] ['name']]) {
+                    $content_class .= " ueditor";
+                }
+                break;
+            case 'date' :
+//              $format = '';
+//              $format1 = '';
+//              $formatSouce = '';
+//              if ($data [$property ['format'] ['name']]) {
+//                  $formatSouce = $data [$property ['format'] ['name']];
+//              } else {
+//                  $formatSouce = $property ['format'] ['default'];
+//              }
+//              if ($formatSouce) {
+//                  $temp = '';
+//                  $temp = explode ( '@', $formatSouce );
+//                  $format = "{dateFmt:'" . $temp [0] . "'}";
+//                  if ($temp [1]) {
+//                      $format1 = "='{$temp[1]}'";
+//                  }
+//              }
+//              $changeFunc = "|transtime{$format1}";
+                // 显示数据
+                //$content=$this->getControl ( $data, true, false );
+                break;
+            case 'lookup' :
+                $content = "{:W('Lookup',array('1',\$vo,'{$data[$property['id']['name']]}','','false'))}";
+                break;
+            case 'lookupsuper' :
+
+                // 不实现
+                break;
+            case 'upload' :
+                //$content = $this->getControl ( $data, true, false );
+                break;
+            case 'uploadpic' :
+//              // 等比勾取最小值
+//              $data[$property ['cropratiomin'] ['name']]
+//              // 等比勾取最大值
+//              $data[$property ['cropratiomax'] ['name']]
+//              // 默认选中区域
+//              $data[$property ['cropdefaultcheck'] ['name']]
+//              // 自由选取
+//              $data[$property ['cropfreed'] ['name']]
+                unset($temp);
+                $cropfreed           = $data[$property ['cropfreed'] ['name']]; // 是否允许调整大小
+                $cropdefaultcheck    = $data[$property ['cropdefaultcheck'] ['name']];// 初始化时默认圈中区域
+                $cropratiomin        = $data[$property ['cropratiomin'] ['name']];// 勾取最小值
+                $cropratiomax        = $data[$property ['cropratiomax'] ['name']];// 勾取最大值
+                $cropratio           = $data[$property ['cropratio'] ['name']];// 等比操作
+                $temp['aspectRatio'] = $cropratio; // 是否等比操作
+                $temp['allowResize'] = $cropfreed; // 是否允许调整大小
+                if ($cropdefaultcheck) {
+                    $cropdefaultcheckArr = explode(',', $cropdefaultcheck);
+                    if (count($cropdefaultcheckArr) == 4) {
+                        $temp['setSelect'] = $cropdefaultcheckArr; // 初始化时默认圈中区域
+                    }
+                }
+                if ($cropratiomin) {
+                    $cropratiominArr = explode(',', $cropratiomin);
+                    if (count($cropratiominArr) == 2) {
+                        $temp['minSize'] = $cropratiominArr; // 勾取最小值
+                    }
+                }
+                if ($cropratiomax) {
+                    $cropratiomaxArr = explode(',', $cropratiomax);
+                    if (count($cropratiomaxArr) == 2) {
+                        $temp['maxSize'] = $cropratiomaxArr; // 勾取最大值
+                    }
+                }
+                $paramArr = json_encode($temp);
+                break;
+            case 'picedit':
+
+                unset($temp);
+                unset($wh);
+                unset($wharr);
+                $wh    = $data[$property ['widthheight'] ['name']]; // 是否允许调整大小
+                $wharr = explode(',', $wh);
+                if (count($wharr) == 2) {
+                    $temp['wh'] = $wharr;
+                }
+                $paramArr = json_encode($temp);
+                break;
+            case 'fieldset' :
+                break;
+//            case 'userselect' :
+//                $content = $this->getControl($data, true, false);
+//                // 不知道怎么做
+//                break;
+//            case 'areainfo' :
+//                // 显示数据
+//                $content = $this->getControl($data, true, false);
+//                break;
+            case 'divider2' :
+                // 不做
+                // 显示数据
+                //$content=$this->getControl ( $data, true, false );
+                break;
+            case 'fiexdtext' :
+                $fiexdtextstyle = '';
+                if ($data[$property['aligntype']['name']]) {
+                    $fiexdtextstyle .= "text-align:" . $data[$property['aligntype']['name']] . ";";
+                } else {
+                    $fiexdtextstyle .= "text-align:{$property['aligntype']['default']};";
+                }
+                if ($data[$property['backgroundcolor']['name']]) {
+                    $fiexdtextstyle .= "background:#" . $data[$property['backgroundcolor']['name']] . ";";
+                } else {
+                    $fiexdtextstyle .= "background:#{$property['backgroundcolor']['default']};";
+                }
+                if ($data[$property['fontcolor']['name']]) {
+                    $fiexdtextstyle .= "color:#" . $data[$property['fontcolor']['name']] . ";";
+                } else {
+                    $fiexdtextstyle .= "color:#{$property['fontcolor']['default']};";
+                }
+                if ($fiexdtextstyle[$property['fontsize']['name']]) {
+                    $fiexdtextstyle .= "font-size:" . $data[$property['fontsize']['name']] . "px;";
+                } else {
+                    $fiexdtextstyle .= "font-size:{$property['fontsize']['default']}px;";
+                }
+                if ($data[$property['fontheight']['name']]) {
+                    $fiexdtextstyle .= "line-height:" . $data[$property['fontheight']['name']] . "px;";
+                } else {
+                    $fiexdtextstyle .= "line-height:{$property['fontheight']['default']}px;";
+                }
+                if ($controllProperty[$property['fontweight']['name']]) {
+                    $fiexdtextstyle .= "font-weight:" . $controllProperty[$property['fontweight']['name']] . ";";
+                } else {
+                    $fiexdtextstyle .= "font-weight:{$property['fontweight']['default']};";
+                }
+                $content       = $data[$property['title']['name']];
+                $content_style = $fiexdtextstyle;
+                break;
+            case 'subtitles' :
+                $content = $this->getControl($data, true, true);
+                break;
+            case 'datatable' :
+                $content = '<div class="pos_relative">' . $this->getControl($data, true, false,true,$pageCategory) . '</div>';
+                break;
+        }
+
+
+        $searchArr['#original#']      = $original;
+        $searchArr['#title#']         = $title;
+        $searchArr['#fields#']        = $fields;
+        $searchArr['#category#']      = $category;
+        $searchArr['#propertyid#']    = $propertyid;
+        $searchArr["#unitlsChar#"]    = $unitlsChar;
+        $searchArr["#paramArr#"]      = $paramArr;
+        // 新增组件Button 的6个属性
+        $searchArr["#showtables#"]    = $show_table;
+        $searchArr["#stored#"]        = $stored;
+        $searchArr["#php_path#"]      = $php_path;
+        $searchArr["#js_path#"]       = $js_path;
+        $searchArr["#showtype#"]      = $data['showtype'];
+        $searchArr["#table#"]         = getFieldBy($data['tablename'],'tablename','modelname','mis_dynamic_database_mas');
+
 
         $html = $this->templateReplace($searchArr, $template);
 
