@@ -1,0 +1,179 @@
+<div class="new_version_page_content">
+	
+			<div class="col_1_3 form_group_lay field_orderno" original="{$vo['orderno']}" category="text" style="">
+				<label class="label_new">
+					{$fields["orderno"]}:
+				</label>
+				<span class="input_new">{$vo['orderno']}</span>
+			</div>
+			<div class="col_1_3 form_group_lay field_xiangmubianma" original="{$vo['xiangmubianma']}" category="lookup" style="">
+				<label class="label_new">
+					{$fields["xiangmubianma"]}:
+				</label>
+				<span class="input_new">{:W('Lookup',array('1',$vo,'4682','','false'))}</span>
+			</div>
+			<div class="col_1_3 form_group_lay field_kehumingchen" original="{$vo['kehumingchen']}" category="select" style="">
+				<label class="label_new">
+					{$fields["kehumingchen"]}:
+				</label>
+				<span class="input_new">{:getControllbyHtml('table',array('type'=>'select','table'=>'mis_auto_banmo','id'=>'orderno','name'=>'kehumingchen','conditions'=>'','selected'=>$vo[kehumingchen],'showtype'=>'1'))}</span>
+			</div>
+			<div class="col_1_3 form_group_lay field_xiangmumingchen" original="{$vo['xiangmumingchen']}" category="text" style="">
+				<label class="label_new">
+					{$fields["xiangmumingchen"]}:
+				</label>
+				<span class="input_new">{$vo['xiangmumingchen']}</span>
+			</div>
+			<div class="col_1_3 form_group_lay field_yewuleixing" original="{$vo['yewuleixing']}" category="select" style="">
+				<label class="label_new">
+					{$fields["yewuleixing"]}:
+				</label>
+				<span class="input_new">{:getControllbyHtml('table',array('type'=>'select','table'=>'mis_system_flow_type','id'=>'orderno','name'=>'name','conditions'=>'outlinelevel=1','selected'=>$vo[yewuleixing],'showtype'=>'1'))}</span>
+			</div>
+			<div class="col_1_3 form_group_lay field_zijinyongtu" original="{$vo['zijinyongtu']}" category="select" style="">
+				<label class="label_new">
+					{$fields["zijinyongtu"]}:
+				</label>
+				<span class="input_new">{:getControllbyHtml('table',array('type'=>'select','table'=>'mis_auto_hgwtp','id'=>'orderno','name'=>'name','conditions'=>'','selected'=>$vo[zijinyongtu],'showtype'=>'1'))}</span>
+			</div>
+			<div class="col_1_3 form_group_lay field_shenqingjine" original="{$vo['shenqingjine']}" category="text" style="">
+				<label class="label_new">
+					{$fields["shenqingjine"]}:
+				</label>
+				<span class="input_new">{$vo['shenqingjine']|unitExchange=###,yuan,wan,3}</span>
+			</div>
+			<div class="col_1_3 form_group_lay field_shenqingqixian" original="{$vo['shenqingqixian']}" category="text" style="">
+				<label class="label_new">
+					{$fields["shenqingqixian"]}:
+				</label>
+				<span class="input_new">{$vo['shenqingqixian']|unitExchange=###,months,months,3}</span>
+			</div>
+			<div class="col_1_3 form_group_lay field_danbaojiekuanleixing" original="{$vo['danbaojiekuanleixing']}" category="select" style="display:none;">
+				<label class="label_new">
+					{$fields["danbaojiekuanleixing"]}:
+				</label>
+				<span class="input_new">{:getControllbyHtml('table',array('type'=>'select','table'=>'mis_auto_xacre','id'=>'orderno','name'=>'name','conditions'=>'','selected'=>$vo[danbaojiekuanleixing],'showtype'=>'1'))}</span>
+			</div>
+			<div class="col_1_1 form_group_lay field_yixiangdanbaofeilv" original="{$vo['yixiangdanbaofeilv']}" category="text" style="">
+				<label class="label_new">
+					{$fields["yixiangdanbaofeilv"]}:
+				</label>
+				<span class="input_new">{$vo['yixiangdanbaofeilv']}</span>
+			</div>
+			<div class="col_1_1 form_group_lay field_baozhengjinjianmianl" original="{$vo['baozhengjinjianmianl']}" category="text" style="display:none;">
+				<label class="label_new">
+					{$fields["baozhengjinjianmianl"]}:
+				</label>
+				<span class="input_new">{$vo['baozhengjinjianmianl']}</span>
+			</div>
+			
+			<div class="fieldset_show_box col_8_0 form_group_lay field_fieldset13" original="{$vo['fieldset13']}" category="fieldset" style="">
+				<legend class="fieldset_legend_toggle side-catalog-text side-catalog-firstanchor">
+					<a name="fieldset13"></a>
+					<b>表决内容</b>
+					<div class="tml_style_line tml_sl4 tml_slb_blue"></div>
+				</legend>
+			</div>
+			<div class="fieldsetjs_show_box col_8_0 form_group_lay field_fieldset13">
+			<div class="col_1_3 form_group_lay field_pingshenyijian" original="{$vo['pingshenyijian']}" category="select" style="">
+				<label class="label_new">
+					{$fields["pingshenyijian"]}:
+				</label>
+				<span class="input_new">{:getControllbyHtml('selectlist',array('type'=>'select','key'=>'NBPSYJ','conditions'=>'','selected'=>$vo[pingshenyijian] ,'showtype'=>'1'))}</span>
+			</div>
+			<div class="col_1_1 form_group_lay field_jianyijine" original="{$vo['jianyijine']}" category="text" style="">
+				<label class="label_new">
+					{$fields["jianyijine"]}:
+				</label>
+				<span class="input_new">{$vo['jianyijine']|unitExchange=###,yuan,wan,3}</span>
+			</div>
+			<div class="col_1_1 form_group_lay field_jianyiqixian" original="{$vo['jianyiqixian']}" category="text" style="">
+				<label class="label_new">
+					{$fields["jianyiqixian"]}:
+				</label>
+				<span class="input_new">{$vo['jianyiqixian']|unitExchange=###,months,months,3}</span>
+			</div>
+			<div class="col_1_7 form_group_lay field_jianyi" original="{$vo['jianyi']}" category="textarea" style="">
+				<label class="label_new">
+					{$fields["jianyi"]}:
+				</label>
+				<span class="input_new">{$vo['jianyi']|htmlspecialchars_decode}</span>
+			</div>
+			<div class="col_1_3 form_group_lay field_pingshenhuiid" original="{$vo['pingshenhuiid']}" category="hiddens" style="">
+				<label class="label_new">
+					{$fields["pingshenhuiid"]}:
+				</label>
+				<span class="input_new">{$vo['pingshenhuiid']}</span>
+			</div>
+			<div class="col_1_3 form_group_lay field_zhaojidanid" original="{$vo['zhaojidanid']}" category="hiddens" style="">
+				<label class="label_new">
+					{$fields["zhaojidanid"]}:
+				</label>
+				<span class="input_new">{$vo['zhaojidanid']}</span>
+			</div>
+			<div class="col_1_3 form_group_lay field_zhaojidansubid" original="{$vo['zhaojidansubid']}" category="hiddens" style="">
+				<label class="label_new">
+					{$fields["zhaojidansubid"]}:
+				</label>
+				<span class="input_new">{$vo['zhaojidansubid']}</span>
+			</div>
+			<div class="col_1_3 form_group_lay field_pingshenhuileixing" original="{$vo['pingshenhuileixing']}" category="select" style="">
+				<label class="label_new">
+					{$fields["pingshenhuileixing"]}:
+				</label>
+				<span class="input_new">{:getControllbyHtml('table',array('type'=>'select','table'=>'mis_auto_fwvvg','id'=>'id','name'=>'name','conditions'=>'','selected'=>$vo[pingshenhuileixing],'showtype'=>'1'))}</span>
+			</div>
+			<div class="col_1_3 form_group_lay field_jianyifengxiandengji" original="{$vo['jianyifengxiandengji']}" category="select" style="display:none;">
+				<label class="label_new">
+					{$fields["jianyifengxiandengji"]}:
+				</label>
+				<span class="input_new">{:getControllbyHtml('table',array('type'=>'select','table'=>'mis_auto_dwodg','id'=>'orderno','name'=>'name','conditions'=>'','selected'=>$vo[jianyifengxiandengji],'showtype'=>'1'))}</span>
+			</div>
+			<div class="col_1_3 form_group_lay field_dangqianfengxiandeng" original="{$vo['dangqianfengxiandeng']}" category="select" style="display:none;">
+				<label class="label_new">
+					{$fields["dangqianfengxiandeng"]}:
+				</label>
+				<span class="input_new">{:getControllbyHtml('table',array('type'=>'select','table'=>'mis_auto_dwodg','id'=>'orderno','name'=>'name','conditions'=>'','selected'=>$vo[dangqianfengxiandeng],'showtype'=>'1'))}</span>
+			</div>
+			<div class="col_1_3 form_group_lay field_biaojueriqi" original="{$vo['biaojueriqi']}" category="date" style="">
+				<label class="label_new">
+					{$fields["biaojueriqi"]}:
+				</label>
+				<span class="input_new">{$vo['biaojueriqi']|transtime='Y-m-d'}</span>
+			</div>
+			<div class="col_1_3 form_group_lay field_baohouleixing" original="{$vo['baohouleixing']}" category="select" style="display:none;">
+				<label class="label_new">
+					{$fields["baohouleixing"]}:
+				</label>
+				<span class="input_new">{:getControllbyHtml('table',array('type'=>'select','table'=>'mis_auto_iehbc','id'=>'orderno','name'=>'name','conditions'=>'','selected'=>$vo[baohouleixing],'showtype'=>'1'))}</span>
+			</div>
+			<div class="col_1_3 form_group_lay field_shifuhege" original="{$vo['shifuhege']}" category="select" style="display:none;">
+				<label class="label_new">
+					{$fields["shifuhege"]}:
+				</label>
+				<span class="input_new">{:getControllbyHtml('selectlist',array('type'=>'select','key'=>'ND00318','conditions'=>'','selected'=>$vo[shifuhege] ,'showtype'=>'1'))}</span>
+			</div>
+			<div class="col_1_3 form_group_lay field_shanghuishunxu" original="{$vo['shanghuishunxu']}" category="text" style="">
+				<label class="label_new">
+					{$fields["shanghuishunxu"]}:
+				</label>
+				<span class="input_new">{$vo['shanghuishunxu']}</span>
+			</div>
+			<div class="col_1_3 form_group_lay field_baohouzhixingdanhao" original="{$vo['baohouzhixingdanhao']}" category="lookup" style="display:none;">
+				<label class="label_new">
+					{$fields["baohouzhixingdanhao"]}:
+				</label>
+				<span class="input_new">{:W('Lookup',array('1',$vo,'12121','','false'))}</span>
+			</div>
+			<div class="col_1_3 form_group_lay field_departmentid" original="{$vo['departmentid']}" category="select" style="display:none;">
+				<label class="label_new">
+					{$fields["departmentid"]}:
+				</label>
+				<span class="input_new">{:getControllbyHtml('table',array('type'=>'select','table'=>'mis_system_department','id'=>'id','name'=>'name','conditions'=>'','selected'=>$vo[departmentid],'showtype'=>'1'))}</span>
+			</div></div>
+	<div class="clear"></div>
+	{~$appendPageContentArr = getBindTabsContent('MisAutoAam',$vo,'view')}
+	{$appendPageContentArr[2]}
+	{$appendPageContentArr[3]}
+	{:W('ShowAction')}
+</div>

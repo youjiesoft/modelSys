@@ -1,0 +1,74 @@
+
+<div class="page">
+	<div class="pageContent">
+		<form method="post" action="__APP__/MisAutoPev/update/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone)">
+			<input type="hidden" name="callbackType" value="closeCurrent"/>
+			<div class="pageFormContent applecloth anchorsToolBarParen" layoutH="40">
+				<div class="new_version_page ">
+					<div class="new_version_page_header pageFormContent ">表决单</div>
+					{$content}
+					<div class="clear"></div>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+<!-- 
+<style>
+.dialog .tml-form-col .tml-input-append2 .temp_css  .textInput{
+width: 130px;
+}
+</style>
+<div class="page">
+	<div class="pageContent">
+	<form method="post" action="__APP__/MisAutoZpg/insert/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+			<input type="hidden" name="callbackType" value="closeCurrent" />
+			<input type="hidden" name="zhaojidansubid" value="{$vo['id']}" />
+			<input type="hidden" name="pingshenshenqingid" value="{$vo['pingshenhuiid']}" />
+			<input type="hidden" name="zhaojidanid" value="{$vo['zhaojidanid']}" />
+			<div class="pageFormContent" layoutH="48">
+				
+                    <table class="data-table" width="100%" cellspacing="0" style="line-height:32px;" >
+                        <tbody class="list_table">
+                            <tr class="list_table_header">
+                                <td class="cell_left" width="12%">项目编码: </td>
+                                <td class="cell_right" width="21%">{$vo['xiangmubianma']}</td>
+                                <td class="cell_left" width="12%">项目名称: </td>
+                                <td class="cell_right" width="21%">{$vo['xiangmumingchen']}</td>
+                                <td class="cell_left" width="12%">评审会编号: </td>
+                                <td class="cell_right" width="21%">{$vo['pingshenhuiid']|getFieldBy='id','orderno','mis_auto_sdkln'}</td>
+                            </tr>
+                            <tr>
+                                <td class="cell_left">申请金额: </td>
+                                <td class="cell_right">{$vo['canpingjine']}万元</td>
+                                <td class="cell_left">申请期限: </td>
+                                <td class="cell_right "><if condition="$vo['qixian']">{$vo['qixian']}月</if></td>
+                                <td class="cell_left">建议金额: </td>
+                                <td class="cell_right"><if condition="$vo['jianyijine']">{$vo['jianyijine']}万元</if></td>
+                            </tr>
+                            <tr>
+                                <td class="cell_left">建议期限: </td>
+                                <td class="cell_right"><if condition="$vo['jianyiqixian']">{$vo['jianyiqixian']}月</if></td>
+                                <td class="cell_left">评审意见：</td>
+                                <td class="cell_right">{$vo['pingshenyijian']|getSelectlistValue='AppraisalOpinion'}</td>
+                                <td class="cell_left">理由及建议：</td>
+                                <td class="cell_right">{$vo['biaojuebeizhu']}</td>
+                            </tr>
+                            <tr>
+                                <td class="cell_left">风险定价意见：</td>
+                                <td class="cell_right">{$vo['fengxiandingjiayijian']|getSelectlistValue='YesOrNoAgree'}</td>
+                                <td class="cell_left">风险定价建议: </td>
+                                <td class="cell_right">{$vo['fengxiandingjiajianyi']}</td>
+                                <td class="cell_left"></td>
+                                <td class="cell_right"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br />
+			</div>			
+			{:W('ShowAction')}
+		</form>
+	</div>
+</div> 
+	
+	 -->

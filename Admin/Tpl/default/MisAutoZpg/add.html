@@ -1,0 +1,89 @@
+{$content}
+<!-- <style>
+.dialog .tml-form-col .tml-input-append2 .textInput{width: 130px;}
+</style>
+<div class="page">
+	<div class="pageContent">
+	<form method="post" action="__APP__/MisAutoZpg/insert/rel/MisAutoZpgindexview" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone)">
+			<input type="hidden" name="callbackType" value="closeCurrent" />
+			<input type="hidden" name="zhaojidansubid" value="{$vo['id']}" />
+			<input type="hidden" name="pingshenshenqingid" value="{$vo['pingshenhuiid']}" />
+			<input type="hidden" name="zhaojidanid" value="{$vo['zhaojidanid']}" />
+			<input type="hidden" name="refreshtabs[data]" value="1" />
+			<div class="pageFormContent" layoutH="48">
+				<div class="tml-row">
+					<div class="tml-form-col " >
+						<label>项目编码:</label>
+						<input  type="text"  name="xiangmubianma" readonly="readonly" class="  " value="{$vo['xiangmubianma']}">
+					</div>
+					text组件 end
+					text组件 start
+					<div class="tml-form-col " >
+						<label>项目名称:</label>
+						<input  type="text"  name="xiangmumingchen"  readonly="readonly" class="  " value="{$vo['xiangmumingchen']}">
+					</div>
+					<div class="tml-form-col " >
+						<label>评审会编号:</label>
+						<input  type="text"   class="  "   readonly="readonly" value="{$vo['pingshenhuiid']|getFieldBy='id','orderno','mis_auto_sdkln'}">
+					</div>
+					<div class="tml-form-col " >
+						<label>申请金额:</label>
+						<div class="tml-input-append">
+						<input  type="text"  unitl="yuan" name="canpingjine" class=" unitlpase  textInput  " readonly="readonly" value="{$vo['canpingjine']}">
+						<span class="input-addon-unit" title="万元">万元</span>
+						</div>
+					</div>
+					<div class="tml-form-col " >
+						<label>申请期限:</label>
+						<div class="tml-input-append">
+						<input type="text"  name="qixian"   value="{$vo['qixian']}" readonly="readonly"  class="  textInput enterIndex valid" unitl="month">
+						<span title="月" class="input-addon-unit">月</span>
+						</div>
+						</div>
+					<div class="tml-form-col " >
+						<label>建议金额:</label>
+						<div class="tml-input-append">
+						<input  type="text"  unitl="yuan" name="jianyijine" class="textInput  unitlpase  required  " value=""><span class="input-addon-unit" title="万元">万元</span>
+						</div>
+					</div>
+					<div class="tml-form-col " >
+						<label>建议期限:</label>
+						<div class="tml-input-append">
+						<input type="text" name="jianyiqixian" value="{$vo['jianyiqixian']}"  class=" textInput   enterIndex valid required" unitl="month">
+						<span title="月" class="input-addon-unit">月</span>
+						</div>
+						</div>
+					<div class="tml-form-col ">
+						<label>评审意见:</label>
+						<select  readonly="readonly"  name="pingshenyijian"  class="   readonly combox" style="width:302px;">
+						{:getControllbyHtml('selectlist',array('type'=>'select','key'=>'AppraisalOpinion','selected'=>$vo['pingshenyijian']))}
+						</select>
+					</div>
+					</div>
+					<div class="tml-row">
+						<div class="tml-form-row ">
+							<label>理由及建议:</label>
+							<textarea  cols="100" rows="2" class=" " name="beizhu"></textarea>
+						</div>
+					</div>	
+					<div class="tml-row">
+						<div class="tml-form-col ">
+							<label>风险定价意见:</label>
+								<select  readonly="readonly"  name="fengxiandingjiayijian"  class="   readonly combox" style="width:302px;">
+									{:getControllbyHtml('selectlist',array('type'=>'select','key'=>'YesOrNoAgree','selected'=>$vo['fengxiandingjiayijian']))}
+								</select>
+						</div>
+					</div>	
+					<div class="tml-row">
+						<div class="tml-form-row ">
+							<label>风险定价建议:</label>
+							<textarea  cols="100" rows="2" class=" " name="fengxiandingjiajianyi"></textarea>
+						</div>
+					</div>	
+			</div>			
+			<div class="formBar"><ul><li><button class="tml_formBar_btn tml_formBar_btn_blue enterIndex" type="submit">保存</button></li></ul></div>
+		</form>
+	</div>
+</div>
+	
+	 -->

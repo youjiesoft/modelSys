@@ -1,0 +1,175 @@
+<script src="__TMPL__MisAutoZoq/edit.js" type="text/javascript"></script>
+	{~$classNodeSettingArr = getModelClassByNodeSetting('MisAutoZoq','edit')}<div class="page">
+	<div class="pageContent">
+			<div class="pageFormContent applecloth anchorsToolBarParen" <if condition="!$_REQUEST['main'] or $_REQUEST['main'] eq MODULE_NAME">layoutH="40"</if>>
+				<div class="new_version_page ">
+		<form method="post" action="__APP__/MisAutoZoq/auditProcess/navTabId/__MODULE__" class="pageForm-validate" onsubmit="return validateCallback(this, navTabAjaxDone);"><a class='xyz_anchornavi_top' name='MisAutoZoq_edit_top'></a>
+			<input type="hidden" name="id" value="{$vo['id']}" />
+			<input type="hidden" name="callbackType" value="closeCurrent">
+			<input type="hidden" name="masid" value="{$vo['id']}" />
+					<if condition="$_GET['viewtype'] neq 'view'">
+					<div class="new_version_page_header pageFormContent "><span class="left tml-ml20 ">外部评审表决单</span>
+			{:W('ShowRightToolBar',array('edit','MisAutoZoq',$vo))}{:W('ShowAnchorNavi',array('MisAutoZoq' , 'edit',$main))}</div>
+					</if>
+					<div class="new_version_page_content">{:W('ShowOrderno',array(5,'mis_auto_njzcw',$vo['orderno'],array('contentcls'=>'col_1_3 form_group_lay field_orderno', 'inputcls'=>'class="input_new " ','title'=>$fields["orderno"],'isshow'=>1)))}
+							<!-- text组件 start -->
+							<div class="col_1_3 form_group_lay field_xiangmubianma " >
+								<label class="label_new">{$fields["xiangmubianma"]}:</label>
+								<input   type="text"  name="xiangmubianma" class=" input_new  input_new  " value="{$vo['xiangmubianma']}"><div class="display_none {$classNodeSettingArr['xiangmubianma']}">{$vo['xiangmubianma']}</div>
+								</div>
+							<!-- text组件 end -->
+							<!-- text组件 start -->
+							<div class="col_1_3 form_group_lay field_kehumingchen " >
+								<label class="label_new">{$fields["kehumingchen"]}:</label>
+								<input   type="text"  name="kehumingchen" class=" input_new  input_new  " value="{$vo['kehumingchen']}"><div class="display_none {$classNodeSettingArr['kehumingchen']}">{$vo['kehumingchen']}</div>
+								</div>
+							<!-- text组件 end -->
+							<!-- text组件 start -->
+							<div class="col_1_3 form_group_lay field_xiangmumingchen " >
+								<label class="label_new">{$fields["xiangmumingchen"]}:</label>
+								<input   type="text"  name="xiangmumingchen" class=" input_new  input_new  " value="{$vo['xiangmumingchen']}"><div class="display_none {$classNodeSettingArr['xiangmumingchen']}">{$vo['xiangmumingchen']}</div>
+								</div>
+							<!-- text组件 end -->
+							<!-- select组件 start -->
+							<div class="col_1_3 form_group_lay field_yewuleixing " >
+								<label class="label_new">{$fields["yewuleixing"]}:</label>
+								
+								{:W('ShowSelect',array($vo['yewuleixing'],array('  ',array('type'=>'table',array('readonly'=>'1','targevent'=>'change','actionName'=>'MisAutoZoq','names'=>'yewuleixing','defaultcheckitem'=>'','defaultval'=>'','defaulttext'=>'','table'=>'mis_system_flow_type', 'id'=>'orderno','name'=>'name','conditions'=>'outlinelevel=1','parentid'=>'','mulit'=>'','isnextend'=>'','treeheight'=>'','treewidth'=>'','key'=>'','isedit'=>'1','showtype'=>'0')))))}<div class="display_none {$classNodeSettingArr['yewuleixing']}">{$vo['yewuleixing']|getFieldBy='orderno','name','mis_system_flow_type'}</div>
+								</div>
+							<!-- select组件 end -->
+							<!-- select组件 start -->
+							<div class="col_1_3 form_group_lay field_zijinyongtu " >
+								<label class="label_new">{$fields["zijinyongtu"]}:</label>
+								
+								{:W('ShowSelect',array($vo['zijinyongtu'],array('  ',array('type'=>'table',array('readonly'=>'1','targevent'=>'','actionName'=>'MisAutoZoq','names'=>'zijinyongtu','defaultcheckitem'=>'','defaultval'=>'','defaulttext'=>'','table'=>'mis_auto_hgwtp', 'id'=>'orderno','name'=>'name','conditions'=>'','parentid'=>'','mulit'=>'','isnextend'=>'','treeheight'=>'','treewidth'=>'','key'=>'','isedit'=>'1','showtype'=>'0')))))}<div class="display_none {$classNodeSettingArr['zijinyongtu']}">{$vo['zijinyongtu']|getFieldBy='orderno','name','mis_auto_hgwtp'}</div>
+								</div>
+							<!-- select组件 end -->
+							<!-- text组件 start -->
+							<div class="col_1_3 form_group_lay field_shenqingjine " ><div class="tml-input-unit">
+								<label class="label_new">{$fields["shenqingjine"]}:</label>
+								<input   type="text"  name="shenqingjine" class=" input_new  half_angle_input input_new  " value="{$vo['shenqingjine']|unitExchange=###,yuan,wan,2}"><span class="icon_elm icon_unit" title="万元">万元</span></div><div class="display_none {$classNodeSettingArr['shenqingjine']}">{$vo['shenqingjine']|unitExchange=###,yuan,wan,2}</div>
+								</div>
+							<!-- text组件 end -->
+							<!-- text组件 start -->
+							<div class="col_1_3 form_group_lay field_shenqingqixian " ><div class="tml-input-unit">
+								<label class="label_new">{$fields["shenqingqixian"]}:</label>
+								<input   type="text"  name="shenqingqixian" class=" input_new  half_angle_input input_new  " value="{$vo['shenqingqixian']|unitExchange=###,month,month,2}"><span class="icon_elm icon_unit" title="月">月</span></div><div class="display_none {$classNodeSettingArr['shenqingqixian']}">{$vo['shenqingqixian']|unitExchange=###,month,month,2}</div>
+								</div>
+							<!-- text组件 end -->
+				<div class="fieldset_show_box field_fieldset18">
+				 <legend class="fieldset_legend_toggle side-catalog-text side-catalog-firstanchor">
+					<a name="MisAutoZoq_fieldset18"></a><b>表决信息</b>
+					<div class="tml_style_line tml_sl4 tml_slb_blue"></div>
+				</legend>
+				</div>
+			<div class="fieldsetjs_show_box field_fieldset18" >
+							<!-- text组件 start -->
+							<div class="col_1_2 form_group_lay field_jianyijine " ><div class="tml-input-unit">
+								<label class="label_new">{$fields["jianyijine"]}:</label>
+								<input   type="text"  name="jianyijine" class=" input_new  half_angle_input input_new  " value="{$vo['jianyijine']|unitExchange=###,yuan,wan,2}"><span class="icon_elm icon_unit" title="万元">万元</span></div><div class="display_none {$classNodeSettingArr['jianyijine']}">{$vo['jianyijine']|unitExchange=###,yuan,wan,2}</div>
+								</div>
+							<!-- text组件 end -->
+							<!-- text组件 start -->
+							<div class="col_1_2 form_group_lay field_jianyiqixian " ><div class="tml-input-unit">
+								<label class="label_new">{$fields["jianyiqixian"]}:</label>
+								<input   type="text"  name="jianyiqixian" class=" input_new  half_angle_input input_new  " value="{$vo['jianyiqixian']|unitExchange=###,month,month,2}"><span class="icon_elm icon_unit" title="月">月</span></div><div class="display_none {$classNodeSettingArr['jianyiqixian']}">{$vo['jianyiqixian']|unitExchange=###,month,month,2}</div>
+								</div>
+							<!-- text组件 end -->
+							<!-- text组件 start -->
+							<div class="col_1_1 form_group_lay field_shouqubaozhengjinbil " ><div class="tml-input-unit">
+								<label class="label_new">{$fields["shouqubaozhengjinbil"]}:</label>
+								<input   type="text"  name="shouqubaozhengjinbil" class=" input_new  half_angle_input input_new  " value="{$vo['shouqubaozhengjinbil']|unitExchange=###,percent,percent,2}"><span class="icon_elm icon_unit" title="%">%</span></div><div class="display_none {$classNodeSettingArr['shouqubaozhengjinbil']}">{$vo['shouqubaozhengjinbil']|unitExchange=###,percent,percent,2}</div>
+								</div>
+							<!-- text组件 end --></div>
+				<div class="fieldset_show_box field_fieldset19">
+				 <legend class="fieldset_legend_toggle side-catalog-text side-catalog-firstanchor">
+					<a name="MisAutoZoq_fieldset19"></a><b>担保费率</b>
+					<div class="tml_style_line tml_sl4 tml_slb_blue"></div>
+				</legend>
+				</div>
+			<div class="fieldsetjs_show_box field_fieldset19" >
+							<!-- text组件 start -->
+							<div class="col_1_1 form_group_lay field_jianyiweidaifeilv " >
+								<label class="label_new">{$fields["jianyiweidaifeilv"]}:</label>
+								<input   type="text"  name="jianyiweidaifeilv" class=" input_new  input_new  " value="{$vo['jianyiweidaifeilv']}"><div class="display_none {$classNodeSettingArr['jianyiweidaifeilv']}">{$vo['jianyiweidaifeilv']}</div>
+								</div>
+							<!-- text组件 end -->
+							<!-- text组件 start -->
+							<div class="col_1_1 form_group_lay field_jianyidanbaolv " ><div class="tml-input-unit">
+								<label class="label_new">{$fields["jianyidanbaolv"]}:</label>
+								<input   type="text"  name="jianyidanbaolv" class=" input_new  half_angle_input input_new  " value="{$vo['jianyidanbaolv']|unitExchange=###,percent,percent,2}"><span class="icon_elm icon_unit" title="%">%</span></div><div class="display_none {$classNodeSettingArr['jianyidanbaolv']}">{$vo['jianyidanbaolv']|unitExchange=###,percent,percent,2}</div>
+								</div>
+							<!-- text组件 end -->
+							<!-- fiexdtext组件 start -->
+							<div class="col_6_0 form_group_lay field_fiexdtext21 " >
+					<span class="block" style="text-align:left;background:#fff;color:#333;font-size:14px;line-height:30px;font-weight:400;">1、动态显示主体收费标准、改主体的平均收费率、公司整体收费率 2、行业情况：看风控模型，相同行业的相同行业 3、业务调查报告、风评报告、审批流程意见、预评报告、法律意见书</span><div class="display_none {$classNodeSettingArr['fiexdtext21']}">1、动态显示主体收费标准、改主体的平均收费率、公司整体收费率 2、行业情况：看风控模型，相同行业的相同行业 3、业务调查报告、风评报告、审批流程意见、预评报告、法律意见书</div>
+								</div>
+							<!-- fiexdtext组件 end --></div>
+				<div class="fieldset_show_box field_fieldset20">
+				 <legend class="fieldset_legend_toggle side-catalog-text side-catalog-firstanchor">
+					<a name="MisAutoZoq_fieldset20"></a><b>意见</b>
+					<div class="tml_style_line tml_sl4 tml_slb_blue"></div>
+				</legend>
+				</div>
+			<div class="fieldsetjs_show_box field_fieldset20" >
+							<!-- select组件 start -->
+							<div class="col_1_3 form_group_lay field_pingshenyijian " >
+								<label class="label_new">{$fields["pingshenyijian"]}:</label>
+								
+								{:W('ShowSelect',array($vo['pingshenyijian'],array('  ',array('type'=>'selectlist',array('readonly'=>'1','targevent'=>'','actionName'=>'MisAutoZoq','names'=>'pingshenyijian','defaultcheckitem'=>'','defaultval'=>'','defaulttext'=>'','table'=>'', 'id'=>'','name'=>'','conditions'=>'','parentid'=>'','mulit'=>'','isnextend'=>'','treeheight'=>'','treewidth'=>'','key'=>'AppraisalOpinion','isedit'=>'1','showtype'=>'0')))))}<div class="display_none {$classNodeSettingArr['pingshenyijian']}">{$vo['pingshenyijian']|getSelectlistValue='AppraisalOpinion'}</div>
+								</div>
+							<!-- select组件 end -->
+							<!-- textarea组件 start -->
+							<div class="col_1_5 form_group_lay field_jianyi " >
+								<label class="label_new">{$fields["jianyi"]}:</label>
+								<textarea   cols="100" rows="4" class="  text_area  " name="jianyi">{$vo['jianyi']}</textarea><div class="display_none {$classNodeSettingArr['jianyi']}">{$vo['jianyi']}</div>
+								</div>
+							<!-- textarea组件 end -->
+							<!-- select组件 start -->
+							<div class="col_1_1 form_group_lay field_fengxiandingjiayijia " >
+								<label class="label_new">{$fields["fengxiandingjiayijia"]}:</label>
+								
+								{:W('ShowSelect',array($vo['fengxiandingjiayijia'],array('  ',array('type'=>'selectlist',array('readonly'=>'1','targevent'=>'','actionName'=>'MisAutoZoq','names'=>'fengxiandingjiayijia','defaultcheckitem'=>'','defaultval'=>'','defaulttext'=>'','table'=>'', 'id'=>'','name'=>'','conditions'=>'','parentid'=>'','mulit'=>'','isnextend'=>'','treeheight'=>'','treewidth'=>'','key'=>'YesOrNoAgree','isedit'=>'1','showtype'=>'0')))))}<div class="display_none {$classNodeSettingArr['fengxiandingjiayijia']}">{$vo['fengxiandingjiayijia']|getSelectlistValue='YesOrNoAgree'}</div>
+								</div>
+							<!-- select组件 end -->
+							<!-- textarea组件 start -->
+							<div class="col_1_5 form_group_lay field_fengxiandingjialiyou " >
+								<label class="label_new">{$fields["fengxiandingjialiyou"]}:</label>
+								<textarea   cols="100" rows="4" class="  text_area  " name="fengxiandingjialiyou">{$vo['fengxiandingjialiyou']}</textarea><div class="display_none {$classNodeSettingArr['fengxiandingjialiyou']}">{$vo['fengxiandingjialiyou']}</div>
+								</div>
+							<!-- textarea组件 end -->
+							<!-- text组件 start -->
+							<div class="col_1_1 form_group_lay field_pingshenweiyuanleixi "  style="display:none" >
+								<label class="label_new">{$fields["pingshenweiyuanleixi"]}:</label>
+								<input   type="text"  name="pingshenweiyuanleixi" class=" input_new  input_new  " value="{$vo['pingshenweiyuanleixi']}"><div class="display_none {$classNodeSettingArr['pingshenweiyuanleixi']}">{$vo['pingshenweiyuanleixi']}</div>
+								</div>
+							<!-- text组件 end -->
+							<!-- hiddens组件 start -->
+							<div class="col_1_3 new_field_hiddens form_group_lay field_pingshenhuiid" ><input type="hidden" class=" input_new" name="pingshenhuiid" value="{$vo['pingshenhuiid']}" /><div class="display_none {$classNodeSettingArr['pingshenhuiid']}">{$vo['pingshenhuiid']}</div>
+							</div>
+							<!-- hiddens组件 end -->
+							<!-- hiddens组件 start -->
+							<div class="col_1_3 new_field_hiddens form_group_lay field_zhaojidanid" ><input type="hidden" class=" input_new" name="zhaojidanid" value="{$vo['zhaojidanid']}" /><div class="display_none {$classNodeSettingArr['zhaojidanid']}">{$vo['zhaojidanid']}</div>
+							</div>
+							<!-- hiddens组件 end -->
+							<!-- hiddens组件 start -->
+							<div class="col_1_3 new_field_hiddens form_group_lay field_zhaojidansubid" ><input type="hidden" class=" input_new" name="zhaojidansubid" value="{$vo['zhaojidansubid']}" /><div class="display_none {$classNodeSettingArr['zhaojidansubid']}">{$vo['zhaojidansubid']}</div>
+							</div>
+							<!-- hiddens组件 end -->
+							<!-- hiddens组件 start -->
+							<div class="col_1_3 new_field_hiddens form_group_lay field_shifunabu" ><input type="hidden" class=" input_new" name="shifunabu" value="{$vo['shifunabu']}" /><div class="display_none {$classNodeSettingArr['shifunabu']}">{$vo['shifunabu']}</div>
+							</div>
+							<!-- hiddens组件 end -->
+							<!-- hiddens组件 start -->
+							<div class="col_1_3 new_field_hiddens form_group_lay field_pingshenhuileixing" ><input type="hidden" class=" input_new" name="pingshenhuileixing" value="{$vo['pingshenhuileixing']}" /><div class="display_none {$classNodeSettingArr['pingshenhuileixing']}">{$vo['pingshenhuileixing']}</div>
+							</div>
+							<!-- hiddens组件 end --></div>
+		<div class="showFormFlow">{:W('ShowFormFlowView',$vo)}</div>
+		{:W('ShowNotifyView',$vo)}
+		{:W('ShowAction',array('data'=>$vo))}
+</div>
+					<div class="clear"><span style="display:none;" class="anchornaviforshow">MisAutoZoq_edit</span><a class='xyz_anchornavi_buttom' name='MisAutoZoq_edit_bottom'></a></div>
+		</form>{$appendPageContentArr[2]}{$appendPageContentArr[3]}
+				</div>
+			</div>
+	</div></div>

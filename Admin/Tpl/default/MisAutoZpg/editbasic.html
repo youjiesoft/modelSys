@@ -1,0 +1,32 @@
+<div class="tabs tabNav" eventtype="click" currentindex="0">
+	<div class="tabsHeader tabNavHeader">
+		<div class="tabsHeaderContent tabNavHeaderContent">
+			<ul>
+				<li class="selected">
+					<a href="__URL__/{$_GET['_URL_'][1]}/id/{$eid}/eid/{$eid}" rel="MisAutoZpg_edit" class="j-ajax">
+						表决
+					</a>
+				</li>
+				<volist name="MisSaleClientSTypeList" id="MisSaleClientSTypeVo">
+					<li>
+						<a <if condition="$MisSaleClientSTypeVo.bindtype eq '1'">
+							href="__APP__/{$MisSaleClientSTypeVo.inbindaname}/miniindex/bindid/{$_REQUEST['bindid']}"
+							<else/>
+							href="__APP__/{$MisSaleClientSTypeVo.inbindaname}/edit/id/{$MisSaleClientSTypeVo['id']}"
+							</if>
+							rel="{$MisSaleClientSTypeVo.inbindaname}_edit" class="j-ajax">{$MisSaleClientSTypeVo.inbindaname|getFieldBy='actionname','actiontitle','mis_dynamic_form_manage'}
+						</a>
+					</li>
+				</volist>
+			</ul>
+		</div>
+	</div>
+	<div class="tabsContent tml-p0">
+		<div id="MisAutoZpg_edit">
+		</div>
+		<volist name='MisSaleClientSTypeList' id="MisSaleClientSTypeVo">
+			<div id="{$MisSaleClientSTypeVo.inbindaname}_edit">
+			</div>
+		</volist>
+	</div>
+</div>

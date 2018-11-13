@@ -1,0 +1,37 @@
+<script>
+$(document).ready(function(){
+	var zNodes = {$treearr};
+	var setting = {
+			view: {
+               selectedMulti: false,
+               fontCss: getFontCss
+			},
+			data: {
+				simpleData: {
+					enable: true
+				}
+			}
+		};
+	$.fn.zTree.init($("#MisAutoZpgtree"), setting, zNodes);
+	var zTree = $.fn.zTree.getZTreeObj("MisAutoZpgtree");
+	var valid = -1;
+    var nodes = zTree.getNodesByParam("id", valid, null);
+    zTree.selectNode(nodes[0]);
+});
+</script>
+<div class="pageContent">
+	<div class="treeleft">
+		<div class="close">
+			<div class="clearfix p5">
+				<div class="member_searcher">
+					<input class="add_key left" id="MisAutoZpgSearchNodeKeys"  type="text" placeholder="请输入查找词" name=""/>
+					<button class="btn_member icon-search right" onclick="SearchZTreeNode('MisAutoZpgtree','MisAutoZpgSearchNodeKeys')" type="button"></button>
+				</div>
+			</div>
+			<ul id="MisAutoZpgtree" class="ztree" layoutH="100"></ul>
+		</div>
+	</div>
+	<div id="MisAutoZpgindexview" class="unitBox treeright">
+		<include file="indexview"  />
+	</div>
+</div>

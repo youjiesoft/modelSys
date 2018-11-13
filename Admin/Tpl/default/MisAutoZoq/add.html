@@ -1,0 +1,1004 @@
+<script src="__TMPL__MisAutoZoq/add.js" type="text/javascript"></script><script src="__TMPL__MisAutoZoq/addExtend.js" type="text/javascript"></script>
+<!-- 
+普通表单：新增页面
+author:nbmxkj
+time:2015-09-06 18
+ -->
+{~$classNodeSettingArr =getModelClassByNodeSetting('MisAutoZoq','add')}
+{~$appendPageContentArr =getBindTabsContent('MisAutoZoq',$vo,'add','',$main)}
+{~$formautosetting = setFormControllAutoCreteAppend('MisAutoZoq' ,'add' ,$main , 'insert',$vo,A('MisAutoZoq')->rebuildSetting())}
+{$appendPageContentArr[1]}
+<div class="page">
+	<div class="pageContent">
+		<div class="pageFormContent applecloth anchorsToolBarParen" <if condition="$_REQUEST['dialog']">layoutH="40"</if><if condition="!$_REQUEST['main'] or $_REQUEST['main'] eq MODULE_NAME"> layoutH="40"</if>>
+			<div <if condition="!$_REQUEST['dialog']">class="new_version_page"</if>>
+				<form id="MisAutoZoq_add"
+					{$appendPageContentArr[5]} {$formautosetting[3]}  method="post" action="__APP__/MisAutoZoq/{$formautosetting[2]}/navTabId/__MODULE__{$formautosetting[4]}" class="pageForm required-validate"	 onsubmit="<if condition="$formautosetting[5]">{$formautosetting[5]}<else/>{$appendPageContentArr[0]}</if>">
+					<a class='xyz_anchornavi_top' name='MisAutoZoq_add_top'></a> 
+					<input type="hidden" name="callbackType" value="closeCurrent" />
+					{:W('HiddenInput',$vo)} 
+					{$formautosetting[1]}
+					<if condition="$_GET['viewtype'] neq 'view'&& !$_GET['main'] ">
+					<div class="new_version_page_header pageFormContent ">
+						<span class="left tml-ml20 ">外部评审表决单</span>
+						{:W('ShowRightToolBar',array('add','MisAutoZoq',$vo))}
+						{:W('ShowAnchorNavi',array('MisAutoZoq', 'add',$main))}
+						{$formautosetting[0]}
+					</div>
+					</if>
+					<div class="new_version_page_content">
+					
+						
+					{:W('ShowOrderno',array(4,'mis_auto_njzcw',$vo['orderno'],array('contentcls'=>'col_1_3 form_group_lay field_orderno',	'inputcls'=>'class="input_new "','title'=>$fields["orderno"],'isshow'=>1)))}
+												
+						<!-- 文本框组件 -->
+						<div class="col_1_3 form_group_lay field_xiangmubianma" original="{$vo['xiangmubianma']}" category="text" style="">
+							<label class="label_new">{$fields["xiangmubianma"]}:</label>
+							<input  dropback="#dropback#" readonly="readonly" type="text"  name="xiangmubianma"  class=" input_new  " <if condition="$vo['xiangmubianma'] neq ''">value="{$vo['xiangmubianma']}"<else/>value=""</if>  >
+							<div class="display_none {$classNodeSettingArr['xiangmubianma']}">{$vo['xiangmubianma']}</div>
+						</div>					
+						<!-- 下拉框组件 -->
+						<div class="col_1_3 form_group_lay field_kehumingchen" original="{$vo['kehumingchen']}" category="select" style="">
+							<label class="label_new">{$fields["kehumingchen"]}:</label>
+							{:W('ShowSelect',
+							array(
+								$vo['kehumingchen'],
+								array(
+									'',
+									array(
+										'type'=>(''==''?'table':'selectlist'),
+										array(
+											'key'=>'',
+											'readonly'=>'0',
+											'targevent'=>'',
+											'actionName'=>'MisAutoZoq',
+											'names'=>'kehumingchen',
+											'defaultcheckitem'=>'',
+											'defaultval'=>'',
+											'defaulttext'=>'',
+											'table'=>'mis_auto_banmo', 
+											'id'=>'orderno',
+											'name'=>'kehumingchen' ,
+											'conditions'=>'',
+											'parentid'=>'',
+											'mulit'=>'',
+											'isnextend'=>'',
+											'treeheight'=>'',
+											'treewidth'=>'',
+											'isedit'=>'0',
+											'showtype'=>'',
+											'defaultcheckitem'=>''
+											)
+										)
+									)
+								)
+							)
+							}
+						</div>
+													
+						<!-- 文本框组件 -->
+						<div class="col_1_3 form_group_lay field_xiangmumingchen" original="{$vo['xiangmumingchen']}" category="text" style="">
+							<label class="label_new">{$fields["xiangmumingchen"]}:</label>
+							<input  dropback="#dropback#" readonly="readonly" type="text"  name="xiangmumingchen"  class=" input_new  " <if condition="$vo['xiangmumingchen'] neq ''">value="{$vo['xiangmumingchen']}"<else/>value=""</if>  >
+							<div class="display_none {$classNodeSettingArr['xiangmumingchen']}">{$vo['xiangmumingchen']}</div>
+						</div>					
+						<!-- 下拉框组件 -->
+						<div class="col_1_3 form_group_lay field_yewuleixing" original="{$vo['yewuleixing']}" category="select" style="">
+							<label class="label_new">{$fields["yewuleixing"]}:</label>
+							{:W('ShowSelect',
+							array(
+								$vo['yewuleixing'],
+								array(
+									'',
+									array(
+										'type'=>(''==''?'table':'selectlist'),
+										array(
+											'key'=>'',
+											'readonly'=>'0',
+											'targevent'=>'change',
+											'actionName'=>'MisAutoZoq',
+											'names'=>'yewuleixing',
+											'defaultcheckitem'=>'',
+											'defaultval'=>'',
+											'defaulttext'=>'',
+											'table'=>'mis_system_flow_type', 
+											'id'=>'orderno',
+											'name'=>'name' ,
+											'conditions'=>'outlinelevel=1',
+											'parentid'=>'',
+											'mulit'=>'',
+											'isnextend'=>'',
+											'treeheight'=>'',
+											'treewidth'=>'',
+											'isedit'=>'0',
+											'showtype'=>'',
+											'defaultcheckitem'=>''
+											)
+										)
+									)
+								)
+							)
+							}
+						</div>
+											
+						<!-- 下拉框组件 -->
+						<div class="col_1_3 form_group_lay field_zijinyongtu" original="{$vo['zijinyongtu']}" category="select" style="">
+							<label class="label_new">{$fields["zijinyongtu"]}:</label>
+							{:W('ShowSelect',
+							array(
+								$vo['zijinyongtu'],
+								array(
+									'',
+									array(
+										'type'=>(''==''?'table':'selectlist'),
+										array(
+											'key'=>'',
+											'readonly'=>'0',
+											'targevent'=>'',
+											'actionName'=>'MisAutoZoq',
+											'names'=>'zijinyongtu',
+											'defaultcheckitem'=>'',
+											'defaultval'=>'',
+											'defaulttext'=>'',
+											'table'=>'mis_auto_hgwtp', 
+											'id'=>'orderno',
+											'name'=>'name' ,
+											'conditions'=>'',
+											'parentid'=>'',
+											'mulit'=>'',
+											'isnextend'=>'',
+											'treeheight'=>'',
+											'treewidth'=>'',
+											'isedit'=>'0',
+											'showtype'=>'',
+											'defaultcheckitem'=>''
+											)
+										)
+									)
+								)
+							)
+							}
+						</div>
+													
+						<!-- 文本框组件 [计量单位] -->
+						<div class="col_1_3 form_group_lay field_shenqingjine" original="{$vo['shenqingjine']}" category="text" style="display:none;">
+							<div class="tml-input-unit">
+								<label class="label_new">{$fields["shenqingjine"]}:</label>
+								<input  dropback=""  type="text"  name="shenqingjine" class=" input_new half_angle_input "
+									 <if condition="$vo['shenqingjine'] neq ''">value="{$vo['shenqingjine']|unitExchange=###,yuan,wan,2}"<else/>value=""</if>>
+								<span class="icon_elm icon_unit" title="万元">万元</span>
+								</div>
+								<div class="display_none {$classNodeSettingArr['shenqingjine']}">
+									{$vo['shenqingjine']|unitExchange=###,yuan,wan,2}
+								</div>
+						</div>							
+						<!-- 文本框组件 [计量单位] -->
+						<div class="col_1_3 form_group_lay field_shenqingqixian" original="{$vo['shenqingqixian']}" category="text" style="display:none;">
+							<div class="tml-input-unit">
+								<label class="label_new">{$fields["shenqingqixian"]}:</label>
+								<input  dropback=""  type="text"  name="shenqingqixian" class=" input_new half_angle_input "
+									 <if condition="$vo['shenqingqixian'] neq ''">value="{$vo['shenqingqixian']|unitExchange=###,month,month,2}"<else/>value=""</if>>
+								<span class="icon_elm icon_unit" title="月">月</span>
+								</div>
+								<div class="display_none {$classNodeSettingArr['shenqingqixian']}">
+									{$vo['shenqingqixian']|unitExchange=###,month,month,2}
+								</div>
+						</div>					
+						<!-- 下拉框组件 -->
+						<div class="col_1_1 form_group_lay field_danbaojiekuanleixing" original="{$vo['danbaojiekuanleixing']}" category="select" style="">
+							<label class="label_new">{$fields["danbaojiekuanleixing"]}:</label>
+							{:W('ShowSelect',
+							array(
+								$vo['danbaojiekuanleixing'],
+								array(
+									'',
+									array(
+										'type'=>(''==''?'table':'selectlist'),
+										array(
+											'key'=>'',
+											'readonly'=>'0',
+											'targevent'=>'change',
+											'actionName'=>'MisAutoZoq',
+											'names'=>'danbaojiekuanleixing',
+											'defaultcheckitem'=>'',
+											'defaultval'=>'',
+											'defaulttext'=>'',
+											'table'=>'mis_auto_xacre', 
+											'id'=>'orderno',
+											'name'=>'name' ,
+											'conditions'=>'',
+											'parentid'=>'',
+											'mulit'=>'',
+											'isnextend'=>'',
+											'treeheight'=>'',
+											'treewidth'=>'',
+											'isedit'=>'0',
+											'showtype'=>'',
+											'defaultcheckitem'=>''
+											)
+										)
+									)
+								)
+							)
+							}
+						</div>
+													
+						<!-- 文本框组件 -->
+						<div class="col_1_1 form_group_lay field_yixiangdanbaofeilv" original="{$vo['yixiangdanbaofeilv']}" category="text" style="">
+							<label class="label_new">{$fields["yixiangdanbaofeilv"]}:</label>
+							<input  dropback="#dropback#" readonly="readonly" type="text"  name="yixiangdanbaofeilv"  class=" input_new  " <if condition="$vo['yixiangdanbaofeilv'] neq ''">value="{$vo['yixiangdanbaofeilv']}"<else/>value=""</if>  >
+							<div class="display_none {$classNodeSettingArr['yixiangdanbaofeilv']}">{$vo['yixiangdanbaofeilv']}</div>
+						</div>							
+						<!-- 文本框组件 -->
+						<div class="col_1_1 form_group_lay field_baozhengjinjianmianl" original="{$vo['baozhengjinjianmianl']}" category="text" style="">
+							<label class="label_new">{$fields["baozhengjinjianmianl"]}:</label>
+							<input  dropback="#dropback#" readonly="readonly" type="text"  name="baozhengjinjianmianl"  class=" input_new  " <if condition="$vo['baozhengjinjianmianl'] neq ''">value="{$vo['baozhengjinjianmianl']}"<else/>value=""</if>  >
+							<div class="display_none {$classNodeSettingArr['baozhengjinjianmianl']}">{$vo['baozhengjinjianmianl']}</div>
+						</div>							
+						<!-- 文本框组件 [计量单位] -->
+						<div class="col_1_1 form_group_lay field_kehujichuxinyonglian" original="{$vo['kehujichuxinyonglian']}" category="text" style="">
+							<div class="tml-input-unit">
+								<label class="label_new">{$fields["kehujichuxinyonglian"]}:</label>
+								<input  dropback=""  type="text" readonly="readonly" name="kehujichuxinyonglian" class=" input_new half_angle_input "
+									 <if condition="$vo['kehujichuxinyonglian'] neq ''">value="{$vo['kehujichuxinyonglian']|unitExchange=###,mm,mm,2}"<else/>value=""</if>>
+								<span class="icon_elm icon_unit" title="分">分</span>
+								</div>
+								<div class="display_none {$classNodeSettingArr['kehujichuxinyonglian']}">
+									{$vo['kehujichuxinyonglian']|unitExchange=###,mm,mm,2}
+								</div>
+						</div>					
+						<!-- 下拉框组件 -->
+						<div class="col_1_2 form_group_lay field_chanpinleixing" original="{$vo['chanpinleixing']}" category="select" style="">
+							<label class="label_new">{$fields["chanpinleixing"]}:</label>
+							{:W('ShowSelect',
+							array(
+								$vo['chanpinleixing'],
+								array(
+									'',
+									array(
+										'type'=>(''==''?'table':'selectlist'),
+										array(
+											'key'=>'',
+											'readonly'=>'0',
+											'targevent'=>'',
+											'actionName'=>'MisAutoZoq',
+											'names'=>'chanpinleixing',
+											'defaultcheckitem'=>'',
+											'defaultval'=>'',
+											'defaulttext'=>'',
+											'table'=>'mis_auto_dxmel', 
+											'id'=>'orderno',
+											'name'=>'name' ,
+											'conditions'=>'',
+											'parentid'=>'',
+											'mulit'=>'',
+											'isnextend'=>'',
+											'treeheight'=>'',
+											'treewidth'=>'',
+											'isedit'=>'0',
+											'showtype'=>'',
+											'defaultcheckitem'=>''
+											)
+										)
+									)
+								)
+							)
+							}
+						</div>
+											
+						<!-- 换行符组件 -->
+						<div class="col_8_0 form_group_lay field_divider256" original="{$vo['divider256']}" category="divider2" style=" min-height:1px;line-height:1px;margin:0;">
+						</div>
+					
+						<!-- 下拉框组件 -->
+						<div class="col_1_1 form_group_lay field_yewurenyuanyijian" original="{$vo['yewurenyuanyijian']}" category="select" style="">
+							<label class="label_new">{$fields["yewurenyuanyijian"]}:</label>
+							{:W('ShowSelect',
+							array(
+								$vo['yewurenyuanyijian'],
+								array(
+									'',
+									array(
+										'type'=>('neibupingshenyijian'==''?'table':'selectlist'),
+										array(
+											'key'=>'neibupingshenyijian',
+											'readonly'=>'0',
+											'targevent'=>'',
+											'actionName'=>'MisAutoZoq',
+											'names'=>'yewurenyuanyijian',
+											'defaultcheckitem'=>'',
+											'defaultval'=>'',
+											'defaulttext'=>'--请选择--',
+											'table'=>'', 
+											'id'=>'',
+											'name'=>'' ,
+											'conditions'=>'',
+											'parentid'=>'',
+											'mulit'=>'',
+											'isnextend'=>'',
+											'treeheight'=>'',
+											'treewidth'=>'',
+											'isedit'=>'0',
+											'showtype'=>'',
+											'defaultcheckitem'=>''
+											)
+										)
+									)
+								)
+							)
+							}
+						</div>
+													
+						<!-- 文本框组件 [计量单位] -->
+						<div class="col_1_2 form_group_lay field_yewurenyuanjianyijie" original="{$vo['yewurenyuanjianyijie']}" category="text" style="">
+							<div class="tml-input-unit">
+								<label class="label_new">{$fields["yewurenyuanjianyijie"]}:</label>
+								<input  dropback=""  type="text" readonly="readonly" name="yewurenyuanjianyijie" class=" input_new half_angle_input "
+									 <if condition="$vo['yewurenyuanjianyijie'] neq ''">value="{$vo['yewurenyuanjianyijie']|unitExchange=###,yuan,wan,2}"<else/>value=""</if>>
+								<span class="icon_elm icon_unit" title="万元">万元</span>
+								</div>
+								<div class="display_none {$classNodeSettingArr['yewurenyuanjianyijie']}">
+									{$vo['yewurenyuanjianyijie']|unitExchange=###,yuan,wan,2}
+								</div>
+						</div>							
+						<!-- 文本框组件 [计量单位] -->
+						<div class="col_1_2 form_group_lay field_yewurenyuanjianyijier" original="{$vo['yewurenyuanjianyijier']}" category="text" style="">
+							<div class="tml-input-unit">
+								<label class="label_new">{$fields["yewurenyuanjianyijier"]}:</label>
+								<input  dropback=""  type="text" readonly="readonly" name="yewurenyuanjianyijier" class=" input_new half_angle_input "
+									 <if condition="$vo['yewurenyuanjianyijier'] neq ''">value="{$vo['yewurenyuanjianyijier']|unitExchange=###,months,months,2}"<else/>value=""</if>>
+								<span class="icon_elm icon_unit" title="个月">个月</span>
+								</div>
+								<div class="display_none {$classNodeSettingArr['yewurenyuanjianyijier']}">
+									{$vo['yewurenyuanjianyijier']|unitExchange=###,months,months,2}
+								</div>
+						</div>							
+						<!-- 文本框组件 [计量单位] -->
+						<div class="col_1_1 form_group_lay field_yewurenyuanjianyizhi" original="{$vo['yewurenyuanjianyizhi']}" category="text" style="">
+							<div class="tml-input-unit">
+								<label class="label_new">{$fields["yewurenyuanjianyizhi"]}:</label>
+								<input  dropback=""  type="text" readonly="readonly" name="yewurenyuanjianyizhi" class=" input_new half_angle_input "
+									 <if condition="$vo['yewurenyuanjianyizhi'] neq ''">value="{$vo['yewurenyuanjianyizhi']|unitExchange=###,yuan,wan,2}"<else/>value=""</if>>
+								<span class="icon_elm icon_unit" title="万元">万元</span>
+								</div>
+								<div class="display_none {$classNodeSettingArr['yewurenyuanjianyizhi']}">
+									{$vo['yewurenyuanjianyizhi']|unitExchange=###,yuan,wan,2}
+								</div>
+						</div>							
+						<!-- 文本框组件 [计量单位] -->
+						<div class="col_1_2 form_group_lay field_yewurenyuanjianyizhiy" original="{$vo['yewurenyuanjianyizhiy']}" category="text" style="">
+							<div class="tml-input-unit">
+								<label class="label_new">{$fields["yewurenyuanjianyizhiy"]}:</label>
+								<input  dropback=""  type="text" readonly="readonly" name="yewurenyuanjianyizhiy" class=" input_new half_angle_input "
+									 <if condition="$vo['yewurenyuanjianyizhiy'] neq ''">value="{$vo['yewurenyuanjianyizhiy']|unitExchange=###,months,months,2}"<else/>value=""</if>>
+								<span class="icon_elm icon_unit" title="个月">个月</span>
+								</div>
+								<div class="display_none {$classNodeSettingArr['yewurenyuanjianyizhiy']}">
+									{$vo['yewurenyuanjianyizhiy']|unitExchange=###,months,months,2}
+								</div>
+						</div>							
+						<!-- 文本框组件 [计量单位] -->
+						<div class="col_1_2 form_group_lay field_yewurenyuanjianyizon" original="{$vo['yewurenyuanjianyizon']}" category="text" style="">
+							<div class="tml-input-unit">
+								<label class="label_new">{$fields["yewurenyuanjianyizon"]}:</label>
+								<input  dropback=""  type="text" readonly="readonly" name="yewurenyuanjianyizon" class=" input_new half_angle_input "
+									 <if condition="$vo['yewurenyuanjianyizon'] neq ''">value="{$vo['yewurenyuanjianyizon']|unitExchange=###,yuan,wan,2}"<else/>value=""</if>>
+								<span class="icon_elm icon_unit" title="万元">万元</span>
+								</div>
+								<div class="display_none {$classNodeSettingArr['yewurenyuanjianyizon']}">
+									{$vo['yewurenyuanjianyizon']|unitExchange=###,yuan,wan,2}
+								</div>
+						</div>					
+						<!-- 下拉框组件 -->
+						<div class="col_1_1 form_group_lay field_fengkongrenyuanyijia" original="{$vo['fengkongrenyuanyijia']}" category="select" style="">
+							<label class="label_new">{$fields["fengkongrenyuanyijia"]}:</label>
+							{:W('ShowSelect',
+							array(
+								$vo['fengkongrenyuanyijia'],
+								array(
+									'',
+									array(
+										'type'=>('neibupingshenyijian'==''?'table':'selectlist'),
+										array(
+											'key'=>'neibupingshenyijian',
+											'readonly'=>'0',
+											'targevent'=>'',
+											'actionName'=>'MisAutoZoq',
+											'names'=>'fengkongrenyuanyijia',
+											'defaultcheckitem'=>'',
+											'defaultval'=>'',
+											'defaulttext'=>'--请选择--',
+											'table'=>'', 
+											'id'=>'',
+											'name'=>'' ,
+											'conditions'=>'',
+											'parentid'=>'',
+											'mulit'=>'',
+											'isnextend'=>'',
+											'treeheight'=>'',
+											'treewidth'=>'',
+											'isedit'=>'0',
+											'showtype'=>'',
+											'defaultcheckitem'=>''
+											)
+										)
+									)
+								)
+							)
+							}
+						</div>
+													
+						<!-- 文本框组件 [计量单位] -->
+						<div class="col_1_2 form_group_lay field_fengkongrenyuanjiany" original="{$vo['fengkongrenyuanjiany']}" category="text" style="">
+							<div class="tml-input-unit">
+								<label class="label_new">{$fields["fengkongrenyuanjiany"]}:</label>
+								<input  dropback=""  type="text" readonly="readonly" name="fengkongrenyuanjiany" class=" input_new half_angle_input "
+									 <if condition="$vo['fengkongrenyuanjiany'] neq ''">value="{$vo['fengkongrenyuanjiany']|unitExchange=###,yuan,wan,2}"<else/>value=""</if>>
+								<span class="icon_elm icon_unit" title="万元">万元</span>
+								</div>
+								<div class="display_none {$classNodeSettingArr['fengkongrenyuanjiany']}">
+									{$vo['fengkongrenyuanjiany']|unitExchange=###,yuan,wan,2}
+								</div>
+						</div>							
+						<!-- 文本框组件 [计量单位] -->
+						<div class="col_1_2 form_group_lay field_fengkongrenyuanjianye" original="{$vo['fengkongrenyuanjianye']}" category="text" style="">
+							<div class="tml-input-unit">
+								<label class="label_new">{$fields["fengkongrenyuanjianye"]}:</label>
+								<input  dropback=""  type="text" readonly="readonly" name="fengkongrenyuanjianye" class=" input_new half_angle_input "
+									 <if condition="$vo['fengkongrenyuanjianye'] neq ''">value="{$vo['fengkongrenyuanjianye']|unitExchange=###,months,months,2}"<else/>value=""</if>>
+								<span class="icon_elm icon_unit" title="个月">个月</span>
+								</div>
+								<div class="display_none {$classNodeSettingArr['fengkongrenyuanjianye']}">
+									{$vo['fengkongrenyuanjianye']|unitExchange=###,months,months,2}
+								</div>
+						</div>							
+						<!-- 文本框组件 [计量单位] -->
+						<div class="col_1_1 form_group_lay field_fengkongrenyuanjianyg" original="{$vo['fengkongrenyuanjianyg']}" category="text" style="">
+							<div class="tml-input-unit">
+								<label class="label_new">{$fields["fengkongrenyuanjianyg"]}:</label>
+								<input  dropback=""  type="text" readonly="readonly" name="fengkongrenyuanjianyg" class=" input_new half_angle_input "
+									 <if condition="$vo['fengkongrenyuanjianyg'] neq ''">value="{$vo['fengkongrenyuanjianyg']|unitExchange=###,yuan,wan,2}"<else/>value=""</if>>
+								<span class="icon_elm icon_unit" title="万元">万元</span>
+								</div>
+								<div class="display_none {$classNodeSettingArr['fengkongrenyuanjianyg']}">
+									{$vo['fengkongrenyuanjianyg']|unitExchange=###,yuan,wan,2}
+								</div>
+						</div>							
+						<!-- 文本框组件 [计量单位] -->
+						<div class="col_1_2 form_group_lay field_fengkongrenyuanjianyi" original="{$vo['fengkongrenyuanjianyi']}" category="text" style="">
+							<div class="tml-input-unit">
+								<label class="label_new">{$fields["fengkongrenyuanjianyi"]}:</label>
+								<input  dropback=""  type="text" readonly="readonly" name="fengkongrenyuanjianyi" class=" input_new half_angle_input "
+									 <if condition="$vo['fengkongrenyuanjianyi'] neq ''">value="{$vo['fengkongrenyuanjianyi']|unitExchange=###,months,months,2}"<else/>value=""</if>>
+								<span class="icon_elm icon_unit" title="个月">个月</span>
+								</div>
+								<div class="display_none {$classNodeSettingArr['fengkongrenyuanjianyi']}">
+									{$vo['fengkongrenyuanjianyi']|unitExchange=###,months,months,2}
+								</div>
+						</div>							
+						<!-- 文本框组件 [计量单位] -->
+						<div class="col_1_2 form_group_lay field_fengkongrenyuanjianyk" original="{$vo['fengkongrenyuanjianyk']}" category="text" style="">
+							<div class="tml-input-unit">
+								<label class="label_new">{$fields["fengkongrenyuanjianyk"]}:</label>
+								<input  dropback=""  type="text" readonly="readonly" name="fengkongrenyuanjianyk" class=" input_new half_angle_input "
+									 <if condition="$vo['fengkongrenyuanjianyk'] neq ''">value="{$vo['fengkongrenyuanjianyk']|unitExchange=###,yuan,wan,2}"<else/>value=""</if>>
+								<span class="icon_elm icon_unit" title="万元">万元</span>
+								</div>
+								<div class="display_none {$classNodeSettingArr['fengkongrenyuanjianyk']}">
+									{$vo['fengkongrenyuanjianyk']|unitExchange=###,yuan,wan,2}
+								</div>
+						</div>					
+						<!-- 下拉框组件 -->
+						<div class="col_1_1 form_group_lay field_shifusanchanronghexi" original="{$vo['shifusanchanronghexi']}" category="select" style="">
+							<label class="label_new">{$fields["shifusanchanronghexi"]}:</label>
+							{:W('ShowSelect',
+							array(
+								$vo['shifusanchanronghexi'],
+								array(
+									'',
+									array(
+										'type'=>('LD是否'==''?'table':'selectlist'),
+										array(
+											'key'=>'LD是否',
+											'readonly'=>'0',
+											'targevent'=>'',
+											'actionName'=>'MisAutoZoq',
+											'names'=>'shifusanchanronghexi',
+											'defaultcheckitem'=>'',
+											'defaultval'=>'',
+											'defaulttext'=>'--请选择--',
+											'table'=>'', 
+											'id'=>'',
+											'name'=>'' ,
+											'conditions'=>'',
+											'parentid'=>'',
+											'mulit'=>'',
+											'isnextend'=>'',
+											'treeheight'=>'',
+											'treewidth'=>'',
+											'isedit'=>'0',
+											'showtype'=>'',
+											'defaultcheckitem'=>''
+											)
+										)
+									)
+								)
+							)
+							}
+						</div>
+												
+						
+						<!-- 作用域组件 -->
+						<div class="fieldset_show_box col_8_0 form_group_lay field_fieldset18" original="{$vo['fieldset18']}" category="fieldset" style="">
+							<legend class="fieldset_legend_toggle side-catalog-text side-catalog-firstanchor">
+								<a name="fieldset18"></a>
+								<b>表决信息</b>
+								<div class="tml_style_line tml_sl4 tml_slb_blue"></div>
+							</legend>
+						</div>
+						<div class="fieldsetjs_show_box col_8_0 form_group_lay field_fieldset18">					
+						<!-- 下拉框组件 -->
+						<div class="col_1_1 form_group_lay field_pingshenyijian" original="{$vo['pingshenyijian']}" category="select" style="">
+							<label class="label_new">{$fields["pingshenyijian"]}:</label>
+							{:W('ShowSelect',
+							array(
+								$vo['pingshenyijian'],
+								array(
+									'required',
+									array(
+										'type'=>('AppraisalOpinion'==''?'table':'selectlist'),
+										array(
+											'key'=>'AppraisalOpinion',
+											'readonly'=>'1',
+											'targevent'=>'change',
+											'actionName'=>'MisAutoZoq',
+											'names'=>'pingshenyijian',
+											'defaultcheckitem'=>'',
+											'defaultval'=>'',
+											'defaulttext'=>'--请选择--',
+											'table'=>'', 
+											'id'=>'',
+											'name'=>'' ,
+											'conditions'=>'',
+											'parentid'=>'',
+											'mulit'=>'',
+											'isnextend'=>'',
+											'treeheight'=>'',
+											'treewidth'=>'',
+											'isedit'=>'1',
+											'showtype'=>'',
+											'defaultcheckitem'=>''
+											)
+										)
+									)
+								)
+							)
+							}
+						</div>
+													
+						<!-- 文本框组件 [计量单位] -->
+						<div class="col_1_2 form_group_lay field_jianyijine" original="{$vo['jianyijine']}" category="text" style="">
+							<div class="tml-input-unit">
+								<label class="label_new">{$fields["jianyijine"]}:</label>
+								<input  dropback=""  type="text"  name="jianyijine" class=" input_new half_angle_input required double"
+									 <if condition="$vo['jianyijine'] neq ''">value="{$vo['jianyijine']|unitExchange=###,yuan,wan,2}"<else/>value=""</if>>
+								<span class="icon_elm icon_unit" title="万元">万元</span>
+								</div>
+								<div class="display_none {$classNodeSettingArr['jianyijine']}">
+									{$vo['jianyijine']|unitExchange=###,yuan,wan,2}
+								</div>
+						</div>							
+						<!-- 文本框组件 [计量单位] -->
+						<div class="col_1_2 form_group_lay field_jianyiqixian" original="{$vo['jianyiqixian']}" category="text" style="">
+							<div class="tml-input-unit">
+								<label class="label_new">{$fields["jianyiqixian"]}:</label>
+								<input  dropback=""  type="text"  name="jianyiqixian" class=" input_new half_angle_input required double"
+									 <if condition="$vo['jianyiqixian'] neq ''">value="{$vo['jianyiqixian']|unitExchange=###,month,month,2}"<else/>value=""</if>>
+								<span class="icon_elm icon_unit" title="月">月</span>
+								</div>
+								<div class="display_none {$classNodeSettingArr['jianyiqixian']}">
+									{$vo['jianyiqixian']|unitExchange=###,month,month,2}
+								</div>
+						</div>							
+						<!-- 文本框组件 [计量单位] -->
+						<div class="col_1_1 form_group_lay field_zhitoujine" original="{$vo['zhitoujine']}" category="text" style="">
+							<div class="tml-input-unit">
+								<label class="label_new">{$fields["zhitoujine"]}:</label>
+								<input  dropback=""  type="text"  name="zhitoujine" class=" input_new half_angle_input "
+									 <if condition="$vo['zhitoujine'] neq ''">value="{$vo['zhitoujine']|unitExchange=###,yuan,wan,2}"<else/>value=""</if>>
+								<span class="icon_elm icon_unit" title="万元">万元</span>
+								</div>
+								<div class="display_none {$classNodeSettingArr['zhitoujine']}">
+									{$vo['zhitoujine']|unitExchange=###,yuan,wan,2}
+								</div>
+						</div>							
+						<!-- 文本框组件 [计量单位] -->
+						<div class="col_1_1 form_group_lay field_zhitouqixian" original="{$vo['zhitouqixian']}" category="text" style="">
+							<div class="tml-input-unit">
+								<label class="label_new">{$fields["zhitouqixian"]}:</label>
+								<input  dropback=""  type="text"  name="zhitouqixian" class=" input_new half_angle_input "
+									 <if condition="$vo['zhitouqixian'] neq ''">value="{$vo['zhitouqixian']|unitExchange=###,month,month,2}"<else/>value=""</if>>
+								<span class="icon_elm icon_unit" title="月">月</span>
+								</div>
+								<div class="display_none {$classNodeSettingArr['zhitouqixian']}">
+									{$vo['zhitouqixian']|unitExchange=###,month,month,2}
+								</div>
+						</div>							
+						<!-- 文本框组件 [计量单位] -->
+						<div class="col_1_1 form_group_lay field_rugubili" original="{$vo['rugubili']}" category="text" style="">
+							<div class="tml-input-unit">
+								<label class="label_new">{$fields["rugubili"]}:</label>
+								<input  dropback=""  type="text"  name="rugubili" class=" input_new half_angle_input "
+									 <if condition="$vo['rugubili'] neq ''">value="{$vo['rugubili']|unitExchange=###,percent,percent,2}"<else/>value=""</if>>
+								<span class="icon_elm icon_unit" title="%">%</span>
+								</div>
+								<div class="display_none {$classNodeSettingArr['rugubili']}">
+									{$vo['rugubili']|unitExchange=###,percent,percent,2}
+								</div>
+						</div>							
+						<!-- 文本框组件 [计量单位] -->
+						<div class="col_1_1 form_group_lay field_jianyizongjine" original="{$vo['jianyizongjine']}" category="text" style="">
+							<div class="tml-input-unit">
+								<label class="label_new">{$fields["jianyizongjine"]}:</label>
+								<input  dropback=""  type="text"  name="jianyizongjine" class=" input_new half_angle_input "
+									 <if condition="$vo['jianyizongjine'] neq ''">value="{$vo['jianyizongjine']|unitExchange=###,yuan,wan,2}"<else/>value=""</if>>
+								<span class="icon_elm icon_unit" title="万元">万元</span>
+								</div>
+								<div class="display_none {$classNodeSettingArr['jianyizongjine']}">
+									{$vo['jianyizongjine']|unitExchange=###,yuan,wan,2}
+								</div>
+						</div>						
+						<!-- 文本域组件 -->
+						<div class="col_1_7 form_group_lay field_peiyumubiao" original="{$vo['peiyumubiao']}" category="textarea" style="">
+							<label class="label_new">{$fields["peiyumubiao"]}:</label>
+							<textarea   cols="0" rows="0"  class="text_area " name="peiyumubiao"><if condition="$vo['peiyumubiao']">{$vo['peiyumubiao']}<else/></if></textarea>
+							<div class="display_none {$classNodeSettingArr['peiyumubiao']}">{$vo['peiyumubiao']}</div>
+						</div>
+						
+						<!-- 文本域组件 -->
+						<div class="col_1_7 form_group_lay field_jianyi" original="{$vo['jianyi']}" category="textarea" style="">
+							<label class="label_new">{$fields["jianyi"]}:</label>
+							<textarea   cols="0" rows="0"  class="text_area " name="jianyi"><if condition="$vo['jianyi']">{$vo['jianyi']}<else/></if></textarea>
+							<div class="display_none {$classNodeSettingArr['jianyi']}">{$vo['jianyi']}</div>
+						</div>
+						
+						</div>
+						<!-- 作用域组件 -->
+						<div class="fieldset_show_box col_8_0 form_group_lay field_fieldset27" original="{$vo['fieldset27']}" category="fieldset" style="">
+							<legend class="fieldset_legend_toggle side-catalog-text side-catalog-firstanchor">
+								<a name="fieldset27"></a>
+								<b>风险定价信息</b>
+								<div class="tml_style_line tml_sl4 tml_slb_blue"></div>
+							</legend>
+						</div>
+						<div class="fieldsetjs_show_box col_8_0 form_group_lay field_fieldset27">					
+						<!-- 下拉框组件 -->
+						<div class="col_1_1 form_group_lay field_fengxiandingjiayijia" original="{$vo['fengxiandingjiayijia']}" category="select" style="">
+							<label class="label_new">{$fields["fengxiandingjiayijia"]}:</label>
+							{:W('ShowSelect',
+							array(
+								$vo['fengxiandingjiayijia'],
+								array(
+									'required',
+									array(
+										'type'=>('AppraisalOpinion'==''?'table':'selectlist'),
+										array(
+											'key'=>'AppraisalOpinion',
+											'readonly'=>'1',
+											'targevent'=>'change',
+											'actionName'=>'MisAutoZoq',
+											'names'=>'fengxiandingjiayijia',
+											'defaultcheckitem'=>'',
+											'defaultval'=>'',
+											'defaulttext'=>'--请选择--',
+											'table'=>'', 
+											'id'=>'',
+											'name'=>'' ,
+											'conditions'=>'',
+											'parentid'=>'',
+											'mulit'=>'',
+											'isnextend'=>'',
+											'treeheight'=>'',
+											'treewidth'=>'',
+											'isedit'=>'1',
+											'showtype'=>'',
+											'defaultcheckitem'=>''
+											)
+										)
+									)
+								)
+							)
+							}
+						</div>
+													
+						<!-- 文本框组件 [计量单位] -->
+						<div class="col_1_2 form_group_lay field_shouqubaozhengjinbil" original="{$vo['shouqubaozhengjinbil']}" category="text" style="">
+							<div class="tml-input-unit">
+								<label class="label_new">{$fields["shouqubaozhengjinbil"]}:</label>
+								<input  dropback=""  type="text"  name="shouqubaozhengjinbil" class=" input_new half_angle_input double"
+									 <if condition="$vo['shouqubaozhengjinbil'] neq ''">value="{$vo['shouqubaozhengjinbil']|unitExchange=###,percent,percent,2}"<else/>value=""</if>>
+								<span class="icon_elm icon_unit" title="%">%</span>
+								</div>
+								<div class="display_none {$classNodeSettingArr['shouqubaozhengjinbil']}">
+									{$vo['shouqubaozhengjinbil']|unitExchange=###,percent,percent,2}
+								</div>
+						</div>							
+						<!-- 文本框组件 [计量单位] -->
+						<div class="col_1_2 form_group_lay field_jianyidanbaolv" original="{$vo['jianyidanbaolv']}" category="text" style="">
+							<div class="tml-input-unit">
+								<label class="label_new">{$fields["jianyidanbaolv"]}:</label>
+								<input  dropback=""  type="text"  name="jianyidanbaolv" class=" input_new half_angle_input double"
+									 <if condition="$vo['jianyidanbaolv'] neq ''">value="{$vo['jianyidanbaolv']|unitExchange=###,percent,percent,2}"<else/>value=""</if>>
+								<span class="icon_elm icon_unit" title="%">%</span>
+								</div>
+								<div class="display_none {$classNodeSettingArr['jianyidanbaolv']}">
+									{$vo['jianyidanbaolv']|unitExchange=###,percent,percent,2}
+								</div>
+						</div>							
+						<!-- 文本框组件 [计量单位] -->
+						<div class="col_1_1 form_group_lay field_jianyiweidaifeilv" original="{$vo['jianyiweidaifeilv']}" category="text" style="display:none;">
+							<div class="tml-input-unit">
+								<label class="label_new">{$fields["jianyiweidaifeilv"]}:</label>
+								<input  dropback=""  type="text"  name="jianyiweidaifeilv" class=" input_new half_angle_input "
+									 <if condition="$vo['jianyiweidaifeilv'] neq ''">value="{$vo['jianyiweidaifeilv']|unitExchange=###,percent,percent,2}"<else/>value=""</if>>
+								<span class="icon_elm icon_unit" title="%">%</span>
+								</div>
+								<div class="display_none {$classNodeSettingArr['jianyiweidaifeilv']}">
+									{$vo['jianyiweidaifeilv']|unitExchange=###,percent,percent,2}
+								</div>
+						</div>							
+						<!-- 文本框组件 [计量单位] -->
+						<div class="col_1_1 form_group_lay field_touzirennianhuashouy" original="{$vo['touzirennianhuashouy']}" category="text" style="">
+							<div class="tml-input-unit">
+								<label class="label_new">{$fields["touzirennianhuashouy"]}:</label>
+								<input  dropback=""  type="text"  name="touzirennianhuashouy" class=" input_new half_angle_input "
+									 <if condition="$vo['touzirennianhuashouy'] neq ''">value="{$vo['touzirennianhuashouy']|unitExchange=###,percent,percent,2}"<else/>value=""</if>>
+								<span class="icon_elm icon_unit" title="%">%</span>
+								</div>
+								<div class="display_none {$classNodeSettingArr['touzirennianhuashouy']}">
+									{$vo['touzirennianhuashouy']|unitExchange=###,percent,percent,2}
+								</div>
+						</div>							
+						<!-- 文本框组件 [计量单位] -->
+						<div class="col_1_1 form_group_lay field_jijianfuwufeilv" original="{$vo['jijianfuwufeilv']}" category="text" style="">
+							<div class="tml-input-unit">
+								<label class="label_new">{$fields["jijianfuwufeilv"]}:</label>
+								<input  dropback=""  type="text"  name="jijianfuwufeilv" class=" input_new half_angle_input "
+									 <if condition="$vo['jijianfuwufeilv'] neq ''">value="{$vo['jijianfuwufeilv']|unitExchange=###,percent,percent,2}"<else/>value=""</if>>
+								<span class="icon_elm icon_unit" title="%">%</span>
+								</div>
+								<div class="display_none {$classNodeSettingArr['jijianfuwufeilv']}">
+									{$vo['jijianfuwufeilv']|unitExchange=###,percent,percent,2}
+								</div>
+						</div>					
+						<!-- 固定文本组件 -->
+						<div class="col_8_0 form_group_lay field_fiexdtext55" original="{$vo['fiexdtext55']}" category="fiexdtext" style="">
+							<span class="block " style="text-align:center;background:#fff;color:#333;font-size:14px;line-height:30px;font-weight:400;">
+							费率填写说明：1、银行融资担保费率按年化表决；2、P2P履约担保按实际执行费率表决；3、委托贷款按月息费率表决；4、投资人年化收益率仅指P2P履约担保时给平台投资人的收益率。
+							</span>
+						</div>
+														
+						<!-- 文本域组件 -->
+						<div class="col_1_7 form_group_lay field_fengxiandingjialiyou" original="{$vo['fengxiandingjialiyou']}" category="textarea" style="">
+							<label class="label_new">{$fields["fengxiandingjialiyou"]}:</label>
+							<textarea   cols="0" rows="0"  class="text_area " name="fengxiandingjialiyou"><if condition="$vo['fengxiandingjialiyou']">{$vo['fengxiandingjialiyou']}<else/></if></textarea>
+							<div class="display_none {$classNodeSettingArr['fengxiandingjialiyou']}">{$vo['fengxiandingjialiyou']}</div>
+						</div>
+						
+						</div>
+						<!-- 作用域组件 -->
+						<div class="fieldset_show_box col_8_0 form_group_lay field_fieldset19" original="{$vo['fieldset19']}" category="fieldset" style="">
+							<legend class="fieldset_legend_toggle side-catalog-text side-catalog-firstanchor">
+								<a name="fieldset19"></a>
+								<b>相关资料</b>
+								<div class="tml_style_line tml_sl4 tml_slb_blue"></div>
+							</legend>
+						</div>
+						<div class="fieldsetjs_show_box col_8_0 form_group_lay field_fieldset19">					
+						<!-- 查找带回组件 -->
+						<div class="col_3_1 form_group_lay field_xiangmuxinxiwai" original="{$vo['xiangmuxinxiwai']}" category="lookup" style="display:none;">
+							<label class="label_new">
+								{$fields["xiangmuxinxiwai"]}:
+							</label>
+							{:W('Lookup',array('1',$vo,'10055','1','','#ganshe#'))}
+							<div class="display_none {$classNodeSettingArr['xiangmuxinxiwai']}">{:W('Lookup',array('1',$vo,'10055','1',1))}</div>
+						</div>
+											
+						<!-- 查找带回组件 -->
+						<div class="col_3_1 form_group_lay field_xiangmuxinxina" original="{$vo['xiangmuxinxina']}" category="lookup" style="">
+							<label class="label_new">
+								{$fields["xiangmuxinxina"]}:
+							</label>
+							{:W('Lookup',array('1',$vo,'10054','1','','#ganshe#'))}
+							<div class="display_none {$classNodeSettingArr['xiangmuxinxina']}">{:W('Lookup',array('1',$vo,'10054','1',1))}</div>
+						</div>
+													
+						<!-- 隐藏域组件 -->
+						<div class="col_1_3 form_group_lay field_pingshenhuiid" original="{$vo['pingshenhuiid']}" category="hiddens" style="display:none;display:none;">
+							<label class="label_new">{$fields["pingshenhuiid"]}:</label>
+							<input type="hidden"  name="pingshenhuiid" class=" input_new  "  value="{$vo['pingshenhuiid']}">
+							<div class="display_none {$classNodeSettingArr['pingshenhuiid']}">{$vo['pingshenhuiid']}</div>
+						</div>								
+						<!-- 隐藏域组件 -->
+						<div class="col_1_3 form_group_lay field_zhaojidanid" original="{$vo['zhaojidanid']}" category="hiddens" style="display:none;display:none;">
+							<label class="label_new">{$fields["zhaojidanid"]}:</label>
+							<input type="hidden"  name="zhaojidanid" class=" input_new  "  value="{$vo['zhaojidanid']}">
+							<div class="display_none {$classNodeSettingArr['zhaojidanid']}">{$vo['zhaojidanid']}</div>
+						</div>								
+						<!-- 隐藏域组件 -->
+						<div class="col_1_3 form_group_lay field_zhaojidansubid" original="{$vo['zhaojidansubid']}" category="hiddens" style="display:none;display:none;">
+							<label class="label_new">{$fields["zhaojidansubid"]}:</label>
+							<input type="hidden"  name="zhaojidansubid" class=" input_new  "  value="{$vo['zhaojidansubid']}">
+							<div class="display_none {$classNodeSettingArr['zhaojidansubid']}">{$vo['zhaojidansubid']}</div>
+						</div>								
+						<!-- 隐藏域组件 -->
+						<div class="col_1_3 form_group_lay field_shifunabu" original="{$vo['shifunabu']}" category="hiddens" style="display:none;display:none;">
+							<label class="label_new">{$fields["shifunabu"]}:</label>
+							<input type="hidden"  name="shifunabu" class=" input_new  "  value="{$vo['shifunabu']}">
+							<div class="display_none {$classNodeSettingArr['shifunabu']}">{$vo['shifunabu']}</div>
+						</div>						
+						<!-- 下拉框组件 -->
+						<div class="col_1_3 form_group_lay field_pingshenhuileixing" original="{$vo['pingshenhuileixing']}" category="select" style="display:none;">
+							<label class="label_new">{$fields["pingshenhuileixing"]}:</label>
+							{:W('ShowSelect',
+							array(
+								$vo['pingshenhuileixing'],
+								array(
+									'',
+									array(
+										'type'=>(''==''?'table':'selectlist'),
+										array(
+											'key'=>'',
+											'readonly'=>'0',
+											'targevent'=>'',
+											'actionName'=>'MisAutoZoq',
+											'names'=>'pingshenhuileixing',
+											'defaultcheckitem'=>'',
+											'defaultval'=>'',
+											'defaulttext'=>'',
+											'table'=>'mis_auto_fwvvg', 
+											'id'=>'id',
+											'name'=>'name' ,
+											'conditions'=>'',
+											'parentid'=>'',
+											'mulit'=>'',
+											'isnextend'=>'',
+											'treeheight'=>'',
+											'treewidth'=>'',
+											'isedit'=>'0',
+											'showtype'=>'',
+											'defaultcheckitem'=>''
+											)
+										)
+									)
+								)
+							)
+							}
+						</div>
+											
+						<!-- 下拉框组件 -->
+						<div class="col_1_3 form_group_lay field_shifuzhuanjia" original="{$vo['shifuzhuanjia']}" category="select" style="display:none;">
+							<label class="label_new">{$fields["shifuzhuanjia"]}:</label>
+							{:W('ShowSelect',
+							array(
+								$vo['shifuzhuanjia'],
+								array(
+									'',
+									array(
+										'type'=>('ExpertOrInsider'==''?'table':'selectlist'),
+										array(
+											'key'=>'ExpertOrInsider',
+											'readonly'=>'0',
+											'targevent'=>'change',
+											'actionName'=>'MisAutoZoq',
+											'names'=>'shifuzhuanjia',
+											'defaultcheckitem'=>'',
+											'defaultval'=>'',
+											'defaulttext'=>'',
+											'table'=>'', 
+											'id'=>'',
+											'name'=>'' ,
+											'conditions'=>'',
+											'parentid'=>'',
+											'mulit'=>'',
+											'isnextend'=>'',
+											'treeheight'=>'',
+											'treewidth'=>'',
+											'isedit'=>'0',
+											'showtype'=>'',
+											'defaultcheckitem'=>''
+											)
+										)
+									)
+								)
+							)
+							}
+						</div>
+												
+						<!-- 日期组件 -->
+						<div class="col_1_3 form_group_lay field_biaojueriqi" original="{$vo['biaojueriqi']}" category="date" style="display:none;">
+							<label class="label_new">
+								{$fields["biaojueriqi"]}:
+							</label>
+							<div  class="tml-input-calendar">
+								<input type="text" name="biaojueriqi" readonly="readonly" class="input_new half_angle_input Wdate {:'0'?'js-wdate':''}  input_left " format='{"dateFmt":"yyyy-MM-dd"}'   value="{$vo['biaojueriqi']|transtime='Y-m-d'}"/>
+								<a href="javascript:;" class="icon_elm icon-calendar {:'0'?'js-inputCheckDate':''} "></a>
+							</div>
+							<div class="display_none {$classNodeSettingArr['biaojueriqi']}">
+								{$vo['biaojueriqi']|transtime='Y-m-d'}
+							</div>
+						</div>
+								
+						<!-- 文本框组件 -->
+						<div class="col_1_3 form_group_lay field_shanghuishunxu" original="{$vo['shanghuishunxu']}" category="text" style="display:none;">
+							<label class="label_new">{$fields["shanghuishunxu"]}:</label>
+							<input  dropback="#dropback#"  type="text"  name="shanghuishunxu"  class=" input_new  " <if condition="$vo['shanghuishunxu'] neq ''">value="{$vo['shanghuishunxu']}"<else/>value=""</if>  >
+							<div class="display_none {$classNodeSettingArr['shanghuishunxu']}">{$vo['shanghuishunxu']}</div>
+						</div>					
+						<!-- 查找带回组件 -->
+						<div class="col_1_3 form_group_lay field_zhudiao" original="{$vo['zhudiao']}" category="lookup" style="display:none;">
+							<label class="label_new">
+								{$fields["zhudiao"]}:
+							</label>
+							{:W('Lookup',array('1',$vo,'13031','1','','#ganshe#'))}
+							<div class="display_none {$classNodeSettingArr['zhudiao']}">{:W('Lookup',array('1',$vo,'13031','1',1))}</div>
+						</div>
+											
+						<!-- 查找带回组件 -->
+						<div class="col_1_3 form_group_lay field_fengkongrenyuan" original="{$vo['fengkongrenyuan']}" category="lookup" style="display:none;">
+							<label class="label_new">
+								{$fields["fengkongrenyuan"]}:
+							</label>
+							{:W('Lookup',array('1',$vo,'13032','1','','#ganshe#'))}
+							<div class="display_none {$classNodeSettingArr['fengkongrenyuan']}">{:W('Lookup',array('1',$vo,'13032','1',1))}</div>
+						</div>
+											
+						<!-- 下拉框组件 -->
+						<div class="col_1_1 form_group_lay field_shifuduixiangmurenyu" original="{$vo['shifuduixiangmurenyu']}" category="select" style="">
+							<label class="label_new">{$fields["shifuduixiangmurenyu"]}:</label>
+							{:W('ShowSelect',
+							array(
+								$vo['shifuduixiangmurenyu'],
+								array(
+									'',
+									array(
+										'type'=>('YesOrNo'==''?'table':'selectlist'),
+										array(
+											'key'=>'YesOrNo',
+											'readonly'=>'1',
+											'targevent'=>'',
+											'actionName'=>'MisAutoZoq',
+											'names'=>'shifuduixiangmurenyu',
+											'defaultcheckitem'=>'',
+											'defaultval'=>'',
+											'defaulttext'=>'是',
+											'table'=>'', 
+											'id'=>'',
+											'name'=>'' ,
+											'conditions'=>'',
+											'parentid'=>'',
+											'mulit'=>'',
+											'isnextend'=>'',
+											'treeheight'=>'',
+											'treewidth'=>'',
+											'isedit'=>'1',
+											'showtype'=>'',
+											'defaultcheckitem'=>''
+											)
+										)
+									)
+								)
+							)
+							}
+						</div>
+						</div>
+						<if condition="!$appendPageContentArr[4]">{:W('ShowAction',array('data'=>$vo))}</if>
+					</div>
+				</form>
+				<div class="clear"></div>
+				{$appendPageContentArr[2]}
+				{$appendPageContentArr[3]}
+			</div>
+		</div>
+	</div>
+</div>

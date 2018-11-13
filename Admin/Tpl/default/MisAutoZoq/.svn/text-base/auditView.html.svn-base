@@ -1,0 +1,14 @@
+
+	{~$classNodeSettingArr = getModelClassByNodeSetting('MisAutoZoq','view')}<div class="page">
+	<div class="pageContent">
+			<div class="pageFormContent applecloth anchorsToolBarParen" <if condition="!$_REQUEST['main'] or $_REQUEST['main'] eq MODULE_NAME">layoutH="40"</if>>
+				<div class="new_version_page "><a class='xyz_anchornavi_top' name='MisAutoZoq_view_top'></a>
+					<if condition="$_GET['viewtype'] neq 'view'">
+					<div class="new_version_page_header pageFormContent "><span class="left tml-ml20 ">外部评审表决单</span>
+			{:W('ShowRightToolBar',array('view','MisAutoZoq',$vo))}{:W('ShowAnchorNavi',array('MisAutoZoq' , 'view',$main))}</div>
+					</if>
+					<include file="contenthtml" />
+					<div class="clear"><span style="display:none;" class="anchornaviforshow">MisAutoZoq_view</span><a class='xyz_anchornavi_buttom' name='MisAutoZoq_view_bottom'></a></div>
+				</div>
+			</div>
+	</div></div>

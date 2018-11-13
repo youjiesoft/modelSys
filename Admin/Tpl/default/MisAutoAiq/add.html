@@ -1,0 +1,39 @@
+<div class="page">
+	<div class="pageContent">
+	<form method="post" action="__URL__/insert/navTabId/__MODULE__" class="pageForm required-validate" onsubmit="return validateCallback(this,dialogAjaxDone)">
+		<div class="pageFormContent" layoutH="48">
+			<div class="tml-row">
+				<div class="tml-form-col">
+						<label>编号:</label>
+						<input type="text" name="orderno" class="required " maxlength="40" value="" />
+					</div>
+				<div class="tml-form-col">
+						<label>名称:</label> 
+						<input type="text" name="name" class="required " maxlength="40" value="" />
+				</div>
+			</div>
+			<div class="tml-row">
+				<!-- text组件 start -->
+				<div class="tml-form-col " >
+					<label>{$fields["neiburenyuanrenshu"]}:</label>
+					<input  type="text"  name="neiburenyuanrenshu" class="" value="">
+				</div>
+				<div class="tml-form-col " >
+					<label>{$fields["waiburenyuanrenshu"]}:</label>
+					<input  type="text"  name="waiburenyuanrenshu" class="" value="">
+				</div>
+				<!-- text组件 end -->
+				<!-- text组件 start -->
+				<div class="tml-form-col " >
+					<label>{$fields["pingshentongguopanding"]}:</label>
+					<input  type="text"  name="pingshentongguopanding" class=" required " value="">
+				</div>
+				<!-- text组件 end -->
+			</div>
+			{:W('MisSystemOrderno',array(1))}
+		</div>
+		{:W('ShowAction')}
+		
+	</form>
+	</div>
+</div>	

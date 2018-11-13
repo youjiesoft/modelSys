@@ -1,0 +1,25 @@
+<div class="new_version_page_content">
+
+
+<table class="data-table" width="100%" cellspacing="0" style="line-height:32px;" >
+	<tbody>
+		<tr>
+			<td class="cell_left" width="12%">{$fields["orderno"]}:</td>
+			<td class="cell_right" width="21%" >{$vo['orderno']}<div class="display_none {$classNodeSettingArr["orderno"]}"></div></td>
+			<td class="cell_left" width="12%">{$fields["name"]}:</td>
+			<td class="cell_right" width="21%" >{$vo['name']}<div class="display_none {$classNodeSettingArr["name"]}"></div></td>
+			<td class="cell_left" width="12%">{$fields["shenqingmoban"]}:</td>
+			<td class="cell_right" width="21%" >{$vo['shenqingmoban']|getFieldBy='id','name','node'}<div class="display_none {$classNodeSettingArr["shenqingmoban"]}">{$vo['shenqingmoban']|getFieldBy='id','name','node'}</div></td>
+		</tr>
+		<tr>
+			<td class="cell_left" width="12%">{$fields["duiyingmoban"]}:</td>
+			<td class="cell_right" width="21%" >{$vo['duiyingmoban']|getFieldBy='id','name',''}<div class="display_none {$classNodeSettingArr["duiyingmoban"]}">{$vo['duiyingmoban']|getFieldBy='id','name','node'}</div></td>
+			<td class="cell_left" width="12%">{$fields["huizongmoban"]}:</td>
+			<td class="cell_right" width="21%" >{$vo['huizongmoban']|getFieldBy='id','name',''}<div class="display_none {$classNodeSettingArr["huizongmoban"]}">{$vo['huizongmoban']|getFieldBy='id','name','node'}</div></td>
+			<td class="cell_left" width="12%"></td>
+			<td class="cell_right" width="21%" ></td>
+			</tr>
+	</tbody>
+</table>
+		{:W('ShowAction')}
+</div>
