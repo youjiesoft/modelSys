@@ -695,11 +695,11 @@ class MisDynamicFormBaseAction extends CommonAction{
 		$output = '';
 		if (is_array($input))
 		{
-			$output .= "array(\r\n";
+			$output .= "array(\r\n\t";
 			foreach ($input as $key => $value)
 			{
 				$output .= $t."\t".$this->pw_var_export($key,$t."\t").' => '.  $this->pw_var_export($value,$t."\t");
-				$output .= ",\r\n";
+				$output .= ",\r\n\t";
 			}
 			$output .= $t.')';
 		} elseif (is_string($input)) {
@@ -1087,6 +1087,355 @@ class MisDynamicFormBaseAction extends CommonAction{
 		$js='<script src="__TMPL__'.$path.'/'.$type.'.js" type="text/javascript"></script>';
 		return $js;
 	}
+
+    /**
+     * @Title: createAppJS
+     * @Description: todo(创建手机端JS内容)
+     * @param string $datafiled	 需要生成的组件的属性
+     * @param string $type	文件名,默认为空，表示add
+     * author  xiaosen
+     * 2018-11-9 15:05:04
+     */
+    protected function createAppJS($datafiled , $type='',$actionName){
+        if(!$type){
+            $type = 'add';
+        }
+        $str = '';
+        foreach ($datafiled as $k=>$v){
+            $str .=$v['fields'].',';
+        }
+        $js = "";
+        $js = <<<EOF
+<script>
+        function inputSelect(value) {
+                outLine('触发事件[内容改变],值:' +JSON.stringify(value));
+        };
+EOF;
+        foreach ($datafiled as $dk => $dv) {
+            if ($type == 'add') {
+                switch ($dv['catalog']){
+                    case 'text':
+                        $js .= "\r\n\t var ".$dv['fields'] ."={\r\n\t"
+                            ."  base : {\r\n\t"
+                            ."    label:'".$dv['title']."',\r\n\t"
+                            ."    filename:'".$dv['fields']."',\r\n\t"
+                            ."    showFlag:true,\r\n\t"
+                            ."    readonlyFlag:false,\r\n\t"
+                            ."    disabledFlag:false,\r\n\t"
+                            ."    requiredFlag:true,\r\n\t"
+                            ."    clearableFlag:true,\r\n\t"
+                            ."    initialVal:'',\r\n\t"
+                            ."  },\r\n\t"
+                            ."  placeholder:'请输入',\r\n\t"
+                            ."  events:{".$dv['tagevent']."},\r\n\t"
+                            ."  minLen:".$dv['length'].",\r\n\t"
+                            .
+                            "};\r\n\t";
+                        break;
+                    case 'select':
+                        $js .= "\r\n\t var ".$dv['fields'] ."={\r\n\t"
+                            ."  base : {\r\n\t"
+                            ."    label:'".$dv['title']."',\r\n\t"
+                            ."    filename:'".$dv['fields']."',\r\n\t"
+                            ."    showFlag:true,\r\n\t"
+                            ."    readonlyFlag:false,\r\n\t"
+                            ."    initCode:0,\r\n\t"
+                            ."    initText:'',\r\n\t"
+                            ."  },\r\n\t"
+                            ."  events:{".$dv['tagevent']."},\r\n\t"
+                            ."  maxNum:1,\r\n\t"
+                            ."  chooseData:[],\r\n\t"
+                            ."  options:[],\r\n\t"
+                            ."  dataUrl: {\r\n\t"
+                            ."    type: String,\r\n\t"
+                            ."    default: ''},\r\n\t"
+                            .
+                            "};\r\n\t";
+                        break;
+                    case 'checkbox':
+                        $js .= "\r\n\t var ".$dv['fields'] ."={\r\n\t"
+                            ."  base : {\r\n\t"
+                            ."    label:'".$dv['title']."',\r\n\t"
+                            ."    filename:'".$dv['fields']."',\r\n\t"
+                            ."    showFlag:true,\r\n\t"
+                            ."    readonlyFlag:false,\r\n\t"
+                            ."    initialVal:null,\r\n\t"
+                            ."  },\r\n\t"
+                            ."  events:{".$dv['tagevent']."},\r\n\t"
+                            ."  maxNum:2,\r\n\t"
+                            ."  chooseData:[],\r\n\t"
+                            ."  options:[],\r\n\t"
+                            ."  dataUrl: {\r\n\t"
+                            ."  type: String,\r\n\t"
+                            ."  default: ''},\r\n\t"
+                            .
+                            "};\r\n\t";
+                        break;
+                    case 'date' :
+                        $js .= "\r\n\t var ".$dv['fields'] ."={\r\n\t"
+                            ."  base : {\r\n\t"
+                            ."    label:'".$dv['title']."',\r\n\t"
+                            ."    filename:'".$dv['fields']."',\r\n\t"
+                            ."    showFlag:true,\r\n\t"
+                            ."    readonlyFlag:true,\r\n\t"
+                            ."    disabledFlag:false,\r\n\t"
+                            ."    initialVal:'',\r\n\t"
+                            ."  },\r\n\t"
+                            ."  events:{".$dv['tagevent']."},\r\n\t"
+                            ."  format:{".$dv['format']."},\r\n\t"
+                            ."  type:{".$dv['tabletype']."},\r\n\t"
+                            .
+                            "};\r\n\t";
+                        break;
+                    case 'radio':
+                        $js .= "\r\n\t var ".$dv['fields'] ."={\r\n\t"
+                            ."  base : {\r\n\t"
+                            ."    label:'".$dv['title']."',\r\n\t"
+                            ."    filename:'".$dv['fields']."',\r\n\t"
+                            ."    showFlag:true,\r\n\t"
+                            ."    readonlyFlag:false,\r\n\t"
+                            ."    requiredFlag:".$dv['requiredfield'].",\r\n\t"
+                            ."    initialVal:0,\r\n\t"
+                            ."  },\r\n\t"
+                            ."  events:{".$dv['tagevent']."},\r\n\t"
+                            ."  options:[],\r\n\t"
+                            ."  dataUrl: {\r\n\t"
+                            ."  type: String,\r\n\t"
+                            ."  default: ''},\r\n\t"
+                            .
+                            "};\r\n\t";
+                        break;
+                    default:
+
+                        break;
+
+                }
+
+            }else if ($type == 'edit') {
+                switch ($dv['catalog']){
+                    case 'text':
+                        $js .= "\r\n\t var ".$dv['fields'] ."={\r\n\t"
+                            ."  base : {\r\n\t"
+                            ."    label:'".$dv['title']."',\r\n\t"
+                            ."    filename:'".$dv['fields']."',\r\n\t"
+                            ."    showFlag:true,\r\n\t"
+                            ."    readonlyFlag:false,\r\n\t"
+                            ."    disabledFlag:false,\r\n\t"
+                            ."    requiredFlag:true,\r\n\t"
+                            ."    clearableFlag:true,\r\n\t"
+                            ."    initialVal:'',\r\n\t"
+                            ."  },\r\n\t"
+                            ."  placeholder:'请输入',\r\n\t"
+                            ."  events:{".$dv['tagevent']."},\r\n\t"
+                            ."  minLen:".$dv['length'].",\r\n\t"
+                            .
+                            "};\r\n\t";
+                        break;
+                    case 'select':
+                        $js .= "\r\n\t var ".$dv['fields'] ."={\r\n\t"
+                            ."  base : {\r\n\t"
+                            ."    label:'".$dv['title']."',\r\n\t"
+                            ."    filename:'".$dv['fields']."',\r\n\t"
+                            ."    showFlag:true,\r\n\t"
+                            ."    readonlyFlag:false,\r\n\t"
+                            ."    initCode:0,\r\n\t"
+                            ."    initText:'',\r\n\t"
+                            ."  },\r\n\t"
+                            ."  events:{".$dv['tagevent']."},\r\n\t"
+                            ."  maxNum:1,\r\n\t"
+                            ."  chooseData:[],\r\n\t"
+                            ."  options:[],\r\n\t"
+                            ."  dataUrl: {\r\n\t"
+                            ."    type: String,\r\n\t"
+                            ."    default: ''},\r\n\t"
+                            .
+                            "};\r\n\t";
+                        break;
+                    case 'checkbox':
+                        $js .= "\r\n\t var ".$dv['fields'] ."={\r\n\t"
+                            ."  base : {\r\n\t"
+                            ."    label:'".$dv['title']."',\r\n\t"
+                            ."    filename:'".$dv['fields']."',\r\n\t"
+                            ."    showFlag:true,\r\n\t"
+                            ."    readonlyFlag:false,\r\n\t"
+                            ."   initialVal:null,\r\n\t"
+                            ."  },\r\n\t"
+                            ."  events:{".$dv['tagevent']."},\r\n\t"
+                            ."  maxNum:2,\r\n\t"
+                            ."  chooseData:[],\r\n\t"
+                            ."  options:[],\r\n\t"
+                            ."  dataUrl: {\r\n\t"
+                            ."    type: String,\r\n\t"
+                            ."    default: ''},\r\n\t"
+                            .
+                            "};\r\n\t";
+                        break;
+                    case 'date' :
+                        $js .= "\r\n\t var ".$dv['fields'] ."={\r\n\t"
+                            ."  base : {\r\n\t"
+                            ."    label:'".$dv['title']."',\r\n\t"
+                            ."    filename:'".$dv['fields']."',\r\n\t"
+                            ."    showFlag:true,\r\n\t"
+                            ."    readonlyFlag:false,\r\n\t"
+                            ."    disabledFlag:false,\r\n\t"
+                            ."    initialVal:'',\r\n\t"
+                            ."  },\r\n\t"
+                            ."  events:{".$dv['tagevent']."},\r\n\t"
+                            ."  format:{".$dv['format']."},\r\n\t"
+                            ."  type:{".$dv['tabletype']."},\r\n\t"
+                            .
+                            "};\r\n\t";
+                        break;
+                    case 'radio':
+                        $js .= "\r\n\t var ".$dv['fields'] ."={\r\n\t"
+                            ."  base : {\r\n\t"
+                            ."    label:'".$dv['title']."',\r\n\t"
+                            ."    filename:'".$dv['fields']."',\r\n\t"
+                            ."    showFlag:true,\r\n\t"
+                            ."    readonlyFlag:false,\r\n\t"
+                            ."    requiredFlag:".$dv['requiredfield'].",\r\n\t"
+                            ."    initialVal:0,\r\n\t"
+                            ."  },\r\n\t"
+                            ."  events:{".$dv['tagevent']."},\r\n\t"
+                            ."  options:[],\r\n\t"
+                            ."  dataUrl: {\r\n\t"
+                            ."    type: String,\r\n\t"
+                            ."    default: ''},\r\n\t"
+                            .
+                            "};\r\n\t";
+                        break;
+                    default:
+
+                        break;
+
+                }
+
+            } else if ($type == 'view'){
+                switch ($dv['catalog']){
+                    case 'text':
+                        $js .="\r\n\t var ".$dv['fields'] ."={\r\n\t"
+                            ."  base : {\r\n\t"
+                            ."    label:'".$dv['title']."',\r\n\t"
+                            ."    filename:'".$dv['fields']."',\r\n\t"
+                            ."    showFlag:true,\r\n\t"
+                            ."    readonlyFlag:true,\r\n\t"
+                            ."    disabledFlag:false,\r\n\t"
+                            ."    requiredFlag:true,\r\n\t"
+                            ."    clearableFlag:true,\r\n\t"
+                            ."    initialVal:'',\r\n\t"
+                            ."  },\r\n\t"
+                            ."  placeholder:'请输入',\r\n\t"
+                            ."  events:{".$dv['tagevent']."},\r\n\t"
+                            ."  minLen:".$dv['length'].",\r\n\t"
+                            .
+                            "};\r\n\t";
+                        break;
+                    case 'select':
+                        $js .= "\r\n\t var ".$dv['fields'] ."={\r\n\t"
+                            ."  base : {\r\n\t"
+                            ."    label:'".$dv['title']."',\r\n\t"
+                            ."    filename:'".$dv['fields']."',\r\n\t"
+                            ."    showFlag:true,\r\n\t"
+                            ."    readonlyFlag:true,\r\n\t"
+                            ."    initCode:0,\r\n\t"
+                            ."    initText:'',\r\n\t"
+                            ."  },\r\n\t"
+                            ."  events:{".$dv['tagevent']."},\r\n\t"
+                            ."  maxNum:1,\r\n\t"
+                            ."  chooseData:[],\r\n\t"
+                            ."  options:[],\r\n\t"
+                            ."  dataUrl: {\r\n\t"
+                            ."    type: String,\r\n\t"
+                            ."    default: ''},\r\n\t"
+                            .
+                            "};\r\n\t";
+                        break;
+                    case 'checkbox':
+                        $js .= "\r\n\t var ".$dv['fields'] ."={\r\n\t"
+                            ."  base : {\r\n\t"
+                            ."    label:'".$dv['title']."',\r\n\t"
+                            ."    filename:'".$dv['fields']."',\r\n\t"
+                            ."    showFlag:true,\r\n\t"
+                            ."    readonlyFlag:true,\r\n\t"
+                            ."    initialVal:null,\r\n\t"
+                            ."  },\r\n\t"
+                            ."  events:{".$dv['tagevent']."},\r\n\t"
+                            ."  maxNum:2,\r\n\t"
+                            ."  chooseData:[],\r\n\t"
+                            ."  options:[],\r\n\t"
+                            ."  dataUrl: {\r\n\t"
+                            ."    type: String,\r\n\t"
+                            ."    default: ''},\r\n\t"
+                            .
+                            "};\r\n\t";
+                        break;
+                    case 'date' :
+                        $js .= "\r\n\t var ".$dv['fields'] ."={\r\n\t"
+                            ."  base : {\r\n\t"
+                            ."    label:'".$dv['title']."',\r\n\t"
+                            ."    filename:'".$dv['fields']."',\r\n\t"
+                            ."    showFlag:true,\r\n\t"
+                            ."    readonlyFlag:true,\r\n\t"
+                            ."    disabledFlag:false,\r\n\t"
+                            ."    initialVal:'',\r\n\t"
+                            . " },\r\n\t"
+                            ."  events:{".$dv['tagevent']."},\r\n\t"
+                            ."  format:{".$dv['format']."},\r\n\t"
+                            ."  type:{".$dv['tabletype']."},\r\n\t"
+                            .
+                            "};\r\n\t";
+                        break;
+                    case 'radio':
+                        $js .="\r\n\t var ".$dv['fields'] ."={\r\n\t"
+                            ."  base : {\r\n\t"
+                            ."    label:'".$dv['title']."',\r\n\t"
+                            ."    filename:'".$dv['fields']."',\r\n\t"
+                            ."    showFlag:true,\r\n\t"
+                            ."    readonlyFlag:true,\r\n\t"
+                            ."    requiredFlag:".$dv['requiredfield'].",\r\n\t"
+                            ."    initialVal:0,\r\n\t"
+                            ."  },\r\n\t"
+                            ."  events:{".$dv['tagevent']."},\r\n\t"
+                            ."  options:[],\r\n\t"
+                            ."  dataUrl: {\r\n\t"
+                            ."    type: String,\r\n\t"
+                            ."    default: ''},\r\n\t"
+                            .
+                            "};\r\n\t";
+                        break;
+                    default:
+
+                        break;
+
+                }
+            } else {
+                return '';
+            }
+        }
+        $js .= "var data={".$str."};\r\n\t".<<<EOF
+       Vue.use(VueResource);
+            var app = new Vue({
+            el: '#dcontent',
+            data:data,
+            methods:{
+               push:function(){
+                   this.\$http({
+                       methods:'push',
+                       url:"{:U('')}",
+                   }).then(function(response){
+                       console.log(response);
+                   }).catch(function(error){
+                       console.log(error)
+                   })
+               },
+            }
+    });
+</script>
+EOF;
+
+        return $js;
+    }
+
 	
 	/**
 	 * @Title: getCss
@@ -1156,7 +1505,7 @@ class MisDynamicFormBaseAction extends CommonAction{
 		$fieldnameList=array();
 		$MisDynamicFormManageModel=D("MisDynamicFormManage");
 		//创建主表
-		$ceatetable_html_s .= "\r\nCREATE TABLE IF NOT EXISTS `".$primaryname."` \r\n(`id` int(11) NOT NULL AUTO_INCREMENT  COMMENT 'ID' ,";
+		$ceatetable_html_s .= "\r\n\tCREATE TABLE IF NOT EXISTS `".$primaryname."` \r\n\t(`id` int(11) NOT NULL AUTO_INCREMENT  COMMENT 'ID' ,";
 		$ceatetable_html_e="\r\n\t PRIMARY KEY (`id`)";
 		foreach ($tablename as $k=>$v){
 			if($isprimary[$k] == '1'){
@@ -1196,7 +1545,7 @@ class MisDynamicFormBaseAction extends CommonAction{
 				foreach ($this->baseArchivesField as $key=>$val){
 					$ceatetable_html .="\r\n\t`".$key."` {$val['type']}({$val['length']}) ".($val['default']!=''?"DEFAULT '{$val['default']}'":"")."{$val['isnull']} {$val['desc']} ,";
 				}
-				$createtable_str=$ceatetable_html_s.$ceatetable_html.$ceatetable_html_e."\r\n)ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='".$v."'";
+				$createtable_str=$ceatetable_html_s.$ceatetable_html.$ceatetable_html_e."\r\n\t)ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='".$v."'";
 				//创建主表
 				logs('C:'.__CLASS__.' L:'.__LINE__.'数据库建表语句 最终构成：'.$createtable_str,date('Y-m-d' , time()).'_data.log');
 				$ret = $MisDynamicFormManageModel->query($createtable_str);
@@ -1308,6 +1657,31 @@ class MisDynamicFormBaseAction extends CommonAction{
 		}
 		return $ret;
 	}
+
+    /**
+     *  获取手机端组件的配置文件
+     * @Title: getControllConf_app
+     * @Description: todo(获取组件具体内容的配置文件)
+     * @param string		$category		组件类型
+     * @param string 		$type			附加类型，操作类型
+     * @param $category
+     * @param string $type
+     * @return bool|string
+     */
+    protected function getControllConf_app($category , $type='add'){
+        // 根路径
+        $dir = CONF_PATH;
+        // 具体目录
+        $oprateDir='DynamicForm/appcontroll/';
+        // 具体文件
+        $path = $dir.$oprateDir.$category.'.tpl';
+        // html结构
+        $ret = '';
+        if(is_file($path)){
+            $ret = file_get_contents($path);
+        }
+        return $ret;
+    }
 	/**
 	 * 获取指定页面的配置
 	 * @Title: getPageConf
@@ -1331,6 +1705,28 @@ class MisDynamicFormBaseAction extends CommonAction{
 		}
 		return $ret;
 	}
+    /**
+     * 手机端获取指定页面的配置
+     * @Title: getPageConf
+     * @Description: todo(获取指定页面的配置)
+     * @param string		$category	页面类型
+     * @author xiaosen
+     *
+     */
+    protected function getPageConf_app($category){
+        // 根路径
+        $dir = CONF_PATH;
+        // 具体目录
+        $oprateDir='DynamicForm/apppage/';
+        // 具体文件
+        $path = $dir.$oprateDir.$category.'.tpl';
+        // html结构
+        $ret = '';
+        if(is_file($path)){
+            $ret = file_get_contents($path);
+        }
+        return $ret;
+    }
 
 	/**
 	 * 写入文件
