@@ -2219,14 +2219,13 @@ return array(
 			        'function'=>'changetagsortandrequired',
 					'displayright'=>1,
 			),'checkfunc'	=>	array(
-					'title'	=>	'检查类型',
+					'title'	=>	'是否允许下载',
 					'type'	=>	'select',
 					'default'=>'',
 					'id'	=>	'checkfunc',
 					'name'	=>	'checkfunc',
 					'dbfield'=>'validatetype',
-					// select option(val|text ) # op # op
-					'data'	=>	'|无需验证#eamil|邮箱#url|网址#number|数字#digits|整数#double|浮点数#lettersonly|字母#idcard|身份证',
+                    'data'	=>	'|请选择#1|允许#0|不允许',
 					'displayright'=>1,
 			),'islock'	=>	array(
 				'title'	=>	'是否允许编辑',

@@ -7016,17 +7016,19 @@ EOF;
      * @date 2014-7-30 下午2:06:32
      * @throws
      */
-    public function getAttachedRecordList($tableid, $online = true, $archived = true, $tablename = '', $subid = 0, $isassign = true, $isfourorthree = true)
-    {
+    public function getAttachedRecordList($tableid,$online=true,$archived=true,$tablename='',$subid=0,$isassign=true,$isfourorthree=true){
         $armodel = D('MisAttachedRecord');
+        $prmodel = M('mis_dynamic_form_propery');
+
         $armap['tableid'] = $tableid;
-        if ($subid) $armap['subid'] = $subid;
+        $prmap['dbname']  = getFieldBy($this->getActionName(),'modelname','tablename','mis_dynamic_database_mas');
+        if($subid) $armap['subid'] = $subid;
         $armap['status'] = 1;
         //添加一个查询的对象模型
         if ($tablename == '') {
-            if (C('AREA_TYPE') == 1) {
+            if(C('AREA_TYPE')==1){
                 $armap['tablename'] = $this->getActionName();
-            } elseif (C('AREA_TYPE') == 2) {
+            }elseif(C('AREA_TYPE')==2){
                 $armap['tablename'] = D($this->getActionName())->getTableName();
             }
         } else {
@@ -7034,7 +7036,8 @@ EOF;
         }
 
         $attarry = $armodel->where($armap)->select();
-        $filesArr = array('pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'txt', 'jpg', 'jpeg', 'gif', 'png', 'apk');
+        $prearray = $prmodel->where($prmap)->select();
+        $filesArr = array('pdf','doc','docx','xls','xlsx','ppt','pptx','txt','jpg','jpeg','gif','png','apk');
         foreach ($attarry as $key => $val) {
             $pathinfo = pathinfo($val['attached']);
             //获取除后缀的文件名称
@@ -7052,22 +7055,29 @@ EOF;
             $attarry[$key]['lookname'] = $val['upname'];
             //任何文件都可以归档
             $attarry[$key]['archived'] = $archived; //归档按钮
-            if ($val['isremote'] == 1) {
-                $attarry[$key]['attached'] = $val['domain'] . $val['attached'];
+            if($val['isremote']==1){
+                $attarry[$key]['attached'] = $val['domain'].$val['attached'];
             }
         }
-        $uploadarry = array();
-        foreach ($attarry as $akey => $aval) {
-            $uploadarry[$aval['fieldname']][] = $aval;
+        $uploadarry=array();
+        foreach ($attarry as $akey=>$aval){
+
+            foreach ($prearray as $pk => $pv){
+                if ($aval['fieldname'] == $pv['fieldname']) {
+                    $aval['isdow'] = $pv['validatetype'];
+                }
+            }
+            $uploadarry[$aval['fieldname']][]=$aval;
+
         }
-        if ($isassign) {
-            $this->assign('attarry', $attarry);
-            $this->assign('attcount', count($attarry));
-            $this->assign('uploadarry', $uploadarry);
+        if($isassign){
+            $this->assign('attarry',$attarry);
+            $this->assign('attcount',count($attarry));
+            $this->assign('uploadarry',$uploadarry);
         } else {
-            if ($isfourorthree) {
+            if($isfourorthree){
                 return $attarry;
-            } else {
+            }else{
                 return $uploadarry;
             }
         }
