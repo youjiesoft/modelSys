@@ -2746,6 +2746,9 @@ EOF;
         }
         //读取动态配制
         $this->getSystemConfigDetail($modelname, $targetvo);
+        $this->assign('actionname',$this->getActionName());
+        $this->assign("vo",$vo) ;
+        $this->assign("vojson",json_encode($vo) );
         $this->display($obj);
     }
 
@@ -3041,8 +3044,80 @@ EOF;
         }
         //读取动态配制
         $this->getSystemConfigDetail($name, $vo);
+        if($_REQUEST['isformcon']==1){      //表单容器的条件    套表
+            $bindname = $_REQUEST['bindaname'];             //zhu表单model
+            $propery = D('mis_dynamic_form_propery');
+            $pmap['isshow']=1;
+            $pmap['dbname']=D($bindname)->getTableName();
+            $pmap['fieldname'] = $_REQUEST['field'];
+            $formcontrolls = $propery->where($pmap)->getField('id,formtitle,invokeroam,formheight,showformtoolbar,formstatu,showtype,bindform,issydel,bindval,inbindval,formcondition,incondition');
+            foreach($formcontrolls as $item) {       //表中表
+                $formcontroll = $item;
+                if ($_REQUEST['fieldtype']) {
+                    $mmap[$item['inbindval']] = $_REQUEST[$_REQUEST['fieldtype']];
+                } else {
+                    $bindid = $_REQUEST['bindrdid'];                  //主表单 id
+                    //获取当前主表的信息
+                    $bindmap['id'] = $bindid;
+                    $zhus = D($bindname)->where($bindmap)->select();
+                    //设置表中表的条件
+                    $zhu = $zhus[0];
+                    $formcontroll['bindval'];         //主表的字段匹配
+                    $zhu[$formcontroll['bindval']];   //主表字段的值
+                    $formcontroll['inbindval'];         //从表的字段匹配
+                    $mmap[$formcontroll['inbindval']] = $zhu[$formcontroll['bindval']];    //基础条件
+
+                    //附加条件
+                    if ($formcontroll['formcondition']) {
+                        $mmap['_string'] = $formcontroll['formcondition'];
+                    }
+                    //子单条件
+                    if ($formcontroll['incondition']) {
+                        $ret = $formcontroll['incondition'];
+                        $listarr = unserialize(base64_decode(base64_decode($ret)));
+                        if ($listarr === false) {//有老数据是base64_encode(serialize())加密的 --xyz 15-09-16
+                            $listarr = unserialize(base64_decode($ret));
+                        }
+                        foreach ($listarr as $item) {
+
+                            foreach ($item as $kk => $vv) {
+                                if ($vv['name'] == 'sql') {//手写sql
+                                    $mmap['_string'] = $vv['sql'];
+                                } else if ($vv['name'] == 'avgsql') {//高级sql
+                                    $mmap['_string'] = $vv['avgsql'];
+                                } else {
+                                    $symob = $vv['symbol'];
+                                    if ($symob == 1) {//等于
+                                        $symobol = 'eq';
+                                    } else if ($symob == 2) {//不等于
+                                        $symobol = 'neq';
+                                    } else if ($symob == 3) {// 包含
+                                        $symobol = 'in';
+                                    } else if ($symob == 4) {//不包含
+                                        $symobol = 'not in';
+                                    } else if ($symob == 5) {//大于
+                                        $symobol = 'gt';
+                                    } else if ($symob == 6) {//大于等于
+                                        $symobol = 'egt';
+                                    } else if ($symob == 7) {// 小于
+                                        $symobol = 'lt';
+                                    } else if ($symob == 8) {//  小于等于
+                                        $symobol = 'elt';
+                                    }
+                                    $mmap[$vv['name']] = array($symobol, $vv['val']);        //*********高级设置centertip   rightipt   leftipt   未知用途
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            $vos = $model->where($mmap)->select();
+            $vo = $vos[0];                          //  查出很多条  也只显示第一条   表单形式
+        }
         //var_dump($vo);
         $this->assign('vo', $vo);
+        $this->assign( 'vojson', json_encode($vo) );
         if ($_REQUEST['curModelForDataManage']) {
             return $vo;
         } else if ($num) {
@@ -4219,7 +4294,49 @@ EOF;
         $mapresult = $mapmodel->where($map)->delete();
 
     }
+    /**
+     * lin-update
+     */
+    function voidel(){
+        $name=$this->getActionName();
+        $model = D ($name);
+        if (! empty ( $model )) {
+            $pk = $model->getPk ();
+            $id = $_REQUEST [$pk];
+            if (isset ( $id )) {
+                //执行成功后，用A方法进行实例化，判断当前控制器中是否存在_after_update方法
+                $module2=A($name);
+                //数据漫游
+                /*
+                 * _over_delete 方法，为静默插入生单。
+                */
+                if (method_exists($module2,"_over_void")) {
+                    //  执行操作
+                }
+                $ids = explode(',',$id);
+                foreach($ids as $item){
+                    unset($condition);
+                    unset($data);
+                    $condition[$pk] = $item;
+                    $data['isVoid'] = 1;
 
+                    $map['actionname']=$name;
+                    $manage=D(' mis_dynamic_form_manage')->where($map)->select();
+                    if($manage[0]['isaudit']==1){
+                        $data['auditState']=4;
+                    }
+
+                    $result = $model->where($condition)->save($data);
+                    if (!$result) {
+                        $this->error ( L('_ERROR_') );
+                    }
+                }
+                $this->success ( L('_SUCCESS_') );
+            } else {
+                $this->error ( C('_ERROR_ACTION_:只能单个作废！') );
+            }
+        }
+    }
     /**
      * +----------------------------------------------------------
      * 默认主键删除操作
@@ -8748,6 +8865,315 @@ AND STATUS=1";
         );
         return $listarr;
     }
+    //lin-update
+    function formcontroll(){
+        $data = W('ShowFormControll' , array('model'=>$_POST['model'],'field'=>$_POST['field'],'tp'=>$_POST['tp'],'caozuo'=>$_POST['caozuo'],'id'=>$_POST['id'],'vojson'=>$_POST['vojson']));
+        echo $data;       ////生成代码html
+    }
+    /**
+     *
+     * @Title: lookupaddresultnew
+     * @Description: todo(添加条件)
+     * @author  lin-update
+     * @date 2018-12-18
+     * @throws
+     */
+    public function lookupaddresultnew(){
+        //获取模型名称
+        $nodename=$_POST['modelname'];
+        $ids=$_POST['e']['id'];
+        $targetRef=$_POST['targetRef'];
+        $sourceRef=$_POST['sourceRef'];
+        //获取html区域标志，方便JS绑定
+        $orderContainer = $_POST['order'];	// 获取目标对象标识
+        if($_POST['inlinetable']){
+            $this->lookupresultdetails($nodename,$_POST['inlinetable']);
+        }else{
+            $this->lookupresultdetails($nodename);
+        }
+        //获取主表名称
+        $tablename=D($nodename)->getTableName();
+        $info="select * from ".$tablename;
+        $this->assign("info",$info);
+        //获取已选中的数据信息
+        $processcondition = $_SESSION['processcondition'];
+        foreach($processcondition as $kk=>$vv){
+            if($vv['ids']==$ids && $vv['targetRef']==$targetRef && $vv['sourceRef']==$sourceRef){
+                $ret=$vv['list'];
+
+            }
+        }
+        $listarr=unserialize(base64_decode(base64_decode($ret)));
+        echo "<script>console.log(JSON.parse('" . json_encode($ret) . "'));</script>";
+        if($listarr === false){//有老数据是base64_encode(serialize())加密的 --xyz 15-09-16
+            $listarr = unserialize(base64_decode($ret));
+        }
+        //$obj = new CommonModel();
+        //$obj->pw_var_export($listarr);
+        $MisDynamicFormManageModel=D('MisDynamicFormManage');
+        $typeTree=$MisDynamicFormManageModel->getAnameSqltree();
+        $this->assign("typeTree",json_encode($typeTree));
+        //是否为多行
+        $this->assign("multitype",$_REQUEST['multitype']);
+        $this->assign("akey",$_REQUEST['akey']);
+        $this->assign("listarr",$listarr);
+        $this->assign('order',$orderContainer);
+        $this->display("Public:lookupaddresultnew");
+    }
+    /**
+     *
+     * @Title: lookupinsertresultnew
+     * @Description: todo(插入条件处理成list返回)
+     * @author lin
+     * @date
+     * @throws
+     */
+    public function lookupinsertresultnew(){
+        $sourceRef = $_REQUEST['sourceRef'];//上一节点
+        $targetRef = $_REQUEST['targetRef'];//下一节点
+        $data = array();
+        $data = $_SESSION['processcondition'];
+        $ids = $_REQUEST['id'];
+        //拼装附加属性
+        unset($datarow);
+        $datarow=$this->lookupAssemblenew();
+        foreach($data as $kk=>$vv){
+            if($vv['ids']==$ids && $vv['sourceRef']==$sourceRef && $vv['targetRef']==$targetRef){
+                array_splice($data,$kk,1);
+            }
+        }
+        if($data=='null'){
+            $data[0]=$datarow;
+        }else{
+            $data[]=$datarow;
+        }
+        $_SESSION['processcondition'] = $data;
+        $this->success("条件添加成功",'',json_encode($data));
+    }
+    /**
+     *
+     * @Title: lookupAssemble
+     * @Description: todo(组装条件 返回list)
+     * @return multitype:string Ambigous <multitype:, multitype:unknown , multitype:unknown NULL >
+     * @author renling     lin-update(2018-12-19)
+     * @date 2014-9-17 下午6:33:52
+     * @throws
+     */
+    private function lookupAssemblenew(){
+        /* 黎明刚 加，为了满足流程管理，在一个页面同时出现多个条件选择器*/
+        $order = $_POST['order'];
+        $roleexp=$_POST['tiprole']?$_POST['tiprole']:$_POST['roleexp'];
+        $roleexptype=$_POST['roleexptype'];
+        $roleexptitle=$_POST['roleexptitle'];
+        $modelname=$_POST['modelname'];
+        if(substr($modelname,-4)=='View'){
+            $modelname = getFieldBy($modelname,'name','modelname','mis_system_dataview_mas');
+        }
+        //获取配置文件
+        $scdmodel = D('SystemConfigDetail');
+        //读取列名称数据(按照规则，应该在index方法里面)
+        $detailList = $scdmodel->getDetail($modelname,'','','','rules');
+        //查询该模型是否有视图
+        $MisSystemDataviewMasView=D('MisSystemDataviewMasView');
+        $MisSystemDataviewMasMap=array();
+        $MisSystemDataviewMasMap['modelname']=$modelname;
+        $MisSystemDataviewMasMap['mstatus']=1;
+        $MisSystemDataviewMasList=$MisSystemDataviewMasView->where($MisSystemDataviewMasMap)->getField("field,tablename");
+        $listarr=array();
+        $typearr=array();
+        $orspan="<span style='color:red'> 或者  </span>";
+        $andspan="<span style='color:blue'> 并且  </span>";
+        if($order == "processcondition_batch"){
+            /* 黎明刚 加，为了满足流程管理，在一个页面同时出现多个条件选择器*/
+            $orspan="或者";
+            $andspan="并且";
+        }
+        if($_POST['avgsql']){//高级sql模式
+            $showmap=$_POST['avgsql'];
+        }
+        foreach ($roleexp as $key=>$val){
+            //查询当前条件是否是视图字段
+            if($MisSystemDataviewMasList[$val]){
+                //组装视图条件
+                $mapval=$MisSystemDataviewMasList[$val].".".$val;
+            }else{
+                if($detailList[$val]['searchField']){
+                    $mapval=$detailList[$val]['searchField'];
+                }else{
+                    $mapval=$val;
+                }
+            }
+            $leftipt="";
+            $rightipt="";
+            $centertip="";
+            $centertip=$_POST['centertip'][$val];
+            $leftipt=$_POST['leftipt'][$key];
+            $rightipt=$_POST['rightipt'][$key];
+            if($roleexptype[$val]=='text'){
+                $showval=$_POST[$val.'text'];
+                if($val=="auditState"){
+                    $showval=getSelectByName('auditStateVal', $_POST[$val.'text']);
+                }
+                if($val=="operateid"){
+                    $showval=getSelectByName('operateidVal', $_POST[$val.'text']);
+                }
+                $showmap.="(".$roleexptitle[$val].' '.getSelectByName('roletextinexp', $_POST[$val.'f'])." '".$showval."')  ";
+                $map.=$leftipt." ".$mapval.getSelectByName('roletextinset', $_POST[$val.'f'])."'".$_POST[$val.'text']."' ".$rightipt." ";
+                $typearr[$val][]=array(
+                    'name'=>$val, //字段名称
+                    'title'=>$_POST['roleexptitle'][$val],
+                    'symbol'=>$_POST[$val.'f'],
+                    'val'=>$_POST[$val.'text'],
+                    'control'=>'text',
+                    'widget'=>'roletextinset',
+                    'leftipt'=>$leftipt,
+                    'rightipt'=>$rightipt,
+                    'sort'=>$key,
+                    'centertip'=>$centertip,
+                );
+            }else if($roleexptype[$val]=='select'){
+                $showmap.="(".$roleexptitle[$val].' '.getSelectByName('roletextinexp', $_POST[$val.'f'])." '".implode(',',$_POST[$val.'stitle'])."')";
+                $tempData = $_POST[$val.'s'];
+                if($tempData){
+                    $ret = "'";
+                    if(is_array($tempData)){
+                        $ret .= join("','" , $tempData);
+                    }
+                    $ret .= "'";
+                }
+                $map.=$leftipt.' '.$mapval.' '.getSelectByName('roletextinset', $_POST[$val.'f'])."(".$ret.")".$rightipt." ";
+                $typearr[$val][]=array(
+                    'name'=>$val, //字段名称
+                    'symbol'=>$_POST[$val.'f'],
+                    'title'=>$_POST['roleexptitle'][$val],
+                    'showval'=>implode(',',$_POST[$val.'stitle']),
+                    'val'=>$_POST[$val.'s'],
+                    'control'=>'select',
+                    'widget'=>'roletextinset',
+                    'sort'=>$key,
+                    'leftipt'=>$leftipt,
+                    'rightipt'=>$rightipt,
+                    'centertip'=>$centertip,
+                );
+            }else if($roleexptype[$val]=='number'){
+                //带入单位存值
+                $showunit=getFieldBy($_POST[$val."unitshow"], "danweidaima", "danweimingchen", "mis_system_unit");
+                //map转换单位
+                $mapunitsval=$_POST[$val.'snum'];
+                $mapuniteval=$_POST[$val.'enum'];
+                if($showunit){
+                    //转换为存储单位
+                    $mapunitsval=unitExchange($_POST[$val.'snum'],$_POST[$val.'unitchange'], $_POST[$val.'unitshow']);
+                    $mapuniteval=unitExchange($_POST[$val.'enum'],$_POST[$val.'unitchange'], $_POST[$val.'unitshow']);
+                }
+                if($_POST[$val.'enum']){
+                    $showmap.="(".$roleexptitle[$val].' '.getSelectByName('roleinexp', $_POST[$val.'sf'])." '".$_POST[$val.'snum'].$showunit."' {$andspan}  ".$roleexptitle[$val].' '.getSelectByName('roleinexp', $_POST[$val.'ef'])." '".$_POST[$val.'enum'].$showunit."')";
+                    $map.=$leftipt." "."(".$mapval.' '.getSelectByName('roleexp', $_POST[$val.'sf']).$mapunitsval." and ".$mapval.' '.getSelectByName('roleexp', $_POST[$val.'ef']).$mapuniteval.")".$rightipt." ";
+                }else{
+                    $showmap.="(".$roleexptitle[$val].' '.getSelectByName('roleinexp', $_POST[$val.'sf'])." '".$_POST[$val.'snum'].$showunit.")";
+                    $map.=$leftipt." "."(".$mapval.' '.getSelectByName('roleexp', $_POST[$val.'sf'])."'".$mapunitsval."')";
+                }
+                $typearr[$val][]=array(
+                    'name'=>$val, //字段名称
+                    'symbols'=>$_POST[$val.'sf'],
+                    'symbole'=>$_POST[$val.'ef'],
+                    'title'=>$_POST['roleexptitle'][$val],
+                    'vals'=>$mapunitsval,
+                    'vale'=>$mapuniteval,
+                    'sort'=>$key,
+                    'control'=>'number',
+                    'widget'=>'roleexp',
+                    'leftipt'=>$leftipt,
+                    'rightipt'=>$rightipt,
+                    'centertip'=>$centertip,
+                );
+            }else if($roleexptype[$val]=='time'){
+                if(!$_POST[$val.'etime']){
+                    $_POST[$val.'etime']="$"."time";
+                    $showtime="当前时间";
+                    $showetime="$"."time";
+                }else{
+                    $showtime=$_POST[$val.'etime'];
+                    $showetime=$showtime;
+                    $_POST[$val.'etime']=strtotime($_POST[$val.'etime']);
+                }
+                $showmap.="(".$roleexptitle[$val].' '.getSelectByName('roleinexp', $_POST[$val.'sf'])." '".$_POST[$val.'stime']."' {$andspan} ".$roleexptitle[$val].' '.getSelectByName('roleinexp', $_POST[$val.'ef'])." '".$showtime."') ";
+                $map.=$leftipt." "."(".$mapval.getSelectByName('roleexp', $_POST[$val.'sf']).strtotime($_POST[$val.'stime'])." and ".$mapval.getSelectByName('roleexp', $_POST[$val.'ef']).($_POST[$val.'etime']).")".$rightipt." ";
+                $typearr[$val][]=array(
+                    'name'=>$val, //字段名称
+                    'symbols'=>$_POST[$val.'sf'],
+                    'symbole'=>$_POST[$val.'ef'],
+                    'title'=>$_POST['roleexptitle'][$val],
+                    'vals'=>$_POST[$val.'stime'],
+                    'sort'=>$key,
+                    'vale'=>$showetime,
+                    'control'=>'time',
+                    'widget'=>'roleexp',
+                    'leftipt'=>$leftipt,
+                    'rightipt'=>$rightipt,
+                    'centertip'=>$centertip,
+                );
+            }
+            if($roleexp[$key+1]){
+                if(!$leftipt && !$rightipt ){
+                    $map.="  and  ";
+                    $showmap.=$andspan;
+                }else{
+                    if($_POST['leftipt'][$key+1]=="and"||$_POST['rightipt'][$key+1]=="and"){
+                        if(!$centertip[$val]){
+                            $showmap.=$andspan;
+                        }
+                    }else{
+                        if(!$centertip[$val]){
+                            $showmap.=$orspan;
+                        }
+                    }
+                }
+            }
+            if($centertip[$val]){
+                $map.=" ".$centertip." ";
+                $showmap.=$centertip=="or"?$orspan:$andspan;
+            }
+        }
+        if($_POST['mapsql']){
+            $typearr['mapsql'][]=array(
+                'name'=>'sql',
+                'sql'=>$_POST['mapsql'],
+            );
+            $map.=$_POST['mapsql'];
+        }
+        if($_POST['avgsql']){//高级sql模式
+            if($map){
+                $endsql=$_POST['avgsql']." and ".$map;
+            }else{
+                $endsql=$_POST['avgsql'];
+            }
+            $typearr['avgsql'][]=array(
+                'name'=>'avgsql',
+                'avgsql'=>$_POST['avgsql'],
+            );
+            $avgmap=$_POST['avgsql'];
+        }
+        if($typearr){
+            $typearr=base64_encode(base64_encode(serialize($typearr)));
+        }else{
+            $typearr="";
+        }
+        if(!$map){
+            $map="";
+        }
+        $listarr=array(
+            'ids'=>$_REQUEST['id'],
+            'sourceRef'=>$_REQUEST['sourceRef'],
+            'targetRef'=> $_REQUEST['targetRef'],
+            'list'=>$typearr,
+            'map'=>$map,
+            'endsql'=>$endsql,
+            'jsshowmap'=>$showmap." ".$_POST['mapsql'],
+            'showmap'=>$showmap.$_POST['mapsql'],
+        );
+        return $listarr;
+    }
 
     /**
      *
@@ -8759,7 +9185,7 @@ AND STATUS=1";
      * @date 2014-9-15 下午2:24:19
      * @throws
      */
-    private function lookupresultdetails($nodename, $inlinetable)
+    public function lookupresultdetails($nodename, $inlinetable)
     {
         //读取配置字段
         $scdmodel = D('SystemConfigDetail');
@@ -13571,187 +13997,282 @@ AND STATUS=1";
      *
      * @Title: miniindex
      * @Description: todo(表单转换为列表内嵌页面)
-     * @author renling
+     * @author renling   lin-update(2018-12-19)
      * @date 2015年2月10日 上午10:33:47
      * @throws
      */
-    public function miniindex()
-    {
+    public function miniindex(){
+        $isformcon=$_REQUEST['isformcon'];
         //获取当前控制器名称
-        $name = $this->getActionName();
-        //判断当前表单是否是组合表单主入口
-        if (checkActionIsMain($name, 0)) {
-            //查询当前主入口表单的附属表单
-            $MisAutoBindModel = D("MisAutoBind");
-            $map['bindaname'] = $name;
-            $map['status'] = 1;
-            $map['typeid'] = 0;
-            $MisAutoBindList = $MisAutoBindModel->where($map)->getField("inbindaname,bindtype");
-
-        }
+        $name=$this->getActionName();        //从表name
         //获取传递过来的方法名,处理minindex表主表未现在，minindex不出现新增按钮
         $this->assign("func", $_REQUEST['func']);
-        //$this->getMiniIndexLoad();
-
-        //列表过滤器，生成查询Map对象
-        $map = $this->_search();
-
-        //获取fieldtype参数
-        $fieldtype = $_REQUEST['fieldtype'];
-        if ($fieldtype || $_REQUEST['bindrdid']) {
-            if ($fieldtype && $fieldtype != "#") {
-                $vo[$fieldtype] = $_REQUEST[$fieldtype];
+        $SystemConfigNumberAction = A('SystemConfigNumber');
+        $newOrderNo = $SystemConfigNumberAction->lookupDatatableOrderNo($name);
+        if($isformcon==1){      //表单容器的条件
+            //獲取綁定條件  fieldtype
+            $bindid=$_REQUEST['bindrdid'];                  //主表单 id
+            $bindname = $_REQUEST['bindaname'];             //zhu表单model
+            $propery = D('mis_dynamic_form_propery');
+            $pmap['isshow'] = 1;
+            $pmap['dbname']=D($bindname)->getTableName();
+            $pmap['fieldname'] = $_REQUEST['field'];
+            $formcontrolls = $propery->where($pmap)->getField('id,formtitle,invokeroam,formheight,showformtoolbar,formstatu,showtype,bindform,issydel,bindval,inbindval,formcondition,incondition');
+            foreach($formcontrolls as $item){
+                $formcontroll = $item;
             }
-            $SystemConfigNumberAction = A('SystemConfigNumber');
-            $newOrderNo = $SystemConfigNumberAction->lookupDatatableOrderNo($name);
             if ($newOrderNo['status']) {
                 $vo['orderno'] = $newOrderNo;
             }
+//            $map = $this->_search();
+            $fieldtype = $_REQUEST['fieldtype'];
+            if ($fieldtype || $_REQUEST['bindrdid']) {
+                if ($fieldtype && $fieldtype != "#") {
+                    $vo[$fieldtype] = $_REQUEST[$fieldtype];
+                }
+                if ($newOrderNo['status']) {
+                    $vo['orderno'] = $newOrderNo;
+                }
+
+            }
+            //获取当前主表的信息
+            $bindmap['id']=$bindid;
+            $zhus= D($bindname)->where($bindmap)->select();
+            //设置表中表的条件
+            $zhu=$zhus[0];
+            $formcontroll['bindval'];         //主表的字段匹配
+            $zhu[ $formcontroll['bindval']] ;   //主表字段的值
+            $formcontroll['inbindval'];         //从表的字段匹配
+            $map[$formcontroll['inbindval']]= $zhu[$formcontroll['bindval']];    //基础条件
+            //附加条件
+            if($formcontroll['formcondition']){
+                $map['_string']=$formcontroll['formcondition'];
+            }
+            //子单条件
+            if($formcontroll['incondition']) {
+                $ret = $formcontroll['incondition'];
+                $listarr = unserialize(base64_decode(base64_decode($ret)));
+
+                if ($listarr === false) {//有老数据是base64_encode(serialize())加密的 --xyz 15-09-16
+                    $listarr = unserialize(base64_decode($ret));
+                }
+                foreach ($listarr as $item) {
+
+                    foreach ($item as $kk => $vv) {
+                        if ($vv['name'] == 'sql') {//手写sql
+                            $map['_string'] = $vv['sql'];
+                        } else if ($vv['name'] == 'avgsql') {//高级sql
+                            $map['_string'] = $vv['avgsql'];
+                        } else {
+
+                            $symob = $vv['symbol'];
+                            if ($symob == 1) {//等于
+                                $symobol = 'eq';
+                            } else if ($symob == 2) {//不等于
+                                $symobol = 'neq';
+                            } else if ($symob == 3) {// 包含
+                                $symobol = 'in';
+                            } else if ($symob == 4) {//不包含
+                                $symobol = 'not in';
+                            } else if ($symob == 5) {//大于
+                                $symobol = 'gt';
+                            } else if ($symob == 6) {//大于等于
+                                $symobol = 'egt';
+                            } else if ($symob == 7) {// 小于
+                                $symobol = 'lt';
+                            } else if ($symob == 8) {//  小于等于
+                                $symobol = 'elt';
+                            }
+                            $map[$vv['name']] = array($symobol, $vv['val']);        //*********高级设置centertip   rightipt   leftipt   未知用途
+                        }
+                    }
+                }
+            }
+
+            //获取漫游
+            $model = D('MisSystemDataRoaming');
             $sourcemodel = $_REQUEST['bindaname'];
             $sourceid = $_REQUEST['bindrdid'];
             $targetmodel = $name;
-            //获取数据漫游映射
-            $model = D('MisSystemDataRoaming');
-            $romasID = array();
-            $romasID['bindaname'] = $sourcemodel;
-            $romasID['inbindaname'] = $name;
-            //组合表单
-            if (getFieldBy($name, "inbindaname", "typeid", "mis_auto_bind", "bindaname", $sourcemodel) == 0) {
-                //查询数据VO
-                $actionmodel = D($sourcemodel);
-                $vo = $actionmodel->where("id=" . $sourceid)->find();
-                $bindVo = M("mis_auto_bind")->where($romasID)->find();
-                $romasID['bindval'] = array("in", "all," . $vo[$bindVo['bindresult']]);
-
-                // $romasID['bindval']=$vo[$bindVo['bindresult']];
-            }
-            $MisAutoBindSettableVo = M("mis_auto_bind")->where($romasID)->find();
-            $datarommasid = $_REQUEST['urdataroamid'] ? $_REQUEST['urdataroamid'] : $MisAutoBindSettableVo['dataroamid'];
+            $datarommasid = $formcontroll['invokeroam'];
             $dataArr = $model->main(2, $sourcemodel, $sourceid, 4, $targetmodel, '', $datarommasid);
-            //$data=$model->dataRoamOrderno($sourcemodel,$sourceid,$targetmodel);
-            //查询当前配置文件
-            if ($dataArr) {
-                $scdmodel = D('SystemConfigDetail');
-                $detailList = $scdmodel->getDetail($name);
-                if (is_array(reset($dataArr))) {
-                    foreach (reset($dataArr) as $k => $v) {
-                        foreach ($v as $k1 => $v1) {
-                            //当前组件为lookup
-                            if ($detailList[key($v1)]['fieldcategory'] == "lookup") {
-                                $showname = getFieldBy(reset($v1), $detailList[key($v1)]['funcdata'][0][0][1], $detailList[key($v1)]['funcdata'][0][0][2], $detailList[key($v1)]['funcdata'][0][0][3]);
-                                $vo[key($v1)] = array(
-                                    'value' => reset($v1),
-                                    'showname' => $showname,
-                                );
-                            } else {
-                                $vo[key($v1)] = reset($v1);
-                                if ($vo[key($v1)] && !$_REQUEST['fieldtype']) {
+            $this->assign("a", json_encode($map));
+            $this->assign("vo", $vo);
+
+
+
+
+
+        }else {         //套表的条件
+            //判断当前表单是否是组合表单主入口
+            if (checkActionIsMain($name, 0)) {
+                //查询当前主入口表单的附属表单
+                $MisAutoBindModel = D("MisAutoBind");
+                $map['bindaname'] = $name;
+                $map['status'] = 1;
+                $map['typeid'] = 0;
+                $MisAutoBindList = $MisAutoBindModel->where($map)->getField("inbindaname,bindtype");
+                if ($newOrderNo['status']) {
+                    $vo['orderno'] = $newOrderNo;
+                }
+            }
+            //列表过滤器，生成查询Map对象
+            $map = $this->_search();
+            //获取fieldtype参数
+            $fieldtype = $_REQUEST['fieldtype'];
+            if ($fieldtype || $_REQUEST['bindrdid']) {
+                if ($fieldtype && $fieldtype != "#") {
+                    $vo[$fieldtype] = $_REQUEST[$fieldtype];
+                }
+                if ($newOrderNo['status']) {
+                    $vo['orderno'] = $newOrderNo;
+                }
+                $sourcemodel = $_REQUEST['bindaname'];
+                $sourceid = $_REQUEST['bindrdid'];
+                $targetmodel = $name;
+                //获取数据漫游映射
+                $model = D('MisSystemDataRoaming');
+                $romasID = array();
+                $romasID['bindaname'] = $sourcemodel;
+                $romasID['inbindaname'] = $name;
+                //组合表单
+                if (getFieldBy($name, "inbindaname", "typeid", "mis_auto_bind", "bindaname", $sourcemodel) == 0) {
+                    //查询数据VO
+                    $actionmodel = D($sourcemodel);
+                    $vo = $actionmodel->where("id=" . $sourceid)->find();
+                    $bindVo = M("mis_auto_bind")->where($romasID)->find();
+                    $romasID['bindval'] = array("in", "all," . $vo[$bindVo['bindresult']]);
+                    // $romasID['bindval']=$vo[$bindVo['bindresult']];
+                }
+                $MisAutoBindSettableVo = M("mis_auto_bind")->where($romasID)->find();
+                $datarommasid = $_REQUEST['urdataroamid'] ? $_REQUEST['urdataroamid'] : $MisAutoBindSettableVo['dataroamid'];
+                $dataArr = $model->main(2, $sourcemodel, $sourceid, 4, $targetmodel, '', $datarommasid);
+                //$data=$model->dataRoamOrderno($sourcemodel,$sourceid,$targetmodel);
+                //查询当前配置文件
+                if ($dataArr) {
+                    $scdmodel = D('SystemConfigDetail');
+                    $detailList = $scdmodel->getDetail($name);
+                    if (is_array(reset($dataArr))) {
+                        foreach (reset($dataArr) as $k => $v) {
+                            foreach ($v as $k1 => $v1) {
+                                //当前组件为lookup
+                                if ($detailList[key($v1)]['fieldcategory'] == "lookup") {
+                                    $showname = getFieldBy(resetm($v1), $detailList[key($v1)]['funcdata'][0][0][1], $detailList[key($v1)]['funcdata'][0][0][2], $detailList[key($v1)]['funcdata'][0][0][3]);
+                                    $vo[key($v1)] = array(
+                                        'value' => reset($v1),
+                                        'showname' => $showname,
+                                    );
+                                } else {
+                                    $vo[key($v1)] = reset($v1);
+                                    if ($vo[key($v1)] && !$_REQUEST['fieldtype']) {
+                                        if ($MisAutoBindSettableVo['typeid'] == 2) {
+                                            $map[key($v1)] = reset($v1);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } else if ($_REQUEST['dataromaing']) {
+                    $this->error(json_encode($_REQUEST['dataromaing']));
+                    $MisSystemDataRoamSubDao = M("mis_system_data_roam_sub");
+                    $dataroaming = unserialize(base64_decode($_REQUEST['dataromaing']));
+                    //查询缓存表
+                    $cachDao = M($dataroaming['randtable']);
+                    $cachMap = array();
+                    $cachMap['tablename'] = $dataroaming['tablename'];
+                    $cachMap['randnum'] = $dataroaming['randnum'];
+                    $cachMap['createid'] = $dataroaming['createid'];
+                    $cachList = $cachDao->where($cachMap)->find();
+                    $dataromaList = unserialize(base64_decode($cachList['backupdata']));
+                    $misAutoBindModel = D("MisAutoBind");
+                    //查询当前漫游id
+                    $BindMap = array();
+                    $BindMap['inbindaname'] = $name;
+                    $BindMap['bindaname'] = $_REQUEST['bindaname'];
+                    $_REQUEST['typeid'] = 2;
+                    $misAutoBindVo = $misAutoBindModel->where($BindMap)->find();
+                    //加上数据漫游条件
+                    $MisSystemDataRoamSubList = $MisSystemDataRoamSubDao->where("masid=" . $misAutoBindVo['dataroamid'])->select();
+                    if ($MisSystemDataRoamSubList) {
+                        foreach ($MisSystemDataRoamSubList as $dskey => $dsval) {
+                            if ($dataromaList[$dsval['sfield']]) {
+                                $vo[$dsval['tfield']] = $dataromaList[$dsval['sfield']];
+                                if ($vo[$dsval['tfield']] && !$_REQUEST['fieldtype']) {
+                                    //套表直接取漫游map
                                     if ($MisAutoBindSettableVo['typeid'] == 2) {
-                                        $map[key($v1)] = reset($v1);
+                                        $map[$dsval['tfield']] = $dataromaList[$dsval['sfield']];
                                     }
                                 }
                             }
                         }
-                    }
-                }
-            } else if ($_REQUEST['dataromaing']) {
-                $MisSystemDataRoamSubDao = M("mis_system_data_roam_sub");
-                $dataroaming = unserialize(base64_decode($_REQUEST['dataromaing']));
-                //查询缓存表
-                $cachDao = M($dataroaming['randtable']);
-                $cachMap = array();
-                $cachMap['tablename'] = $dataroaming['tablename'];
-                $cachMap['randnum'] = $dataroaming['randnum'];
-                $cachMap['createid'] = $dataroaming['createid'];
-                $cachList = $cachDao->where($cachMap)->find();
-                $dataromaList = unserialize(base64_decode($cachList['backupdata']));
-                $misAutoBindModel = D("MisAutoBind");
-                //查询当前漫游id
-                $BindMap = array();
-                $BindMap['inbindaname'] = $name;
-                $BindMap['bindaname'] = $_REQUEST['bindaname'];
-                $_REQUEST['typeid'] = 2;
-                $misAutoBindVo = $misAutoBindModel->where($BindMap)->find();
-                //加上数据漫游条件
-                $MisSystemDataRoamSubList = $MisSystemDataRoamSubDao->where("masid=" . $misAutoBindVo['dataroamid'])->select();
-                if ($MisSystemDataRoamSubList) {
-                    foreach ($MisSystemDataRoamSubList as $dskey => $dsval) {
-                        if ($dataromaList[$dsval['sfield']]) {
-                            $vo[$dsval['tfield']] = $dataromaList[$dsval['sfield']];
-                            if ($vo[$dsval['tfield']] && !$_REQUEST['fieldtype']) {
-                                //套表直接取漫游map
-                                if ($MisAutoBindSettableVo['typeid'] == 2) {
-                                    $map[$dsval['tfield']] = $dataromaList[$dsval['sfield']];
-                                }
+                        //组合表
+                        if ($MisAutoBindSettableVo['typeid'] == 0) {
+                            if ($MisAutoBindSettableVo['inbindmap']) {
+                                $newconditions = str_replace(array('&quot;', '&#39;', '&lt;', '&gt;'), array('"', "'", '<', '>'
+                                ), $MisAutoBindSettableVo['inbindmap']);
+                                $map['_string'] = $newconditions;
                             }
-                        }
-                    }
-                    //组合表
-                    if ($MisAutoBindSettableVo['typeid'] == 0) {
-                        if ($MisAutoBindSettableVo['inbindmap']) {
-                            $newconditions = str_replace(array('&quot;', '&#39;', '&lt;', '&gt;'), array('"', "'", '<', '>'
-                            ), $MisAutoBindSettableVo['inbindmap']);
-                            $map['_string'] = $newconditions;
-                        }
-                        //表单附加条件
-                        if ($MisAutoBindSettableVo['bindconlistArr']) {
+                            //表单附加条件
                             if ($MisAutoBindSettableVo['bindconlistArr']) {
-                                $bindconlistArr = unserialize($MisAutoBindSettableVo['bindconlistArr']);
-                                //获取表单子表附加
-                                foreach ($bindconlistArr as $bindkey => $bindval) {
-                                    //如果有值才生成查询
-                                    if ($vo[$bindkey]) {
-                                        $map[$bindval] = $vo[$bindkey];
+                                if ($MisAutoBindSettableVo['bindconlistArr']) {
+                                    $bindconlistArr = unserialize($MisAutoBindSettableVo['bindconlistArr']);
+                                    //获取表单子表附加
+                                    foreach ($bindconlistArr as $bindkey => $bindval) {
+                                        //如果有值才生成查询
+                                        if ($vo[$bindkey]) {
+                                            $map[$bindval] = $vo[$bindkey];
+                                        }
                                     }
                                 }
                             }
                         }
                     }
+                    // 删除缓存表
+                    //self::unsetOldDataToCache($dataroaming);
                 }
-                // 删除缓存表
-                //self::unsetOldDataToCache($dataroaming);
-            }
-            //组合表
-            if ($MisAutoBindSettableVo['typeid'] == 0) {
-                if ($MisAutoBindSettableVo['inbindmap']) {
-                    $newconditions = str_replace(array('&quot;', '&#39;', '&lt;', '&gt;'), array('"', "'", '<', '>'
-                    ), $MisAutoBindSettableVo['inbindmap']);
-                    $map['_string'] = $newconditions;
-                }
-                //表单附加条件
-                if ($MisAutoBindSettableVo['bindconlistArr']) {
+                //组合表
+                if ($MisAutoBindSettableVo['typeid'] == 0) {
+                    if ($MisAutoBindSettableVo['inbindmap']) {
+                        $newconditions = str_replace(array('&quot;', '&#39;', '&lt;', '&gt;'), array('"', "'", '<', '>'
+                        ), $MisAutoBindSettableVo['inbindmap']);
+                        $map['_string'] = $newconditions;
+                    }
+                    //表单附加条件
                     if ($MisAutoBindSettableVo['bindconlistArr']) {
-                        $bindconlistArr = unserialize($MisAutoBindSettableVo['bindconlistArr']);
-                        //获取表单子表附加
-                        foreach ($bindconlistArr as $bindkey => $bindval) {
-                            //如果有值才生成查询
-                            if ($vo[$bindkey]) {
-                                $map[$bindval] = $vo[$bindkey];
+                        if ($MisAutoBindSettableVo['bindconlistArr']) {
+                            $bindconlistArr = unserialize($MisAutoBindSettableVo['bindconlistArr']);
+                            //获取表单子表附加
+                            foreach ($bindconlistArr as $bindkey => $bindval) {
+                                //如果有值才生成查询
+                                if ($vo[$bindkey]) {
+                                    $map[$bindval] = $vo[$bindkey];
+                                }
                             }
                         }
                     }
                 }
+                $this->assign("addvo", $vo);
             }
-            $this->assign("addvo", $vo);
-        }
 
-        $this->assign("type", $_REQUEST['type']);
-        $this->assign("ecode", $_REQUEST['ecode']);
-        if (method_exists($this, '_filter')) {
-            $this->_filter($map);
-        }
-        //套表专有
-        if ($_REQUEST['fieldtype']) {
-            $this->getBindSetTables($map);
-        }
-        if ($_REQUEST['projectid']) {
-            $map['projectid'] = $_REQUEST['projectid'];
-        }
-        if ($_REQUEST['projectworkid']) {
-            //$map['projectworkid'] = $_REQUEST['projectworkid'];
-        }
-        $name = $this->getActionName();
 
+            $this->assign("type", $_REQUEST['type']);
+            $this->assign("ecode", $_REQUEST['ecode']);
+            if (method_exists($this, '_filter')) {
+                $this->_filter($map);
+            }
+            //套表专有
+            if ($_REQUEST['fieldtype']) {
+                $this->getBindSetTables($map);
+            }
+            if ($_REQUEST['projectid']) {
+                $map['projectid'] = $_REQUEST['projectid'];
+            }
+            if ($_REQUEST['projectworkid']) {
+                //$map['projectworkid'] = $_REQUEST['projectworkid'];
+            }
+        }
+        //按权限   map条件去获取数据
         if (!empty ($name)) {
             $qx_name = $name;
             if (substr($name, -4) == "View") {
@@ -13798,22 +14319,7 @@ AND STATUS=1";
                 //列表页排序 ---结束-----
                 $this->_list($name, $map, '', false, '', '', $sortsorder, false);
             }
-
-
         }
-// 		if (! empty ( $name )) {
-// 			$qx_name=$name;
-// 			if(substr($name, -4)=="View"){
-// 				$qx_name = substr($name,0, -4);
-// 			}
-// 			//验证浏览及权限
-// 			if( !isset($_SESSION['a']) ){
-// 				$map=D('User')->getAccessfilter($qx_name,$map);
-// 			}
-// 			$this->_list ( $name, $map );
-// 		}
-
-        //begin
         $scdmodel = D('SystemConfigDetail');
         //读取列名称数据(按照规则，应该在index方法里面)
         $detailList = $scdmodel->getDetail($name, false, '', 'sortnum');
@@ -13831,11 +14337,10 @@ AND STATUS=1";
             }
         }
         if ($detailList) {
-            $this->assign('detailList', $detailList);
+            $this->assign ( 'detailList', $detailList );
         }
         $this->display();
     }
-
     /**
      * 组合、主从表的特殊代码
      * @Title: getCombinationTableAndSlaveTableSpecialCode
