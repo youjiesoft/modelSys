@@ -910,7 +910,11 @@ EOF;
             case 'datatable' :
                 $content = '<div class="pos_relative">' . $this->getControl($data, true, true) . '</div>';
                 break;
+            case 'form':
+                $actiontitle=$data[$property['formtitle']['name']];
+                break;
         }
+        $searchArr['#actiontitle#']         = $actiontitle;
         $searchArr['#class#']         = $class;
         $searchArr['#style#']         = $style;
         $searchArr['#title#']         = $title;

@@ -744,7 +744,8 @@ class MisDynamicFormManageAction extends MisDynamicFormTemplateAction {
 		
 		
 	}
-	
+
+
 	/**
 	 * 建模改版
 	 *	@date 20141105 1622
@@ -12580,6 +12581,341 @@ EOF;
 //		print_r($str);
 		return $str;
 	}
+    /**
+     * @lin-update 2018-12-19
+     * 获取所有表单
+     */
+    public function getForm(){
+        $MisDynamicFormManageModel = D ( "MisDynamicFormManage" );
+        $mdMap = array ();
+        $mdMap ['status'] = 1;
+        $MisDynamicFormManageList = $MisDynamicFormManageModel->where ( $mdMap )->getField ( "id,actiontitle" );
+        echo json_encode($MisDynamicFormManageList);
+    }
+
+    public function gettitle(){
+        $id=$_GET['id'];
+        $map['id']=$id;
+        $ds=D('mis_dynamic_form_manage')->where($map)->select();
+        $this->assign("actiontitle",$ds[0]['actiontitle']);
+        echo json_encode($ds[0]['actiontitle']);
+    }
+    /**
+     * @Title: getRoam
+     * @Description: todo(获取当前所有已经生成的漫游信息)
+     * @author lin
+     * @data 2018-11-7 16:55:01
+     */
+    public function getRoam($t=''){
+        $map['sourcemodel'] = $_POST['nodename'];
+//        $map['isbindsettable']=1;
+        $tarid=$_POST['table'];
+        $mapmanage['id']=$tarid;
+        $tars=D('mis_dynamic_form_manage')->where($mapmanage)->select();
+        $map['targetmodel'] = $tars[0]['actionname'];
+        $Model = M('mis_system_data_roam_mas');
+        $romas = $Model->where($map)->Field('id,title')->select();
+        $roma=array();
+        foreach($romas as $k=>$v){
+            $roma[$v['id']] = $v['title'];
+        }
+        echo json_encode($roma);
+    }
+    function getbindfidld(){
+        $tarid=$_POST['table'];
+        $mapmanage['id']=$tarid;
+        $tars=D('mis_dynamic_form_manage')->where($mapmanage)->select();
+        $nodename = $tars[0]['actionname'];     //绑定表 的actionname
+        $model = D($nodename);
+        $table=$model->getTableName();       //绑定表
+        if ($table!='') {
+            $columns = $model->query("show columns from ".$table);
+            $model2=M("INFORMATION_SCHEMA.COLUMNS","","",1);
+            $columnstitle = $model2->where("table_name = '".$table."' AND TABLE_SCHEMA = '".C('DB_NAME')."'")->getField("COLUMN_NAME,COLUMN_COMMENT");
+            foreach($columns as $k=>$v){
+                $title=$v['Field'];
+                if( $columnstitle[$v['Field']] ) $title=$columnstitle[$v['Field']];
+                $arr[$v['Field']] = $title;
+            }
+        }
+        echo json_encode($arr);
+    }
+    function getzhubindfidld(){
+        $nodename = $_POST['nodename'];       //当前表名
+        $model = D($nodename);
+        $table=$model->getTableName();       //绑定表
+        if ($table!='') {
+            $columns = $model->query("show columns from ".$table);
+            $model2=M("INFORMATION_SCHEMA.COLUMNS","","",1);
+            $columnstitle = $model2->where("table_name = '".$table."' AND TABLE_SCHEMA = '".C('DB_NAME')."'")->getField("COLUMN_NAME,COLUMN_COMMENT");
+            foreach($columns as $k=>$v){
+                $title=$v['Field'];
+                if( $columnstitle[$v['Field']] ) $title=$columnstitle[$v['Field']];
+                $arr[$v['Field']] = $title;
+            }
+        }
+        echo json_encode($arr);
+    }
+    //子表表单条件模板
+    public function lookupaddresult(){
+
+        $id=$_REQUEST['bindform'];      // 当前actionname
+        //绑定表单的actionname
+        $managemap['id']=$id;
+        $nodename=D('mis_dynamic_form_manage')->where($managemap)->getField('actionname');
+        //获取html区域标志，方便JS绑定
+        $orderContainer = $_POST['order'];	// 获取目标对象标识
+        if($_POST['inlinetable']){
+
+            $this->lookupresultdetails($nodename,$_POST['inlinetable']);
+        }else{
+            $this->lookupresultdetails($nodename);
+        }
+        //获取主表名称
+        $tablename=D($nodename)->getTableName();
+        $info="select * from ".$tablename;
+        $this->assign("info",$info);
+        //获取已选中的数据信息
+        $ret = $_REQUEST['listarr'];
+        $listarr=unserialize(base64_decode(base64_decode($ret)));
+        if($listarr === false){//有老数据是base64_encode(serialize())加密的 --xyz 15-09-16
+            $listarr = unserialize(base64_decode($ret));
+        }
+//        $this->error(json_encode($listarr));
+        $MisDynamicFormManageModel=D('MisDynamicFormManage');
+        $typeTree=$MisDynamicFormManageModel->getAnameSqltree();
+        $this->assign("typeTree",json_encode($typeTree));
+        $this->assign("nodename",$nodename);
+        //是否为多行
+        $this->assign("multitype",$_REQUEST['multitype']);
+        $this->assign("akey",$_REQUEST['akey']);
+        $this->assign("listarr",$listarr);
+        $this->assign('order',$orderContainer);
+        $this->display();
+    }
+
+    function lookupinsertresult(){
+        $data  = $this->lookupAssemble();
+        $d['showmap'] = $data['showmap'];
+        $d['map']=$data['map'];
+        $d['list']=$data['list'];
+        $this->success("添加成功",'',json_encode($d));
+    }
+    private function lookupAssemble(){
+        /* 黎明刚 加，为了满足流程管理，在一个页面同时出现多个条件选择器*/
+        $order = $_POST['order'];
+        $roleexp=$_POST['tiprole']?$_POST['tiprole']:$_POST['roleexp'];
+        $roleexptype=$_POST['roleexptype'];
+        $roleexptitle=$_POST['roleexptitle'];
+        $modelname=$_POST['modelname'];
+        if(substr($modelname,-4)=='View'){
+            $modelname = getFieldBy($modelname,'name','modelname','mis_system_dataview_mas');
+        }
+        //获取配置文件
+        $scdmodel = D('SystemConfigDetail');
+        //读取列名称数据(按照规则，应该在index方法里面)
+        $detailList = $scdmodel->getDetail($modelname,'','','','rules');
+        //查询该模型是否有视图
+        $MisSystemDataviewMasView=D('MisSystemDataviewMasView');
+        $MisSystemDataviewMasMap=array();
+        $MisSystemDataviewMasMap['modelname']=$modelname;
+        $MisSystemDataviewMasMap['mstatus']=1;
+        $MisSystemDataviewMasList=$MisSystemDataviewMasView->where($MisSystemDataviewMasMap)->getField("field,tablename");
+        $listarr=array();
+        $typearr=array();
+        $orspan="<span style='color:red'> 或者  </span>";
+        $andspan="<span style='color:blue'> 并且  </span>";
+        if($order == "processcondition_batch"){
+            /* 黎明刚 加，为了满足流程管理，在一个页面同时出现多个条件选择器*/
+            $orspan="或者";
+            $andspan="并且";
+        }
+        if($_POST['avgsql']){//高级sql模式
+            $showmap=$_POST['avgsql'];
+        }
+        foreach ($roleexp as $key=>$val){
+            //查询当前条件是否是视图字段
+            if($MisSystemDataviewMasList[$val]){
+                //组装视图条件
+                $mapval=$MisSystemDataviewMasList[$val].".".$val;
+            }else{
+                if($detailList[$val]['searchField']){
+                    $mapval=$detailList[$val]['searchField'];
+                }else{
+                    $mapval=$val;
+                }
+            }
+            $leftipt="";
+            $rightipt="";
+            $centertip="";
+            $centertip=$_POST['centertip'][$val];
+            $leftipt=$_POST['leftipt'][$key];
+            $rightipt=$_POST['rightipt'][$key];
+            if($roleexptype[$val]=='text'){
+                $showval=$_POST[$val.'text'];
+                if($val=="auditState"){
+                    $showval=getSelectByName('auditStateVal', $_POST[$val.'text']);
+                }
+                if($val=="operateid"){
+                    $showval=getSelectByName('operateidVal', $_POST[$val.'text']);
+                }
+                $showmap.="(".$roleexptitle[$val].' '.getSelectByName('roletextinexp', $_POST[$val.'f'])." '".$showval."')  ";
+                $map.=$leftipt." ".$mapval.getSelectByName('roletextinset', $_POST[$val.'f'])."'".$_POST[$val.'text']."' ".$rightipt." ";
+                $typearr[$val][]=array(
+                    'name'=>$val, //字段名称
+                    'title'=>$_POST['roleexptitle'][$val],
+                    'symbol'=>$_POST[$val.'f'],
+                    'val'=>$_POST[$val.'text'],
+                    'control'=>'text',
+                    'widget'=>'roletextinset',
+                    'leftipt'=>$leftipt,
+                    'rightipt'=>$rightipt,
+                    'sort'=>$key,
+                    'centertip'=>$centertip,
+                );
+            }else if($roleexptype[$val]=='select'){
+                $showmap.="(".$roleexptitle[$val].' '.getSelectByName('roletextinexp', $_POST[$val.'f'])." '".implode(',',$_POST[$val.'stitle'])."')";
+                $tempData = $_POST[$val.'s'];
+                if($tempData){
+                    $ret = "'";
+                    if(is_array($tempData)){
+                        $ret .= join("','" , $tempData);
+                    }
+                    $ret .= "'";
+                }
+                $map.=$leftipt.' '.$mapval.' '.getSelectByName('roletextinset', $_POST[$val.'f'])."(".$ret.")".$rightipt." ";
+                $typearr[$val][]=array(
+                    'name'=>$val, //字段名称
+                    'symbol'=>$_POST[$val.'f'],
+                    'title'=>$_POST['roleexptitle'][$val],
+                    'showval'=>implode(',',$_POST[$val.'stitle']),
+                    'val'=>$_POST[$val.'s'],
+                    'control'=>'select',
+                    'widget'=>'roletextinset',
+                    'sort'=>$key,
+                    'leftipt'=>$leftipt,
+                    'rightipt'=>$rightipt,
+                    'centertip'=>$centertip,
+                );
+            }else if($roleexptype[$val]=='number'){
+                //带入单位存值
+                $showunit=getFieldBy($_POST[$val."unitshow"], "danweidaima", "danweimingchen", "mis_system_unit");
+                //map转换单位
+                $mapunitsval=$_POST[$val.'snum'];
+                $mapuniteval=$_POST[$val.'enum'];
+                if($showunit){
+                    //转换为存储单位
+                    $mapunitsval=unitExchange($_POST[$val.'snum'],$_POST[$val.'unitchange'], $_POST[$val.'unitshow']);
+                    $mapuniteval=unitExchange($_POST[$val.'enum'],$_POST[$val.'unitchange'], $_POST[$val.'unitshow']);
+                }
+                if($_POST[$val.'enum']){
+                    $showmap.="(".$roleexptitle[$val].' '.getSelectByName('roleinexp', $_POST[$val.'sf'])." '".$_POST[$val.'snum'].$showunit."' {$andspan}  ".$roleexptitle[$val].' '.getSelectByName('roleinexp', $_POST[$val.'ef'])." '".$_POST[$val.'enum'].$showunit."')";
+                    $map.=$leftipt." "."(".$mapval.' '.getSelectByName('roleexp', $_POST[$val.'sf']).$mapunitsval." and ".$mapval.' '.getSelectByName('roleexp', $_POST[$val.'ef']).$mapuniteval.")".$rightipt." ";
+                }else{
+                    $showmap.="(".$roleexptitle[$val].' '.getSelectByName('roleinexp', $_POST[$val.'sf'])." '".$_POST[$val.'snum'].$showunit.")";
+                    $map.=$leftipt." "."(".$mapval.' '.getSelectByName('roleexp', $_POST[$val.'sf'])."'".$mapunitsval."')";
+                }
+                $typearr[$val][]=array(
+                    'name'=>$val, //字段名称
+                    'symbols'=>$_POST[$val.'sf'],
+                    'symbole'=>$_POST[$val.'ef'],
+                    'title'=>$_POST['roleexptitle'][$val],
+                    'vals'=>$mapunitsval,
+                    'vale'=>$mapuniteval,
+                    'sort'=>$key,
+                    'control'=>'number',
+                    'widget'=>'roleexp',
+                    'leftipt'=>$leftipt,
+                    'rightipt'=>$rightipt,
+                    'centertip'=>$centertip,
+                );
+            }else if($roleexptype[$val]=='time'){
+                if(!$_POST[$val.'etime']){
+                    $_POST[$val.'etime']="$"."time";
+                    $showtime="当前时间";
+                    $showetime="$"."time";
+                }else{
+                    $showtime=$_POST[$val.'etime'];
+                    $showetime=$showtime;
+                    $_POST[$val.'etime']=strtotime($_POST[$val.'etime']);
+                }
+                $showmap.="(".$roleexptitle[$val].' '.getSelectByName('roleinexp', $_POST[$val.'sf'])." '".$_POST[$val.'stime']."' {$andspan} ".$roleexptitle[$val].' '.getSelectByName('roleinexp', $_POST[$val.'ef'])." '".$showtime."') ";
+                $map.=$leftipt." "."(".$mapval.getSelectByName('roleexp', $_POST[$val.'sf']).strtotime($_POST[$val.'stime'])." and ".$mapval.getSelectByName('roleexp', $_POST[$val.'ef']).($_POST[$val.'etime']).")".$rightipt." ";
+                $typearr[$val][]=array(
+                    'name'=>$val, //字段名称
+                    'symbols'=>$_POST[$val.'sf'],
+                    'symbole'=>$_POST[$val.'ef'],
+                    'title'=>$_POST['roleexptitle'][$val],
+                    'vals'=>$_POST[$val.'stime'],
+                    'sort'=>$key,
+                    'vale'=>$showetime,
+                    'control'=>'time',
+                    'widget'=>'roleexp',
+                    'leftipt'=>$leftipt,
+                    'rightipt'=>$rightipt,
+                    'centertip'=>$centertip,
+                );
+            }
+            if($roleexp[$key+1]){
+                if(!$leftipt && !$rightipt ){
+                    $map.="  and  ";
+                    $showmap.=$andspan;
+                }else{
+                    if($_POST['leftipt'][$key+1]=="and"||$_POST['rightipt'][$key+1]=="and"){
+                        if(!$centertip[$val]){
+                            $showmap.=$andspan;
+                        }
+                    }else{
+                        if(!$centertip[$val]){
+                            $showmap.=$orspan;
+                        }
+                    }
+                }
+            }
+            if($centertip[$val]){
+                $map.=" ".$centertip." ";
+                $showmap.=$centertip=="or"?$orspan:$andspan;
+            }
+        }
+        if($_POST['mapsql']){
+            $typearr['mapsql'][]=array(
+                'name'=>'sql',
+                'sql'=>$_POST['mapsql'],
+            );
+            $map.=$_POST['mapsql'];
+        }
+        if($_POST['avgsql']){//高级sql模式
+            if($map){
+                $endsql=$_POST['avgsql']." and ".$map;
+            }else{
+                $endsql=$_POST['avgsql'];
+            }
+            $typearr['avgsql'][]=array(
+                'name'=>'avgsql',
+                'avgsql'=>$_POST['avgsql'],
+            );
+            $avgmap=$_POST['avgsql'];
+        }
+        if($typearr){
+            $typearr=base64_encode(base64_encode(serialize($typearr)));
+        }else{
+            $typearr="";
+        }
+        if(!$map){
+            $map="";
+        }
+        $listarr=array(
+            'ids'=>$_REQUEST['id'],
+            'sourceRef'=>$_REQUEST['sourceRef'],
+            'targetRef'=> $_REQUEST['targetRef'],
+            'list'=>$typearr,
+            'map'=>$map,
+            'endsql'=>$endsql,
+            'jsshowmap'=>$showmap." ".$_POST['mapsql'],
+            'showmap'=>$showmap.$_POST['mapsql'],
+        );
+        return $listarr;
+    }
 }
 
 
