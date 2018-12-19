@@ -356,6 +356,176 @@ return array(
 			)
 		),
 	),
+    //表单容器组件
+    'form' =>array(
+        'show'	=>	1,
+        'title'	=>	'表单容器',
+        'iscreate'	=>	1 , //是否生成到数据库中字段
+        'isview'	=>	1 , //是否生成到视图页面
+        'weight'	=>	11, // 权重，用处：在字段生成时出现的默认排序位置。
+        'isline' => true, // 一个标签是否占一行
+        'isconfig'=>	1 , // 是否生成字段配置
+        'html'	=>	'
+			<div class="$isshow nbm_controll " data="form" $checkorder $isline  >
+                <label class="label_new">表单容器</label >
+			$delTag
+            $hidden
+		</div>
+		<div class="nbmshadow">
+	        <div class="icon_stort_lay">$statusHtml</div>
+	    </div>
+		'
+    ,
+        'property'	=>	array(
+            'requiredfield'	=>	array( // 从检查类型中抽取出来的检查属性
+                'title'	=>	'是否必填',
+                'type'	=>	'checkbox',
+                'default'=>'0',
+                'id'	=>	'requiredfield',
+                'name'	=>	'requiredfield',
+                'dbfield'=>'isrequired',
+                'function'=>'changetagsortandrequired',
+                'displayright'=>1,
+            ),
+            'bindform'	=>	array(
+                'title'	=>	'绑定表单',
+                'type'	=>	'select',
+                'id'	=>	'bindform',
+                'name'	=>	'bindform',
+                'data'	=>	'',
+                'dataAdd'=>'getForm',
+                'linkto' => 'invokeroam,inbindval', // 关联下拉框的ID值，作用为：当该对象cnahge时关系对象的值更新。被更新对象的值参数为当前change后的值
+                'displayright'=>1,
+                'dbfield'=>'bindform',
+                'isforeignoprate' => 1,
+                'afterfunc'=>'bindform',          //后置
+                'rel'=>'formtitle:formtitle',
+            ),'invokeroam'	=>	array(
+                'title'	=>	'调用漫游',
+                'type'	=>	'select',
+                'id'	=>	'invokeroam',
+                'name'	=>	'invokeroam',
+                'data'	=>	'',
+                'dataAdd'=>'getRoam',
+                'parentto' => 'bindform', //重新获取值时条件值来源对象
+                'displayright'=>1,
+                'dbfield'=>'invokeroam',
+                'isforeignoprate' => 1,
+            ),
+            'formtitle'	=>	array(
+                'title'	=>	'容器标题',
+                'type'	=>	'text',
+                'id'	=>	'formtitle',
+                'name'	=>	'formtitle',
+                'displayright'=>1,
+                'default'=>'',
+                'dbfield'=>'formtitle',
+                'isforeignoprate' => 1,
+            ),
+            'inbindval'	=>	array( //
+                'title'	=>	'绑定关系字段',
+                'type'	=>	'select',
+                'id'	=>	'inbindval',
+                'name'	=>	'inbindval',
+                'data'	=>	'',
+                'dataAdd'=> 'getbindfidld',
+                'parentto' => 'bindform', //重新获取值时条件值来源对象
+                'displayright'=>1,
+                'dbfield'=>'inbindval',
+                'isforeignoprate' => 1,
+            ),
+            'bindval'	=>	array( //
+                'title'	=>	'主表绑定关系字段',
+                'type'	=>	'select',
+                'id'	=>	'bindval',
+                'name'	=>	'bindval',
+                'data'	=>	'',
+                'dataAdd'=> 'getzhubindfidld',
+                'parentto' => 'bindform', //重新获取值时条件值来源对象
+                'displayright'=>1,
+                'dbfield'=>'bindval',
+                'isforeignoprate' => 1,
+            ),
+            'formcondition'	=>	array( //
+                'title'	=>	'附加条件',
+                'type'	=>	'test',
+                'id'	=>	'formcondition',
+                'name'	=>	'formcondition',
+                'data'	=>	'',
+                'displayright'=>1,
+                'dbfield'=>'formcondition',
+                'isforeignoprate' => 1,
+            ),
+            'incondition'	=>	array(//
+                'title'	=>	'子表表单条件',
+                'type'	=>	'dialog',
+                'id'	=>	'incondition',
+                'name'	=>	'incondition',
+                'dbfield'=> 'incondition',
+                'dialogcontroll'=>'lookupaddresult',// 对话框请求的php函数名
+                'dialogtitle'=>'子表表单条件',
+                'isforeignoprate' => 1,
+                'allowcontroll'	=>	'select,text,lookup,hiddens',				//		允许加入到looup附加条件的组件。
+                'notallowfiled'	=>	'#self#,id,orderno',								//		不允许使用的字段。如果是本字段，就书写为 #self# 其它字段为原字段名，多字段以逗号分隔。
+                'displayright'=>1,
+            ),
+            'formshowtype'	=>	array(
+                'title'	=>	'展现形式',
+                'type'	=>	'select',
+                'id'	=>	'formshowtype',
+                'name'	=>	'formshowtype',
+                'dbfield'=> 'formshowtype',
+                'default'=>'1',
+                'data'	=>	'|请选择#0|表单#1|列表-列表录入#2|列表-表单录入#3|列表-弹框录入',
+                'displayright'=>1,
+            ),
+            'formstatu'	=>	array(
+                'title'	=>	'单据状态',
+                'type'	=>	'select',
+                'id'	=>	'formstatu',
+                'name'	=>	'formstatu',
+                'dbfield'=> 'formstatu',
+                'default'=>'1',
+                'data'	=>	'|请选择#1|跟随状态#2|查看状态',
+                'displayright'=>1,
+            ),
+            'showformtoolbar'	=>	array( //
+                'title'	=>	'是否显示表单工具栏',
+                'type'	=>	'checkbox',
+                'id'	=>	'showformtoolbar',
+                'name'	=>	'showformtoolbar',
+                'dbfield'=> 'showformtoolbar',
+//                'function'=>'changetagsortandrequired',
+                'displayright'=>1,
+            ),
+            'issydel'	=>	array( //
+                'title'	=>	'是否同步删除',
+                'type'	=>	'checkbox',
+                'id'	=>	'issydel',
+                'name'	=>	'issydel',
+                'dbfield'=> 'issydel',
+//                'function'=>'changetagsortandrequired',
+                'displayright'=>1,
+            ),
+            'formheight'	=>	array( //
+                'title'	=>	'自定义容器高度',
+                'type'	=>	'text',
+                'id'	=>	'formheight',
+                'name'	=>	'formheight',
+                'dbfield'=> 'formheight',
+                'displayright'=>1,
+                'default'=>'800',
+            ),
+            'isloadsyn'	=>	array( //
+                'title'	=>	'是否实时加载',
+                'type'	=>	'checkbox',
+                'id'	=>	'isloadsyn',
+                'name'	=>	'isloadsyn',
+                'dbfield'=> 'isloadsyn',
+                'displayright'=>1,
+            ),
+        )
+    ),
     // 按钮组件
     'button'		=>	array(
         'show'	=>	1,	//是否显示在工具列表中
