@@ -36,6 +36,7 @@ class CommonAuditAction extends CommonAction {
             if (! isset ( $_SESSION ['a'] )) {
                 $map = D ( 'User' )->getAccessfilter ($qx_name,$map);
             }
+            $map['isVoid']=0;
             if ($type == 2) {
                 // 待启动单据
                 $map ['auditState'] = array (
@@ -51,6 +52,10 @@ class CommonAuditAction extends CommonAction {
             } else if ($type == 5) {
                 // 未批准
                 $map ['auditState'] = array ('eq',-1);
+            }else if ($type == 6) {
+                // 已作废
+                $map ['auditState'] = array ('eq',4);
+                $map ['isVoid'] = array ('eq',1);
             }
             if (method_exists ( $this, '_filter' )) {
                 $this->_filter ( $map );
