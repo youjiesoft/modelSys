@@ -1,5 +1,4 @@
-
-<!-- 
+<!--
 审批流模板：新增页面
 author:nbmxkj
 time:2015-09-06 18
@@ -21,12 +20,16 @@ time:2015-09-06 18
             var xifenstr = xfstr.join(",");
             $('.field_xifenpinlei #xinfenno').val(xifenstr);
         }
+        window.onload=controll();
 	</script>
-
 {~$classNodeSettingArr = getModelClassByNodeSetting('#nodeName#','add')}
 {~$appendPageContentArr = getBindTabsContent('#nodeName#','','add','',$main)}
 {~$formautosetting = setFormControllAutoCreteAppend('#nodeName#' ,'add' , $main , 'insert',$vo,A('#nodeName#')->rebuildSetting())}
 {$appendPageContentArr[1]}
+<input type="hidden" value="{$_REQUEST['isformcon']}" name="isformcon"/>
+<input type="hidden" value='{$vojson}' name='vojson'>
+<input type="hidden" value="add" name="caozuo"/>
+<input type="hidden" value="#nodeName#" name="nodename"/>
  <div class="page">
 	<div class="pageContent" <if condition="#nodeName# eq 'MisAutoIbf'">onmouseover="xifenvalch()"</if> >
 		<div class="pageFormContent applecloth anchorsToolBarParen" <if condition="$_REQUEST['dialog']">layoutH="40"</if><if condition="!$_REQUEST['main'] or $_REQUEST['main'] eq MODULE_NAME"> layoutH="40"</if>>

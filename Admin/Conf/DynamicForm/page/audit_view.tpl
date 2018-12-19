@@ -17,10 +17,12 @@ time:2015-09-06 18
 					
 				<a class='xyz_anchornavi_top' name='#nodeName#_view_top'></a>
 					<if condition="$_GET['viewtype'] neq 'view'">
-					<div class="new_version_page_header pageFormContent "><span class="left tml-ml20 ">#nodeTitle#</span>
+						<if condition="$_REQUEST['isformcon'] neq 1">
+						<div class="new_version_page_header pageFormContent "><span class="left tml-ml20 ">#nodeTitle#</span>
 						{:W('ShowRightToolBar',array('view','#nodeName#',$vo))}
 						{:W('ShowAnchorNavi',array('#nodeName#' , 'view',$main))}
-					</div>
+						</div>
+						</if>
 					</if>
 					<include file="contenthtml" />
 					<div class="clear">

@@ -19,11 +19,17 @@
             $('.field_xifenpinlei #xinfenno').val(xifenstr);
         }
     }
+    window.onload=controll();
 </script>
 {~$classNodeSettingArr =getModelClassByNodeSetting('#nodeName#','edit')}
 {~$appendPageContentArr =getBindTabsContent('#nodeName#',$vo,'edit','',$main)}
 {~$formautosetting = setFormControllAutoCreteAppend('#nodeName#' ,'edit' ,$main , 'update',$vo,A('#nodeName#')->rebuildSetting())}
 {$appendPageContentArr[1]}
+<input type="hidden" value="{$_REQUEST['isformcon']}" name="isformcon"/>
+<input type="hidden" value='{$vojson}' name='vojson'>
+<input type="hidden" value="{$id}" name="id"/>
+<input type="hidden" value="edit" name="caozuo"/>
+<input type="hidden" value="#nodeName#" name="nodename"/>
 <div class="page" <if condition="#nodeName# eq 'MisAutoIbf'">onmouseover="xifenvalch()"</if>>
 	<div class="pageContent">
 		<div class="pageFormContent applecloth anchorsToolBarParen"

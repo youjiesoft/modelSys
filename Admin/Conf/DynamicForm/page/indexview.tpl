@@ -26,6 +26,7 @@
 			<table class="table" width="100%" layoutH="146">
 				<thead ename="{$ename}">
 					<tr>
+						<th width="26"><input type="checkbox" name="all" onclick="chk()"></th>
 						<th width="26">序号</th>
 						<volist id="vo" name="detailList">
 							<if condition="$vo[shows] eq 1"><th <if condition="$vo[widths]">width="{$vo[widths]}"</if><if condition="$vo[sorts]">  orderField="{$vo[sortname]}" class="{$sort}"</if>>{$vo[showname]}</th></if>	<!--类型-->
